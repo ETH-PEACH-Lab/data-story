@@ -1,0 +1,29 @@
+#root {
+  width: 100%;
+  max-width: none;
+}
+
+.container {
+  padding: 20px;
+}
+
+.content-area {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding and borders are included in the width */
+}
+
+.handsontable-container {
+  flex: 1; /* Make the Handsontable container flexible */
+  margin-right: 20px; /* Space between table and sidebar */
+  overflow: visible;
+}
+
+.sidebar {
+  width: 50%; /* Fixed width for the sidebar */
+  flex-shrink: 0; /* Prevent the sidebar from shrinking */
+  padding: 20px;
+  background-color: #f4f4f4;
+  height: auto; /* Adjust height as per content or full height */
+  box-sizing: border-box; /* Ensure padding and borders are included in the width */
+}
