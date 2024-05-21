@@ -5,21 +5,36 @@ import { HotTable } from '@handsontable/react';
 import Papa from 'papaparse';
 import UploadButton from './UploadButton';
 import { MissingValue } from './MissingValue';
+import SaveCurrentButton from './SaveCurrent';
 
 function App() {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
   const [uploadHistory, setUploadHistory] = useState([]);
+  const [actions, setActions] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [replacementValue, setReplacementValue] = useState('');
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
-  const handleMissingValue = MissingValue(data, columns, setData);
   const selectedColumnName = selectedColumnIndex !== null ? columns[selectedColumnIndex]?.title : '';
 
   const toggleHistory = () => {
     setHistoryVisible(!isHistoryVisible);
   }
+
+  const logAction = (actionDescription) => {
+    setActions(prevActions => [...prevActions, actionDescription]);
+  };
+
+  const handleMissingValue = MissingValue(data, columns, setData, logAction);
+
+  const handleSaveCurrent = () => {
+    const timestamp = new Date().toLocaleString();
+    const fileName = "Current State as of " + timestamp;
+    const dataCopy = JSON.parse(JSON.stringify(data));
+    setUploadHistory(prevHistory => [...prevHistory, { data: dataCopy, fileName, timestamp, actions: [...actions] }]);
+  };
+  
 
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
@@ -42,8 +57,10 @@ function App() {
   const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
     setColumnsFromData(newData);
-    setUploadHistory(prevHistory => [...prevHistory, { data: newData, fileName, timestamp }]);
-  };
+    const dataCopy = JSON.parse(JSON.stringify(newData));
+    setUploadHistory(prevHistory => [...prevHistory, { data: dataCopy, fileName, timestamp, actions: [] }]);
+};
+
 
   const setColumnsFromData = (newData) => {
     if (newData.length > 0) {
@@ -60,6 +77,7 @@ function App() {
     setData(historyEntry.data);
     setColumnsFromData(historyEntry.data);
     setActiveIndex(index);
+    setActions(historyEntry.actions);
     setTimeout(() => {
       setActiveIndex(-1);
     }, 500); // Reset the active index after 500ms
@@ -115,6 +133,7 @@ function App() {
         </div>
         <div className="sidebar">
           <button onClick={toggleHistory}>Show History</button>
+          <SaveCurrentButton onSaveCurrent={handleSaveCurrent} />
           <p>Select a column to replace its missing values.</p>
           <div>
             <input
@@ -136,14 +155,19 @@ function App() {
             <p>History</p>
             <ul>
               {uploadHistory.map((entry, index) => (
-                <li key={index} 
-                    className={`history-entry ${index === activeIndex ? 'active' : ''}`} 
-                    onClick={() => handleHistoryClick(entry)}>
-                  {`${entry.fileName} - ${entry.timestamp}`}
+                <li key={index} className={`history-entry ${index === activeIndex ? 'active' : ''}`} onClick={() => handleHistoryClick(entry)}>
+                  <strong>{entry.fileName}</strong> - <em>{entry.timestamp}</em>
+                  {entry.actions && entry.actions.length > 0 && (
+                    <ul>
+                      {entry.actions.map((action, actionIndex) => (
+                        <li key={actionIndex}>{action}</li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
-        </div>
+          </div>
       </div>
     </div>
   );

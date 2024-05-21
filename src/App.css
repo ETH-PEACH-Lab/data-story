@@ -61,3 +61,23 @@
 .history-entry.active {
   background-color: #aaa; /* Active state color */
 }
+
+.history-entry strong {
+  display: block; /* Make filename appear on its own line */
+}
+
+.history-entry em {
+  display: block; /* Make timestamp appear on its own line */
+  font-style: normal;
+  color: #666;
+  margin-bottom: 5px; /* Space before actions list */
+}
+
+.history-entry ul {
+  margin-top: 0;
+  padding-left: 20px; /* Indent actions list */
+}
+
+.history-entry li {
+  margin-bottom: 2px; /* Space between actions */
+}
