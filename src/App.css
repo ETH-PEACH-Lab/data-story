@@ -45,3 +45,18 @@
 .visible {
   transform: translateX(0);
 }
+
+.history-entry {
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 5px;
+  transition: background-color 0.3s;
+}
+
+.history-entry:hover {
+  background-color: #ccc;
+}
+
+.history-entry.active {
+  background-color: #aaa; /* Active state color */
+}

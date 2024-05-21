@@ -10,6 +10,7 @@ function App() {
   const [columns, setColumns] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
   const [uploadHistory, setUploadHistory] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const toggleHistory = () => {
     setHistoryVisible(!isHistoryVisible);
@@ -17,16 +18,29 @@ function App() {
 
   const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
+    setColumnsFromData(newData);
+    setUploadHistory(prevHistory => [...prevHistory, { data: newData, fileName, timestamp }]);
+  };
+
+  const setColumnsFromData = (newData) => {
     if (newData.length > 0) {
         const columnNames = Object.keys(newData[0]);
-        const columnWidths = columnNames.map(name => {
-            const maxLength = Math.max(...newData.map(row => String(row[name]).length), name.length);
-            return { data: name, title: name, width: Math.min(maxLength * 10, 200) };
-        });
+        const columnWidths = columnNames.map(name => ({
+            maxLength: Math.max(...newData.map(row => String(row[name]).length), name.length),
+            data: name, title: name, width: Math.min(200, name.length * 10)
+        }));
         setColumns(columnWidths);
     }
-    setUploadHistory(prevHistory => [...prevHistory, { fileName, timestamp }]);
-};
+  };
+
+  const handleHistoryClick = (historyEntry, index) => {
+    setData(historyEntry.data);
+    setColumnsFromData(historyEntry.data);
+    setActiveIndex(index);
+    setTimeout(() => {
+      setActiveIndex(-1);
+    }, 500); // Reset the active index after 500ms
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -84,7 +98,11 @@ function App() {
           <p>History</p>
           <ul>
               {uploadHistory.map((entry, index) => (
-                <li key={index}>{`${entry.fileName} - ${entry.timestamp}`}</li>
+                <li key={index} 
+                    className={`history-entry ${index === activeIndex ? 'active' : ''}`} 
+                    onClick={() => handleHistoryClick(entry)}>
+                  {`${entry.fileName} - ${entry.timestamp}`}
+                </li>
               ))}
             </ul>
         </div>
