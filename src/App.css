@@ -10,20 +10,38 @@
 .content-area {
   display: flex;
   width: 100%;
-  box-sizing: border-box; /* Ensure padding and borders are included in the width */
+  box-sizing: border-box; 
 }
 
 .handsontable-container {
-  flex: 1; /* Make the Handsontable container flexible */
-  margin-right: 20px; /* Space between table and sidebar */
+  flex: 1; 
+  margin-right: 20px; 
   overflow: visible;
 }
 
 .sidebar {
-  width: 50%; /* Fixed width for the sidebar */
-  flex-shrink: 0; /* Prevent the sidebar from shrinking */
+  width: 50%; 
+  flex-shrink: 0; 
   padding: 20px;
   background-color: #f4f4f4;
-  height: auto; /* Adjust height as per content or full height */
-  box-sizing: border-box; /* Ensure padding and borders are included in the width */
+  height: auto; 
+  box-sizing: border-box;
+  position: relative; 
+  z-index: 1;
+}
+
+.history-sidebar {
+  width: 30%; 
+  background-color: #e0e0e0; 
+  height: 100%; 
+  position: absolute; 
+  top: 0;
+  right: 0; 
+  transform: translateX(100%); 
+  transition: transform 0.3s ease-in-out; 
+  z-index: 2; 
+}
+
+.visible {
+  transform: translateX(0);
 }

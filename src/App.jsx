@@ -8,8 +8,14 @@ import UploadButton from './UploadButton';
 function App() {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [isHistoryVisible, setHistoryVisible] = useState(false);
+  const [uploadHistory, setUploadHistory] = useState([]);
 
-  const handleDataLoaded = (newData) => {
+  const toggleHistory = () => {
+    setHistoryVisible(!isHistoryVisible);
+  }
+
+  const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
     if (newData.length > 0) {
         const columnNames = Object.keys(newData[0]);
@@ -19,6 +25,7 @@ function App() {
         });
         setColumns(columnWidths);
     }
+    setUploadHistory(prevHistory => [...prevHistory, { fileName, timestamp }]);
 };
 
   useEffect(() => {
@@ -69,7 +76,17 @@ function App() {
           />
         </div>
         <div className="sidebar">
-          <p>This is the sidebar where you can add any text or other content.</p>
+          <button onClick={toggleHistory}>Show History</button>
+          <p>This is the sidebar with instructions.</p>
+        </div>
+        
+        <div className={`history-sidebar ${isHistoryVisible ? 'visible' : ''}`}>
+          <p>History</p>
+          <ul>
+              {uploadHistory.map((entry, index) => (
+                <li key={index}>{`${entry.fileName} - ${entry.timestamp}`}</li>
+              ))}
+            </ul>
         </div>
       </div>
     </div>

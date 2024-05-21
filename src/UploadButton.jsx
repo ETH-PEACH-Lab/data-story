@@ -1,5 +1,5 @@
 // UploadButton.jsx
-import React, { useState } from 'react';
+import React from 'react';
 import Papa from 'papaparse';
 
 const UploadButton = ({ onDataLoaded }) => {
@@ -9,7 +9,7 @@ const UploadButton = ({ onDataLoaded }) => {
             Papa.parse(file, {
                 header: true,
                 complete: (results) => {
-                    onDataLoaded(results.data);
+                    onDataLoaded(results.data, file.name, new Date().toLocaleString());
                 }
             });
         }
