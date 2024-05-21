@@ -4,6 +4,7 @@ import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
 import Papa from 'papaparse';
 import UploadButton from './UploadButton';
+import { MissingValue } from './MissingValue';
 
 function App() {
   const [data, setData] = useState([]);
@@ -11,10 +12,32 @@ function App() {
   const [isHistoryVisible, setHistoryVisible] = useState(false);
   const [uploadHistory, setUploadHistory] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [replacementValue, setReplacementValue] = useState('');
+  const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
+  const handleMissingValue = MissingValue(data, columns, setData);
+  const selectedColumnName = selectedColumnIndex !== null ? columns[selectedColumnIndex]?.title : '';
 
   const toggleHistory = () => {
     setHistoryVisible(!isHistoryVisible);
   }
+
+  const handleReplaceClick = () => {
+    if (selectedColumnIndex !== null && replacementValue !== undefined) {
+      const columnId = columns[selectedColumnIndex]?.data;
+      if (columnId) {
+        handleMissingValue(columnId, replacementValue);
+      }
+    }
+  };
+
+  const handleColumnSelect = (r1, c1, r2, c2) => {
+    //(-1 indicates header cell in Handsontable)
+    if (r1 === -1 && r2 === data.length - 1) {
+      setSelectedColumnIndex(c1);
+    } else {
+      setSelectedColumnIndex(null);
+    }
+  };
 
   const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
@@ -87,16 +110,31 @@ function App() {
             width="100%"
             height="auto"
             licenseKey="non-commercial-and-evaluation"
+            afterSelectionEnd={handleColumnSelect}
           />
         </div>
         <div className="sidebar">
           <button onClick={toggleHistory}>Show History</button>
-          <p>This is the sidebar with instructions.</p>
-        </div>
+          <p>Select a column to replace its missing values.</p>
+          <div>
+            <input
+              type="text"
+              placeholder="Replacement value"
+              value={replacementValue}
+              onChange={(e) => setReplacementValue(e.target.value)}
+            />
+          </div>
+            {selectedColumnIndex !== null && (
+              <p>Selected Column: {selectedColumnName}</p>
+            )}
+            <button onClick={handleReplaceClick} disabled={selectedColumnIndex === null}>
+              Replace Missing Values
+            </button>
+          </div>
         
-        <div className={`history-sidebar ${isHistoryVisible ? 'visible' : ''}`}>
-          <p>History</p>
-          <ul>
+          <div className={`history-sidebar ${isHistoryVisible ? 'visible' : ''}`}>
+            <p>History</p>
+            <ul>
               {uploadHistory.map((entry, index) => (
                 <li key={index} 
                     className={`history-entry ${index === activeIndex ? 'active' : ''}`} 
