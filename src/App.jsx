@@ -3,10 +3,23 @@ import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
 import Papa from 'papaparse';
+import UploadButton from './UploadButton';
 
 function App() {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
+
+  const handleDataLoaded = (newData) => {
+    setData(newData);
+    if (newData.length > 0) {
+        const columnNames = Object.keys(newData[0]);
+        const columnWidths = columnNames.map(name => {
+            const maxLength = Math.max(...newData.map(row => String(row[name]).length), name.length);
+            return { data: name, title: name, width: Math.min(maxLength * 10, 200) };
+        });
+        setColumns(columnWidths);
+    }
+};
 
   useEffect(() => {
     async function fetchData() {
@@ -28,7 +41,7 @@ function App() {
             name.length
           );
           // Approximate width by character length, adjust multiplier as needed
-          return { data: name, title: name, width: Math.min(maxLength * 10, 300) };
+          return { data: name, title: name, width: Math.min(maxLength * 10, 200) };
         });
 
         setColumns(columnWidths);
@@ -40,7 +53,8 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Titanic Data</h1>
+      <h1>Data-Story</h1>
+      <UploadButton onDataLoaded={handleDataLoaded} />
       <div className="content-area">
         <div className="handsontable-container">
           <HotTable
