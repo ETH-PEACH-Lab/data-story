@@ -91,7 +91,7 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('https://eth-peach-lab.github.io/data-story/public/titanic.csv');
+      const response = await fetch('https://eth-peach-lab.github.io/data-story/titanic.csv');
       const reader = response.body.getReader();
       const result = await reader.read();
       const decoder = new TextDecoder('utf-8');
