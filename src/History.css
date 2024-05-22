@@ -1,0 +1,49 @@
+.history-sidebar {
+  width: 30%; 
+  background-color: #e0e0e0; 
+  height: 100%; 
+  position: absolute; 
+  top: 0;
+  right: 0;
+  padding-left: 20px;
+  padding-top: 20px;
+  transform: translateX(100%); 
+  transition: transform 0.3s ease-in-out; 
+  z-index: 2; 
+}
+
+.visible {
+  transform: translateX(0);
+}
+
+.history-entry {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .history-entry:hover {
+    background-color: #ccc;
+  }
+  
+  .history-entry.active {
+    background-color: #aaa; /* Active state color */
+  }
+  
+  .history-entry em {
+    font-style: normal;
+    color: #666;
+    margin-bottom: 5px; /* Space before actions list */
+  }
+  
+  /* Indent actions list */
+  .history-entry ul {
+    margin-top: 0;
+    padding-left: 20px;
+  }
+  
+  /* Space between actions */
+  .history-entry li {
+    margin-bottom: 2px; 
+  }

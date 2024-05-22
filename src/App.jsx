@@ -6,6 +6,7 @@ import Papa from 'papaparse';
 import UploadButton from './UploadButton';
 import { MissingValue } from './MissingValue';
 import SaveCurrentButton from './SaveCurrent';
+import HistorySidebar from './HistorySidebar';
 
 function App() {
   const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ function App() {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [replacementValue, setReplacementValue] = useState('');
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
+  const [originalFileName, setOriginalFileName] = useState('');
   const selectedColumnName = selectedColumnIndex !== null ? columns[selectedColumnIndex]?.title : '';
 
   const toggleHistory = () => {
@@ -30,10 +32,13 @@ function App() {
 
   const handleSaveCurrent = () => {
     const timestamp = new Date().toLocaleString();
-    const fileName = "Current State as of " + timestamp;
+    const fileName = originalFileName || "initial dataset"; // Use the original file name if available
     const dataCopy = JSON.parse(JSON.stringify(data));
-    setUploadHistory(prevHistory => [...prevHistory, { data: dataCopy, fileName, timestamp, actions: [...actions] }]);
-  };
+    setUploadHistory(prevHistory => [
+        ...prevHistory, 
+        { data: dataCopy, fileName: fileName, timestamp: timestamp, actions: [...actions] }
+    ]);
+};
   
 
   const handleReplaceClick = () => {
@@ -57,9 +62,10 @@ function App() {
   const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
     setColumnsFromData(newData);
+    setOriginalFileName(fileName);
     const dataCopy = JSON.parse(JSON.stringify(newData));
     setUploadHistory(prevHistory => [...prevHistory, { data: dataCopy, fileName, timestamp, actions: [] }]);
-};
+  };
 
 
   const setColumnsFromData = (newData) => {
@@ -150,24 +156,13 @@ function App() {
               Replace Missing Values
             </button>
           </div>
-        
-          <div className={`history-sidebar ${isHistoryVisible ? 'visible' : ''}`}>
-            <p>History</p>
-            <ul>
-              {uploadHistory.map((entry, index) => (
-                <li key={index} className={`history-entry ${index === activeIndex ? 'active' : ''}`} onClick={() => handleHistoryClick(entry)}>
-                  <strong>{entry.fileName}</strong> - <em>{entry.timestamp}</em>
-                  {entry.actions && entry.actions.length > 0 && (
-                    <ul>
-                      {entry.actions.map((action, actionIndex) => (
-                        <li key={actionIndex}>{action}</li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <HistorySidebar
+            isHistoryVisible={isHistoryVisible}
+            uploadHistory={uploadHistory}
+            activeIndex={activeIndex}
+            onHistoryItemClick={handleHistoryClick}
+            toggleHistory={toggleHistory}
+          />
       </div>
     </div>
   );
