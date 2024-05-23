@@ -52,7 +52,7 @@ function App() {
 
   const handleColumnSelect = (r1, c1, r2, c2) => {
     //(-1 indicates header cell in Handsontable)
-    if (r1 === -1 && r2 === data.length - 1) {
+    if (c1 === c2 && (((r1 < 1) && r2 === data.length - 1) || ((r2 < 1) && r1 === data.length - 1))) {
       setSelectedColumnIndex(c1);
     } else {
       setSelectedColumnIndex(null);
