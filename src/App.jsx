@@ -7,6 +7,9 @@ import UploadButton from './UploadButton';
 import { MissingValue } from './MissingValue';
 import SaveCurrentButton from './SaveCurrent';
 import HistorySidebar from './HistorySidebar';
+import { registerAllModules } from 'handsontable/registry';
+
+registerAllModules();
 
 function App() {
   const [data, setData] = useState([]);
@@ -131,6 +134,9 @@ function App() {
             columns={columns}
             rowHeaders={true}
             manualColumnResize={true}
+            manualColumnMove={true}
+            autoWrapRow={true}
+            autoWrapCol={true}
             width="100%"
             height="auto"
             licenseKey="non-commercial-and-evaluation"
