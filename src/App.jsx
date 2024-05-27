@@ -32,18 +32,7 @@ function App() {
   };
 
   const handleMissingValue = MissingValue(data, columns, setData, logAction);
-
-  const handleSaveCurrent = () => {
-    const timestamp = new Date().toLocaleString();
-    const fileName = originalFileName || "initial dataset"; // Use the original file name if available
-    const dataCopy = JSON.parse(JSON.stringify(data));
-    setUploadHistory(prevHistory => [
-        ...prevHistory, 
-        { data: dataCopy, fileName: fileName, timestamp: timestamp, actions: [...actions] }
-    ]);
-};
   
-
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
       const columnId = columns[selectedColumnIndex]?.data;
@@ -62,22 +51,33 @@ function App() {
     }
   };
 
+  const saveDataToHistory = (newData, fileName) => {
+    const timestamp = new Date().toLocaleString();
+    const fileNameToUse = fileName || originalFileName || "initial dataset";
+    const dataCopy = JSON.parse(JSON.stringify(newData));
+    setUploadHistory(prevHistory => [
+        ...prevHistory, 
+        { data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
+    ]);
+  };
+
   const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
     setColumnsFromData(newData);
     setOriginalFileName(fileName);
-    const dataCopy = JSON.parse(JSON.stringify(newData));
-    setUploadHistory(prevHistory => [...prevHistory, { data: dataCopy, fileName, timestamp, actions: [] }]);
+    saveDataToHistory(newData, fileName);
   };
-
 
   const setColumnsFromData = (newData) => {
     if (newData.length > 0) {
         const columnNames = Object.keys(newData[0]);
-        const columnWidths = columnNames.map(name => ({
-            maxLength: Math.max(...newData.map(row => String(row[name]).length), name.length),
-            data: name, title: name, width: Math.min(200, name.length * 10)
-        }));
+        const columnWidths = columnNames.map(name => {
+            const maxLength = Math.max(
+              ...newData.map(row => String(row[name]).length), 
+              name.length
+            );
+            return { data: name, title: name, width: Math.min(200, maxLength * 10) };
+        });
         setColumns(columnWidths);
     }
   };
@@ -87,38 +87,27 @@ function App() {
     setColumnsFromData(historyEntry.data);
     setActiveIndex(index);
     setActions(historyEntry.actions);
+    setOriginalFileName(historyEntry.fileName)
     setTimeout(() => {
       setActiveIndex(-1);
     }, 500); // Reset the active index after 500ms
   };
 
   useEffect(() => {
-    async function fetchData() {
+    console.log("useEffect triggered");
+    const fetchData = async () => {
       const response = await fetch('https://eth-peach-lab.github.io/data-story/titanic.csv');
       const reader = response.body.getReader();
       const result = await reader.read();
       const decoder = new TextDecoder('utf-8');
       const csv = decoder.decode(result.value);
-      const results = Papa.parse(csv, { header: true });
-      setData(results.data);
-
-      if (results.data.length > 0) {
-        const columnNames = Object.keys(results.data[0]);
-
-        // Calculate column widths based on the length of the longest entry in each column, including the title
-        const columnWidths = columnNames.map(name => {
-          const maxLength = Math.max(
-            ...results.data.map(row => String(row[name]).length),
-            name.length
-          );
-          // Approximate width by character length, adjust multiplier as needed
-          return { data: name, title: name, width: Math.min(maxLength * 10, 200) };
-        });
-
-        setColumns(columnWidths);
-      }
+      Papa.parse(csv, { header: true, 
+        complete: (results) => {
+          console.log("Data loaded and parsed");
+          handleDataLoaded(results.data, csv.name, new Date().toLocaleString());
+        } 
+      });
     }
-
     fetchData();
   }, []);
 
@@ -145,7 +134,7 @@ function App() {
         </div>
         <div className="sidebar">
           <button onClick={toggleHistory}>Show History</button>
-          <SaveCurrentButton onSaveCurrent={handleSaveCurrent} />
+          <SaveCurrentButton onSaveCurrent={() => saveDataToHistory(data, originalFileName)} />
           <p>Select a column to replace its missing values.</p>
           <div>
             <input
