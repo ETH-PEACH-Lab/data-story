@@ -16,6 +16,8 @@ function App() {
   const [columns, setColumns] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
   const [uploadHistory, setUploadHistory] = useState([]);
+  const [historyIdCounter, setHistoryIdCounter] = useState(0);
+  const [currentDataId, setCurrentDataId] = useState(0);
   const [actions, setActions] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [replacementValue, setReplacementValue] = useState('');
@@ -51,21 +53,26 @@ function App() {
     }
   };
 
-  const saveDataToHistory = (newData, fileName) => {
+  const saveDataToHistory = (newData, fileName, parentId) => {
     const timestamp = new Date().toLocaleString();
     const fileNameToUse = fileName || originalFileName || "initial dataset";
     const dataCopy = JSON.parse(JSON.stringify(newData));
+    const newHistoryId = historyIdCounter;
+    setHistoryIdCounter(historyIdCounter + 1);
     setUploadHistory(prevHistory => [
         ...prevHistory, 
-        { data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
+        { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
     ]);
+    setCurrentDataId(newHistoryId);
   };
 
   const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
     setColumnsFromData(newData);
     setOriginalFileName(fileName);
-    saveDataToHistory(newData, fileName);
+    setCurrentDataId(historyIdCounter);
+    setHistoryIdCounter(historyIdCounter + 1);
+    saveDataToHistory(newData, fileName, null);
   };
 
   const setColumnsFromData = (newData) => {
@@ -86,6 +93,7 @@ function App() {
     setData(historyEntry.data);
     setColumnsFromData(historyEntry.data);
     setActiveIndex(index);
+    setCurrentDataId(historyEntry.id)
     setActions(historyEntry.actions);
     setOriginalFileName(historyEntry.fileName)
     setTimeout(() => {
@@ -104,7 +112,7 @@ function App() {
       Papa.parse(csv, { header: true, 
         complete: (results) => {
           console.log("Data loaded and parsed");
-          handleDataLoaded(results.data, csv.name, new Date().toLocaleString());
+          handleDataLoaded(results.data, csv.name, null);
         } 
       });
     }
@@ -134,7 +142,11 @@ function App() {
         </div>
         <div className="sidebar">
           <button onClick={toggleHistory}>Show History</button>
-          <SaveCurrentButton onSaveCurrent={() => saveDataToHistory(data, originalFileName)} />
+          <SaveCurrentButton onSaveCurrent={() => {
+            const parentEntry = uploadHistory.find(entry => entry.id === currentDataId);
+            const parentId = parentEntry ? parentEntry.id : null;
+            saveDataToHistory(data, originalFileName, parentId);
+          }} />
           <p>Select a column to replace its missing values.</p>
           <div>
             <input
