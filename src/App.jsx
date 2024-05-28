@@ -19,7 +19,7 @@ function App() {
   const [historyIdCounter, setHistoryIdCounter] = useState(0);
   const [currentDataId, setCurrentDataId] = useState(0);
   const [actions, setActions] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [clickedIndex, setClickedIndex] = useState(-1);
   const [replacementValue, setReplacementValue] = useState('');
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
   const [originalFileName, setOriginalFileName] = useState('');
@@ -41,6 +41,15 @@ function App() {
       if (columnId) {
         handleMissingValue(columnId, replacementValue);
       }
+    }
+  };
+
+  const handleHistoryDelete = (index) => {
+    setUploadHistory(uploadHistory.filter((_, i) => i !== index));
+    const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
+    // Reset active index if the active entry is deleted
+    if (isDeletingCurrentData) {
+      //handle this
     }
   };
 
@@ -92,12 +101,12 @@ function App() {
   const handleHistoryClick = (historyEntry, index) => {
     setData(historyEntry.data);
     setColumnsFromData(historyEntry.data);
-    setActiveIndex(index);
+    setClickedIndex(index);
     setCurrentDataId(historyEntry.id)
     setActions(historyEntry.actions);
     setOriginalFileName(historyEntry.fileName)
     setTimeout(() => {
-      setActiveIndex(-1);
+      setClickedIndex(-1);
     }, 500); // Reset the active index after 500ms
   };
 
@@ -166,8 +175,9 @@ function App() {
           <HistorySidebar
             isHistoryVisible={isHistoryVisible}
             uploadHistory={uploadHistory}
-            activeIndex={activeIndex}
+            clickedIndex={clickedIndex}
             onHistoryItemClick={handleHistoryClick}
+            onHistoryItemDelete={handleHistoryDelete}
             toggleHistory={toggleHistory}
           />
       </div>
