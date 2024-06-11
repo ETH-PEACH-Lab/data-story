@@ -11,6 +11,7 @@
   transform: translateX(75px); /* Adjusted to only partially hide the sidebar */
   transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
   z-index: 10;
+  overflow-y: auto;
 }
 
 .visible {
