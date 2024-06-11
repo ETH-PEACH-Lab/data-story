@@ -26,7 +26,7 @@ function MainSidebar({
                     <p>Selected Column: {selectedColumnName}</p>
                 )}
                 <button onClick={handleReplaceClick} disabled={selectedColumnIndex === null}>
-                    Replace Missing Values
+                    Replace Missing Values.
                 </button>
             </div>
         </div>

@@ -8,6 +8,7 @@ import { MissingValue } from './MissingValue';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
+import MenuBar from './MenuBar';
 
 registerAllModules();
 
@@ -137,6 +138,7 @@ function App() {
   return (
     <div className="container">
             <h1>Data-Story</h1>
+            <MenuBar />
             <UploadButton onDataLoaded={handleDataLoaded} />
             <div className="content-area">
                 <div className="handsontable-container">

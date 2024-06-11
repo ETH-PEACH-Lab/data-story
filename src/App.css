@@ -4,7 +4,17 @@
 }
 
 .container {
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container h1 {
+  background-color: #E3E1D9; /* Setting the background color */
+  padding: 10px; /* Optional: adding some padding for visual space */
+  margin-top: 0; /* Optional: adjusting the top margin */
+  margin-bottom: 0px; /* Optional: adjusting the bottom margin to separate from content below */
+  margin-right: 75px;
+  font-family: 'Inter', sans-serif;
 }
 
 .content-area {
@@ -15,17 +25,22 @@
 
 .handsontable-container {
   flex: 1; 
-  margin-right: 20px; 
-  overflow: visible;
+  margin-right: 40px; 
+  margin-left: 55px; 
+  overflow: hidden;
+  position: relative;
+  right: 55px;
 }
 
 .sidebar {
-  width: 50%; 
+  width: 45%; 
   flex-shrink: 0; 
+  right: 75px;
   padding: 20px;
-  background-color: #f4f4f4;
+  background-color: #E3E1D9;
   height: auto; 
   box-sizing: border-box;
   position: relative; 
   z-index: 1;
+  font-family: 'Inter', sans-serif;
 }

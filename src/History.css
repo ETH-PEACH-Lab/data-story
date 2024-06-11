@@ -1,34 +1,37 @@
 .history-sidebar {
-  width: 30%; 
-  background-color: #e0e0e0; 
-  height: 100%; 
-  position: absolute; 
+  width: 130px; /* Default width for collapsed state */
+  background-color: #F2EFE5;
+  height: 100%;
+  position: fixed;
   top: 0;
   right: 0;
   padding-left: 20px;
-  padding-top: 20px;
-  transform: translateX(100%); 
-  transition: transform 0.3s ease-in-out; 
-  z-index: 2; 
+  padding-top: 60px;
+  transform: translateX(75px); /* Adjusted to only partially hide the sidebar */
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  z-index: 10;
 }
 
 .visible {
   transform: translateX(0);
+  width: 30%; /* Width for expanded state */
 }
 
 .history-entry {
     cursor: pointer;
     padding: 10px;
     margin-bottom: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
     transition: background-color 0.3s;
   }
   
   .history-entry:hover {
-    background-color: #ccc;
+    background-color: #E3E1D9;
   }
   
   .history-entry.active {
-    background-color: #aaa; /* Active state color */
+    background-color: #B4B4B8; /* Active state color */
   }
   
   .history-entry em {
@@ -47,3 +50,40 @@
   .history-entry li {
     margin-bottom: 2px; 
   }
+
+  .collapsed-button {
+    display: block; /* Ensure it's always visible in collapsed mode */
+    position: absolute; /* Position it relative to sidebar */
+    top: 10px; /* Adjust top position */
+    left: 10px; /* Keep it visible when sidebar is collapsed */
+    width: 55px; /* Adjust width to fit in the collapsed sidebar */
+    background-color: #F2EFE5;
+    border: none;
+  }
+
+  .collapsed-button:hover {
+    background-color: #E3E1D9; /* For hover state as specified */
+  }
+
+  .button {
+    flex-grow: 1;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: inherit;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0 10px;
+}
+  
+.button:hover {
+    background: #DAD6CA;
+    outline: none;
+}
