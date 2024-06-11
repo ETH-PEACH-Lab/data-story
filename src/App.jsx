@@ -5,7 +5,7 @@ import { HotTable } from '@handsontable/react';
 import Papa from 'papaparse';
 import UploadButton from './UploadButton';
 import { MissingValue } from './MissingValue';
-import SaveCurrentButton from './SaveCurrent';
+import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
 
@@ -98,6 +98,12 @@ function App() {
     }
   };
 
+  const handleSaveCurrent = () => {
+    const parentEntry = uploadHistory.find(entry => entry.id === currentDataId);
+    const parentId = parentEntry ? parentEntry.id : null;
+    saveDataToHistory(data, originalFileName, parentId);
+  };
+
   const handleHistoryClick = (historyEntry, index) => {
     setData(historyEntry.data);
     setColumnsFromData(historyEntry.data);
@@ -130,59 +136,45 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Data-Story</h1>
-      <UploadButton onDataLoaded={handleDataLoaded} />
-      <div className="content-area">
-        <div className="handsontable-container">
-          <HotTable
-            data={data}
-            colHeaders={columns.map(column => column.title)}
-            columns={columns}
-            rowHeaders={true}
-            manualColumnResize={true}
-            manualColumnMove={true}
-            autoWrapRow={true}
-            autoWrapCol={true}
-            width="100%"
-            height="auto"
-            licenseKey="non-commercial-and-evaluation"
-            afterSelectionEnd={handleColumnSelect}
-          />
+            <h1>Data-Story</h1>
+            <UploadButton onDataLoaded={handleDataLoaded} />
+            <div className="content-area">
+                <div className="handsontable-container">
+                    <HotTable
+                        data={data}
+                        colHeaders={columns.map(column => column.title)}
+                        columns={columns}
+                        rowHeaders={true}
+                        manualColumnResize={true}
+                        manualColumnMove={true}
+                        autoWrapRow={true}
+                        autoWrapCol={true}
+                        width="100%"
+                        height="auto"
+                        licenseKey="non-commercial-and-evaluation"
+                        afterSelectionEnd={handleColumnSelect}
+                    />
+                </div>
+                <MainSidebar
+                    toggleHistory={toggleHistory}
+                    onSaveCurrent={handleSaveCurrent}
+                    replacementValue={replacementValue}
+                    setReplacementValue={setReplacementValue}
+                    handleReplaceClick={handleReplaceClick}
+                    selectedColumnIndex={selectedColumnIndex}
+                    selectedColumnName={selectedColumnName}
+                />
+                <HistorySidebar
+                    isHistoryVisible={isHistoryVisible}
+                    uploadHistory={uploadHistory}
+                    clickedIndex={clickedIndex}
+                    onHistoryItemClick={handleHistoryClick}
+                    onHistoryItemDelete={handleHistoryDelete}
+                    toggleHistory={toggleHistory}
+                />
+            </div>
         </div>
-        <div className="sidebar">
-          <button onClick={toggleHistory}>Show History</button>
-          <SaveCurrentButton onSaveCurrent={() => {
-            const parentEntry = uploadHistory.find(entry => entry.id === currentDataId);
-            const parentId = parentEntry ? parentEntry.id : null;
-            saveDataToHistory(data, originalFileName, parentId);
-          }} />
-          <p>Select a column to replace its missing values.</p>
-          <div>
-            <input
-              type="text"
-              placeholder="Replacement value"
-              value={replacementValue}
-              onChange={(e) => setReplacementValue(e.target.value)}
-            />
-          </div>
-            {selectedColumnIndex !== null && (
-              <p>Selected Column: {selectedColumnName}</p>
-            )}
-            <button onClick={handleReplaceClick} disabled={selectedColumnIndex === null}>
-              Replace Missing Values
-            </button>
-          </div>
-          <HistorySidebar
-            isHistoryVisible={isHistoryVisible}
-            uploadHistory={uploadHistory}
-            clickedIndex={clickedIndex}
-            onHistoryItemClick={handleHistoryClick}
-            onHistoryItemDelete={handleHistoryDelete}
-            toggleHistory={toggleHistory}
-          />
-      </div>
-    </div>
-  );
+    );
 }
 
 export default App;
