@@ -5,6 +5,7 @@
   position: fixed;
   top: 0;
   right: 0;
+  max-width: 350px;
   padding-left: 20px;
   padding-top: 60px;
   transform: translateX(75px); /* Adjusted to only partially hide the sidebar */

@@ -2,8 +2,6 @@ import React from 'react';
 import SaveCurrentButton from './SaveCurrent';
 
 function MainSidebar({
-    toggleHistory,
-    onSaveCurrent,
     replacementValue,
     setReplacementValue,
     handleReplaceClick,
@@ -12,8 +10,6 @@ function MainSidebar({
 }) {
     return (
         <div className="sidebar">
-            <button onClick={toggleHistory}>Show History</button>
-            <SaveCurrentButton onSaveCurrent={onSaveCurrent} />
             <p>Select a column to replace its missing values.</p>
             <div>
                 <input

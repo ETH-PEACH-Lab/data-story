@@ -138,7 +138,7 @@ function App() {
   return (
     <div className="container">
             <h1>Data-Story</h1>
-            <MenuBar />
+            <MenuBar onSaveCurrent={handleSaveCurrent} />
             <UploadButton onDataLoaded={handleDataLoaded} />
             <div className="content-area">
                 <div className="handsontable-container">
@@ -158,8 +158,6 @@ function App() {
                     />
                 </div>
                 <MainSidebar
-                    toggleHistory={toggleHistory}
-                    onSaveCurrent={handleSaveCurrent}
                     replacementValue={replacementValue}
                     setReplacementValue={setReplacementValue}
                     handleReplaceClick={handleReplaceClick}

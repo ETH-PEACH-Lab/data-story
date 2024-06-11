@@ -49,6 +49,13 @@
     outline: none;
 }
 
+.saveButton {
+    height: 100%;
+    margin-left: auto;
+    padding-right: 4%;
+    background: #F2EFE5;
+}
+
 .secondaryMenuBar {
     display: flex;
     flex-direction: row;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './MenuBar.module.css';
 
-const MenuBar = () => {
+const MenuBar = ({ onSaveCurrent }) => {
     const [activeMenu, setActiveMenu] = useState('');
 
     const menuOptions = {
@@ -27,6 +27,11 @@ const MenuBar = () => {
                         </button>
                     </div>
                 ))}
+                <div className={styles.saveButton} onClick={onSaveCurrent}>
+                    <button className={styles.button}>
+                        Save Current Version
+                    </button>
+                </div>
             </div>
             {activeMenu && (
                 <div className={styles.secondaryMenuBar} style={{ visibility: activeMenu ? 'visible' : 'hidden' }}>
