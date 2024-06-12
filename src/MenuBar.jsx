@@ -8,8 +8,8 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory }) => {
 
     const menuOptions = {
         'File': ['New', 'Open', 'Save', 'History', 'View Comments'],
-        'Edit': ['Undo', 'Redo', 'Find and replace', 'Remove duplicates'],
-        'Format': ['Text', 'Box', 'Cell type', 'Headers', 'Conditional Formatting', 'Clear Formatting'],
+        'Edit': ['Undo', 'Redo', 'Find and Replace', 'Remove Duplicates'],
+        'Format': ['Text', 'Box', 'Type', 'Headers', 'Conditional Formatting', 'Clear Formatting'],
         'Insert': ['Column', 'Row', 'Chart', 'Functions', 'Comment', 'Image', 'Tick Box'],
         'Data': ['Sort', 'Filter', 'Column Stats']
     };
@@ -26,7 +26,7 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory }) => {
             Papa.parse(file, {
                 header: true,
                 complete: (results) => {
-                    onDataLoaded(results.data, file.name, new Date().toLocaleString());
+                    onDataLoaded(results.data, file.name);
                 }
             });
         }
@@ -38,19 +38,54 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory }) => {
         return { data: emptyData };
     };
 
+    // Action handlers
+    const actionHandlers = {
+        'File': {
+            'New': () => {
+                const { data } = generateEmptyDataset();
+                onDataLoaded(data, `New Table ${Date.now()}`);
+            },
+            'Open': () => fileInputRef.current.click(),
+            'Save': onSaveCurrent,
+            'History': toggleHistory,
+            'View Comments': () => { /* TODO */ },
+        },
+        'Edit': {
+            'Undo': () => { /* TODO */ },
+            'Redo': () => { /* TODO */ },
+            'Find and Replace': () => { /* TODO */ },
+            'Remove Duplicates': () => { /* TODO */ },
+        },
+        'Format': {
+            'Text': () => { /* TODO */ },
+            'Box': () => { /* TODO */ },
+            'Type': () => { /* TODO */ },
+            'Headers': () => { /* TODO */ },
+            'Conditional Formatting': () => { /* TODO */ },
+            'Clear Formatting': () => { /* TODO */ },
+        },
+        'Insert': {
+            'Column': () => { /* TODO */ },
+            'Row': () => { /* TODO */ },
+            'Chart': () => { /* TODO */ },
+            'Functions': () => { /* TODO */ },
+            'Comment': () => { /* TODO */ },
+            'Image': () => { /* TODO */ },
+            'Tick Box': () => { /* TODO */ },
+        },
+        'Data': {
+            'Sort': () => { /* TODO */ },
+            'Filter': () => { /* TODO */ },
+            'Column Stats': () => { /* TODO */ },
+        }
+    };
+
     // Handle secondary menu item click
     const handleSecondaryMenuClick = (menu, item) => {
-        if (menu === 'File' && item === 'New') {
-            const { data } = generateEmptyDataset();
-            onDataLoaded(data, `New Table ${Date.now()}`, new Date().toLocaleString());
-        } else if (menu === 'File' && item === 'Open') {
-            fileInputRef.current.click();
-        } else if (menu === 'File' && item === 'Save') {
-            onSaveCurrent();
-        } else if (menu === 'File' && item === 'History') {
-            toggleHistory();
+        const menuActions = actionHandlers[menu];
+        if (menuActions && menuActions[item]) {
+            menuActions[item]();
         }
-        // Add more conditions for other menu items
     };
 
     return (

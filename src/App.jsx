@@ -27,7 +27,7 @@ function App() {
 
   // Toggle history sidebar visibility
   const toggleHistory = () => {
-    setHistoryVisible(!isHistoryVisible);
+    setHistoryVisible(prev => !prev);
   }
 
   // Log actions for history tracking
@@ -54,7 +54,7 @@ function App() {
     const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
     // Reset active index if the active entry is deleted
     if (isDeletingCurrentData) {
-      //handle this
+      //TODO
     }
   };
 
@@ -74,7 +74,7 @@ function App() {
     const fileNameToUse = fileName || originalFileName || "initial dataset";
     const dataCopy = JSON.parse(JSON.stringify(newData));
     const newHistoryId = historyIdCounter;
-    setHistoryIdCounter(historyIdCounter + 1);
+    setHistoryIdCounter(prev => prev + 1);
     setUploadHistory(prevHistory => [
         ...prevHistory, 
         { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
@@ -83,7 +83,7 @@ function App() {
   };
 
   // Handle data loaded from file or initial fetch
-  const handleDataLoaded = (newData, fileName, timestamp) => {
+  const handleDataLoaded = (newData, fileName) => {
     setData(newData);
     setColumnsFromData(newData);
     setOriginalFileName(fileName);
@@ -129,7 +129,6 @@ function App() {
 
   // Fetch initial data on component mount
   useEffect(() => {
-    console.log("useEffect triggered");
     const fetchData = async () => {
       const response = await fetch('https://eth-peach-lab.github.io/data-story/titanic.csv');
       const reader = response.body.getReader();
@@ -138,11 +137,10 @@ function App() {
       const csv = decoder.decode(result.value);
       Papa.parse(csv, { header: true, 
         complete: (results) => {
-          console.log("Data loaded and parsed");
-          handleDataLoaded(results.data, csv.name, null);
+          handleDataLoaded(results.data, csv.name);
         } 
       });
-    }
+    };
     fetchData();
   }, []);
 
