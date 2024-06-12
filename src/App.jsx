@@ -3,7 +3,6 @@ import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
 import Papa from 'papaparse';
-import UploadButton from './UploadButton';
 import { MissingValue } from './MissingValue';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
@@ -26,16 +25,20 @@ function App() {
   const [originalFileName, setOriginalFileName] = useState('');
   const selectedColumnName = selectedColumnIndex !== null ? columns[selectedColumnIndex]?.title : '';
 
+  // Toggle history sidebar visibility
   const toggleHistory = () => {
     setHistoryVisible(!isHistoryVisible);
   }
 
+  // Log actions for history tracking
   const logAction = (actionDescription) => {
     setActions(prevActions => [...prevActions, actionDescription]);
   };
 
+  // Handle missing value replacement
   const handleMissingValue = MissingValue(data, columns, setData, logAction);
   
+  // Trigger replacement of missing values in the selected column
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
       const columnId = columns[selectedColumnIndex]?.data;
@@ -45,6 +48,7 @@ function App() {
     }
   };
 
+  // Delete history entry
   const handleHistoryDelete = (index) => {
     setUploadHistory(uploadHistory.filter((_, i) => i !== index));
     const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
@@ -54,6 +58,7 @@ function App() {
     }
   };
 
+  // Handle column selection
   const handleColumnSelect = (r1, c1, r2, c2) => {
     //(-1 indicates header cell in Handsontable)
     if (c1 === c2 && (((r1 < 1) && r2 === data.length - 1) || ((r2 < 1) && r1 === data.length - 1))) {
@@ -63,6 +68,7 @@ function App() {
     }
   };
 
+  // Save data to history
   const saveDataToHistory = (newData, fileName, parentId) => {
     const timestamp = new Date().toLocaleString();
     const fileNameToUse = fileName || originalFileName || "initial dataset";
@@ -76,6 +82,7 @@ function App() {
     setCurrentDataId(newHistoryId);
   };
 
+  // Handle data loaded from file or initial fetch
   const handleDataLoaded = (newData, fileName, timestamp) => {
     setData(newData);
     setColumnsFromData(newData);
@@ -85,6 +92,7 @@ function App() {
     saveDataToHistory(newData, fileName, null);
   };
 
+  // Set columns from data
   const setColumnsFromData = (newData) => {
     if (newData.length > 0) {
         const columnNames = Object.keys(newData[0]);
@@ -99,12 +107,14 @@ function App() {
     }
   };
 
+  // Save current data to history
   const handleSaveCurrent = () => {
     const parentEntry = uploadHistory.find(entry => entry.id === currentDataId);
     const parentId = parentEntry ? parentEntry.id : null;
     saveDataToHistory(data, originalFileName, parentId);
   };
 
+  // Handle history item click
   const handleHistoryClick = (historyEntry, index) => {
     setData(historyEntry.data);
     setColumnsFromData(historyEntry.data);
@@ -117,6 +127,7 @@ function App() {
     }, 500); // Reset the active index after 500ms
   };
 
+  // Fetch initial data on component mount
   useEffect(() => {
     console.log("useEffect triggered");
     const fetchData = async () => {
@@ -138,8 +149,7 @@ function App() {
   return (
     <div className="container">
             <h1>Data-Story</h1>
-            <MenuBar onSaveCurrent={handleSaveCurrent} />
-            <UploadButton onDataLoaded={handleDataLoaded} />
+            <MenuBar onSaveCurrent={handleSaveCurrent} onDataLoaded={handleDataLoaded} />
             <div className="content-area">
                 <div className="handsontable-container">
                     <HotTable

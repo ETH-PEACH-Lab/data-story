@@ -1,3 +1,4 @@
+//Currently not used
 import React from 'react';
 
 const SaveCurrentButton = ({ onSaveCurrent }) => {

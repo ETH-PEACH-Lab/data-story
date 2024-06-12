@@ -5,6 +5,7 @@ import treeify from 'object-treeify';
 const HistorySidebar = ({ uploadHistory, onHistoryItemClick, onHistoryItemDelete }) => {
   const [isCollapsed, setIsCollapsed] = useState(true); // State to manage sidebar collapse
 
+  // Toggle sidebar visibility
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };

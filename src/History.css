@@ -54,11 +54,11 @@
   }
 
   .collapsed-button {
-    display: block; /* Ensure it's always visible in collapsed mode */
-    position: absolute; /* Position it relative to sidebar */
-    top: 10px; /* Adjust top position */
-    left: 10px; /* Keep it visible when sidebar is collapsed */
-    width: 55px; /* Adjust width to fit in the collapsed sidebar */
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 55px;
     background-color: #F2EFE5;
     border: none;
   }
