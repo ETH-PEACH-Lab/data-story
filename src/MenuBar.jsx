@@ -92,7 +92,11 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory }) => {
         <div className={styles.menuBarContainer}>
             <div className={styles.menuBar}>
                 {Object.keys(menuOptions).map((menu, index) => (
-                    <div key={index} className={styles.menuItem} onClick={() => handleMenuClick(menu)}>
+                    <div
+                        key={index}
+                        className={`${styles.menuItem} ${activeMenu === menu ? styles.activeMenuItem : ''}`}
+                        onClick={() => handleMenuClick(menu)}
+                    >
                         <button className={styles.button}>
                             {menu}
                         </button>

@@ -179,6 +179,7 @@ function App() {
                     onHistoryItemClick={handleHistoryClick}
                     onHistoryItemDelete={handleHistoryDelete}
                     toggleHistory={toggleHistory}
+                    currentDataId={currentDataId}
                 />
             </div>
         </div>

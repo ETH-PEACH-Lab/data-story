@@ -26,6 +26,10 @@
     background: #F2EFE5;
 }
 
+.activeMenuItem {
+    background: #E3E1D9;
+}
+
 .button {
     flex-grow: 1;
     height: 100%;
