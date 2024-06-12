@@ -2,20 +2,13 @@ import React, { useState } from 'react';
 import './History.css';
 import treeify from 'object-treeify';
 
-const HistorySidebar = ({ uploadHistory, onHistoryItemClick, onHistoryItemDelete }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true); // State to manage sidebar collapse
-
-  // Toggle sidebar visibility
-  const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
+const HistorySidebar = ({ isHistoryVisible, uploadHistory, onHistoryItemClick, onHistoryItemDelete, toggleHistory }) => {
   return (
-    <div className={`history-sidebar ${isCollapsed ? '' : 'visible'}`}>
-      <button onClick={toggleSidebar} className="collapsed-button">
-        {isCollapsed ? 'Show History' : 'Hide History'}
+    <div className={`history-sidebar ${isHistoryVisible ? 'visible' : ''}`}>
+      <button onClick={toggleHistory} className="collapsed-button">
+        {isHistoryVisible ? 'Hide History' : 'Show History'}
       </button>
-      {!isCollapsed && ( // Only render the history content when sidebar is not collapsed
+      {isHistoryVisible && ( // Only render the history content when sidebar is not collapsed
         <>
           <p>History</p>
           <ul>

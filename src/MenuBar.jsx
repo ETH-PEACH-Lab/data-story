@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import styles from './MenuBar.module.css';
 import Papa from 'papaparse';
 
-const MenuBar = ({ onSaveCurrent, onDataLoaded }) => {
+const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory }) => {
     const [activeMenu, setActiveMenu] = useState('');
     const fileInputRef = useRef(null);
 
@@ -32,10 +32,23 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded }) => {
         }
     };
 
+    // Generate an empty dataset of size 5x5
+    const generateEmptyDataset = () => {
+        const emptyData = Array.from({ length: 5 }, () => Array(5).fill(null));
+        return { data: emptyData };
+    };
+
     // Handle secondary menu item click
     const handleSecondaryMenuClick = (menu, item) => {
-        if (menu === 'File' && item === 'Open') {
+        if (menu === 'File' && item === 'New') {
+            const { data } = generateEmptyDataset();
+            onDataLoaded(data, `New Table ${Date.now()}`, new Date().toLocaleString());
+        } else if (menu === 'File' && item === 'Open') {
             fileInputRef.current.click();
+        } else if (menu === 'File' && item === 'Save') {
+            onSaveCurrent();
+        } else if (menu === 'File' && item === 'History') {
+            toggleHistory();
         }
         // Add more conditions for other menu items
     };

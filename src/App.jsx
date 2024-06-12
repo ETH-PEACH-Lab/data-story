@@ -149,7 +149,7 @@ function App() {
   return (
     <div className="container">
             <h1>Data-Story</h1>
-            <MenuBar onSaveCurrent={handleSaveCurrent} onDataLoaded={handleDataLoaded} />
+            <MenuBar onSaveCurrent={handleSaveCurrent} onDataLoaded={handleDataLoaded} toggleHistory={toggleHistory} />
             <div className="content-area">
                 <div className="handsontable-container">
                     <HotTable

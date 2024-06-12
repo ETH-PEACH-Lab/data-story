@@ -1,5 +1,4 @@
 import React from 'react';
-import SaveCurrentButton from './SaveCurrent';
 
 function MainSidebar({
     replacementValue,
