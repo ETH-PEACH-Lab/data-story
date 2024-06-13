@@ -47,7 +47,7 @@
     outline: none;
     padding: 0 30px;
 }
-  
+
 .button:hover {
     background: #E3E1D9;
     outline: none;
@@ -63,8 +63,54 @@
 .secondaryMenuBar {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 100%;
-    height: 35px;  /* Height of the secondary menu */
-    padding: 0px;
-    visibility: hidden;  /* Initially hidden */
+    height: 35px;
+    background: #F2EFE5;
+    position: relative;
+    top: 0px;
+}
+
+.textDropdown {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 200;
+}
+
+.textOption {
+    padding: 5px 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+.textOption:hover {
+    background-color: #f0f0f0;
+}
+
+.colorDropdown {
+    position: absolute;
+    top: 107px;
+    left: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    width: 130px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 200;
+}
+
+.colorSquare {
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    cursor: pointer;
+    border: 1px solid black;
 }

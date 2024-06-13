@@ -7,7 +7,7 @@ import { MissingValue } from './MissingValue';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
-import MenuBar from './MenuBar';
+import MenuBar from './MenuBar/MenuBar';
 
 registerAllModules();
 
@@ -163,6 +163,7 @@ function App() {
                         height="auto"
                         licenseKey="non-commercial-and-evaluation"
                         afterSelectionEnd={handleColumnSelect}
+                        outsideClickDeselects={false}
                     />
                 </div>
                 <MainSidebar
