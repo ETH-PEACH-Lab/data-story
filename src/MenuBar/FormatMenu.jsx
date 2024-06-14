@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './MenuBar.module.css';
 
-const FormatMenu = ({ isColorDropdownVisible, setIsColorDropdownVisible }) => {
+const FormatMenu = ({ isColorDropdownVisible, setIsColorDropdownVisible, onColorSelect, onTextStyleChange }) => {
     const [isTextDropdownVisible, setIsTextDropdownVisible] = useState(false);
 
     const colors = [
@@ -18,12 +18,14 @@ const FormatMenu = ({ isColorDropdownVisible, setIsColorDropdownVisible }) => {
         } else {
             setIsTextDropdownVisible(false);
             setIsColorDropdownVisible(false);
+            onTextStyleChange(item.toLowerCase().replace('-', ''));
         }
         console.log(`${item} clicked`);
     };
 
     const handleColorClick = (color) => {
         console.log(`Selected color: ${color}`);
+        onColorSelect(color);
         setIsTextDropdownVisible(false);
         setIsColorDropdownVisible(false);
     };

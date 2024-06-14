@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
@@ -6,6 +6,7 @@ import Papa from 'papaparse';
 import { MissingValue } from './MissingValue';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
+import { textRenderer } from 'handsontable/renderers/textRenderer';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
 
@@ -23,6 +24,10 @@ function App() {
   const [replacementValue, setReplacementValue] = useState('');
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
   const [originalFileName, setOriginalFileName] = useState('');
+  const [textStyles, setTextStyles] = useState({});
+  const hotRef = useRef(null);
+  const selectedCellsRef = useRef([]);
+
   const selectedColumnName = selectedColumnIndex !== null ? columns[selectedColumnIndex]?.title : '';
 
   // Toggle history sidebar visibility
@@ -37,7 +42,7 @@ function App() {
 
   // Handle missing value replacement
   const handleMissingValue = MissingValue(data, columns, setData, logAction);
-  
+
   // Trigger replacement of missing values in the selected column
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
@@ -55,16 +60,6 @@ function App() {
     // Reset active index if the active entry is deleted
     if (isDeletingCurrentData) {
       //TODO
-    }
-  };
-
-  // Handle column selection
-  const handleColumnSelect = (r1, c1, r2, c2) => {
-    //(-1 indicates header cell in Handsontable)
-    if (c1 === c2 && (((r1 < 1) && r2 === data.length - 1) || ((r2 < 1) && r1 === data.length - 1))) {
-      setSelectedColumnIndex(c1);
-    } else {
-      setSelectedColumnIndex(null);
     }
   };
 
@@ -129,6 +124,7 @@ function App() {
 
   // Fetch initial data on component mount
   useEffect(() => {
+    const hot = hotRef.current.hotInstance;
     const fetchData = async () => {
       const response = await fetch('https://eth-peach-lab.github.io/data-story/titanic.csv');
       const reader = response.body.getReader();
@@ -144,47 +140,105 @@ function App() {
     fetchData();
   }, []);
 
+  const handleSelectionEnd = (r1, c1, r2, c2) => {
+    const selectedCells = [];
+    const minRow = Math.min(r1, r2);
+    const maxRow = Math.max(r1, r2);
+    const minCol = Math.min(c1, c2);
+    const maxCol = Math.max(c1, c2);
+    for (let row = minRow; row <= maxRow; row++) {
+      for (let col = minCol; col <= maxCol; col++) {
+        selectedCells.push([row, col]);
+      }
+    }
+    selectedCellsRef.current = selectedCells;
+  };
+
+  const handleColorSelection = (color) => {
+    setTextStyles(prev => {
+      const newTextStyles = { ...prev };
+      selectedCellsRef.current.forEach(([row, col]) => {
+        if (!newTextStyles[`${row}-${col}`]) {
+          newTextStyles[`${row}-${col}`] = {};
+        }
+        newTextStyles[`${row}-${col}`].color = color;
+      });
+      return newTextStyles;
+    });
+  };
+
+  const handleTextStyleChange = (style) => {
+    setTextStyles(prev => {
+      const newTextStyles = { ...prev };
+      selectedCellsRef.current.forEach(([row, col]) => {
+        if (!newTextStyles[`${row}-${col}`]) {
+          newTextStyles[`${row}-${col}`] = {};
+        }
+        newTextStyles[`${row}-${col}`][style] = !newTextStyles[`${row}-${col}`][style];
+      });
+      return newTextStyles;
+    });
+  };
+
+  // Custom renderer to change cell text color and text style
+  function customRenderer(instance, td, row, col, prop, value, cellProperties) {
+    textRenderer.apply(this, arguments);
+    const cellKey = `${row}-${col}`;
+    const styles = textStyles[cellKey] || {};
+    td.style.color = styles.color || 'black';
+    td.style.fontWeight = styles.bold ? 'bold' : 'normal';
+    td.style.fontStyle = styles.italic ? 'italic' : 'normal';
+    td.style.textDecoration = styles.strikethrough ? 'line-through' : 'none';
+  };
+
   return (
     <div className="container">
-            <h1>Data-Story</h1>
-            <MenuBar onSaveCurrent={handleSaveCurrent} onDataLoaded={handleDataLoaded} toggleHistory={toggleHistory} />
-            <div className="content-area">
-                <div className="handsontable-container">
-                    <HotTable
-                        data={data}
-                        colHeaders={columns.map(column => column.title)}
-                        columns={columns}
-                        rowHeaders={true}
-                        manualColumnResize={true}
-                        manualColumnMove={true}
-                        autoWrapRow={true}
-                        autoWrapCol={true}
-                        width="100%"
-                        height="auto"
-                        licenseKey="non-commercial-and-evaluation"
-                        afterSelectionEnd={handleColumnSelect}
-                        outsideClickDeselects={false}
-                    />
-                </div>
-                <MainSidebar
-                    replacementValue={replacementValue}
-                    setReplacementValue={setReplacementValue}
-                    handleReplaceClick={handleReplaceClick}
-                    selectedColumnIndex={selectedColumnIndex}
-                    selectedColumnName={selectedColumnName}
-                />
-                <HistorySidebar
-                    isHistoryVisible={isHistoryVisible}
-                    uploadHistory={uploadHistory}
-                    clickedIndex={clickedIndex}
-                    onHistoryItemClick={handleHistoryClick}
-                    onHistoryItemDelete={handleHistoryDelete}
-                    toggleHistory={toggleHistory}
-                    currentDataId={currentDataId}
-                />
-            </div>
+      <h1>Data-Story</h1>
+      <MenuBar 
+        onSaveCurrent={handleSaveCurrent} 
+        onDataLoaded={handleDataLoaded} 
+        toggleHistory={toggleHistory} 
+        onColorSelect={handleColorSelection} 
+        onTextStyleChange={handleTextStyleChange} 
+      />
+      <div className="content-area">
+        <div className="handsontable-container">
+          <HotTable
+            ref={hotRef}
+            data={data}
+            colHeaders={columns.map(column => column.title)}
+            columns={columns.map(col => ({ ...col, renderer: customRenderer }))}
+            rowHeaders={true}
+            manualColumnResize={true}
+            manualColumnMove={true}
+            autoWrapRow={true}
+            autoWrapCol={true}
+            width="100%"
+            height="auto"
+            licenseKey="non-commercial-and-evaluation"
+            afterSelectionEnd={handleSelectionEnd}
+            outsideClickDeselects={false}
+          />
         </div>
-    );
+        <MainSidebar
+          replacementValue={replacementValue}
+          setReplacementValue={setReplacementValue}
+          handleReplaceClick={handleReplaceClick}
+          selectedColumnIndex={selectedColumnIndex}
+          selectedColumnName={selectedColumnName}
+        />
+        <HistorySidebar
+          isHistoryVisible={isHistoryVisible}
+          uploadHistory={uploadHistory}
+          clickedIndex={clickedIndex}
+          onHistoryItemClick={handleHistoryClick}
+          onHistoryItemDelete={handleHistoryDelete}
+          toggleHistory={toggleHistory}
+          currentDataId={currentDataId}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default App;
