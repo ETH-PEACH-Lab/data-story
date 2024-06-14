@@ -1,7 +1,8 @@
+// FormatMenu.jsx
 import React, { useState } from 'react';
 import styles from './MenuBar.module.css';
 
-const FormatMenu = ({ isColorDropdownVisible, setIsColorDropdownVisible, onColorSelect, onTextStyleChange }) => {
+const FormatMenu = ({ isColorDropdownVisible, setIsColorDropdownVisible, onTextColorSelect, onTextStyleChange, onClearFormatting }) => {
     const [isTextDropdownVisible, setIsTextDropdownVisible] = useState(false);
 
     const colors = [
@@ -10,22 +11,27 @@ const FormatMenu = ({ isColorDropdownVisible, setIsColorDropdownVisible, onColor
     ];
 
     const handleMenuClick = (item) => {
-        if (item === 'Text') {
+        if (item === 'Clear Formatting') {
+            onClearFormatting();
+        } else if (item === 'Text') {
             setIsTextDropdownVisible(!isTextDropdownVisible);
             setIsColorDropdownVisible(false);
         } else if (item === 'Color') {
             setIsColorDropdownVisible(!isColorDropdownVisible);
-        } else {
+        } else if (item === 'Bold' || item === 'Italic' || item === 'Strike-through') {
             setIsTextDropdownVisible(false);
             setIsColorDropdownVisible(false);
             onTextStyleChange(item.toLowerCase().replace('-', ''));
+        } else {
+            setIsTextDropdownVisible(false);
+            setIsColorDropdownVisible(false);
         }
         console.log(`${item} clicked`);
     };
 
     const handleColorClick = (color) => {
         console.log(`Selected color: ${color}`);
-        onColorSelect(color);
+        onTextColorSelect(color);
         setIsTextDropdownVisible(false);
         setIsColorDropdownVisible(false);
     };

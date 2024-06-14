@@ -140,6 +140,7 @@ function App() {
     fetchData();
   }, []);
 
+  // Currently selected cells
   const handleSelectionEnd = (r1, c1, r2, c2) => {
     const selectedCells = [];
     const minRow = Math.min(r1, r2);
@@ -154,7 +155,8 @@ function App() {
     selectedCellsRef.current = selectedCells;
   };
 
-  const handleColorSelection = (color) => {
+// save text color of cell
+  const handleTextColorSelection = (color) => {
     setTextStyles(prev => {
       const newTextStyles = { ...prev };
       selectedCellsRef.current.forEach(([row, col]) => {
@@ -167,6 +169,7 @@ function App() {
     });
   };
 
+  // save text styles of cell
   const handleTextStyleChange = (style) => {
     setTextStyles(prev => {
       const newTextStyles = { ...prev };
@@ -175,6 +178,17 @@ function App() {
           newTextStyles[`${row}-${col}`] = {};
         }
         newTextStyles[`${row}-${col}`][style] = !newTextStyles[`${row}-${col}`][style];
+      });
+      return newTextStyles;
+    });
+  };
+
+  // Reset text styles to normal
+  const clearFormatting = () => {
+    setTextStyles(prev => {
+      const newTextStyles = { ...prev };
+      selectedCellsRef.current.forEach(([row, col]) => {
+        newTextStyles[`${row}-${col}`] = {};
       });
       return newTextStyles;
     });
@@ -198,8 +212,9 @@ function App() {
         onSaveCurrent={handleSaveCurrent} 
         onDataLoaded={handleDataLoaded} 
         toggleHistory={toggleHistory} 
-        onColorSelect={handleColorSelection} 
+        onTextColorSelect={handleTextColorSelection} 
         onTextStyleChange={handleTextStyleChange} 
+        onClearFormatting={clearFormatting}
       />
       <div className="content-area">
         <div className="handsontable-container">
@@ -213,11 +228,13 @@ function App() {
             manualColumnMove={true}
             autoWrapRow={true}
             autoWrapCol={true}
+            comments={true}
             width="100%"
             height="auto"
             licenseKey="non-commercial-and-evaluation"
             afterSelectionEnd={handleSelectionEnd}
             outsideClickDeselects={false}
+            //autoColumnSize={true} What does this do? Better than what I have?
           />
         </div>
         <MainSidebar
