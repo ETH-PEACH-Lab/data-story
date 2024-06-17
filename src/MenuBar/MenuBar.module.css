@@ -71,11 +71,11 @@
     top: 0px;
 }
 
-.textDropdown {
+.Dropdown {
     position: absolute;
-    top: 35px;
-    left: 0;
     display: flex;
+    margin-left: -20px;
+    margin-top: -111px;
     flex-direction: column;
     background: white;
     border: 1px solid #ccc;
@@ -96,8 +96,8 @@
 
 .colorDropdown {
     position: absolute;
-    top: 107px;
-    left: 100%;
+    margin-left: 0px;
+    margin-top: 0px;
     display: flex;
     flex-wrap: wrap;
     width: 130px;

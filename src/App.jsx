@@ -57,7 +57,6 @@ function App() {
   const handleHistoryDelete = (index) => {
     setUploadHistory(uploadHistory.filter((_, i) => i !== index));
     const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
-    // Reset active index if the active entry is deleted
     if (isDeletingCurrentData) {
       //TODO
     }
@@ -87,7 +86,7 @@ function App() {
     saveDataToHistory(newData, fileName, null);
   };
 
-  // Set columns from data
+  // Set column widths from data
   const setColumnsFromData = (newData) => {
     if (newData.length > 0) {
         const columnNames = Object.keys(newData[0]);
@@ -119,7 +118,7 @@ function App() {
     setOriginalFileName(historyEntry.fileName)
     setTimeout(() => {
       setClickedIndex(-1);
-    }, 500); // Reset the active index after 500ms
+    }, 500); 
   };
 
   // Fetch initial data on component mount
@@ -155,40 +154,43 @@ function App() {
     selectedCellsRef.current = selectedCells;
   };
 
-// save text color of cell
-  const handleTextColorSelection = (color) => {
+  //Handle any style change of cells and text in cells
+  const handleStyleChange = (styleType, value) => {
     setTextStyles(prev => {
       const newTextStyles = { ...prev };
       selectedCellsRef.current.forEach(([row, col]) => {
         if (!newTextStyles[`${row}-${col}`]) {
           newTextStyles[`${row}-${col}`] = {};
         }
-        newTextStyles[`${row}-${col}`].color = color;
-      });
-      return newTextStyles;
-    });
-  };
-
-  // save text styles of cell
-  const handleTextStyleChange = (style) => {
-    setTextStyles(prev => {
-      const newTextStyles = { ...prev };
-      selectedCellsRef.current.forEach(([row, col]) => {
-        if (!newTextStyles[`${row}-${col}`]) {
+        if (styleType === 'clear') {
           newTextStyles[`${row}-${col}`] = {};
-        }
-        newTextStyles[`${row}-${col}`][style] = !newTextStyles[`${row}-${col}`][style];
-      });
-      return newTextStyles;
-    });
-  };
+        } else if (styleType === 'bold') {
+          newTextStyles[`${row}-${col}`].fontWeight = newTextStyles[`${row}-${col}`].fontWeight === 'bold' ? 'normal' : 'bold';
+        } else if (styleType === 'italic') {
+          newTextStyles[`${row}-${col}`].fontStyle = newTextStyles[`${row}-${col}`].fontStyle === 'italic' ? 'normal' : 'italic';
+        } else if (styleType === 'strikethrough') {
+          newTextStyles[`${row}-${col}`].textDecoration = newTextStyles[`${row}-${col}`].textDecoration === 'line-through' ? 'none' : 'line-through';
+        } else if (styleType === 'borderColor') {
+          const minRow = Math.min(...selectedCellsRef.current.map(([row, _]) => row));
+          const maxRow = Math.max(...selectedCellsRef.current.map(([row, _]) => row));
+          const minCol = Math.min(...selectedCellsRef.current.map(([_, col]) => col));
+          const maxCol = Math.max(...selectedCellsRef.current.map(([_, col]) => col));
 
-  // Reset text styles to normal
-  const clearFormatting = () => {
-    setTextStyles(prev => {
-      const newTextStyles = { ...prev };
-      selectedCellsRef.current.forEach(([row, col]) => {
-        newTextStyles[`${row}-${col}`] = {};
+          if (row === minRow) {
+            newTextStyles[`${row}-${col}`].borderTop = `2px solid ${value}`;
+          }
+          if (row === maxRow) {
+            newTextStyles[`${row}-${col}`].borderBottom = `2px solid ${value}`;
+          }
+          if (col === minCol) {
+            newTextStyles[`${row}-${col}`].borderLeft = `2px solid ${value}`;
+          }
+          if (col === maxCol) {
+            newTextStyles[`${row}-${col}`].borderRight = `2px solid ${value}`;
+          }
+        } else {
+          newTextStyles[`${row}-${col}`][styleType] = value;
+        }
       });
       return newTextStyles;
     });
@@ -200,9 +202,14 @@ function App() {
     const cellKey = `${row}-${col}`;
     const styles = textStyles[cellKey] || {};
     td.style.color = styles.color || 'black';
-    td.style.fontWeight = styles.bold ? 'bold' : 'normal';
-    td.style.fontStyle = styles.italic ? 'italic' : 'normal';
-    td.style.textDecoration = styles.strikethrough ? 'line-through' : 'none';
+    td.style.backgroundColor = styles.backgroundColor || 'white';
+    td.style.fontWeight = styles.fontWeight || 'normal';
+    td.style.fontStyle = styles.fontStyle || 'normal';
+    td.style.textDecoration = styles.textDecoration || 'none';
+    td.style.borderTop = styles.borderTop || '';
+    td.style.borderBottom = styles.borderBottom || '';
+    td.style.borderLeft = styles.borderLeft || '';
+    td.style.borderRight = styles.borderRight || '';
   };
 
   return (
@@ -212,9 +219,7 @@ function App() {
         onSaveCurrent={handleSaveCurrent} 
         onDataLoaded={handleDataLoaded} 
         toggleHistory={toggleHistory} 
-        onTextColorSelect={handleTextColorSelection} 
-        onTextStyleChange={handleTextStyleChange} 
-        onClearFormatting={clearFormatting}
+        onStyleChange={handleStyleChange}
       />
       <div className="content-area">
         <div className="handsontable-container">
@@ -234,7 +239,6 @@ function App() {
             licenseKey="non-commercial-and-evaluation"
             afterSelectionEnd={handleSelectionEnd}
             outsideClickDeselects={false}
-            //autoColumnSize={true} What does this do? Better than what I have?
           />
         </div>
         <MainSidebar
