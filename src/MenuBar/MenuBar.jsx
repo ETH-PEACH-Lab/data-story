@@ -7,15 +7,14 @@ import FormatMenu from './FormatMenu';
 import InsertMenu from './InsertMenu';
 import DataMenu from './DataMenu';
 
-const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange }) => {
+const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, selectedColumnIndex, selectedColumnName, setColumns }) => {
   const [activeMenu, setActiveMenu] = useState('');
-  const [isColorDropdownVisible, setIsColorDropdownVisible] = useState(false);
   const fileInputRef = useRef(null);
 
   const menuOptions = {
     'File': <FileMenu onSaveCurrent={onSaveCurrent} onDataLoaded={onDataLoaded} toggleHistory={toggleHistory} fileInputRef={fileInputRef} />,
     'Edit': <EditMenu />,
-    'Format': <FormatMenu onStyleChange={onStyleChange} />,
+    'Format': <FormatMenu onStyleChange={onStyleChange} selectedColumnIndex={selectedColumnIndex} selectedColumnName={selectedColumnName} setColumns={setColumns} />,
     'Insert': <InsertMenu />,
     'Data': <DataMenu />
   };

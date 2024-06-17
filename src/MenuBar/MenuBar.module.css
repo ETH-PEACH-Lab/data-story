@@ -107,6 +107,25 @@
     z-index: 200;
 }
 
+.inputContainer {
+    display: flex;
+    align-items: center;
+}
+
+.applyButton {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+.applyButton:hover {
+    background-color: #f0f0f0;
+}
+
 .colorSquare {
     width: 20px;
     height: 20px;

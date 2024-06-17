@@ -152,6 +152,12 @@ function App() {
       }
     }
     selectedCellsRef.current = selectedCells;
+
+    if (minCol === maxCol) {
+      setSelectedColumnIndex(minCol);
+    } else {
+      setSelectedColumnIndex(null);
+    }
   };
 
   //Handle any style change of cells and text in cells
@@ -162,7 +168,7 @@ function App() {
         if (!newTextStyles[`${row}-${col}`]) {
           newTextStyles[`${row}-${col}`] = {};
         }
-        if (styleType === 'clear') {
+        if (styleType === 'clear formatting') {
           newTextStyles[`${row}-${col}`] = {};
         } else if (styleType === 'bold') {
           newTextStyles[`${row}-${col}`].fontWeight = newTextStyles[`${row}-${col}`].fontWeight === 'bold' ? 'normal' : 'bold';
@@ -220,6 +226,9 @@ function App() {
         onDataLoaded={handleDataLoaded} 
         toggleHistory={toggleHistory} 
         onStyleChange={handleStyleChange}
+        selectedColumnIndex={selectedColumnIndex}
+        selectedColumnName={selectedColumnName}
+        setColumns={setColumns}
       />
       <div className="content-area">
         <div className="handsontable-container">
