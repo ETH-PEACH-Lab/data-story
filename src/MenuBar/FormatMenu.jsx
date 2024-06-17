@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
 import styles from './MenuBar.module.css';
+import Text from './FormatMenu/Text';
+import Cell from './FormatMenu/Cell';
+import Headers from './FormatMenu/Headers';
+import Type from './FormatMenu/Type';
 
 function tintColor(color, percentage) {
   const decimalPercentage = percentage / 100;
@@ -23,26 +27,38 @@ const originalColors = [
 
 const tintedColors = originalColors.map(color => tintColor(color, 60));
 
-const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, setColumns }) => {
+const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns }) => {
   const [dropdownState, setDropdownState] = useState({
     isTextDropdownVisible: false,
     isCellDropdownVisible: false,
     isColorDropdownVisible: false,
     isHeadersDropdownVisible: false,
+    isTypeDropdownVisible: false,
     dropdownPosition: { top: 0, left: 0 },
     colorDropdownPosition: { top: 0, left: 0 },
     colorContext: ''
   });
 
-  const [newColumnName, setNewColumnName] = useState('');
   const textButtonRef = useRef(null);
   const cellButtonRef = useRef(null);
-  const colorButtonRef = useRef(null);
-  const fillButtonRef = useRef(null);
-  const borderButtonRef = useRef(null);
   const headersButtonRef = useRef(null);
+  const typeButtonRef = useRef(null);
 
   const menuItems = ['Text', 'Cell', 'Type', 'Headers', 'Conditional Formatting', 'Clear Formatting'];
+
+  const typeMapping = {
+    text: 'Text',
+    numeric: 'Number',
+    date: 'Date',
+    time: 'Time'
+  };
+
+  const reverseTypeMapping = {
+    'Text': 'text',
+    'Number': 'numeric',
+    'Date': 'date',
+    'Time': 'time'
+  };
 
   const handleMenuClick = (item, buttonRef) => {
     const updateDropdownState = (updates) => setDropdownState(prev => ({ ...prev, ...updates }));
@@ -57,6 +73,7 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
             isTextDropdownVisible: !dropdownState.isTextDropdownVisible,
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
+            isTypeDropdownVisible: false,
             isHeadersDropdownVisible: false,
             dropdownPosition: position
           });
@@ -66,6 +83,7 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
             isTextDropdownVisible: false,
             isCellDropdownVisible: !dropdownState.isCellDropdownVisible,
             isColorDropdownVisible: false,
+            isTypeDropdownVisible: false,
             isHeadersDropdownVisible: false,
             dropdownPosition: position
           });
@@ -75,7 +93,18 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
             isTextDropdownVisible: false,
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
+            isTypeDropdownVisible: false,
             isHeadersDropdownVisible: !dropdownState.isHeadersDropdownVisible,
+            dropdownPosition: position
+          });
+          break;
+        case 'Type':
+          updateDropdownState({
+            isTextDropdownVisible: false,
+            isCellDropdownVisible: false,
+            isColorDropdownVisible: false,
+            isTypeDropdownVisible: !dropdownState.isTypeDropdownVisible,
+            isHeadersDropdownVisible: false,
             dropdownPosition: position
           });
           break;
@@ -106,6 +135,7 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
             isHeadersDropdownVisible: false,
+            isTypeDropdownVisible: false,
           });
       }
     }
@@ -116,6 +146,7 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
         isCellDropdownVisible: false,
         isColorDropdownVisible: false,
         isHeadersDropdownVisible: false,
+        isTypeDropdownVisible: false,
       });
     }
   };
@@ -128,17 +159,8 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
       isCellDropdownVisible: false,
       isColorDropdownVisible: false,
       isHeadersDropdownVisible: false,
+      isTypeDropdownVisible: false,
     });
-  };
-
-  const handleRenameColumn = () => {
-    setColumns(prevColumns => {
-      const newColumns = [...prevColumns];
-      newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], title: newColumnName };
-      return newColumns;
-    });
-    setNewColumnName('');
-    setDropdownState(prev => ({ ...prev, isHeadersDropdownVisible: false }));
   };
 
   const stopPropagation = (e) => {
@@ -148,102 +170,53 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
   return (
     <>
       {menuItems.map((item, index) => {
-        const buttonRef = item === 'Text' ? textButtonRef : item === 'Cell' ? cellButtonRef : item === 'Headers' ? headersButtonRef : null;
+        const buttonRef = item === 'Text' ? textButtonRef : item === 'Cell' ? cellButtonRef : item === 'Headers' ? headersButtonRef : item === 'Type' ? typeButtonRef : null;
         return (
           <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item, buttonRef)}>
             <div ref={buttonRef} className={styles.button}>{item}</div>
             {item === 'Text' && dropdownState.isTextDropdownVisible && (
-              <div className={styles.Dropdown} style={{ top: dropdownState.dropdownPosition.top, left: dropdownState.dropdownPosition.left }} onClick={stopPropagation}>
-                {['Bold', 'Italic', 'Strike-through', 'Color'].map((textOption, idx) => {
-                  const ref = textOption === 'Color' ? colorButtonRef : null;
-                  return (
-                    <div
-                      key={idx}
-                      className={styles.textOption}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleMenuClick(textOption, ref);
-                      }}
-                    >
-                      <div ref={ref} className={styles.dropdownItem}>{textOption}</div>
-                      {textOption === 'Color' && dropdownState.isColorDropdownVisible && dropdownState.colorContext === 'text' && (
-                        <div className={styles.colorDropdown} style={{ top: dropdownState.colorDropdownPosition.top - 176, left: dropdownState.colorDropdownPosition.left + 100 }}>
-                          {originalColors.map((color, idx) => (
-                            <div
-                              key={idx}
-                              className={styles.colorSquare}
-                              style={{ backgroundColor: color }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleColorClick(color);
-                              }}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+              <Text
+                position={dropdownState.dropdownPosition}
+                onStyleChange={onStyleChange}
+                stopPropagation={stopPropagation}
+                handleMenuClick={handleMenuClick}
+                handleColorClick={handleColorClick}
+                isColorDropdownVisible={dropdownState.isColorDropdownVisible}
+                colorDropdownPosition={dropdownState.colorDropdownPosition}
+                originalColors={originalColors}
+              />
             )}
             {item === 'Cell' && dropdownState.isCellDropdownVisible && (
-              <div className={styles.Dropdown} style={{ top: dropdownState.dropdownPosition.top, left: dropdownState.dropdownPosition.left }} onClick={stopPropagation}>
-                {['Fill', 'Border'].map((cellOption, idx) => {
-                  const ref = cellOption === 'Fill' ? fillButtonRef : borderButtonRef;
-                  return (
-                    <div
-                      key={idx}
-                      className={styles.textOption}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleMenuClick(cellOption, ref);
-                      }}
-                    >
-                      <div ref={ref} className={styles.dropdownItem}>{cellOption}</div>
-                      {dropdownState.isColorDropdownVisible && dropdownState.colorContext === cellOption.toLowerCase() && (
-                        <div className={styles.colorDropdown} style={{ top: dropdownState.colorDropdownPosition.top - 176, left: dropdownState.colorDropdownPosition.left - 54 }}>
-                          {(dropdownState.colorContext === 'fill' ? tintedColors : originalColors).map((color, idx) => (
-                            <div
-                              key={idx}
-                              className={styles.colorSquare}
-                              style={{ backgroundColor: color }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleColorClick(color);
-                              }}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+              <Cell
+                position={dropdownState.dropdownPosition}
+                stopPropagation={stopPropagation}
+                handleMenuClick={handleMenuClick}
+                handleColorClick={handleColorClick}
+                isColorDropdownVisible={dropdownState.isColorDropdownVisible}
+                colorDropdownPosition={dropdownState.colorDropdownPosition}
+                tintedColors={tintedColors}
+                originalColors={originalColors}
+                colorContext={dropdownState.colorContext}
+              />
             )}
             {item === 'Headers' && dropdownState.isHeadersDropdownVisible && (
-              <div className={styles.Dropdown} style={{ top: dropdownState.dropdownPosition.top, left: dropdownState.dropdownPosition.left }} onClick={stopPropagation}>
-                <div className={styles.textOption}>
-                  <div>Coordinates: {selectedColumnIndex !== null
-                    ? `Column ${selectedColumnIndex + 1}` 
-                    : 'No column selected'}
-                  </div>
-                </div>
-                <div className={styles.textOption}>
-                  <div>Current Name: {selectedColumnName}</div>
-                </div>
-                <div className={`${styles.textOption} ${styles.inputContainer}`}>
-                  <input
-                    type="text"
-                    value={newColumnName}
-                    onChange={(e) => setNewColumnName(e.target.value)}
-                    placeholder="New column name"
-                    className={styles.input}
-                  />
-                  <button onClick={handleRenameColumn} className={styles.applyButton}>
-                    Rename
-                  </button>
-                </div>
-              </div>
+              <Headers
+                position={dropdownState.dropdownPosition}
+                stopPropagation={stopPropagation}
+                selectedColumnIndex={selectedColumnIndex}
+                selectedColumnName={selectedColumnName}
+                setColumns={setColumns}
+              />
+            )}
+            {item === 'Type' && dropdownState.isTypeDropdownVisible && (
+              <Type
+                position={dropdownState.dropdownPosition}
+                stopPropagation={stopPropagation}
+                selectedColumnIndex={selectedColumnIndex}
+                columns={columns}
+                setColumns={setColumns}
+                reverseTypeMapping={reverseTypeMapping}
+              />
             )}
           </div>
         );

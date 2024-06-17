@@ -1,3 +1,4 @@
+// In App.jsx
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
@@ -229,6 +230,7 @@ function App() {
         selectedColumnIndex={selectedColumnIndex}
         selectedColumnName={selectedColumnName}
         setColumns={setColumns}
+        columns={columns} // Pass columns here
       />
       <div className="content-area">
         <div className="handsontable-container">

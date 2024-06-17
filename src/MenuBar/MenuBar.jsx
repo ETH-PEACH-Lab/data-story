@@ -7,14 +7,14 @@ import FormatMenu from './FormatMenu';
 import InsertMenu from './InsertMenu';
 import DataMenu from './DataMenu';
 
-const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, selectedColumnIndex, selectedColumnName, setColumns }) => {
+const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns }) => { // Add columns to the prop list
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
 
   const menuOptions = {
     'File': <FileMenu onSaveCurrent={onSaveCurrent} onDataLoaded={onDataLoaded} toggleHistory={toggleHistory} fileInputRef={fileInputRef} />,
     'Edit': <EditMenu />,
-    'Format': <FormatMenu onStyleChange={onStyleChange} selectedColumnIndex={selectedColumnIndex} selectedColumnName={selectedColumnName} setColumns={setColumns} />,
+    'Format': <FormatMenu onStyleChange={onStyleChange} selectedColumnIndex={selectedColumnIndex} selectedColumnName={selectedColumnName} setColumns={setColumns} columns={columns} />, // Pass columns to FormatMenu
     'Insert': <InsertMenu />,
     'Data': <DataMenu />
   };
