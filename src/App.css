@@ -1,18 +1,25 @@
 #root {
   width: 100%;
+  height: 100%;
   max-width: none;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .container {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0 20px;
 }
 
 .container h1 {
-  background-color: #E3E1D9; /* Setting the background color */
-  padding: 10px; /* Optional: adding some padding for visual space */
-  margin-top: 0; /* Optional: adjusting the top margin */
-  margin-bottom: 0px; /* Optional: adjusting the bottom margin to separate from content below */
+  position: relative;
+  background-color: #E3E1D9;
+  padding: 10px;
+  margin: 0;
+  top: 0px;
   margin-right: 75px;
   font-family: 'Inter', sans-serif;
 }
