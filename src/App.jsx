@@ -3,7 +3,6 @@ import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
 import Papa from 'papaparse';
-import { registerPlugin, ColumnSorting } from 'handsontable/plugins';
 import { MissingValue } from './MissingValue';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
@@ -74,11 +73,7 @@ function App() {
         setOriginalFileName(parentEntry.fileName);
       } else {
         if (window.confirm("Parent version no longer exists. Do you want to delete this version?")) {
-          setData([]);
-          setColumnConfigs([]);
           setCurrentDataId(null);
-          setActions([]);
-          setOriginalFileName('');
         } else {
           return;
         }
