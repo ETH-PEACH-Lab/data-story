@@ -314,6 +314,38 @@ function App() {
     }
   };
 
+  //Count and Remove duplicate Rows
+  const countAndRemoveDuplicates = (remove = false) => {
+    const rowStrings = data.map(row => JSON.stringify(row));
+    const seen = new Set();
+    const duplicates = [];
+    let duplicateCount = 0;
+
+    rowStrings.forEach((row, index) => {
+      if (seen.has(row)) {
+        duplicateCount++;
+        if (remove) {
+          duplicates.push(index);
+        }
+      } else {
+        seen.add(row);
+      }
+    });
+
+    if (remove) {
+      const hotInstance = hotRef.current.hotInstance;
+      hotInstance.batch(() => {
+        for (let i = duplicates.length - 1; i >= 0; i--) {
+          hotInstance.alter('remove_row', duplicates[i]);
+        }
+      });
+
+      setData(hotInstance.getData());
+    }
+
+    return duplicateCount;
+  };
+
   return (
     <div className="container">
       <h1>Data-Story</h1>
@@ -329,6 +361,7 @@ function App() {
         handleSort={handleSort}
         handleFilter={handleFilter}
         tableContainerRef={tableContainerRef}
+        countAndRemoveDuplicates={countAndRemoveDuplicates}
       />
       <div className="content-area">
         <div className="handsontable-container" ref={tableContainerRef}>

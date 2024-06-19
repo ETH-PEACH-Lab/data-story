@@ -7,7 +7,20 @@ import FormatMenu from './FormatMenu';
 import InsertMenu from './InsertMenu';
 import DataMenu from './DataMenu';
 
-const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns, handleSort, handleFilter, tableContainerRef }) => {
+const MenuBar = ({ 
+  onSaveCurrent, 
+  onDataLoaded, 
+  toggleHistory, 
+  onStyleChange, 
+  selectedColumnIndex, 
+  selectedColumnName, 
+  setColumns, 
+  columns, 
+  handleSort, 
+  handleFilter, 
+  tableContainerRef, 
+  countAndRemoveDuplicates
+}) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
 
@@ -18,7 +31,9 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, se
               toggleHistory={toggleHistory} 
               fileInputRef={fileInputRef} 
             />,
-    'Edit': <EditMenu />,
+    'Edit': <EditMenu countAndRemoveDuplicates={countAndRemoveDuplicates}
+              tableContainerRef={tableContainerRef}
+            />,
     'Format': <FormatMenu 
                 onStyleChange={onStyleChange} 
                 selectedColumnIndex={selectedColumnIndex} 
