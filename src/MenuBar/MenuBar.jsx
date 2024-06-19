@@ -21,7 +21,8 @@ const MenuBar = ({
   tableContainerRef, 
   countAndRemoveDuplicates,
   addRow,
-  addColumn
+  addColumn,
+  handleFindReplace
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -35,6 +36,9 @@ const MenuBar = ({
             />,
     'Edit': <EditMenu countAndRemoveDuplicates={countAndRemoveDuplicates}
               tableContainerRef={tableContainerRef}
+              selectedColumnIndex={selectedColumnIndex}
+              selectedColumnName={selectedColumnName}
+              handleFindReplace={handleFindReplace}
             />,
     'Format': <FormatMenu 
                 onStyleChange={onStyleChange} 

@@ -323,6 +323,20 @@ function App() {
     setColumnConfigs([...columnConfigs, newColumn]);
   };
 
+  //Find cells in column with value = findText and replace them with replaceText
+  const handleFindReplace = (findText, replaceText) => {
+    if (selectedColumnIndex === null) return;
+
+    const newData = data.map((row) => {
+      if ((findText === '' && (row[selectedColumnName] === '' || row[selectedColumnName] === null)) || row[selectedColumnName] === findText) {
+        return { ...row, [selectedColumnName]: replaceText };
+      }
+      return row;
+    });
+
+    setData(newData);
+  };
+
   return (
     <div className="container">
       <h1>Data-Story</h1>
@@ -341,6 +355,7 @@ function App() {
         countAndRemoveDuplicates={countAndRemoveDuplicates}
         addRow={addRow}
         addColumn={addColumn}
+        handleFindReplace={handleFindReplace}
       />
       <div className="content-area">
         <div className="handsontable-container" ref={tableContainerRef}>
