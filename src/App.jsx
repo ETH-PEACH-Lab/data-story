@@ -3,6 +3,7 @@ import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
 import Papa from 'papaparse';
+import { registerPlugin, ColumnSorting } from 'handsontable/plugins';
 import { MissingValue } from './MissingValue';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
@@ -281,6 +282,21 @@ function App() {
     td.style.borderRight = styles.borderRight || '';
   }
 
+  const handleSort = (columnName, sortOrder) => {
+    if (!columnName || !sortOrder) return;
+  
+    const columnIndex = columnConfigs.findIndex(col => col.title === columnName);
+    if (columnIndex === -1) return;
+  
+    const hotInstance = hotRef.current.hotInstance;
+    const columnSorting = hotInstance.getPlugin('columnSorting');
+  
+    columnSorting.sort({
+      column: columnIndex,
+      sortOrder: sortOrder === 'Ascending' ? 'asc' : 'desc',
+    });
+  };
+
   return (
     <div className="container">
       <h1>Data-Story</h1>
@@ -292,7 +308,8 @@ function App() {
         selectedColumnIndex={selectedColumnIndex}
         selectedColumnName={selectedColumnName}
         setColumns={setColumnConfigs}
-        columns={columnConfigs} // Pass columns here
+        columns={columnConfigs}
+        handleSort={handleSort}
       />
       <div className="content-area">
         <div className="handsontable-container">
@@ -307,6 +324,7 @@ function App() {
               height="100%"
               autoWrapRow={true}
               autoWrapCol={true}
+              columnSorting={true}
               manualColumnResize={true}
               autoColumnSize={true}
               afterSelectionEnd={handleSelectionEnd}

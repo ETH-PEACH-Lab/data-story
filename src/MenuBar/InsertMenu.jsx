@@ -3,7 +3,7 @@ import styles from './MenuBar.module.css';
 
 const InsertMenu = () => {
     const handleMenuClick = (item) => {
-        // Implement your logic for Insert menu actions
+        // Implement logic for Insert menu actions
         console.log(`${item} clicked`);
     };
 

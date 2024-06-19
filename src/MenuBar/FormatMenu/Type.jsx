@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../MenuBar.module.css';
 
-const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColumns, reverseTypeMapping }) => {
+const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColumns, typeMapping, reverseTypeMapping }) => {
   const [newColumnType, setNewColumnType] = useState('');
 
   const handleSetColumnType = () => {

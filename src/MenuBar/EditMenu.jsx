@@ -3,7 +3,7 @@ import styles from './MenuBar.module.css';
 
 const EditMenu = () => {
     const handleMenuClick = (item) => {
-        // Implement your logic for Edit menu actions
+        // Implement logic for Edit menu actions
         console.log(`${item} clicked`);
     };
 
