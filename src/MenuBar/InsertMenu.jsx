@@ -1,10 +1,15 @@
 import React from 'react';
 import styles from './MenuBar.module.css';
 
-const InsertMenu = () => {
+const InsertMenu = ({ addRow, addColumn }) => {
     const handleMenuClick = (item) => {
-        // Implement logic for Insert menu actions
-        console.log(`${item} clicked`);
+        if (item === 'Row') {
+            addRow();
+        } else if (item === 'Column') {
+            addColumn();
+        } else {
+            console.log(`${item} clicked`);
+        }
     };
 
     return (

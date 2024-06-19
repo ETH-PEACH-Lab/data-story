@@ -29,9 +29,6 @@ function App() {
   const selectedCellsRef = useRef([]);
   const tableContainerRef = useRef(null);
 
-  const minSpareCols = 2;
-  const minSpareRows = 2;
-
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
   // Toggle history sidebar visibility
@@ -99,7 +96,6 @@ function App() {
 
   // Handle data loaded from file or initial fetch
   const handleDataLoaded = (newData, fileName) => {
-    appendEmptyCells(newData, minSpareRows, minSpareCols);
     setData(newData);
     initializeColumns(newData);
     setOriginalFileName(fileName);
@@ -161,43 +157,6 @@ function App() {
     };
     fetchData();
   }, []);
-
-  // Append empty rows and columns to the data
-  const appendEmptyCells = (data, minSpareRows, minSpareCols) => {
-    const emptyRow = data.length > 0 ? Object.keys(data[0]).reduce((acc, key) => ({ ...acc, [key]: '' }), {}) : {};
-    let existingEmptyRowCount = 0;
-    let existingEmptyColCount = 0;
-
-    // Count existing empty rows and columns
-    for (let i = data.length - 1; i >= 0; i--) {
-      const isEmptyRow = Object.values(data[i]).every(value => value === null || value === undefined || value === '');
-      if (isEmptyRow) {
-        existingEmptyRowCount++;
-      } else {
-        break;
-      }
-    }
-    const columnNames = data.length > 0 ? Object.keys(data[0]) : [];
-    for (let i = columnNames.length - 1; i >= 0; i--) {
-      const isEmptyCol = data.every(row => row[columnNames[i]] === null || row[columnNames[i]] === undefined || row[columnNames[i]] === '');
-      if (isEmptyCol) {
-        existingEmptyColCount++;
-      } else {
-        break;
-      }
-    }
-    // Add required empty rows and columns
-    const rowsToAdd = Math.max(minSpareRows - existingEmptyRowCount, 0);
-    for (let i = 0; i < rowsToAdd; i++) {
-      data.push({ ...emptyRow });
-    }
-    const colsToAdd = Math.max(minSpareCols - existingEmptyColCount, 0);
-    for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < colsToAdd; j++) {
-        data[i][`column${columnNames.length + j + 1}`] = '';
-      }
-    }
-  };
 
   // Currently selected cells
   const handleSelectionEnd = (r1, c1, r2, c2) => {
@@ -346,6 +305,28 @@ function App() {
     return duplicateCount;
   };
 
+  //add empty Row to the end of the table
+  const addRow = () => {
+    const emptyRow = columnConfigs.reduce((acc, col) => ({ ...acc, [col.data]: '' }), {});
+    const newData = [...data, emptyRow];
+    setData(newData);
+  };
+
+  //add empty Column to the end of the table
+  const addColumn = () => {
+    const columnIndex = columnConfigs.length;
+    const newColumnKey = `column${columnIndex + 1}`;
+    const newColumn = { data: newColumnKey, title: `Column ${columnIndex + 1}` };
+
+    const newData = data.map(row => ({
+      ...row,
+      [newColumnKey]: ''
+    }));
+
+    setData(newData);
+    setColumnConfigs([...columnConfigs, newColumn]);
+  };
+
   return (
     <div className="container">
       <h1>Data-Story</h1>
@@ -362,6 +343,8 @@ function App() {
         handleFilter={handleFilter}
         tableContainerRef={tableContainerRef}
         countAndRemoveDuplicates={countAndRemoveDuplicates}
+        addRow={addRow}
+        addColumn={addColumn}
       />
       <div className="content-area">
         <div className="handsontable-container" ref={tableContainerRef}>

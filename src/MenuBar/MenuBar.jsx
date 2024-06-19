@@ -19,7 +19,9 @@ const MenuBar = ({
   handleSort, 
   handleFilter, 
   tableContainerRef, 
-  countAndRemoveDuplicates
+  countAndRemoveDuplicates,
+  addRow,
+  addColumn
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -42,7 +44,7 @@ const MenuBar = ({
                 columns={columns} 
                 tableContainerRef={tableContainerRef}
               />,
-    'Insert': <InsertMenu />,
+    'Insert': <InsertMenu addRow={addRow} addColumn={addColumn} />,
     'Data': <DataMenu
               columns={columns}
               selectedColumnIndex={selectedColumnIndex}
