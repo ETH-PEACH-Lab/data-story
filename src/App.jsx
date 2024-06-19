@@ -279,10 +279,12 @@ function App() {
     const seen = new Set();
     const duplicates = [];
     let duplicateCount = 0;
-
+  
     rowStrings.forEach((row, index) => {
-      if (seen.has(row)) {
-        duplicateCount++;
+      if (row === '{}' || seen.has(row)) {
+        if (row !== '{}') {
+          duplicateCount++;
+        }
         if (remove) {
           duplicates.push(index);
         }
@@ -290,18 +292,12 @@ function App() {
         seen.add(row);
       }
     });
-
+  
     if (remove) {
-      const hotInstance = hotRef.current.hotInstance;
-      hotInstance.batch(() => {
-        for (let i = duplicates.length - 1; i >= 0; i--) {
-          hotInstance.alter('remove_row', duplicates[i]);
-        }
-      });
-
-      setData(hotInstance.getData());
+      const newData = data.filter((_, index) => !duplicates.includes(index));
+      setData(newData);
     }
-
+  
     return duplicateCount;
   };
 
