@@ -250,6 +250,7 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
                 setColumns={setColumns}
                 typeMapping={typeMapping}
                 reverseTypeMapping={reverseTypeMapping}
+                selectedColumnName={selectedColumnName}
               />
             )}
           </div>

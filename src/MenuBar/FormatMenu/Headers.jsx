@@ -16,7 +16,7 @@ const Headers = ({ position, stopPropagation, selectedColumnIndex, selectedColum
   return (
     <div className={styles.Dropdown} style={{ top: position.top, left: position.left }} onClick={stopPropagation}>
       <div className={styles.textOption}>
-        <div>Coordinates: {selectedColumnIndex !== null ? `Column ${selectedColumnIndex + 1}` : 'No column selected'}</div>
+      <div>{`selected column: index ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
       </div>
       <div className={styles.textOption}>
         <div>Current Name: {selectedColumnName}</div>

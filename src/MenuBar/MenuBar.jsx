@@ -25,7 +25,7 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, se
                 selectedColumnName={selectedColumnName} 
                 setColumns={setColumns} 
                 columns={columns} 
-                tableContainerRef={tableContainerRef} // Pass it here
+                tableContainerRef={tableContainerRef}
               />,
     'Insert': <InsertMenu />,
     'Data': <DataMenu

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../MenuBar.module.css';
 
-const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColumns, typeMapping, reverseTypeMapping }) => {
+const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColumns, typeMapping, reverseTypeMapping, selectedColumnName }) => {
   const [newColumnType, setNewColumnType] = useState('');
 
   const handleSetColumnType = () => {
@@ -44,7 +44,7 @@ const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColu
   return (
     <div className={styles.Dropdown} style={{ top: position.top, left: position.left }} onClick={stopPropagation}>
       <div className={styles.textOption}>
-        <div>Coordinates: {selectedColumnIndex !== null ? `Column ${selectedColumnIndex + 1}` : 'No column selected'}</div>
+      <div>{`selected column: index ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
       </div>
       <div className={styles.textOption}>
         <div>Current Type: {getColumnType()}</div>

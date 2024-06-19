@@ -15,10 +15,10 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
     const handleMenuClick = (item) => {
       if (item === 'Sort') {
         setSortDropdownVisible(!isSortDropdownVisible);
-        setFilterDropdownVisible(false); // Close filter dropdown if open
+        setFilterDropdownVisible(false); 
       } else if (item === 'Filter') {
         setFilterDropdownVisible(!isFilterDropdownVisible);
-        setSortDropdownVisible(false); // Close sort dropdown if open
+        setSortDropdownVisible(false); 
       } else {
         console.log(`${item} clicked`);
       }
@@ -30,8 +30,8 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
   
     const handleSortClick = () => {
       handleSort(selectedColumnName, sortOrder);
-      setSortOrder(''); // Reset sortOrder after applying
-      setSortDropdownVisible(false); // Hide the dropdown after applying
+      setSortOrder(''); 
+      setSortDropdownVisible(false); 
     };
   
     const handleFilterConditionChange = (event) => {
@@ -44,16 +44,16 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
   
     const handleFilterClick = () => {
       handleFilter(selectedColumnName, filterCondition, filterValue);
-      setFilterCondition(''); // Reset filterCondition after applying
-      setFilterValue(''); // Reset filterValue after applying
-      setFilterDropdownVisible(false); // Hide the dropdown after applying
+      setFilterCondition(''); 
+      setFilterValue(''); 
+      setFilterDropdownVisible(false); 
     };
   
     const handleClearFilterClick = () => {
       handleFilter(selectedColumnName, 'clear');
-      setFilterCondition(''); // Reset filterCondition after clearing
-      setFilterValue(''); // Reset filterValue after clearing
-      setFilterDropdownVisible(false); // Hide the dropdown after clearing
+      setFilterCondition(''); 
+      setFilterValue(''); 
+      setFilterDropdownVisible(false); 
     };
   
     const stopPropagation = (e) => {
@@ -64,14 +64,14 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
       if (
         sortDropdownRef.current && !sortDropdownRef.current.contains(event.target) &&
         sortButtonRef.current && !sortButtonRef.current.contains(event.target) &&
-        (!tableContainerRef.current || !tableContainerRef.current.contains(event.target)) // Add this check
+        (!tableContainerRef.current || !tableContainerRef.current.contains(event.target)) 
       ) {
         setSortDropdownVisible(false);
       }
       if (
         filterDropdownRef.current && !filterDropdownRef.current.contains(event.target) &&
         filterButtonRef.current && !filterButtonRef.current.contains(event.target) &&
-        (!tableContainerRef.current || !tableContainerRef.current.contains(event.target)) // Add this check
+        (!tableContainerRef.current || !tableContainerRef.current.contains(event.target))
       ) {
         setFilterDropdownVisible(false);
       }
