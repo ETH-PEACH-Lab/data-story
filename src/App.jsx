@@ -28,6 +28,7 @@ function App() {
   const [textStyles, setTextStyles] = useState({});
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
+  const tableContainerRef = useRef(null);
 
   const minSpareCols = 2;
   const minSpareRows = 2;
@@ -282,6 +283,7 @@ function App() {
     td.style.borderRight = styles.borderRight || '';
   }
 
+  // Sort Rows
   const handleSort = (columnName, sortOrder) => {
     if (!columnName || !sortOrder) return;
   
@@ -297,6 +299,26 @@ function App() {
     });
   };
 
+  //Filter for condition
+  const handleFilter = (columnName, condition, value) => {
+    if (!columnName || !condition) return;
+  
+    const columnIndex = columnConfigs.findIndex(col => col.title === columnName);
+    if (columnIndex === -1) return;
+  
+    const hotInstance = hotRef.current.hotInstance;
+    const filtersPlugin = hotInstance.getPlugin('filters');
+  
+    if (condition === 'clear') {
+      filtersPlugin.removeConditions(columnIndex);
+      filtersPlugin.filter();
+    } else {
+      filtersPlugin.clearConditions(columnIndex);
+      filtersPlugin.addCondition(columnIndex, condition, [value]);
+      filtersPlugin.filter();
+    }
+  };
+
   return (
     <div className="container">
       <h1>Data-Story</h1>
@@ -310,9 +332,11 @@ function App() {
         setColumns={setColumnConfigs}
         columns={columnConfigs}
         handleSort={handleSort}
+        handleFilter={handleFilter}
+        tableContainerRef={tableContainerRef}
       />
       <div className="content-area">
-        <div className="handsontable-container">
+        <div className="handsontable-container" ref={tableContainerRef}>
           <div className="hot-table-wrapper">
             <HotTable
               ref={hotRef}
@@ -325,6 +349,7 @@ function App() {
               autoWrapRow={true}
               autoWrapCol={true}
               columnSorting={true}
+              filters={true}
               manualColumnResize={true}
               autoColumnSize={true}
               afterSelectionEnd={handleSelectionEnd}
