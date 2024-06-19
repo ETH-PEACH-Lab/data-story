@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './MenuBar.module.css';
 import Text from './FormatMenu/Text';
 import Cell from './FormatMenu/Cell';
@@ -27,7 +27,7 @@ const originalColors = [
 
 const tintedColors = originalColors.map(color => tintColor(color, 60));
 
-const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns }) => {
+const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns, tableContainerRef }) => {
   const [dropdownState, setDropdownState] = useState({
     isTextDropdownVisible: false,
     isCellDropdownVisible: false,
@@ -166,6 +166,39 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
+
+  const handleClickOutside = (event) => {
+    if (
+      !dropdownState.isTextDropdownVisible &&
+      !dropdownState.isCellDropdownVisible &&
+      !dropdownState.isColorDropdownVisible &&
+      !dropdownState.isHeadersDropdownVisible &&
+      !dropdownState.isTypeDropdownVisible
+    ) return;
+  
+    if (
+      textButtonRef.current && textButtonRef.current.contains(event.target) ||
+      cellButtonRef.current && cellButtonRef.current.contains(event.target) ||
+      headersButtonRef.current && headersButtonRef.current.contains(event.target) ||
+      typeButtonRef.current && typeButtonRef.current.contains(event.target) ||
+      (tableContainerRef.current && tableContainerRef.current.contains(event.target))
+    ) return;
+
+    setDropdownState({
+      isTextDropdownVisible: false,
+      isCellDropdownVisible: false,
+      isColorDropdownVisible: false,
+      isHeadersDropdownVisible: false,
+      isTypeDropdownVisible: false,
+    });
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [dropdownState]);
 
   return (
     <>

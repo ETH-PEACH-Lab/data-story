@@ -1,3 +1,12 @@
+import React, { useState, useRef } from 'react';
+import styles from './MenuBar.module.css';
+import Papa from 'papaparse';
+import FileMenu from './FileMenu';
+import EditMenu from './EditMenu';
+import FormatMenu from './FormatMenu';
+import InsertMenu from './InsertMenu';
+import DataMenu from './DataMenu';
+
 const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns, handleSort, handleFilter, tableContainerRef }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -16,6 +25,7 @@ const MenuBar = ({ onSaveCurrent, onDataLoaded, toggleHistory, onStyleChange, se
                 selectedColumnName={selectedColumnName} 
                 setColumns={setColumns} 
                 columns={columns} 
+                tableContainerRef={tableContainerRef} // Pass it here
               />,
     'Insert': <InsertMenu />,
     'Data': <DataMenu
