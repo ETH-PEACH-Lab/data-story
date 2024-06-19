@@ -1,7 +1,7 @@
 .history-sidebar {
   width: 130px; /* Default width for collapsed state */
   background-color: #F2EFE5;
-  height: 100%;
+  height: calc(100% - 60px);
   position: fixed;
   top: 0;
   right: 0;
@@ -33,22 +33,20 @@
   }
   
   .history-entry.active {
-    background-color: #E3E1D9; /* Active state color */
+    background-color: #E3E1D9;
   }
   
   .history-entry em {
     font-style: normal;
     color: #666;
-    margin-bottom: 5px; /* Space before actions list */
+    margin-bottom: 5px;
   }
   
-  /* Indent actions list */
   .history-entry ul {
     margin-top: 0;
     padding-left: 20px;
   }
   
-  /* Space between actions */
   .history-entry li {
     margin-bottom: 2px; 
   }
@@ -64,7 +62,7 @@
   }
 
   .collapsed-button:hover {
-    background-color: #E3E1D9; /* For hover state as specified */
+    background-color: #E3E1D9;
   }
 
   .button {

@@ -1,4 +1,3 @@
-// In App.jsx
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
@@ -15,7 +14,7 @@ registerAllModules();
 
 function App() {
   const [data, setData] = useState([]);
-  const [columns, setColumns] = useState([]);
+  const [columnConfigs, setColumnConfigs] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
   const [uploadHistory, setUploadHistory] = useState([]);
   const [historyIdCounter, setHistoryIdCounter] = useState(0);
@@ -29,7 +28,10 @@ function App() {
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
 
-  const selectedColumnName = selectedColumnIndex !== null ? columns[selectedColumnIndex]?.title : '';
+  const minSpareCols = 2;
+  const minSpareRows = 2;
+
+  const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
   // Toggle history sidebar visibility
   const toggleHistory = () => {
@@ -42,12 +44,12 @@ function App() {
   };
 
   // Handle missing value replacement
-  const handleMissingValue = MissingValue(data, columns, setData, logAction);
+  const handleMissingValue = MissingValue(data, columnConfigs, setData, logAction);
 
   // Trigger replacement of missing values in the selected column
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
-      const columnId = columns[selectedColumnIndex]?.data;
+      const columnId = columnConfigs[selectedColumnIndex]?.data;
       if (columnId) {
         handleMissingValue(columnId, replacementValue);
       }
@@ -56,11 +58,32 @@ function App() {
 
   // Delete history entry
   const handleHistoryDelete = (index) => {
-    setUploadHistory(uploadHistory.filter((_, i) => i !== index));
     const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
+    const parentId = uploadHistory[index].parentId;
+    const newHistory = uploadHistory.filter((_, i) => i !== index);
+  
     if (isDeletingCurrentData) {
-      //TODO
+      const parentEntry = newHistory.find(entry => entry.id === parentId);
+      if (parentEntry) {
+        setData(parentEntry.data);
+        initializeColumns(parentEntry.data);
+        setCurrentDataId(parentEntry.id);
+        setActions(parentEntry.actions);
+        setOriginalFileName(parentEntry.fileName);
+      } else {
+        if (window.confirm("Parent version no longer exists. Do you want to delete this version?")) {
+          setData([]);
+          setColumnConfigs([]);
+          setCurrentDataId(null);
+          setActions([]);
+          setOriginalFileName('');
+        } else {
+          return;
+        }
+      }
     }
+  
+    setUploadHistory(newHistory);
   };
 
   // Save data to history
@@ -79,26 +102,27 @@ function App() {
 
   // Handle data loaded from file or initial fetch
   const handleDataLoaded = (newData, fileName) => {
+    appendEmptyCells(newData, minSpareRows, minSpareCols);
     setData(newData);
-    setColumnsFromData(newData);
+    initializeColumns(newData);
     setOriginalFileName(fileName);
     setCurrentDataId(historyIdCounter);
     setHistoryIdCounter(historyIdCounter + 1);
     saveDataToHistory(newData, fileName, null);
   };
 
-  // Set column widths from data
-  const setColumnsFromData = (newData) => {
+  // Initialize column configurations from data
+  const initializeColumns = (newData) => {
     if (newData.length > 0) {
-        const columnNames = Object.keys(newData[0]);
-        const columnWidths = columnNames.map(name => {
-            const maxLength = Math.max(
-              ...newData.map(row => String(row[name]).length), 
-              name.length
-            );
-            return { data: name, title: name, width: Math.min(200, maxLength * 10) };
-        });
-        setColumns(columnWidths);
+      const columnNames = Object.keys(newData[0]);
+      const columnsCount = columnNames.length;
+
+      const columnConfigs = Array.from({ length: columnsCount }, (_, index) => ({
+        data: columnNames[index] || `column${index + 1}`,
+        title: columnNames[index] || `Column ${index + 1}`,
+      }));
+
+      setColumnConfigs(columnConfigs);
     }
   };
 
@@ -112,14 +136,14 @@ function App() {
   // Handle history item click
   const handleHistoryClick = (historyEntry, index) => {
     setData(historyEntry.data);
-    setColumnsFromData(historyEntry.data);
+    initializeColumns(historyEntry.data);
     setClickedIndex(index);
-    setCurrentDataId(historyEntry.id)
+    setCurrentDataId(historyEntry.id);
     setActions(historyEntry.actions);
-    setOriginalFileName(historyEntry.fileName)
+    setOriginalFileName(historyEntry.fileName);
     setTimeout(() => {
       setClickedIndex(-1);
-    }, 500); 
+    }, 500);
   };
 
   // Fetch initial data on component mount
@@ -131,14 +155,52 @@ function App() {
       const result = await reader.read();
       const decoder = new TextDecoder('utf-8');
       const csv = decoder.decode(result.value);
-      Papa.parse(csv, { header: true, 
+      Papa.parse(csv, {
+        header: true,
         complete: (results) => {
           handleDataLoaded(results.data, csv.name);
-        } 
+        }
       });
     };
     fetchData();
   }, []);
+
+  // Append empty rows and columns to the data
+  const appendEmptyCells = (data, minSpareRows, minSpareCols) => {
+    const emptyRow = data.length > 0 ? Object.keys(data[0]).reduce((acc, key) => ({ ...acc, [key]: '' }), {}) : {};
+    let existingEmptyRowCount = 0;
+    let existingEmptyColCount = 0;
+
+    // Count existing empty rows and columns
+    for (let i = data.length - 1; i >= 0; i--) {
+      const isEmptyRow = Object.values(data[i]).every(value => value === null || value === undefined || value === '');
+      if (isEmptyRow) {
+        existingEmptyRowCount++;
+      } else {
+        break;
+      }
+    }
+    const columnNames = data.length > 0 ? Object.keys(data[0]) : [];
+    for (let i = columnNames.length - 1; i >= 0; i--) {
+      const isEmptyCol = data.every(row => row[columnNames[i]] === null || row[columnNames[i]] === undefined || row[columnNames[i]] === '');
+      if (isEmptyCol) {
+        existingEmptyColCount++;
+      } else {
+        break;
+      }
+    }
+    // Add required empty rows and columns
+    const rowsToAdd = Math.max(minSpareRows - existingEmptyRowCount, 0);
+    for (let i = 0; i < rowsToAdd; i++) {
+      data.push({ ...emptyRow });
+    }
+    const colsToAdd = Math.max(minSpareCols - existingEmptyColCount, 0);
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < colsToAdd; j++) {
+        data[i][`column${columnNames.length + j + 1}`] = '';
+      }
+    }
+  };
 
   // Currently selected cells
   const handleSelectionEnd = (r1, c1, r2, c2) => {
@@ -161,9 +223,9 @@ function App() {
     }
   };
 
-  //Handle any style change of cells and text in cells
+  // Handle any style change of cells and text in cells
   const handleStyleChange = (styleType, value) => {
-    setTextStyles(prev => {
+    setTextStyles((prev) => {
       const newTextStyles = { ...prev };
       selectedCellsRef.current.forEach(([row, col]) => {
         if (!newTextStyles[`${row}-${col}`]) {
@@ -217,40 +279,43 @@ function App() {
     td.style.borderBottom = styles.borderBottom || '';
     td.style.borderLeft = styles.borderLeft || '';
     td.style.borderRight = styles.borderRight || '';
-  };
+  }
 
   return (
     <div className="container">
       <h1>Data-Story</h1>
-      <MenuBar 
-        onSaveCurrent={handleSaveCurrent} 
-        onDataLoaded={handleDataLoaded} 
-        toggleHistory={toggleHistory} 
+      <MenuBar
+        onSaveCurrent={handleSaveCurrent}
+        onDataLoaded={handleDataLoaded}
+        toggleHistory={toggleHistory}
         onStyleChange={handleStyleChange}
         selectedColumnIndex={selectedColumnIndex}
         selectedColumnName={selectedColumnName}
-        setColumns={setColumns}
-        columns={columns} // Pass columns here
+        setColumns={setColumnConfigs}
+        columns={columnConfigs} // Pass columns here
       />
       <div className="content-area">
         <div className="handsontable-container">
-          <HotTable
-            ref={hotRef}
-            data={data}
-            colHeaders={columns.map(column => column.title)}
-            columns={columns.map(col => ({ ...col, renderer: customRenderer }))}
-            rowHeaders={true}
-            manualColumnResize={true}
-            manualColumnMove={true}
-            autoWrapRow={true}
-            autoWrapCol={true}
-            comments={true}
-            width="100%"
-            height="auto"
-            licenseKey="non-commercial-and-evaluation"
-            afterSelectionEnd={handleSelectionEnd}
-            outsideClickDeselects={false}
-          />
+          <div className="hot-table-wrapper">
+            <HotTable
+              ref={hotRef}
+              data={data}
+              colHeaders={columnConfigs.map((column) => column.title)}
+              columns={columnConfigs.map((col) => ({ ...col, renderer: customRenderer }))}
+              rowHeaders={true}
+              width="100%"
+              height="100%"
+              autoWrapRow={true}
+              autoWrapCol={true}
+              manualColumnResize={true}
+              autoColumnSize={true}
+              afterSelectionEnd={handleSelectionEnd}
+              outsideClickDeselects={false}
+              fillHandle={true}
+              comments={true}
+              licenseKey="non-commercial-and-evaluation"
+            />
+          </div>
         </div>
         <MainSidebar
           replacementValue={replacementValue}
