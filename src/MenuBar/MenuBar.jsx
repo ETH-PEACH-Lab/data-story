@@ -22,7 +22,9 @@ const MenuBar = ({
   countAndRemoveDuplicates,
   addRow,
   addColumn,
-  handleFindReplace
+  handleFindReplace,
+  handleUndo,
+  handleRedo
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -34,11 +36,14 @@ const MenuBar = ({
               toggleHistory={toggleHistory} 
               fileInputRef={fileInputRef} 
             />,
-    'Edit': <EditMenu countAndRemoveDuplicates={countAndRemoveDuplicates}
+    'Edit': <EditMenu 
+              countAndRemoveDuplicates={countAndRemoveDuplicates}
               tableContainerRef={tableContainerRef}
               selectedColumnIndex={selectedColumnIndex}
               selectedColumnName={selectedColumnName}
               handleFindReplace={handleFindReplace}
+              handleUndo={handleUndo}
+              handleRedo={handleRedo}
             />,
     'Format': <FormatMenu 
                 onStyleChange={onStyleChange} 

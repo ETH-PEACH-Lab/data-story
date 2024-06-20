@@ -337,6 +337,14 @@ function App() {
     setData(newData);
   };
 
+  const handleUndo = () => {
+    hotRef.current.hotInstance.undo();
+  };
+
+  const handleRedo = () => {
+    hotRef.current.hotInstance.redo();
+  };
+
   return (
     <div className="container">
       <h1>Data-Story</h1>
@@ -356,6 +364,8 @@ function App() {
         addRow={addRow}
         addColumn={addColumn}
         handleFindReplace={handleFindReplace}
+        handleUndo={handleUndo}
+        handleRedo={handleRedo}
       />
       <div className="content-area">
         <div className="handsontable-container" ref={tableContainerRef}>
@@ -379,6 +389,7 @@ function App() {
               fillHandle={true}
               comments={true}
               licenseKey="non-commercial-and-evaluation"
+              undoRedo={true} // Enable UndoRedo plugin
             />
           </div>
         </div>

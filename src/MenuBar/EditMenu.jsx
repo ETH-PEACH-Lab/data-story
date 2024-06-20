@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './MenuBar.module.css';
 
-const EditMenu = ({ countAndRemoveDuplicates, tableContainerRef, selectedColumnIndex, selectedColumnName, handleFindReplace }) => {
+const EditMenu = ({ countAndRemoveDuplicates, tableContainerRef, selectedColumnIndex, selectedColumnName, handleFindReplace, handleUndo, handleRedo }) => {
   const [isRemoveDuplicatesDropdownVisible, setRemoveDuplicatesDropdownVisible] = useState(false);
   const [isFindReplaceDropdownVisible, setFindReplaceDropdownVisible] = useState(false);
   const [duplicateCount, setDuplicateCount] = useState(0);
@@ -21,6 +21,10 @@ const EditMenu = ({ countAndRemoveDuplicates, tableContainerRef, selectedColumnI
     } else if (item === 'Find and Replace') {
       setFindReplaceDropdownVisible(!isFindReplaceDropdownVisible);
       setRemoveDuplicatesDropdownVisible(false);
+    } else if (item === 'Undo') {
+      handleUndo();
+    } else if (item === 'Redo') {
+      handleRedo();
     } else {
       console.log(`${item} clicked`);
     }
