@@ -96,12 +96,67 @@ class ClearFormattingAction extends Handsontable.plugins.UndoRedo.Action {
 }
 
 class InsertRowAction extends Handsontable.plugins.UndoRedo.Action {
-    //TODO
-}
+    constructor(index, amount) {
+      super();
+      this.index = index;
+      this.amount = amount;
+      this.actionType = 'insert_row';
+    }
+  
+    undo(instance, undoneCallback) {
+      instance.addHookOnce('afterRemoveRow', undoneCallback);
+      instance.alter('remove_row', this.index, this.amount, 'UndoRedo.undo');
+    }
+  
+    redo(instance, redoneCallback) {
+      instance.addHookOnce('afterCreateRow', redoneCallback);
+      instance.alter('insert_row_above', this.index, this.amount, 'UndoRedo.redo');
+    }
+  }
+  
+  export { InsertRowAction };
 
-class InsertColumnAction extends Handsontable.plugins.UndoRedo.Action {
-    //TODO
-}
+  class InsertColumnAction extends Handsontable.plugins.UndoRedo.Action {
+    constructor(index, columnKey) {
+      super();
+      this.index = index;
+      this.columnKey = columnKey;
+      this.actionType = 'insert_col';
+    }
+  
+    undo(instance, undoneCallback) {
+      const columnConfigs = instance.getSettings().columns;
+      columnConfigs.splice(this.index, 1);
+      instance.updateSettings({ columns: columnConfigs });
+      
+      instance.getSourceData().forEach(row => {
+        delete row[this.columnKey];
+      });
+      
+      instance.render();
+      if (undoneCallback) {
+        undoneCallback();
+      }
+    }
+  
+    redo(instance, redoneCallback) {
+      const columnConfigs = instance.getSettings().columns;
+      const newColumn = { data: this.columnKey, title: `Column ${this.index + 1}` };
+      columnConfigs.splice(this.index, 0, newColumn);
+      instance.updateSettings({ columns: columnConfigs });
+  
+      instance.getSourceData().forEach(row => {
+        row[this.columnKey] = '';
+      });
+      
+      instance.render();
+      if (redoneCallback) {
+        redoneCallback();
+      }
+    }
+  }
+  
+  export { InsertColumnAction };
 
 class ChartAction extends Handsontable.plugins.UndoRedo.Action {
     //TODO

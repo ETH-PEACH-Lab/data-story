@@ -9,7 +9,7 @@ import HistorySidebar from './HistorySidebar';
 import { textRenderer } from 'handsontable/renderers/textRenderer';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
-import { FindReplaceAction, RemoveDuplicatesAction } from './CustomUndoRedo';
+import { FindReplaceAction, RemoveDuplicatesAction, InsertColumnAction, InsertRowAction } from './CustomUndoRedo';
 
 registerAllModules();
 
@@ -310,24 +310,49 @@ function App() {
 
   //add empty Row to the end of the table
   const addRow = () => {
+    const newRowIndex = data.length;
     const emptyRow = columnConfigs.reduce((acc, col) => ({ ...acc, [col.data]: '' }), {});
     const newData = [...data, emptyRow];
     setData(newData);
+  
+    const wrappedAction = () => new InsertRowAction(newRowIndex, 1);
+    hotRef.current.hotInstance.undoRedo.done(wrappedAction);
   };
 
   //add empty Column to the end of the table
   const addColumn = () => {
-    const columnIndex = columnConfigs.length;
-    const newColumnKey = `column${columnIndex + 1}`;
-    const newColumn = { data: newColumnKey, title: `Column ${columnIndex + 1}` };
-
+    const newColumnIndex = columnConfigs.length;
+    const newColumnKey = `column${newColumnIndex + 1}`;
+    const newColumn = { data: newColumnKey, title: `Column ${newColumnIndex + 1}` };
+  
     const newData = data.map(row => ({
       ...row,
       [newColumnKey]: ''
     }));
-
+  
     setData(newData);
-    setColumnConfigs([...columnConfigs, newColumn]);
+    const newColumnConfigs = [...columnConfigs, newColumn];
+    setColumnConfigs(newColumnConfigs);
+  
+    hotRef.current.hotInstance.updateSettings({ columns: newColumnConfigs });
+  
+    // Log the action for undo/redo
+    const wrappedAction = () => new InsertColumnAction(newColumnIndex, newColumnKey);
+    hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+  };
+  
+  // Remove a column from the table
+  const removeColumn = (index, columnKey) => {
+    const newColumnConfigs = columnConfigs.filter((_, colIndex) => colIndex !== index);
+    setColumnConfigs(newColumnConfigs);
+  
+    const newData = data.map(row => {
+      const { [columnKey]: _, ...rest } = row;
+      return rest;
+    });
+  
+    setData(newData);
+    hotRef.current.hotInstance.updateSettings({ columns: newColumnConfigs });
   };
 
   //Find cells in column with value = findText and replace them with replaceText
