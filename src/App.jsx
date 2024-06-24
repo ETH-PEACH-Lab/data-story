@@ -2,14 +2,19 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
-import Papa from 'papaparse';
-import { MissingValue } from './MissingValue';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
-import { textRenderer } from 'handsontable/renderers/textRenderer';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
-import { FindReplaceAction, RemoveDuplicatesAction, InsertColumnAction, InsertRowAction, TextStyleAction, CellStyleAction, ClearFormattingAction } from './CustomUndoRedo';
+
+import { handleDataLoaded, initializeColumns, fetchData } from './utils/dataHandlers';
+import { toggleHistory, logAction, handleHistoryDelete, saveDataToHistory } from './utils/historyHandlers';
+import { handleStyleChange, customRenderer } from './utils/styleHandlers';
+import { handleSelectionEnd, addRow, addColumn, removeColumn } from './utils/rowColumnHandlers';
+import { handleSort, handleFilter } from './utils/filterSortHandlers';
+import { countAndRemoveDuplicates } from './utils/duplicateHandlers';
+import { handleFindReplace } from './utils/findReplaceHandlers';
+import { handleUndo, handleRedo } from './utils/undoRedoHandlers';
 
 registerAllModules();
 
@@ -32,20 +37,6 @@ function App() {
 
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
-  // Toggle history sidebar visibility
-  const toggleHistory = () => {
-    setHistoryVisible(prev => !prev);
-  };
-
-  // Log actions for history tracking
-  const logAction = (actionDescription) => {
-    setActions(prevActions => [...prevActions, actionDescription]);
-  };
-
-  // Handle missing value replacement
-  const handleMissingValue = MissingValue(data, columnConfigs, setData, logAction);
-
-  // Trigger replacement of missing values in the selected column
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
       const columnId = columnConfigs[selectedColumnIndex]?.data;
@@ -55,96 +46,9 @@ function App() {
     }
   };
 
-  // Delete history entry
-  const handleHistoryDelete = (index) => {
-    const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
-    const parentId = uploadHistory[index].parentId;
-    const newHistory = uploadHistory.filter((_, i) => i !== index);
-
-    if (isDeletingCurrentData) {
-      const parentEntry = newHistory.find(entry => entry.id === parentId);
-      if (parentEntry) {
-        setData(parentEntry.data);
-        initializeColumns(parentEntry.data);
-        setCurrentDataId(parentEntry.id);
-        setActions(parentEntry.actions);
-        setOriginalFileName(parentEntry.fileName);
-      } else {
-        if (window.confirm("Parent version no longer exists. Do you want to delete this version?")) {
-          setCurrentDataId(null);
-        } else {
-          return;
-        }
-      }
-    }
-  
-    setUploadHistory(newHistory);
-  };
-
-  // Save data to history
-  const saveDataToHistory = (newData, fileName, parentId) => {
-    const timestamp = new Date().toLocaleString();
-    const fileNameToUse = fileName || originalFileName || "initial dataset";
-    const dataCopy = JSON.parse(JSON.stringify(newData));
-    const newHistoryId = historyIdCounter;
-    setHistoryIdCounter(prev => prev + 1);
-    setUploadHistory(prevHistory => [
-      ...prevHistory, 
-      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
-    ]);
-    setCurrentDataId(newHistoryId);
-  };
-
-  // Handle data loaded from file or initial fetch
-  const handleDataLoaded = (newData, fileName) => {
-    const dataWithTypes = newData.map(row => {
-      const newRow = {};
-      Object.keys(row).forEach(key => {
-        newRow[key] = row[key];
-      });
-      return newRow;
-    });
-  
-    const initialColumnConfigs = Object.keys(newData[0] || {}).map((key, index) => ({
-      data: key,
-      title: key,
-      type: 'text' // Set the type to 'text'
-    }));
-  
-    setData(dataWithTypes);
-    setColumnConfigs(initialColumnConfigs);
-    setOriginalFileName(fileName);
-    setCurrentDataId(historyIdCounter);
-    setHistoryIdCounter(historyIdCounter + 1);
-    saveDataToHistory(dataWithTypes, fileName, null);
-  };
-
-  // Initialize column configurations from data
-  const initializeColumns = (newData) => {
-    if (newData.length > 0) {
-      const columnNames = Object.keys(newData[0]);
-      const columnsCount = columnNames.length;
-
-      const columnConfigs = Array.from({ length: columnsCount }, (_, index) => ({
-        data: columnNames[index] || `column${index + 1}`,
-        title: columnNames[index] || `Column ${index + 1}`,
-      }));
-
-      setColumnConfigs(columnConfigs);
-    }
-  };
-
-  // Save current data to history
-  const handleSaveCurrent = () => {
-    const parentEntry = uploadHistory.find(entry => entry.id === currentDataId);
-    const parentId = parentEntry ? parentEntry.id : null;
-    saveDataToHistory(data, originalFileName, parentId);
-  };
-
-  // Handle history item click
   const handleHistoryClick = (historyEntry, index) => {
     setData(historyEntry.data);
-    initializeColumns(historyEntry.data);
+    initializeColumns(historyEntry.data, setColumnConfigs);
     setClickedIndex(index);
     setCurrentDataId(historyEntry.id);
     setActions(historyEntry.actions);
@@ -154,287 +58,31 @@ function App() {
     }, 500);
   };
 
-  // Fetch initial data on component mount
   useEffect(() => {
-    const hot = hotRef.current.hotInstance;
-    const fetchData = async () => {
-      const response = await fetch('https://eth-peach-lab.github.io/data-story/titanic.csv');
-      const reader = response.body.getReader();
-      const result = await reader.read();
-      const decoder = new TextDecoder('utf-8');
-      const csv = decoder.decode(result.value);
-      Papa.parse(csv, {
-        header: true,
-        complete: (results) => {
-          handleDataLoaded(results.data, csv.name);
-        }
-      });
-    };
-    fetchData();
+    fetchData((newData, fileName) => handleDataLoaded(newData, fileName, setData, setColumnConfigs, setOriginalFileName, setCurrentDataId, saveDataToHistory, historyIdCounter, setHistoryIdCounter, setUploadHistory, actions, originalFileName));
   }, []);
-
-  // Currently selected cells
-  const handleSelectionEnd = (r1, c1, r2, c2) => {
-    const selectedCells = [];
-    const minRow = Math.min(r1, r2);
-    const maxRow = Math.max(r1, r2);
-    const minCol = Math.min(c1, c2);
-    const maxCol = Math.max(c1, c2);
-    for (let row = minRow; row <= maxRow; row++) {
-      for (let col = minCol; col <= maxCol; col++) {
-        selectedCells.push([row, col]);
-      }
-    }
-    selectedCellsRef.current = selectedCells;
-
-    if (minCol === maxCol) {
-      setSelectedColumnIndex(minCol);
-    } else {
-      setSelectedColumnIndex(null);
-    }
-  };
-
-  // Handle any style change of cells and text in cells
-  const handleStyleChange = (styleType, value) => {
-    const changes = [];
-    setTextStyles((prev) => {
-      const newTextStyles = { ...prev };
-      selectedCellsRef.current.forEach(([row, col]) => {
-        if (!newTextStyles[`${row}-${col}`]) {
-          newTextStyles[`${row}-${col}`] = {};
-        }
-        const oldStyle = { ...newTextStyles[`${row}-${col}`] };
-        if (styleType === 'clear formatting') {
-          newTextStyles[`${row}-${col}`] = {};
-        } else if (styleType === 'bold') {
-          newTextStyles[`${row}-${col}`].fontWeight = newTextStyles[`${row}-${col}`].fontWeight === 'bold' ? 'normal' : 'bold';
-        } else if (styleType === 'italic') {
-          newTextStyles[`${row}-${col}`].fontStyle = newTextStyles[`${row}-${col}`].fontStyle === 'italic' ? 'normal' : 'italic';
-        } else if (styleType === 'strikethrough') {
-          newTextStyles[`${row}-${col}`].textDecoration = newTextStyles[`${row}-${col}`].textDecoration === 'line-through' ? 'none' : 'line-through';
-        } else if (styleType === 'borderColor') {
-          const minRow = Math.min(...selectedCellsRef.current.map(([row, _]) => row));
-          const maxRow = Math.max(...selectedCellsRef.current.map(([row, _]) => row));
-          const minCol = Math.min(...selectedCellsRef.current.map(([_, col]) => col));
-          const maxCol = Math.max(...selectedCellsRef.current.map(([_, col]) => col));
-  
-          if (row === minRow) {
-            newTextStyles[`${row}-${col}`].borderTop = `2px solid ${value}`;
-          }
-          if (row === maxRow) {
-            newTextStyles[`${row}-${col}`].borderBottom = `2px solid ${value}`;
-          }
-          if (col === minCol) {
-            newTextStyles[`${row}-${col}`].borderLeft = `2px solid ${value}`;
-          }
-          if (col === maxCol) {
-            newTextStyles[`${row}-${col}`].borderRight = `2px solid ${value}`;
-          }
-        } else {
-          newTextStyles[`${row}-${col}`][styleType] = value;
-        }
-        changes.push({ row, col, oldStyle, newStyle: { ...newTextStyles[`${row}-${col}`] } });
-        console.log(`Modified cell [${row}, ${col}] from style:`, oldStyle, "to style:", newTextStyles[`${row}-${col}`]);
-      });
-      return newTextStyles;
-    });
-  
-    const action = styleType === 'clear formatting'
-      ? new ClearFormattingAction(changes)
-      : styleType === 'backgroundColor' || styleType.includes('border')
-      ? new CellStyleAction(changes)
-      : new TextStyleAction(changes);
-  
-    hotRef.current.hotInstance.undoRedo.done(() => action);
-  };
-  // Custom renderer to change cell text color and text style
-  function customRenderer(instance, td, row, col, prop, value, cellProperties) {
-    textRenderer.apply(this, arguments);
-    const cellKey = `${row}-${col}`;
-    const styles = textStyles[cellKey] || {};
-    td.style.color = styles.color || 'black';
-    td.style.backgroundColor = styles.backgroundColor || 'white';
-    td.style.fontWeight = styles.fontWeight || 'normal';
-    td.style.fontStyle = styles.fontStyle || 'normal';
-    td.style.textDecoration = styles.textDecoration || 'none';
-    td.style.borderTop = styles.borderTop || '';
-    td.style.borderBottom = styles.borderBottom || '';
-    td.style.borderLeft = styles.borderLeft || '';
-    td.style.borderRight = styles.borderRight || '';
-  }
-
-  // Sort Rows
-  const handleSort = (columnName, sortOrder) => {
-    if (!columnName || !sortOrder) return;
-  
-    const columnIndex = columnConfigs.findIndex(col => col.title === columnName);
-    if (columnIndex === -1) return;
-  
-    const hotInstance = hotRef.current.hotInstance;
-    const columnSorting = hotInstance.getPlugin('columnSorting');
-  
-    columnSorting.sort({
-      column: columnIndex,
-      sortOrder: sortOrder === 'Ascending' ? 'asc' : 'desc',
-    });
-  };
-
-  //Filter for condition
-  const handleFilter = (columnName, condition, value) => {
-    if (!columnName || !condition) return;
-  
-    const columnIndex = columnConfigs.findIndex(col => col.title === columnName);
-    if (columnIndex === -1) return;
-  
-    const hotInstance = hotRef.current.hotInstance;
-    const filtersPlugin = hotInstance.getPlugin('filters');
-  
-    if (condition === 'clear') {
-      filtersPlugin.removeConditions(columnIndex);
-      filtersPlugin.filter();
-    } else {
-      filtersPlugin.clearConditions(columnIndex);
-      filtersPlugin.addCondition(columnIndex, condition, [value]);
-      filtersPlugin.filter();
-    }
-  };
-
-  //Count and Remove duplicate Rows
-  const countAndRemoveDuplicates = (remove = false) => {
-    const rowStrings = data.map(row => JSON.stringify(row));
-    const seen = new Set();
-    const duplicates = [];
-    const removedData = [];
-    let duplicateCount = 0;
-  
-    rowStrings.forEach((row, index) => {
-      if (row === '{}' || seen.has(row)) {
-        if (row !== '{}') {
-          duplicateCount++;
-        }
-        if (remove) {
-          duplicates.push(index);
-          removedData.push(data[index]);
-        }
-      } else {
-        seen.add(row);
-      }
-    });
-  
-    if (remove) {
-      const newData = data.filter((_, index) => !duplicates.includes(index));
-      const rowIndexesSequence = hotRef.current.hotInstance.rowIndexMapper.getIndexesSequence();
-      setData(newData);
-      
-      const wrappedAction = () => new RemoveDuplicatesAction(duplicates, removedData, rowIndexesSequence);
-      hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-    }
-  
-    return duplicateCount;
-  };
-
-  //add empty Row to the end of the table
-  const addRow = () => {
-    const newRowIndex = data.length;
-    const emptyRow = columnConfigs.reduce((acc, col) => ({ ...acc, [col.data]: '' }), {});
-    const newData = [...data, emptyRow];
-    setData(newData);
-  
-    const wrappedAction = () => new InsertRowAction(newRowIndex, 1);
-    hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-  };
-
-  //add empty Column to the end of the table
-  const addColumn = () => {
-    const newColumnIndex = columnConfigs.length;
-    const newColumnKey = `column${newColumnIndex + 1}`;
-    const newColumn = { data: newColumnKey, title: `Column ${newColumnIndex + 1}` };
-  
-    const newData = data.map(row => ({
-      ...row,
-      [newColumnKey]: ''
-    }));
-  
-    setData(newData);
-    const newColumnConfigs = [...columnConfigs, newColumn];
-    setColumnConfigs(newColumnConfigs);
-  
-    hotRef.current.hotInstance.updateSettings({ columns: newColumnConfigs });
-  
-    // Log the action for undo/redo
-    const wrappedAction = () => new InsertColumnAction(newColumnIndex, newColumnKey);
-    hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-  };
-  
-  // Remove a column from the table
-  const removeColumn = (index, columnKey) => {
-    const newColumnConfigs = columnConfigs.filter((_, colIndex) => colIndex !== index);
-    setColumnConfigs(newColumnConfigs);
-  
-    const newData = data.map(row => {
-      const { [columnKey]: _, ...rest } = row;
-      return rest;
-    });
-  
-    setData(newData);
-    hotRef.current.hotInstance.updateSettings({ columns: newColumnConfigs });
-  };
-
-  //Find cells in column with value = findText and replace them with replaceText
-  const handleFindReplace = (findText, replaceText) => {
-    if (selectedColumnIndex === null) return;
-
-    const changes = [];
-    const newData = data.map((row, rowIndex) => {
-      const oldValue = row[selectedColumnName];
-      if ((findText === '' && (oldValue === '' || oldValue === null)) || oldValue === findText) {
-        changes.push({ row: rowIndex, col: selectedColumnIndex, oldValue, newValue: replaceText });
-        return { ...row, [selectedColumnName]: replaceText };
-      }
-      return row;
-    });
-
-    if (changes.length > 0) {
-      console.log('Recording FindReplaceAction:', changes);
-      const wrappedAction = () => new FindReplaceAction(changes);
-      hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-      setData(newData);
-    }
-  };
-
-  // Handle Undo
-  const handleUndo = () => {
-    console.log('undo')
-    hotRef.current.hotInstance.undo();
-  };
-
-  // Handle Redo
-  const handleRedo = () => {
-    console.log('redo')
-    hotRef.current.hotInstance.redo();
-  };
 
   return (
     <div className="container">
       <h1>Data-Story</h1>
       <MenuBar
-        onSaveCurrent={handleSaveCurrent}
-        onDataLoaded={handleDataLoaded}
-        toggleHistory={toggleHistory}
-        onStyleChange={handleStyleChange}
+        onSaveCurrent={() => saveDataToHistory(data, originalFileName, currentDataId, setUploadHistory, setCurrentDataId, historyIdCounter, setHistoryIdCounter, actions, originalFileName)}
+        onDataLoaded={(newData, fileName) => handleDataLoaded(newData, fileName, setData, setColumnConfigs, setOriginalFileName, setCurrentDataId, saveDataToHistory, historyIdCounter, setHistoryIdCounter, setUploadHistory, actions, originalFileName)}
+        toggleHistory={() => toggleHistory(setHistoryVisible)}
+        onStyleChange={(styleType, value) => handleStyleChange(styleType, value, selectedCellsRef, setTextStyles, hotRef)}
         selectedColumnIndex={selectedColumnIndex}
         selectedColumnName={selectedColumnName}
         setColumns={setColumnConfigs}
         columns={columnConfigs}
-        handleSort={handleSort}
-        handleFilter={handleFilter}
+        handleSort={(columnName, sortOrder) => handleSort(columnName, sortOrder, columnConfigs, hotRef)}
+        handleFilter={(columnName, condition, value) => handleFilter(columnName, condition, value, columnConfigs, hotRef)}
         tableContainerRef={tableContainerRef}
-        countAndRemoveDuplicates={countAndRemoveDuplicates}
-        addRow={addRow}
-        addColumn={addColumn}
-        handleFindReplace={handleFindReplace}
-        handleUndo={handleUndo}
-        handleRedo={handleRedo}
+        countAndRemoveDuplicates={(remove) => countAndRemoveDuplicates(data, setData, hotRef, remove)}
+        addRow={() => addRow(data, setData, columnConfigs, hotRef)}
+        addColumn={() => addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)}
+        handleFindReplace={(findText, replaceText) => handleFindReplace(findText, replaceText, selectedColumnIndex, selectedColumnName, data, setData, hotRef)}
+        handleUndo={() => handleUndo(hotRef)}
+        handleRedo={() => handleRedo(hotRef)}
         hotRef={hotRef}
       />
       <div className="content-area">
@@ -444,7 +92,7 @@ function App() {
               ref={hotRef}
               data={data}
               colHeaders={columnConfigs.map((column) => column.title)}
-              columns={columnConfigs.map((col) => ({ ...col, renderer: customRenderer }))}
+              columns={columnConfigs.map((col) => ({ ...col, renderer: (instance, td, row, col, prop, value, cellProperties) => customRenderer(instance, td, row, col, prop, value, cellProperties, textStyles) }))}
               rowHeaders={true}
               width="100%"
               height="100%"
@@ -454,12 +102,12 @@ function App() {
               filters={true}
               manualColumnResize={true}
               autoColumnSize={true}
-              afterSelectionEnd={handleSelectionEnd}
+              afterSelectionEnd={(r1, c1, r2, c2) => handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex)}
               outsideClickDeselects={false}
               fillHandle={true}
               comments={true}
               licenseKey="non-commercial-and-evaluation"
-              undoRedo={true} // Enable UndoRedo plugin
+              undoRedo={true}
               settings={{ textStyles }}
             />
           </div>
@@ -476,8 +124,8 @@ function App() {
           uploadHistory={uploadHistory}
           clickedIndex={clickedIndex}
           onHistoryItemClick={handleHistoryClick}
-          onHistoryItemDelete={handleHistoryDelete}
-          toggleHistory={toggleHistory}
+          onHistoryItemDelete={(index) => handleHistoryDelete(index, uploadHistory, currentDataId, setData, initializeColumns, setCurrentDataId, setActions, setOriginalFileName, setUploadHistory)}
+          toggleHistory={() => toggleHistory(setHistoryVisible)}
           currentDataId={currentDataId}
         />
       </div>
