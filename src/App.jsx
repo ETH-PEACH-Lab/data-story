@@ -9,7 +9,7 @@ import HistorySidebar from './HistorySidebar';
 import { textRenderer } from 'handsontable/renderers/textRenderer';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
-import { FindReplaceAction } from './CustomUndoRedo';
+import { FindReplaceAction, RemoveDuplicatesAction } from './CustomUndoRedo';
 
 registerAllModules();
 
@@ -279,6 +279,7 @@ function App() {
     const rowStrings = data.map(row => JSON.stringify(row));
     const seen = new Set();
     const duplicates = [];
+    const removedData = [];
     let duplicateCount = 0;
   
     rowStrings.forEach((row, index) => {
@@ -288,6 +289,7 @@ function App() {
         }
         if (remove) {
           duplicates.push(index);
+          removedData.push(data[index]);
         }
       } else {
         seen.add(row);
@@ -296,7 +298,11 @@ function App() {
   
     if (remove) {
       const newData = data.filter((_, index) => !duplicates.includes(index));
+      const rowIndexesSequence = hotRef.current.hotInstance.rowIndexMapper.getIndexesSequence();
       setData(newData);
+      
+      const wrappedAction = () => new RemoveDuplicatesAction(duplicates, removedData, rowIndexesSequence);
+      hotRef.current.hotInstance.undoRedo.done(wrappedAction);
     }
   
     return duplicateCount;

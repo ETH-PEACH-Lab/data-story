@@ -31,8 +31,45 @@ class FindReplaceAction extends Handsontable.plugins.UndoRedo.Action {
 export { FindReplaceAction };
 
 class RemoveDuplicatesAction extends Handsontable.plugins.UndoRedo.Action {
-    //TODO
-}
+    constructor(removedIndices, removedData, rowIndexesSequence) {
+      super();
+      this.removedIndices = removedIndices;
+      this.removedData = removedData;
+      this.rowIndexesSequence = rowIndexesSequence;
+      this.actionType = 'remove_duplicates';
+    }
+  
+    undo(instance, undoneCallback) {
+      console.log('Undo remove duplicates:', this.removedIndices, this.removedData);
+      const settings = instance.getSettings();
+      const changes = [];
+  
+      this.removedIndices.forEach((index, i) => {
+        instance.alter('insert_row_above', index, 1, 'UndoRedo.undo');
+        Object.keys(this.removedData[i]).forEach((columnProp) => {
+          const columnIndex = parseInt(columnProp, 10);
+          changes.push([index, isNaN(columnIndex) ? columnProp : columnIndex, this.removedData[i][columnProp]]);
+        });
+      });
+  
+      instance.addHookOnce('afterViewRender', undoneCallback);
+  
+      instance.setSourceDataAtCell(changes, null, null, 'UndoRedo.undo');
+      instance.rowIndexMapper.setIndexesSequence(this.rowIndexesSequence);
+      instance.render();
+    }
+  
+    redo(instance, redoneCallback) {
+      console.log('Redo remove duplicates:', this.removedIndices);
+      instance.addHookOnce('afterRemoveRow', redoneCallback);
+      this.removedIndices.forEach(index => {
+        instance.alter('remove_row', index, 1, 'UndoRedo.redo');
+      });
+      instance.render();
+    }
+  }
+  
+  export { RemoveDuplicatesAction };
 
 class TextStyleAction extends Handsontable.plugins.UndoRedo.Action {
     //TODO
