@@ -1,30 +1,47 @@
 import React, { useState } from 'react';
 import styles from '../MenuBar.module.css';
+import { TypeAction } from '../../CustomUndoRedo';
 
-const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColumns, typeMapping, reverseTypeMapping, selectedColumnName }) => {
+const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColumns, typeMapping, reverseTypeMapping, selectedColumnName, hotRef }) => {
   const [newColumnType, setNewColumnType] = useState('');
 
   const handleSetColumnType = () => {
-    setColumns(prevColumns => {
-      const newColumns = [...prevColumns];
+    if (newColumnType && selectedColumnIndex !== null) {
+      const oldColumn = columns[selectedColumnIndex];
+      const oldType = oldColumn.type;
       const newType = reverseTypeMapping[newColumnType];
 
-      switch (newType) {
-        case 'numeric':
-          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: 'numeric', numericFormat: { pattern: '0' } };
-          break;
-        case 'date':
-          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: 'date', dateFormat: 'DD-MM-YYYY' };
-          break;
-        case 'time':
-          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: 'time', timeFormat: 'h:mm:ss' };
-          break;
-        default:
-          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: newType };
+      let oldFormat = null;
+      let newFormat = null;
+
+      if (oldType === 'numeric') {
+        oldFormat = { numericFormat: oldColumn.numericFormat };
+      } else if (oldType === 'date') {
+        oldFormat = { dateFormat: oldColumn.dateFormat };
+      } else if (oldType === 'time') {
+        oldFormat = { timeFormat: oldColumn.timeFormat };
       }
 
-      return newColumns;
-    });
+      setColumns(prevColumns => {
+        const newColumns = [...prevColumns];
+        if (newType === 'numeric') {
+          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: 'numeric', numericFormat: { pattern: '0' } };
+          newFormat = { numericFormat: { pattern: '0' } };
+        } else if (newType === 'date') {
+          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: 'date', dateFormat: 'DD-MM-YYYY' };
+          newFormat = { dateFormat: 'DD-MM-YYYY' };
+        } else if (newType === 'time') {
+          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: 'time', timeFormat: 'h:mm:ss' };
+          newFormat = { timeFormat: 'h:mm:ss' };
+        } else {
+          newColumns[selectedColumnIndex] = { ...newColumns[selectedColumnIndex], type: newType };
+        }
+        return newColumns;
+      });
+
+      const wrappedAction = () => new TypeAction(selectedColumnIndex, oldType, newType, oldFormat, newFormat);
+      hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+    }
     setNewColumnType('');
   };
 
@@ -44,7 +61,7 @@ const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColu
   return (
     <div className={styles.Dropdown} style={{ top: position.top, left: position.left }} onClick={stopPropagation}>
       <div className={styles.textOption}>
-      <div>{`selected column: index ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
+        <div>{`selected column: index ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
       </div>
       <div className={styles.textOption}>
         <div>Current Type: {getColumnType()}</div>

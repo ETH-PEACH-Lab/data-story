@@ -9,7 +9,7 @@ import HistorySidebar from './HistorySidebar';
 import { textRenderer } from 'handsontable/renderers/textRenderer';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
-import { FindReplaceAction, RemoveDuplicatesAction, InsertColumnAction, InsertRowAction } from './CustomUndoRedo';
+import { FindReplaceAction, RemoveDuplicatesAction, InsertColumnAction, InsertRowAction, TextStyleAction, CellStyleAction, ClearFormattingAction } from './CustomUndoRedo';
 
 registerAllModules();
 
@@ -97,12 +97,26 @@ function App() {
 
   // Handle data loaded from file or initial fetch
   const handleDataLoaded = (newData, fileName) => {
-    setData(newData);
-    initializeColumns(newData);
+    const dataWithTypes = newData.map(row => {
+      const newRow = {};
+      Object.keys(row).forEach(key => {
+        newRow[key] = row[key];
+      });
+      return newRow;
+    });
+  
+    const initialColumnConfigs = Object.keys(newData[0] || {}).map((key, index) => ({
+      data: key,
+      title: key,
+      type: 'text' // Set the type to 'text'
+    }));
+  
+    setData(dataWithTypes);
+    setColumnConfigs(initialColumnConfigs);
     setOriginalFileName(fileName);
     setCurrentDataId(historyIdCounter);
     setHistoryIdCounter(historyIdCounter + 1);
-    saveDataToHistory(newData, fileName, null);
+    saveDataToHistory(dataWithTypes, fileName, null);
   };
 
   // Initialize column configurations from data
@@ -182,12 +196,14 @@ function App() {
 
   // Handle any style change of cells and text in cells
   const handleStyleChange = (styleType, value) => {
+    const changes = [];
     setTextStyles((prev) => {
       const newTextStyles = { ...prev };
       selectedCellsRef.current.forEach(([row, col]) => {
         if (!newTextStyles[`${row}-${col}`]) {
           newTextStyles[`${row}-${col}`] = {};
         }
+        const oldStyle = { ...newTextStyles[`${row}-${col}`] };
         if (styleType === 'clear formatting') {
           newTextStyles[`${row}-${col}`] = {};
         } else if (styleType === 'bold') {
@@ -201,7 +217,7 @@ function App() {
           const maxRow = Math.max(...selectedCellsRef.current.map(([row, _]) => row));
           const minCol = Math.min(...selectedCellsRef.current.map(([_, col]) => col));
           const maxCol = Math.max(...selectedCellsRef.current.map(([_, col]) => col));
-
+  
           if (row === minRow) {
             newTextStyles[`${row}-${col}`].borderTop = `2px solid ${value}`;
           }
@@ -217,11 +233,20 @@ function App() {
         } else {
           newTextStyles[`${row}-${col}`][styleType] = value;
         }
+        changes.push({ row, col, oldStyle, newStyle: { ...newTextStyles[`${row}-${col}`] } });
+        console.log(`Modified cell [${row}, ${col}] from style:`, oldStyle, "to style:", newTextStyles[`${row}-${col}`]);
       });
       return newTextStyles;
     });
+  
+    const action = styleType === 'clear formatting'
+      ? new ClearFormattingAction(changes)
+      : styleType === 'backgroundColor' || styleType.includes('border')
+      ? new CellStyleAction(changes)
+      : new TextStyleAction(changes);
+  
+    hotRef.current.hotInstance.undoRedo.done(() => action);
   };
-
   // Custom renderer to change cell text color and text style
   function customRenderer(instance, td, row, col, prop, value, cellProperties) {
     textRenderer.apply(this, arguments);
@@ -410,6 +435,7 @@ function App() {
         handleFindReplace={handleFindReplace}
         handleUndo={handleUndo}
         handleRedo={handleRedo}
+        hotRef={hotRef}
       />
       <div className="content-area">
         <div className="handsontable-container" ref={tableContainerRef}>
@@ -434,6 +460,7 @@ function App() {
               comments={true}
               licenseKey="non-commercial-and-evaluation"
               undoRedo={true} // Enable UndoRedo plugin
+              settings={{ textStyles }}
             />
           </div>
         </div>

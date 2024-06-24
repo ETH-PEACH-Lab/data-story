@@ -24,7 +24,8 @@ const MenuBar = ({
   addColumn,
   handleFindReplace,
   handleUndo,
-  handleRedo
+  handleRedo,
+  hotRef
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -52,6 +53,7 @@ const MenuBar = ({
                 setColumns={setColumns} 
                 columns={columns} 
                 tableContainerRef={tableContainerRef}
+                hotRef={hotRef}
               />,
     'Insert': <InsertMenu addRow={addRow} addColumn={addColumn} />,
     'Data': <DataMenu

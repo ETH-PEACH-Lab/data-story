@@ -27,7 +27,7 @@ const originalColors = [
 
 const tintedColors = originalColors.map(color => tintColor(color, 60));
 
-const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns, tableContainerRef }) => {
+const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, setColumns, columns, tableContainerRef, hotRef }) => {
   const [dropdownState, setDropdownState] = useState({
     isTextDropdownVisible: false,
     isCellDropdownVisible: false,
@@ -239,6 +239,7 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
                 selectedColumnIndex={selectedColumnIndex}
                 selectedColumnName={selectedColumnName}
                 setColumns={setColumns}
+                hotRef={hotRef}
               />
             )}
             {item === 'Type' && dropdownState.isTypeDropdownVisible && (
@@ -251,6 +252,7 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
                 typeMapping={typeMapping}
                 reverseTypeMapping={reverseTypeMapping}
                 selectedColumnName={selectedColumnName}
+                hotRef={hotRef}
               />
             )}
           </div>
