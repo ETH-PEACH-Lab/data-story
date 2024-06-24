@@ -9,6 +9,7 @@ import HistorySidebar from './HistorySidebar';
 import { textRenderer } from 'handsontable/renderers/textRenderer';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
+import { FindReplaceAction } from './CustomUndoRedo';
 
 registerAllModules();
 
@@ -34,7 +35,7 @@ function App() {
   // Toggle history sidebar visibility
   const toggleHistory = () => {
     setHistoryVisible(prev => !prev);
-  }
+  };
 
   // Log actions for history tracking
   const logAction = (actionDescription) => {
@@ -59,7 +60,7 @@ function App() {
     const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
     const parentId = uploadHistory[index].parentId;
     const newHistory = uploadHistory.filter((_, i) => i !== index);
-  
+
     if (isDeletingCurrentData) {
       const parentEntry = newHistory.find(entry => entry.id === parentId);
       if (parentEntry) {
@@ -88,8 +89,8 @@ function App() {
     const newHistoryId = historyIdCounter;
     setHistoryIdCounter(prev => prev + 1);
     setUploadHistory(prevHistory => [
-        ...prevHistory, 
-        { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
+      ...prevHistory, 
+      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
     ]);
     setCurrentDataId(newHistoryId);
   };
@@ -327,21 +328,33 @@ function App() {
   const handleFindReplace = (findText, replaceText) => {
     if (selectedColumnIndex === null) return;
 
-    const newData = data.map((row) => {
-      if ((findText === '' && (row[selectedColumnName] === '' || row[selectedColumnName] === null)) || row[selectedColumnName] === findText) {
+    const changes = [];
+    const newData = data.map((row, rowIndex) => {
+      const oldValue = row[selectedColumnName];
+      if ((findText === '' && (oldValue === '' || oldValue === null)) || oldValue === findText) {
+        changes.push({ row: rowIndex, col: selectedColumnIndex, oldValue, newValue: replaceText });
         return { ...row, [selectedColumnName]: replaceText };
       }
       return row;
     });
 
-    setData(newData);
+    if (changes.length > 0) {
+      console.log('Recording FindReplaceAction:', changes);
+      const wrappedAction = () => new FindReplaceAction(changes);
+      hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+      setData(newData);
+    }
   };
 
+  // Handle Undo
   const handleUndo = () => {
+    console.log('undo')
     hotRef.current.hotInstance.undo();
   };
 
+  // Handle Redo
   const handleRedo = () => {
+    console.log('redo')
     hotRef.current.hotInstance.redo();
   };
 
