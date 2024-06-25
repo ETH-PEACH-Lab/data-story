@@ -63,6 +63,7 @@ const MenuBar = ({
               handleSort={handleSort}
               handleFilter={handleFilter}
               tableContainerRef={tableContainerRef}
+              hotRef={hotRef}
             /> 
   };
 

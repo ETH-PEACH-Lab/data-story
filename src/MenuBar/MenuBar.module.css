@@ -120,6 +120,7 @@
     cursor: pointer;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
+    min-width: 82px;
 }
 
 .applyButton:hover {
@@ -133,3 +134,30 @@
     cursor: pointer;
     border: 1px solid black;
 }
+
+.distinctValuesList {
+    max-height: 165px;
+    overflow-y: auto;
+    margin-top: 10px;
+  }
+  
+  .distinctValuesList ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .distinctValuesList li {
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .distinctValuesList li:hover {
+    background-color: #f0f0f0;
+  }
+
+  .selectClearAll {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
