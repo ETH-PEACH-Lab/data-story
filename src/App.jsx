@@ -10,7 +10,6 @@ import ConfirmationWindow from './ConfirmationWindow';
 
 import {
   handleDataLoaded,
-  initializeColumns,
   fetchData,
 } from './utils/dataHandlers';
 import {
@@ -53,8 +52,22 @@ function App() {
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [onConfirmAction, setOnConfirmAction] = useState(null);
 
-  const selectedColumnName =
-    selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
+  const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
+
+  const initializeColumns = (newData) => {
+    console.log('initializeColumns called with:', newData);
+    if (newData.length > 0) {
+      const columnNames = Object.keys(newData[0]);
+      const columnsCount = columnNames.length;
+
+      const columnConfigs = Array.from({ length: columnsCount }, (_, index) => ({
+        data: columnNames[index] || `column${index + 1}`,
+        title: columnNames[index] || `Column ${index + 1}`,
+      }));
+
+      setColumnConfigs(columnConfigs);
+    }
+  };
 
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
@@ -67,7 +80,7 @@ function App() {
 
   const handleHistoryClick = (historyEntry, index) => {
     setData(historyEntry.data);
-    initializeColumns(historyEntry.data, setColumnConfigs);
+    initializeColumns(historyEntry.data);
     setClickedIndex(index);
     setCurrentDataId(historyEntry.id);
     setActions(historyEntry.actions);

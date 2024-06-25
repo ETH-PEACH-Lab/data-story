@@ -1,9 +1,22 @@
 import Papa from 'papaparse';
 
-export const handleDataLoaded = (newData, fileName, setData, setColumnConfigs, setOriginalFileName, setCurrentDataId, saveDataToHistory, historyIdCounter, setHistoryIdCounter, setUploadHistory, actions, originalFileName) => {
-  const dataWithTypes = newData.map(row => {
+export const handleDataLoaded = (
+  newData,
+  fileName,
+  setData,
+  setColumnConfigs,
+  setOriginalFileName,
+  setCurrentDataId,
+  saveDataToHistory,
+  historyIdCounter,
+  setHistoryIdCounter,
+  setUploadHistory,
+  actions,
+  originalFileName
+) => {
+  const dataWithTypes = newData.map((row) => {
     const newRow = {};
-    Object.keys(row).forEach(key => {
+    Object.keys(row).forEach((key) => {
       newRow[key] = row[key];
     });
     return newRow;
@@ -12,29 +25,25 @@ export const handleDataLoaded = (newData, fileName, setData, setColumnConfigs, s
   const initialColumnConfigs = Object.keys(newData[0] || {}).map((key, index) => ({
     data: key,
     title: key,
-    type: 'text' // Set the type to 'text'
+    type: 'text', // Set the type to 'text'
   }));
 
   setData(dataWithTypes);
   setColumnConfigs(initialColumnConfigs);
   setOriginalFileName(fileName);
   setCurrentDataId(historyIdCounter);
-  setHistoryIdCounter(prev => prev + 1);
-  saveDataToHistory(dataWithTypes, fileName, null, setUploadHistory, setCurrentDataId, historyIdCounter, setHistoryIdCounter, actions, originalFileName);
-};
-
-export const initializeColumns = (newData, setColumnConfigs) => {
-  if (newData.length > 0) {
-    const columnNames = Object.keys(newData[0]);
-    const columnsCount = columnNames.length;
-
-    const columnConfigs = Array.from({ length: columnsCount }, (_, index) => ({
-      data: columnNames[index] || `column${index + 1}`,
-      title: columnNames[index] || `Column ${index + 1}`,
-    }));
-
-    setColumnConfigs(columnConfigs);
-  }
+  setHistoryIdCounter((prev) => prev + 1);
+  saveDataToHistory(
+    dataWithTypes,
+    fileName,
+    null,
+    setUploadHistory,
+    setCurrentDataId,
+    historyIdCounter,
+    setHistoryIdCounter,
+    actions,
+    originalFileName
+  );
 };
 
 export const fetchData = async (handleDataLoaded) => {
@@ -46,7 +55,7 @@ export const fetchData = async (handleDataLoaded) => {
   Papa.parse(csv, {
     header: true,
     complete: (results) => {
-      handleDataLoaded(results.data, csv.name);
-    }
+      handleDataLoaded(results.data, 'titanic.csv'); // Ensure correct fileName passed
+    },
   });
 };
