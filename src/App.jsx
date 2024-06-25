@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
@@ -6,11 +6,26 @@ import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
+import ConfirmationWindow from './ConfirmationWindow';
 
-import { handleDataLoaded, initializeColumns, fetchData } from './utils/dataHandlers';
-import { toggleHistory, logAction, handleHistoryDelete, saveDataToHistory } from './utils/historyHandlers';
+import {
+  handleDataLoaded,
+  initializeColumns,
+  fetchData,
+} from './utils/dataHandlers';
+import {
+  toggleHistory,
+  logAction,
+  handleHistoryDelete,
+  saveDataToHistory,
+} from './utils/historyHandlers';
 import { handleStyleChange, customRenderer } from './utils/styleHandlers';
-import { handleSelectionEnd, addRow, addColumn, removeColumn } from './utils/rowColumnHandlers';
+import {
+  handleSelectionEnd,
+  addRow,
+  addColumn,
+  removeColumn,
+} from './utils/rowColumnHandlers';
 import { handleSort, handleFilter } from './utils/filterSortHandlers';
 import { countAndRemoveDuplicates } from './utils/duplicateHandlers';
 import { handleFindReplace } from './utils/findReplaceHandlers';
@@ -34,8 +49,12 @@ function App() {
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
   const tableContainerRef = useRef(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState('');
+  const [onConfirmAction, setOnConfirmAction] = useState(null);
 
-  const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
+  const selectedColumnName =
+    selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
   const handleReplaceClick = () => {
     if (selectedColumnIndex !== null && replacementValue !== undefined) {
@@ -58,29 +77,109 @@ function App() {
     }, 500);
   };
 
+  const handleConfirm = () => {
+    if (onConfirmAction) {
+      onConfirmAction();
+    }
+    setShowConfirmation(false);
+  };
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
+    setOnConfirmAction(null);
+  };
+
   useEffect(() => {
-    fetchData((newData, fileName) => handleDataLoaded(newData, fileName, setData, setColumnConfigs, setOriginalFileName, setCurrentDataId, saveDataToHistory, historyIdCounter, setHistoryIdCounter, setUploadHistory, actions, originalFileName));
+    fetchData((newData, fileName) =>
+      handleDataLoaded(
+        newData,
+        fileName,
+        setData,
+        setColumnConfigs,
+        setOriginalFileName,
+        setCurrentDataId,
+        saveDataToHistory,
+        historyIdCounter,
+        setHistoryIdCounter,
+        setUploadHistory,
+        actions,
+        originalFileName
+      )
+    );
   }, []);
 
   return (
     <div className="container">
       <h1>Data-Story</h1>
       <MenuBar
-        onSaveCurrent={() => saveDataToHistory(data, originalFileName, currentDataId, setUploadHistory, setCurrentDataId, historyIdCounter, setHistoryIdCounter, actions, originalFileName)}
-        onDataLoaded={(newData, fileName) => handleDataLoaded(newData, fileName, setData, setColumnConfigs, setOriginalFileName, setCurrentDataId, saveDataToHistory, historyIdCounter, setHistoryIdCounter, setUploadHistory, actions, originalFileName)}
+        onSaveCurrent={() =>
+          saveDataToHistory(
+            data,
+            originalFileName,
+            currentDataId,
+            setUploadHistory,
+            setCurrentDataId,
+            historyIdCounter,
+            setHistoryIdCounter,
+            actions,
+            originalFileName
+          )
+        }
+        onDataLoaded={(newData, fileName) =>
+          handleDataLoaded(
+            newData,
+            fileName,
+            setData,
+            setColumnConfigs,
+            setOriginalFileName,
+            setCurrentDataId,
+            saveDataToHistory,
+            historyIdCounter,
+            setHistoryIdCounter,
+            setUploadHistory,
+            actions,
+            originalFileName
+          )
+        }
         toggleHistory={() => toggleHistory(setHistoryVisible)}
-        onStyleChange={(styleType, value) => handleStyleChange(styleType, value, selectedCellsRef, setTextStyles, hotRef)}
+        onStyleChange={(styleType, value) =>
+          handleStyleChange(
+            styleType,
+            value,
+            selectedCellsRef,
+            setTextStyles,
+            hotRef
+          )
+        }
         selectedColumnIndex={selectedColumnIndex}
         selectedColumnName={selectedColumnName}
         setColumns={setColumnConfigs}
         columns={columnConfigs}
-        handleSort={(columnName, sortOrder) => handleSort(columnName, sortOrder, columnConfigs, hotRef)}
-        handleFilter={(columnName, condition, value) => handleFilter(columnName, condition, value, columnConfigs, hotRef)}
+        handleSort={(columnName, sortOrder) =>
+          handleSort(columnName, sortOrder, columnConfigs, hotRef)
+        }
+        handleFilter={(columnName, condition, value) =>
+          handleFilter(columnName, condition, value, columnConfigs, hotRef)
+        }
         tableContainerRef={tableContainerRef}
-        countAndRemoveDuplicates={(remove) => countAndRemoveDuplicates(data, setData, hotRef, remove)}
+        countAndRemoveDuplicates={(remove) =>
+          countAndRemoveDuplicates(data, setData, hotRef, remove)
+        }
         addRow={() => addRow(data, setData, columnConfigs, hotRef)}
-        addColumn={() => addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)}
-        handleFindReplace={(findText, replaceText) => handleFindReplace(findText, replaceText, selectedColumnIndex, selectedColumnName, data, setData, hotRef)}
+        addColumn={() =>
+          addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)
+        }
+        handleFindReplace={(findText, replaceText) =>
+          handleFindReplace(
+            findText,
+            replaceText,
+            selectedColumnIndex,
+            selectedColumnName,
+            data,
+            setData,
+            hotRef
+          )
+        }
         handleUndo={() => handleUndo(hotRef)}
         handleRedo={() => handleRedo(hotRef)}
         hotRef={hotRef}
@@ -92,7 +191,20 @@ function App() {
               ref={hotRef}
               data={data}
               colHeaders={columnConfigs.map((column) => column.title)}
-              columns={columnConfigs.map((col) => ({ ...col, renderer: (instance, td, row, col, prop, value, cellProperties) => customRenderer(instance, td, row, col, prop, value, cellProperties, textStyles) }))}
+              columns={columnConfigs.map((col) => ({
+                ...col,
+                renderer: (instance, td, row, col, prop, value, cellProperties) =>
+                  customRenderer(
+                    instance,
+                    td,
+                    row,
+                    col,
+                    prop,
+                    value,
+                    cellProperties,
+                    textStyles
+                  ),
+              }))}
               rowHeaders={true}
               width="100%"
               height="100%"
@@ -102,7 +214,16 @@ function App() {
               filters={true}
               manualColumnResize={true}
               autoColumnSize={true}
-              afterSelectionEnd={(r1, c1, r2, c2) => handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex)}
+              afterSelectionEnd={(r1, c1, r2, c2) =>
+                handleSelectionEnd(
+                  r1,
+                  c1,
+                  r2,
+                  c2,
+                  selectedCellsRef,
+                  setSelectedColumnIndex
+                )
+              }
               outsideClickDeselects={false}
               fillHandle={true}
               comments={true}
@@ -124,11 +245,33 @@ function App() {
           uploadHistory={uploadHistory}
           clickedIndex={clickedIndex}
           onHistoryItemClick={handleHistoryClick}
-          onHistoryItemDelete={(index) => handleHistoryDelete(index, uploadHistory, currentDataId, setData, initializeColumns, setCurrentDataId, setActions, setOriginalFileName, setUploadHistory)}
+          onHistoryItemDelete={(index) =>
+            handleHistoryDelete(
+              index,
+              uploadHistory,
+              currentDataId,
+              setData,
+              initializeColumns,
+              setCurrentDataId,
+              setActions,
+              setOriginalFileName,
+              setUploadHistory,
+              setShowConfirmation,
+              setConfirmationMessage,
+              setOnConfirmAction
+            )
+          }
           toggleHistory={() => toggleHistory(setHistoryVisible)}
           currentDataId={currentDataId}
         />
       </div>
+      {showConfirmation && (
+        <ConfirmationWindow
+          message={confirmationMessage}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
     </div>
   );
 }

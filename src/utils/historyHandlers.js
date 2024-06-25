@@ -7,25 +7,30 @@ export const toggleHistory = (setHistoryVisible) => {
   };
   
   export const handleHistoryDelete = (
-    index, 
-    uploadHistory, 
-    currentDataId, 
-    setData, 
-    initializeColumns, 
-    setCurrentDataId, 
-    setActions, 
-    setOriginalFileName, 
-    setUploadHistory
+    index,
+    uploadHistory,
+    currentDataId,
+    setData,
+    initializeColumns,
+    setCurrentDataId,
+    setActions,
+    setOriginalFileName,
+    setUploadHistory,
+    setShowConfirmation,
+    setConfirmationMessage,
+    setOnConfirmAction
   ) => {
     const historyEntryToDelete = uploadHistory[index];
     const isDeletingCurrentData = historyEntryToDelete.id === currentDataId;
     const parentId = historyEntryToDelete.parentId;
     const newHistory = uploadHistory.filter((_, i) => i !== index);
   
-    const parentEntryExists = newHistory.some(entry => entry.id === parentId);
+    const parentEntryExists = newHistory.some((entry) => entry.id === parentId);
   
     if (!parentEntryExists) {
-      if (window.confirm("Parent version no longer exists. Do you want to delete this version?")) {
+      setShowConfirmation(true);
+      setConfirmationMessage('Parent version no longer exists. Do you want to delete this version?');
+      setOnConfirmAction(() => () => {
         if (isDeletingCurrentData) {
           setData([]);
           initializeColumns([]);
@@ -34,10 +39,10 @@ export const toggleHistory = (setHistoryVisible) => {
           setOriginalFileName('');
         }
         setUploadHistory(newHistory);
-      }
+      });
     } else {
       if (isDeletingCurrentData) {
-        const parentEntry = newHistory.find(entry => entry.id === parentId);
+        const parentEntry = newHistory.find((entry) => entry.id === parentId);
         setData(parentEntry.data);
         initializeColumns(parentEntry.data);
         setCurrentDataId(parentEntry.id);
