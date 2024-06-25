@@ -6,29 +6,46 @@ export const toggleHistory = (setHistoryVisible) => {
     setActions(prevActions => [...prevActions, actionDescription]);
   };
   
-  export const handleHistoryDelete = (index, uploadHistory, currentDataId, setData, initializeColumns, setCurrentDataId, setActions, setOriginalFileName, setUploadHistory) => {
-    const isDeletingCurrentData = uploadHistory[index].id === currentDataId;
-    const parentId = uploadHistory[index].parentId;
+  export const handleHistoryDelete = (
+    index, 
+    uploadHistory, 
+    currentDataId, 
+    setData, 
+    initializeColumns, 
+    setCurrentDataId, 
+    setActions, 
+    setOriginalFileName, 
+    setUploadHistory
+  ) => {
+    const historyEntryToDelete = uploadHistory[index];
+    const isDeletingCurrentData = historyEntryToDelete.id === currentDataId;
+    const parentId = historyEntryToDelete.parentId;
     const newHistory = uploadHistory.filter((_, i) => i !== index);
   
-    if (isDeletingCurrentData) {
-      const parentEntry = newHistory.find(entry => entry.id === parentId);
-      if (parentEntry) {
+    const parentEntryExists = newHistory.some(entry => entry.id === parentId);
+  
+    if (!parentEntryExists) {
+      if (window.confirm("Parent version no longer exists. Do you want to delete this version?")) {
+        if (isDeletingCurrentData) {
+          setData([]);
+          initializeColumns([]);
+          setCurrentDataId(null);
+          setActions([]);
+          setOriginalFileName('');
+        }
+        setUploadHistory(newHistory);
+      }
+    } else {
+      if (isDeletingCurrentData) {
+        const parentEntry = newHistory.find(entry => entry.id === parentId);
         setData(parentEntry.data);
         initializeColumns(parentEntry.data);
         setCurrentDataId(parentEntry.id);
         setActions(parentEntry.actions);
         setOriginalFileName(parentEntry.fileName);
-      } else {
-        if (window.confirm("Parent version no longer exists. Do you want to delete this version?")) {
-          setCurrentDataId(null);
-        } else {
-          return;
-        }
       }
+      setUploadHistory(newHistory);
     }
-  
-    setUploadHistory(newHistory);
   };
   
   export const saveDataToHistory = (newData, fileName, parentId, setUploadHistory, setCurrentDataId, historyIdCounter, setHistoryIdCounter, actions, originalFileName) => {
