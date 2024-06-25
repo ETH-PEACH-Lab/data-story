@@ -42,7 +42,7 @@ function App() {
   const [actions, setActions] = useState([]);
   const [clickedIndex, setClickedIndex] = useState(-1);
   const [replacementValue, setReplacementValue] = useState('');
-  const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
+  const [selectedColumnIndex, setSelectedColumnIndex] = useState();
   const [originalFileName, setOriginalFileName] = useState('');
   const [textStyles, setTextStyles] = useState({});
   const hotRef = useRef(null);
@@ -55,7 +55,6 @@ function App() {
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
   const initializeColumns = (newData) => {
-    console.log('initializeColumns called with:', newData);
     if (newData.length > 0) {
       const columnNames = Object.keys(newData[0]);
       const columnsCount = columnNames.length;
@@ -171,8 +170,8 @@ function App() {
         handleSort={(columnName, sortOrder) =>
           handleSort(columnName, sortOrder, columnConfigs, hotRef)
         }
-        handleFilter={(columnName, condition, value) =>
-          handleFilter(columnName, condition, value, columnConfigs, hotRef)
+        handleFilter={(columnName, condition, value, checkedValues) =>
+          handleFilter(columnName, condition, value, columnConfigs, hotRef, checkedValues)
         }
         tableContainerRef={tableContainerRef}
         countAndRemoveDuplicates={(remove) =>
@@ -247,11 +246,12 @@ function App() {
           </div>
         </div>
         <MainSidebar
-          replacementValue={replacementValue}
-          setReplacementValue={setReplacementValue}
-          handleReplaceClick={handleReplaceClick}
+          data={data}
+          columnConfigs={columnConfigs}
           selectedColumnIndex={selectedColumnIndex}
           selectedColumnName={selectedColumnName}
+          handleFilter={handleFilter}
+          hotRef={hotRef}
         />
         <HistorySidebar
           isHistoryVisible={isHistoryVisible}

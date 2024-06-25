@@ -13,7 +13,7 @@ export const handleSort = (columnName, sortOrder, columnConfigs, hotRef) => {
   });
 };
 
-export const handleFilter = (columnName, condition, value, columnConfigs, hotRef) => {
+export const handleFilter = (columnName, condition, value, columnConfigs, hotRef, checkedValues) => {
   if (!columnName || !condition) return;
 
   const columnIndex = columnConfigs.findIndex(col => col.title === columnName);
@@ -22,12 +22,13 @@ export const handleFilter = (columnName, condition, value, columnConfigs, hotRef
   const hotInstance = hotRef.current.hotInstance;
   const filtersPlugin = hotInstance.getPlugin('filters');
 
-  if (condition === 'none') {
-    filtersPlugin.removeConditions(columnIndex);
-    filtersPlugin.filter();
+  filtersPlugin.clearConditions(columnIndex);
+
+  if (condition === 'by_value') {
+    filtersPlugin.addCondition(columnIndex, condition, [checkedValues]);
   } else {
-    filtersPlugin.clearConditions(columnIndex);
     filtersPlugin.addCondition(columnIndex, condition, [value]);
-    filtersPlugin.filter();
   }
+  
+  filtersPlugin.filter();
 };
