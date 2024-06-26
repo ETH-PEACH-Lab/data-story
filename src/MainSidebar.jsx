@@ -25,7 +25,8 @@ function MainSidebar({
     const [searchValue, setSearchValue] = useState('');
     const [tableKey, setTableKey] = useState(false);
     const [showNotes, setShowNotes] = useState(true);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [filterConditionError, setFilterConditionError] = useState('');
+    const [filterValueError, setFilterValueError] = useState('');
 
     const selectColumnRenderer = useCallback((instance, td, row, col, prop, value, cellProperties) => {
         textRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
@@ -76,10 +77,10 @@ function MainSidebar({
 
     const handleFilterByConditionClick = () => {
         if (selectedColumnIndex === null) {
-            setErrorMessage('Please select a column');
+            setFilterConditionError('Please select a column');
             return;
         }
-        setErrorMessage(''); // Clear error message if a column is selected
+        setFilterConditionError(''); // Clear error message if a column is selected
         const column = columnConfigs[selectedColumnIndex]?.data;
         if (!column) return;
     
@@ -111,14 +112,14 @@ function MainSidebar({
         setConfirmedCheckedValues(newCheckedValues);
         setConfirmedSelectedColumn(selectedColumnIndex);
         handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
-      };     
+    };     
 
     const handleCheckboxChange = (value) => {
         if (selectedColumnIndex === null) {
-            setErrorMessage('Please select a column');
+            setFilterValueError('Please select a column');
             return;
         }
-        setErrorMessage(''); // Clear error message if a column is selected
+        setFilterValueError(''); // Clear error message if a column is selected
         setCheckedValues((prevCheckedValues) => {
             const newCheckedValues = prevCheckedValues.includes(value)
                 ? prevCheckedValues.filter(v => v !== value)
@@ -134,10 +135,10 @@ function MainSidebar({
 
     const selectAll = () => {
         if (selectedColumnIndex === null) {
-            setErrorMessage('Please select a column');
+            setFilterValueError('Please select a column');
             return;
         }
-        setErrorMessage(''); // Clear error message if a column is selected
+        setFilterValueError(''); // Clear error message if a column is selected
         setCheckedValues((prevCheckedValues) => {
             const newCheckedValues = [
                 ...prevCheckedValues,
@@ -153,10 +154,10 @@ function MainSidebar({
 
     const clearAll = () => {
         if (selectedColumnIndex === null) {
-            setErrorMessage('Please select a column');
+            setFilterValueError('Please select a column');
             return;
         }
-        setErrorMessage(''); // Clear error message if a column is selected
+        setFilterValueError(''); // Clear error message if a column is selected
         setCheckedValues((prevCheckedValues) => {
             const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
             
@@ -181,7 +182,8 @@ function MainSidebar({
         setCheckedValues(allDistinctValues);
         setCheckedValues(allDistinctValues);
         setConfirmedSelectedColumn(null);
-        setErrorMessage(''); // Clear error message when filters are reset
+        setFilterConditionError(''); // Clear error message when filters are reset
+        setFilterValueError(''); // Clear error message when filters are reset
     };
 
     const toggleNotes = () => {
@@ -271,8 +273,8 @@ function MainSidebar({
                 handleFilterValueChange={handleFilterValueChange}
                 handleFilterByConditionClick={handleFilterByConditionClick}
             />
-            {errorMessage && (
-                <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMessage}</p>
+            {filterConditionError && (
+                <p style={{ color: 'red', fontWeight: 'bold' }}>{filterConditionError}</p>
             )}
             <p>
                 <strong>Option 2: </strong>You can select manually what data from the selected column you want to hide:<br />
@@ -297,8 +299,8 @@ function MainSidebar({
                 selectAll={selectAll}
                 clearAll={clearAll}
             />
-            {errorMessage && (
-                <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMessage}</p>
+            {filterValueError && (
+                <p style={{ color: 'red', fontWeight: 'bold' }}>{filterValueError}</p>
             )}
             <div className={styles.separator}></div> {/* Add separator */}
             <p>
