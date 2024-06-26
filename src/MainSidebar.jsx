@@ -276,7 +276,7 @@ function MainSidebar({
             {filterConditionError && (
                 <p style={{ color: 'red', fontWeight: 'bold' }}>{filterConditionError}</p>
             )}
-            <p>
+            <div className={styles.separator}></div> {/* Add separator */}
                 <strong>Option 2: </strong>You can select manually what data from the selected column you want to hide:<br />
                 <span style={{ fontSize: 14, color: 'grey' }}>
                     <span onClick={toggleNotes} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
@@ -289,7 +289,7 @@ function MainSidebar({
                         <p>- The "Clear All" and "Select All" buttons only affect the values currently being searched for.</p>
                     </div>
                 )}
-            </p>
+            
             <FilterValueComponent
                 filteredValues={filteredValues}
                 checkedValues={checkedValues}
