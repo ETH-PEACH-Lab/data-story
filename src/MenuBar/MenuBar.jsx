@@ -36,6 +36,7 @@ const MenuBar = ({
               onDataLoaded={onDataLoaded} 
               toggleHistory={toggleHistory} 
               fileInputRef={fileInputRef} 
+              hotRef={hotRef}
             />,
     'Edit': <EditMenu 
               countAndRemoveDuplicates={countAndRemoveDuplicates}
