@@ -105,31 +105,43 @@ function MainSidebar({
         handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
       };     
 
-    const handleApplyCheckboxFilter = () => {
-        setConfirmedCheckedValues(checkedValues); // Update confirmed checked values
-        setConfirmedSelectedColumn(selectedColumnIndex);
-        handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, checkedValues);
-    };
-
     const handleCheckboxChange = (value) => {
         setCheckedValues((prevCheckedValues) => {
-            return prevCheckedValues.includes(value)
+            const newCheckedValues = prevCheckedValues.includes(value)
                 ? prevCheckedValues.filter(v => v !== value)
                 : [...prevCheckedValues, value];
+            
+            setConfirmedSelectedColumn(selectedColumnIndex);
+            setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
+            handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+            
+            return newCheckedValues;
         });
     };
 
     const selectAll = () => {
-        setCheckedValues((prevCheckedValues) => [
-            ...prevCheckedValues,
-            ...filteredValues.filter(value => !prevCheckedValues.includes(value)),
-        ]);
+        setCheckedValues((prevCheckedValues) => {
+            const newCheckedValues = [
+                ...prevCheckedValues,
+                ...filteredValues.filter(value => !prevCheckedValues.includes(value)),
+            ];
+            
+            setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
+            handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+            
+            return newCheckedValues;
+        });
     };
 
     const clearAll = () => {
-        setCheckedValues((prevCheckedValues) =>
-            prevCheckedValues.filter(value => !filteredValues.includes(value))
-        );
+        setCheckedValues((prevCheckedValues) => {
+            const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
+            
+            setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
+            handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+            
+            return newCheckedValues;
+        });
     };
 
     const handleSearchValueChange = (event) => {
@@ -257,7 +269,6 @@ function MainSidebar({
                 handleCheckboxChange={handleCheckboxChange}
                 selectAll={selectAll}
                 clearAll={clearAll}
-                handleApplyCheckboxFilter={handleApplyCheckboxFilter}
             />
             <p>
                 You can apply different filters to different columns simultainously, here you can reset them all.
