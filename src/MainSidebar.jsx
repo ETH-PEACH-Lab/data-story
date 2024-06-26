@@ -1,10 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { HotTable } from '@handsontable/react';
-import { ResizableBox } from 'react-resizable';
 import { textRenderer } from 'handsontable/renderers/textRenderer';
 import FilterConditionComponent from './FilterConditionComponent';
 import FilterValueComponent from './FilterValueComponent';
-import 'react-resizable/css/styles.css';
 import styles from './FilterComponent.module.css';
 
 function MainSidebar({
@@ -15,8 +13,8 @@ function MainSidebar({
     handleFilter,
     hotRef
 }) {
-    const [tableHeight, setTableHeight] = useState(180);
-    const [secondTableHeight, setSecondTableHeight] = useState(400);
+    const [isFirstTableExpanded, setIsFirstTableExpanded] = useState(false);
+    const [isSecondTableExpanded, setIsSecondTableExpanded] = useState(false);
     const [filterCondition, setFilterCondition] = useState('none');
     const [filterValue, setFilterValue] = useState('');
     const [allDistinctValues, setAllDistinctValues] = useState([]);
@@ -27,14 +25,6 @@ function MainSidebar({
     const [searchValue, setSearchValue] = useState('');
     const [tableKey, setTableKey] = useState(false);
     const [showNotes, setShowNotes] = useState(true); // New state for notes visibility
-
-    const handleResize = (event, { size }) => {
-        setTableHeight(size.height);
-    };
-
-    const handleResizeSecond = (event, { size }) => {
-        setSecondTableHeight(size.height);
-    };
 
     const selectColumnRenderer = useCallback((instance, td, row, col, prop, value, cellProperties) => {
         textRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
@@ -162,6 +152,14 @@ function MainSidebar({
         setShowNotes(!showNotes);
     };
 
+    const toggleFirstTableExpand = () => {
+        setIsFirstTableExpanded(!isFirstTableExpanded);
+    };
+
+    const toggleSecondTableExpand = () => {
+        setIsSecondTableExpanded(!isSecondTableExpanded);
+    };
+
     useEffect(() => {
         fetchDistinctValues();
     }, [selectedColumnIndex, hotRef, fetchDistinctValues]);
@@ -195,14 +193,8 @@ function MainSidebar({
             <p>
             <strong>Selected column:</strong> {selectedColumnIndex !== null ? `column ${selectedColumnIndex}, ${selectedColumnName}` : <span style={{ fontWeight: 'bold', color: 'red' }}>Please select a column</span>}
             </p>
-            <ResizableBox
-                width={Infinity}
-                height={tableHeight}
-                minConstraints={[150, 150]}
-                onResize={handleResize}
-                resizeHandles={['s']}
-            >
-                <div className="small-table-wrapper" style={{ width: '100%', height: tableHeight, overflow: 'auto' }}>
+            <div className={styles.tableWrapper}>
+                <div className="small-table-wrapper" style={{ width: '100%', height: isFirstTableExpanded ? 400 : 180, overflow: 'auto' }}>
                     <HotTable
                         data={data}
                         colHeaders={columnConfigs.map((column) => column.title)}
@@ -218,7 +210,10 @@ function MainSidebar({
                         disableVisualSelection={true}
                     />
                 </div>
-            </ResizableBox>
+                <button className={styles.expandButton} onClick={toggleFirstTableExpand}>
+                    {isFirstTableExpanded ? 'Collapse Table' : 'Expand Table'}
+                </button>
+            </div>
             <h3>Filter Conditions</h3>
             <p>
                 When chosing how to filter your data, you have two options.
@@ -276,14 +271,8 @@ function MainSidebar({
             <p>
                 Rows that are filtered out and no longer appear in the main table are tinted red.
             </p>
-            <ResizableBox
-                width={Infinity}
-                height={secondTableHeight}
-                minConstraints={[150, 150]}
-                onResize={handleResizeSecond}
-                resizeHandles={['s']}
-            >
-                <div className="small-table-wrapper" style={{ width: '100%', height: secondTableHeight, overflow: 'auto' }}>
+            <div className={styles.tableWrapper}>
+                <div className="small-table-wrapper" style={{ width: '100%', height: isSecondTableExpanded ? 400 : 180, overflow: 'auto' }}>
                     <HotTable
                         key={tableKey}
                         data={data}
@@ -300,7 +289,10 @@ function MainSidebar({
                         disableVisualSelection={true}
                     />
                 </div>
-            </ResizableBox>
+                <button className={styles.expandButton} onClick={toggleSecondTableExpand}>
+                    {isSecondTableExpanded ? 'Collapse Table' : 'Expand Table'}
+                </button>
+            </div>
         </div>
     );
 }

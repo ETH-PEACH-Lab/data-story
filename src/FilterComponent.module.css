@@ -61,3 +61,20 @@
     border-top: 1px solid #a4a4a4;
     margin: 20px 0;
   }
+
+  .expandButton {
+    display: block;
+    width: 100%;
+    padding: 1px;
+    margin: 0;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 0;
+  }
+  
+  .expandButton:hover {
+    background-color: #d0d0d0;
+  }
