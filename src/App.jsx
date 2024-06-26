@@ -42,7 +42,7 @@ function App() {
   const [actions, setActions] = useState([]);
   const [clickedIndex, setClickedIndex] = useState(-1);
   const [replacementValue, setReplacementValue] = useState('');
-  const [selectedColumnIndex, setSelectedColumnIndex] = useState();
+  const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
   const [originalFileName, setOriginalFileName] = useState('');
   const [textStyles, setTextStyles] = useState({});
   const hotRef = useRef(null);

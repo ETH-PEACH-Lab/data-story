@@ -230,7 +230,7 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
               ref={sortDropdownRef}
             >
               <div className={styles.textOption}>
-                <div>{`selected column: index ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
+                <div>{`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
               </div>
               <div className={`${styles.textOption} ${styles.inputContainer}`}>
                 <select
@@ -256,7 +256,7 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
               ref={filterDropdownRef}
             >
               <div className={styles.textOption}>
-                <div>{`selected column: index ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
+                <div>{`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
               </div>
               <div className={styles.textOption} onClick={() => setFilterSubmenu('condition')} ref={conditionButtonRef}>
                 Filter by condition
@@ -265,7 +265,7 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
                 Filter by value
               </div>
               <div className={styles.textOption} onClick={resetFilter}>
-                Reset Filter
+                Reset filter for this column
               </div>
               {filterSubmenu === 'condition' && (
                 <div

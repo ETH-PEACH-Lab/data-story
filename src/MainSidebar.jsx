@@ -15,8 +15,8 @@ function MainSidebar({
     handleFilter,
     hotRef
 }) {
-    const [tableHeight, setTableHeight] = useState(200);
-    const [secondTableHeight, setSecondTableHeight] = useState(200);
+    const [tableHeight, setTableHeight] = useState(180);
+    const [secondTableHeight, setSecondTableHeight] = useState(400);
     const [filterCondition, setFilterCondition] = useState('none');
     const [filterValue, setFilterValue] = useState('');
     const [allDistinctValues, setAllDistinctValues] = useState([]);
@@ -26,6 +26,7 @@ function MainSidebar({
     const [confirmedSelectedColumn, setConfirmedSelectedColumn] = useState(null);
     const [searchValue, setSearchValue] = useState('');
     const [tableKey, setTableKey] = useState(false);
+    const [showNotes, setShowNotes] = useState(true); // New state for notes visibility
 
     const handleResize = (event, { size }) => {
         setTableHeight(size.height);
@@ -157,6 +158,10 @@ function MainSidebar({
         setConfirmedSelectedColumn(null);
     };
 
+    const toggleNotes = () => {
+        setShowNotes(!showNotes);
+    };
+
     useEffect(() => {
         fetchDistinctValues();
     }, [selectedColumnIndex, hotRef, fetchDistinctValues]);
@@ -185,10 +190,10 @@ function MainSidebar({
             </p>
             <h3>Select column</h3>
             <p>
-            You must first select a column to which the filter is applied.
+            You must first select a column to which the filter is applied. You can select a column in the main table on the left by clicking its head or selecting any cell within that column.
             </p>
             <p>
-            <strong>Selected column:</strong> {selectedColumnIndex !== null ? `index ${selectedColumnIndex}, ${selectedColumnName}` : "None"}
+            <strong>Selected column:</strong> {selectedColumnIndex !== null ? `column ${selectedColumnIndex}, ${selectedColumnName}` : <span style={{ fontWeight: 'bold', color: 'red' }}>Please select a column</span>}
             </p>
             <ResizableBox
                 width={Infinity}
@@ -216,10 +221,17 @@ function MainSidebar({
             </ResizableBox>
             <h3>Filter Conditions</h3>
             <p>
-                You can filter data by applying conditions such as equals, not equals, containes, does not contain, etc.
+                When chosing how to filter your data, you have two options.
             </p>
             <p>
-                Select what condition the data in that column should fulfill to be visible:
+                <strong>- </strong>You can filter data by applying conditions such as equals, does not equal, contains, does not contain, etc.
+            </p>
+            <p>
+                <strong>- </strong>You can manually select which data to filter out.
+            </p>
+            <div className={styles.separator}></div> {/* Add separator */}
+            <p>
+                <strong>Option 1: </strong>Select what condition the data in that column should fulfill to be visible:
             </p>
             <FilterConditionComponent
                 filterCondition={filterCondition}
@@ -229,7 +241,18 @@ function MainSidebar({
                 handleFilterByConditionClick={handleFilterByConditionClick}
             />
             <p>
-                Or you can simply select manually what data from the selected column you want to display:
+                <strong>Option 2: </strong>You can select manually what data from the selected column you want to hide:<br />
+                <span style={{ fontSize: 14, color: 'grey' }}>
+                    <span onClick={toggleNotes} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+                        {showNotes ? 'Hide Notes' : 'Show Notes'}
+                    </span>
+                </span>
+                {showNotes && (
+                    <div style={{ fontSize: 14, color: 'grey' }}>
+                        <p>- A checked box indicates that the value is displayed</p>
+                        <p>- The "Clear All" and "Select All" buttons only affect the values currently being searched for.</p>
+                    </div>
+                )}
             </p>
             <FilterValueComponent
                 filteredValues={filteredValues}
@@ -241,11 +264,15 @@ function MainSidebar({
                 clearAll={clearAll}
                 handleApplyCheckboxFilter={handleApplyCheckboxFilter}
             />
+            <p>
+                You can apply different filters to different columns simultainously, here you can reset them all.
+            </p>
             <div className="clear-all-filters">
                 <button onClick={handleClearAllFilters} className={styles.applyButton}>
-                    Clear all Filters
+                    Reset all Filters
                 </button>
             </div>
+            <div className={styles.separator}></div> {/* Add separator */}
             <p>
                 Rows that are filtered out and no longer appear in the main table are tinted red.
             </p>

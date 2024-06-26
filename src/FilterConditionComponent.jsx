@@ -10,7 +10,6 @@ const FilterConditionComponent = ({
 }) => {
   return (
     <div className={styles.filterComponent}>
-      <div className={styles.separator}></div> {/* Add separator */}
       <div className={`${styles.textOption} ${styles.inputContainer}`}>
         <select
           value={filterCondition}

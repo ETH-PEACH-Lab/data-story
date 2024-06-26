@@ -13,12 +13,7 @@ const FilterValueComponent = ({
 }) => {
   return (
     <div className={styles.filterComponent}>
-      <div className={styles.separator}></div> {/* Add separator */}
       <div className={styles.distinctValuesList}>
-        <div className={styles.selectClearAll}>
-          <button onClick={selectAll} className={styles.applyButton}>Select All</button>
-          <button onClick={clearAll} className={styles.applyButton}>Clear All</button>
-        </div>
         <input
           type="text"
           value={searchValue}
@@ -27,6 +22,10 @@ const FilterValueComponent = ({
           placeholder="Search for values"
           style={{ marginBottom: '10px', width: '100%' }}
         />
+        <div className={styles.selectClearAll}>
+          <button onClick={selectAll} className={styles.applyButton}>Check All</button>
+          <button onClick={clearAll} className={styles.applyButton}>Uncheck All</button>
+        </div>
         <ul>
           {filteredValues.map((value, index) => (
             <li key={index}>
