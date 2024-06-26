@@ -13,7 +13,7 @@ const FilterValueComponent = ({
 }) => {
   return (
     <div className={styles.filterComponent}>
-        <div className={styles.separator}></div> {/* Add separator */}
+      <div className={styles.separator}></div> {/* Add separator */}
       <div className={styles.distinctValuesList}>
         <div className={styles.selectClearAll}>
           <button onClick={selectAll} className={styles.applyButton}>Select All</button>
@@ -24,7 +24,7 @@ const FilterValueComponent = ({
           value={searchValue}
           onChange={handleSearchValueChange}
           className={styles.input}
-          placeholder="Search values"
+          placeholder="Search for values"
           style={{ marginBottom: '10px', width: '100%' }}
         />
         <ul>

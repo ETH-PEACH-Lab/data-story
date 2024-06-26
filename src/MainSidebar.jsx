@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { HotTable } from '@handsontable/react';
 import { ResizableBox } from 'react-resizable';
 import { textRenderer } from 'handsontable/renderers/textRenderer';
-import Handsontable from 'handsontable';
 import FilterConditionComponent from './FilterConditionComponent';
 import FilterValueComponent from './FilterValueComponent';
 import 'react-resizable/css/styles.css';
@@ -22,8 +21,10 @@ function MainSidebar({
     const [allDistinctValues, setAllDistinctValues] = useState([]);
     const [filteredValues, setFilteredValues] = useState([]);
     const [checkedValues, setCheckedValues] = useState([]);
-    const [confirmedunCheckedValues, setConfirmedunCheckedValues] = useState([]); // New state for confirmed checked values
+    const [confirmedCheckedValues, setConfirmedCheckedValues] = useState([]);
+    const [confirmedSelectedColumn, setConfirmedSelectedColumn] = useState(null);
     const [searchValue, setSearchValue] = useState('');
+    const [tableKey, setTableKey] = useState(false);
 
     const handleResize = (event, { size }) => {
         setTableHeight(size.height);
@@ -42,16 +43,17 @@ function MainSidebar({
 
     const secondTableRenderer = useCallback((instance, td, row, col, prop, value, cellProperties) => {
         textRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
-        const cellValue = instance.getDataAtCell(row, selectedColumnIndex);
-        if (selectedColumnIndex != null) {
-            if (col === selectedColumnIndex) {
+        const cellValue = instance.getDataAtCell(row, confirmedSelectedColumn);
+        if (confirmedSelectedColumn != null) {
+            if (col === confirmedSelectedColumn) {
                 td.style.backgroundColor = 'lightblue';
             }
-            if (!confirmedunCheckedValues.includes(cellValue)) {
+            if (!confirmedCheckedValues.includes(cellValue)) {
                 td.style.backgroundColor = 'palevioletred';
             }
         }
-    }, [confirmedunCheckedValues]);
+        setTableKey(prevKey => false);
+    }, [confirmedCheckedValues, confirmedSelectedColumn]);
 
     const fetchDistinctValues = useCallback(() => {
         if (selectedColumnIndex !== null && hotRef.current) {
@@ -77,13 +79,16 @@ function MainSidebar({
     };
 
     const handleFilterClick = () => {
+        setTableKey(prevKey => !prevKey);
         handleFilter(selectedColumnName, filterCondition, filterValue, columnConfigs, hotRef, checkedValues);
-        setConfirmedunCheckedValues(checkedValues); // Update confirmed checked values
+        setConfirmedCheckedValues(checkedValues);
+        setConfirmedSelectedColumn(selectedColumnIndex);
     };
 
     const handleApplyCheckboxFilter = () => {
+        setConfirmedCheckedValues(checkedValues); // Update confirmed checked values
+        setConfirmedSelectedColumn(selectedColumnIndex);
         handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, checkedValues);
-        setConfirmedunCheckedValues(checkedValues); // Update confirmed checked values
     };
 
     const handleCheckboxChange = (value) => {
@@ -111,7 +116,7 @@ function MainSidebar({
         setFilterCondition('none');
         setFilterValue('');
         setCheckedValues([]);
-        setConfirmedunCheckedValues([]); // Reset confirmed checked values
+        setConfirmedCheckedValues([]); // Reset confirmed checked values
         handleFilter(selectedColumnName, 'none', '', columnConfigs, hotRef, []);
         setTimeout(fetchDistinctValues, 0); // Fetch distinct values again after resetting filter
     };
@@ -125,10 +130,18 @@ function MainSidebar({
     }, [selectedColumnIndex, hotRef, fetchDistinctValues]);
 
     useEffect(() => {
-        if (confirmedunCheckedValues.length) {
+        if (confirmedCheckedValues.length) {
             fetchDistinctValues();
         }
-    }, [confirmedunCheckedValues, fetchDistinctValues]);
+    }, [confirmedCheckedValues, fetchDistinctValues]);
+
+    useEffect(() => {
+        const lowercasedFilter = searchValue.toLowerCase();
+        const newFilteredValues = allDistinctValues.filter(value =>
+            value.toString().toLowerCase().includes(lowercasedFilter)
+        );
+        setFilteredValues(newFilteredValues);
+    }, [searchValue, allDistinctValues]);
 
     return (
         <div className="sidebar">
@@ -208,6 +221,7 @@ function MainSidebar({
             >
                 <div className="small-table-wrapper" style={{ width: '100%', height: secondTableHeight, overflow: 'auto' }}>
                     <HotTable
+                        key={tableKey}
                         data={data}
                         colHeaders={columnConfigs.map((column) => column.title)}
                         columns={columnConfigs.map((col) => ({
