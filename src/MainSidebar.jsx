@@ -23,7 +23,6 @@ function MainSidebar({
     const [confirmedCheckedValues, setConfirmedCheckedValues] = useState([]);
     const [confirmedSelectedColumn, setConfirmedSelectedColumn] = useState(null);
     const [searchValue, setSearchValue] = useState('');
-    const [tableKey, setTableKey] = useState(false);
     const [showNotes, setShowNotes] = useState(true);
     const [filterConditionError, setFilterConditionError] = useState('');
     const [filterValueError, setFilterValueError] = useState('');
@@ -49,7 +48,6 @@ function MainSidebar({
                 td.style.backgroundColor = 'palevioletred';
             }
         }
-        setTableKey(prevKey => false);
     }, [confirmedCheckedValues, confirmedSelectedColumn]);
 
     const fetchDistinctValues = useCallback(() => {
@@ -318,7 +316,6 @@ function MainSidebar({
             <div className={styles.tableWrapper}>
                 <div className="small-table-wrapper" style={{ width: '100%', height: isSecondTableExpanded ? 400 : 180, overflow: 'auto' }}>
                     <HotTable
-                        key={tableKey}
                         data={data}
                         colHeaders={columnConfigs.map((column) => column.title)}
                         columns={columnConfigs.map((col) => ({
