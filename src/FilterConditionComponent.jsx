@@ -40,7 +40,6 @@ const FilterConditionComponent = ({
         </button>
         
       </div>
-      <div className={styles.separator}></div> {/* Add separator */}
     </div>
   );
 };

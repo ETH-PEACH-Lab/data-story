@@ -24,12 +24,13 @@ function MainSidebar({
     const [confirmedSelectedColumn, setConfirmedSelectedColumn] = useState(null);
     const [searchValue, setSearchValue] = useState('');
     const [tableKey, setTableKey] = useState(false);
-    const [showNotes, setShowNotes] = useState(true); // New state for notes visibility
+    const [showNotes, setShowNotes] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const selectColumnRenderer = useCallback((instance, td, row, col, prop, value, cellProperties) => {
         textRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
         if (col === selectedColumnIndex) {
-            td.style.backgroundColor = 'lightblue';
+            td.style.backgroundColor = 'lightsteelblue';
         }
     }, [selectedColumnIndex]);
 
@@ -38,9 +39,12 @@ function MainSidebar({
         const cellValue = instance.getDataAtCell(row, confirmedSelectedColumn);
         if (confirmedSelectedColumn != null) {
             if (col === confirmedSelectedColumn) {
-                td.style.backgroundColor = 'lightblue';
+                td.style.backgroundColor = 'lightsteelblue';
             }
             if (!confirmedCheckedValues.includes(cellValue)) {
+                td.style.backgroundColor = 'mistyrose';
+            }
+            if (col === confirmedSelectedColumn && !confirmedCheckedValues.includes(cellValue)) {
                 td.style.backgroundColor = 'palevioletred';
             }
         }
@@ -71,7 +75,11 @@ function MainSidebar({
     };
 
     const handleFilterByConditionClick = () => {
-        if (selectedColumnIndex === undefined) return;
+        if (selectedColumnIndex === null) {
+            setErrorMessage('Please select a column');
+            return;
+        }
+        setErrorMessage(''); // Clear error message if a column is selected
         const column = columnConfigs[selectedColumnIndex]?.data;
         if (!column) return;
     
@@ -106,6 +114,11 @@ function MainSidebar({
       };     
 
     const handleCheckboxChange = (value) => {
+        if (selectedColumnIndex === null) {
+            setErrorMessage('Please select a column');
+            return;
+        }
+        setErrorMessage(''); // Clear error message if a column is selected
         setCheckedValues((prevCheckedValues) => {
             const newCheckedValues = prevCheckedValues.includes(value)
                 ? prevCheckedValues.filter(v => v !== value)
@@ -120,6 +133,11 @@ function MainSidebar({
     };
 
     const selectAll = () => {
+        if (selectedColumnIndex === null) {
+            setErrorMessage('Please select a column');
+            return;
+        }
+        setErrorMessage(''); // Clear error message if a column is selected
         setCheckedValues((prevCheckedValues) => {
             const newCheckedValues = [
                 ...prevCheckedValues,
@@ -134,6 +152,11 @@ function MainSidebar({
     };
 
     const clearAll = () => {
+        if (selectedColumnIndex === null) {
+            setErrorMessage('Please select a column');
+            return;
+        }
+        setErrorMessage(''); // Clear error message if a column is selected
         setCheckedValues((prevCheckedValues) => {
             const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
             
@@ -158,6 +181,7 @@ function MainSidebar({
         setCheckedValues(allDistinctValues);
         setCheckedValues(allDistinctValues);
         setConfirmedSelectedColumn(null);
+        setErrorMessage(''); // Clear error message when filters are reset
     };
 
     const toggleNotes = () => {
@@ -200,7 +224,7 @@ function MainSidebar({
             </p>
             <h3>Select column</h3>
             <p>
-            You must first select a column to which the filter is applied. You can select a column in the main table on the left by clicking its head or selecting any cell within that column.
+                You must first select a column to which the filter is applied. You can select a column in the main table on the left by clicking its head or selecting any cell within that column.
             </p>
             <p>
             <strong>Selected column:</strong> {selectedColumnIndex !== null ? `column ${selectedColumnIndex}, ${selectedColumnName}` : <span style={{ fontWeight: 'bold', color: 'red' }}>Please select a column</span>}
@@ -228,7 +252,7 @@ function MainSidebar({
             </div>
             <h3>Filter Conditions</h3>
             <p>
-                When chosing how to filter your data, you have two options.
+                When choosing how to filter your data, you have two options.
             </p>
             <p>
                 <strong>- </strong>You can filter data by applying conditions such as equals, does not equal, contains, does not contain, etc.
@@ -247,6 +271,9 @@ function MainSidebar({
                 handleFilterValueChange={handleFilterValueChange}
                 handleFilterByConditionClick={handleFilterByConditionClick}
             />
+            {errorMessage && (
+                <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMessage}</p>
+            )}
             <p>
                 <strong>Option 2: </strong>You can select manually what data from the selected column you want to hide:<br />
                 <span style={{ fontSize: 14, color: 'grey' }}>
@@ -270,8 +297,12 @@ function MainSidebar({
                 selectAll={selectAll}
                 clearAll={clearAll}
             />
+            {errorMessage && (
+                <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMessage}</p>
+            )}
+            <div className={styles.separator}></div> {/* Add separator */}
             <p>
-                You can apply different filters to different columns simultainously, here you can reset them all.
+                You can apply different filters to different columns simultainously. <br />Here you can reset them all.
             </p>
             <div className="clear-all-filters">
                 <button onClick={handleClearAllFilters} className={styles.applyButton}>
@@ -280,7 +311,7 @@ function MainSidebar({
             </div>
             <div className={styles.separator}></div> {/* Add separator */}
             <p>
-                Rows that are filtered out and no longer appear in the main table are tinted red.
+                Rows that are filtered out and no longer appear in the main table are tinted pink.
             </p>
             <div className={styles.tableWrapper}>
                 <div className="small-table-wrapper" style={{ width: '100%', height: isSecondTableExpanded ? 400 : 180, overflow: 'auto' }}>
@@ -304,6 +335,9 @@ function MainSidebar({
                     {isSecondTableExpanded ? 'Collapse Table' : 'Expand Table'}
                 </button>
             </div>
+            <p>
+                You can filter or reset filters in your table at any time in the 'Data' menu.
+            </p>
         </div>
     );
 }

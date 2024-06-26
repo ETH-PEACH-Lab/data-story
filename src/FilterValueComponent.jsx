@@ -38,7 +38,6 @@ const FilterValueComponent = ({
                     ))}
                 </ul>
             </div>
-            <div className={styles.separator}></div> {/* Add separator */}
         </div>
     );
 };
