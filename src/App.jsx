@@ -32,6 +32,9 @@ import { handleUndo, handleRedo } from './utils/undoRedoHandlers';
 
 registerAllModules();
 
+// Define the constant array to determine which headers should be green
+const headerColors = [true, false, true, false, true, true, false, true, false, true, true, false, true, false, true, true, false, true, false, true]; // Example: only color 1st, 3rd, and 5th headers green
+
 function App() {
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
@@ -202,7 +205,7 @@ function App() {
             <HotTable
               ref={hotRef}
               data={data}
-              colHeaders={columnConfigs.map((column) => column.title)}
+              colHeaders={true}
               columns={columnConfigs.map((col) => ({
                 ...col,
                 renderer: (instance, td, row, col, prop, value, cellProperties) =>
@@ -236,6 +239,15 @@ function App() {
                   setSelectedColumnIndex
                 )
               }
+              afterGetColHeader={(col, TH) => {
+                const TR = TH.parentNode;
+                const THEAD = TR.parentNode;
+                const headerLevel = (-1) * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
+
+                if (headerLevel === -1 && headerColors[col]) {
+                  TH.classList.add('green-header');
+                }
+              }}
               outsideClickDeselects={false}
               fillHandle={true}
               comments={true}
