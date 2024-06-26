@@ -5,6 +5,7 @@ import { textRenderer } from 'handsontable/renderers/textRenderer';
 import FilterConditionComponent from './FilterConditionComponent';
 import FilterValueComponent from './FilterValueComponent';
 import 'react-resizable/css/styles.css';
+import styles from './FilterComponent.module.css';
 
 function MainSidebar({
     data,
@@ -41,7 +42,7 @@ function MainSidebar({
         }
     }, [selectedColumnIndex]);
 
-    const secondTableRenderer = useCallback((instance, td, row, col, prop, value, cellProperties) => {
+    const FilteredTableRenderer = useCallback((instance, td, row, col, prop, value, cellProperties) => {
         textRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
         const cellValue = instance.getDataAtCell(row, confirmedSelectedColumn);
         if (confirmedSelectedColumn != null) {
@@ -78,12 +79,40 @@ function MainSidebar({
         setFilterValue(event.target.value);
     };
 
-    const handleFilterClick = () => {
-        setTableKey(prevKey => !prevKey);
-        handleFilter(selectedColumnName, filterCondition, filterValue, columnConfigs, hotRef, checkedValues);
-        setConfirmedCheckedValues(checkedValues);
+    const handleFilterByConditionClick = () => {
+        if (selectedColumnIndex === undefined) return;
+        const column = columnConfigs[selectedColumnIndex]?.data;
+        if (!column) return;
+    
+        const newCheckedValues = data.filter(row => {
+          const cellValue = row[column];
+          switch (filterCondition) {
+            case 'empty':
+              return cellValue === '';
+            case 'not_empty':
+              return cellValue !== '';
+            case 'eq':
+              return cellValue === filterValue;
+            case 'neq':
+              return cellValue !== filterValue;
+              case 'begins_with':
+                return typeof cellValue === 'string' && cellValue.startsWith(filterValue);
+              case 'ends_with':
+                return typeof cellValue === 'string' && cellValue.endsWith(filterValue);
+              case 'contains':
+                return typeof cellValue === 'string' && cellValue.includes(filterValue);
+              case 'not_contains':
+                return typeof cellValue === 'string' && !cellValue.includes(filterValue);
+            default:
+              return true;
+          }
+        }).map(row => row[column]);
+    
+        setCheckedValues(newCheckedValues);
+        setConfirmedCheckedValues(newCheckedValues);
         setConfirmedSelectedColumn(selectedColumnIndex);
-    };
+        handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+      };     
 
     const handleApplyCheckboxFilter = () => {
         setConfirmedCheckedValues(checkedValues); // Update confirmed checked values
@@ -112,17 +141,20 @@ function MainSidebar({
         );
     };
 
-    const resetFilter = () => {
-        setFilterCondition('none');
-        setFilterValue('');
-        setCheckedValues([]);
-        setConfirmedCheckedValues([]); // Reset confirmed checked values
-        handleFilter(selectedColumnName, 'none', '', columnConfigs, hotRef, []);
-        setTimeout(fetchDistinctValues, 0); // Fetch distinct values again after resetting filter
-    };
-
     const handleSearchValueChange = (event) => {
         setSearchValue(event.target.value);
+    };
+
+    const handleClearAllFilters = () => {
+        columnConfigs.forEach((col, index) => {
+            handleFilter(col.data, 'none', '', columnConfigs, hotRef, []);
+        });
+
+        setFilterCondition('none');
+        setFilterValue('');
+        setCheckedValues(allDistinctValues);
+        setCheckedValues(allDistinctValues);
+        setConfirmedSelectedColumn(null);
     };
 
     useEffect(() => {
@@ -194,7 +226,7 @@ function MainSidebar({
                 filterValue={filterValue}
                 handleFilterConditionChange={handleFilterConditionChange}
                 handleFilterValueChange={handleFilterValueChange}
-                handleFilterClick={handleFilterClick}
+                handleFilterByConditionClick={handleFilterByConditionClick}
             />
             <p>
                 Or you can simply select manually what data you want to display:
@@ -209,6 +241,11 @@ function MainSidebar({
                 clearAll={clearAll}
                 handleApplyCheckboxFilter={handleApplyCheckboxFilter}
             />
+            <div className="clear-all-filters">
+                <button onClick={handleClearAllFilters} className={styles.applyButton}>
+                    Clear all Filters
+                </button>
+            </div>
             <p>
                 Rows that are filtered out and no longer appear in the main table are tinted red.
             </p>
@@ -226,7 +263,7 @@ function MainSidebar({
                         colHeaders={columnConfigs.map((column) => column.title)}
                         columns={columnConfigs.map((col) => ({
                             ...col,
-                            renderer: secondTableRenderer
+                            renderer: FilteredTableRenderer
                         }))}
                         rowHeaders={true}
                         width="100%"

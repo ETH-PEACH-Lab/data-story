@@ -1,7 +1,13 @@
 import React from 'react';
 import styles from './FilterComponent.module.css';
 
-const FilterConditionComponent = ({ filterCondition, filterValue, handleFilterConditionChange, handleFilterValueChange, handleFilterClick }) => {
+const FilterConditionComponent = ({ 
+  filterCondition, 
+  filterValue, 
+  handleFilterConditionChange, 
+  handleFilterValueChange, 
+  handleFilterByConditionClick 
+}) => {
   return (
     <div className={styles.filterComponent}>
       <div className={styles.separator}></div> {/* Add separator */}
@@ -20,7 +26,6 @@ const FilterConditionComponent = ({ filterCondition, filterValue, handleFilterCo
           <option value="ends_with">Ends with</option>
           <option value="contains">Contains</option>
           <option value="not_contains">Does not contain</option>
-          <option value="by_value">By value</option>
         </select>
         {(filterCondition !== 'none' && filterCondition !== 'empty' && filterCondition !== 'not_empty' && filterCondition !== 'by_value') && (
           <input
@@ -31,7 +36,7 @@ const FilterConditionComponent = ({ filterCondition, filterValue, handleFilterCo
             placeholder="Value"
           />
         )}
-        <button onClick={handleFilterClick} className={styles.applyButton}>
+        <button onClick={handleFilterByConditionClick} className={styles.applyButton}>
           Filter by condition
         </button>
         
