@@ -185,7 +185,7 @@ function MainSidebar({
             </p>
             <h3>Select column</h3>
             <p>
-                To apply the filter to the data, you need to select a column first.
+            You must first select a column to which the filter is applied.
             </p>
             <p>
             <strong>Selected column:</strong> {selectedColumnIndex !== null ? `index ${selectedColumnIndex}, ${selectedColumnName}` : "None"}
@@ -229,7 +229,7 @@ function MainSidebar({
                 handleFilterByConditionClick={handleFilterByConditionClick}
             />
             <p>
-                Or you can simply select manually what data you want to display:
+                Or you can simply select manually what data from the selected column you want to display:
             </p>
             <FilterValueComponent
                 filteredValues={filteredValues}
