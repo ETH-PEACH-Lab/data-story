@@ -7,6 +7,7 @@ import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
 import ConfirmationWindow from './ConfirmationWindow';
+import ErrorBoundary from './ErrorBoundary';
 
 import {
   handleDataLoaded,
@@ -129,177 +130,179 @@ function App() {
   }, [hotRef.current]);
 
   return (
-    <div className="container">
-      <h1>Data-Story</h1>
-      <MenuBar
-        onSaveCurrent={() =>
-          saveDataToHistory(
-            data,
-            originalFileName,
-            currentDataId,
-            setUploadHistory,
-            setCurrentDataId,
-            historyIdCounter,
-            setHistoryIdCounter,
-            actions,
-            originalFileName
-          )
-        }
-        onDataLoaded={(newData, fileName) =>
-          handleDataLoaded(
-            newData,
-            fileName,
-            setData,
-            setColumnConfigs,
-            setOriginalFileName,
-            setCurrentDataId,
-            saveDataToHistory,
-            historyIdCounter,
-            setHistoryIdCounter,
-            setUploadHistory,
-            actions,
-            originalFileName
-          )
-        }
-        toggleHistory={() => toggleHistory(setHistoryVisible)}
-        onStyleChange={(styleType, value) =>
-          handleStyleChange(
-            styleType,
-            value,
-            selectedCellsRef,
-            setTextStyles,
-            hotRef
-          )
-        }
-        selectedColumnIndex={selectedColumnIndex}
-        selectedColumnName={selectedColumnName}
-        setColumns={setColumnConfigs}
-        columns={columnConfigs}
-        handleSort={(columnName, sortOrder) =>
-          handleSort(columnName, sortOrder, columnConfigs, hotRef)
-        }
-        handleFilter={(columnIndex, condition, value, checkedValues) =>
-          handleFilter(columnIndex, condition, value, hotRef, checkedValues, filteredColumns, setFilteredColumns)
-        }
-        tableContainerRef={tableContainerRef}
-        countAndRemoveDuplicates={(remove) =>
-          countAndRemoveDuplicates(data, setData, hotRef, remove)
-        }
-        addRow={() => addRow(data, setData, columnConfigs, hotRef)}
-        addColumn={() =>
-          addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)
-        }
-        handleFindReplace={(findText, replaceText) =>
-          handleFindReplace(
-            findText,
-            replaceText,
-            selectedColumnIndex,
-            selectedColumnName,
-            data,
-            setData,
-            hotRef
-          )
-        }
-        handleUndo={() => handleUndo(hotRef)}
-        handleRedo={() => handleRedo(hotRef)}
-        hotRef={hotRef}
-        filteredColumns={filteredColumns}
-        setFilteredColumns={setFilteredColumns}
-      />
-      <div className="content-area">
-        <div className="handsontable-container" ref={tableContainerRef}>
-          <div className="hot-table-wrapper">
-            <HotTable
-              ref={hotRef}
-              data={data}
-              colHeaders={true}
-              columns={columnConfigs.map((col) => ({
-                ...col,
-                renderer: (instance, td, row, col, prop, value, cellProperties) =>
-                  customRenderer(
-                    instance,
-                    td,
-                    row,
-                    col,
-                    prop,
-                    value,
-                    cellProperties,
-                    textStyles
-                  ),
-              }))}
-              rowHeaders={true}
-              width="100%"
-              height="100%"
-              autoWrapRow={true}
-              autoWrapCol={true}
-              columnSorting={true}
-              filters={true}
-              manualColumnResize={true}
-              autoColumnSize={true}
-              afterSelectionEnd={(r1, c1, r2, c2) =>
-                handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex)
-              }
-              afterGetColHeader={(col, TH) => {
-                const TR = TH.parentNode;
-                const THEAD = TR.parentNode;
-                const headerLevel = (-1) * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
-            
-                if (headerLevel === -1 && filteredColumns[col]) {
-                  TH.classList.add('green-header');
-                }
-              }}
-              outsideClickDeselects={false}
-              fillHandle={true}
-              comments={true}
-              licenseKey="non-commercial-and-evaluation"
-              undoRedo={true}
-              settings={{ textStyles }}
-            />
-          </div>
-        </div>
-        <MainSidebar
-          data={data}
-          columnConfigs={columnConfigs}
+    <ErrorBoundary>
+      <div className="container">
+        <h1>Data-Story</h1>
+        <MenuBar
+          onSaveCurrent={() =>
+            saveDataToHistory(
+              data,
+              originalFileName,
+              currentDataId,
+              setUploadHistory,
+              setCurrentDataId,
+              historyIdCounter,
+              setHistoryIdCounter,
+              actions,
+              originalFileName
+            )
+          }
+          onDataLoaded={(newData, fileName) =>
+            handleDataLoaded(
+              newData,
+              fileName,
+              setData,
+              setColumnConfigs,
+              setOriginalFileName,
+              setCurrentDataId,
+              saveDataToHistory,
+              historyIdCounter,
+              setHistoryIdCounter,
+              setUploadHistory,
+              actions,
+              originalFileName
+            )
+          }
+          toggleHistory={() => toggleHistory(setHistoryVisible)}
+          onStyleChange={(styleType, value) =>
+            handleStyleChange(
+              styleType,
+              value,
+              selectedCellsRef,
+              setTextStyles,
+              hotRef
+            )
+          }
           selectedColumnIndex={selectedColumnIndex}
           selectedColumnName={selectedColumnName}
-          handleFilter={handleFilter}
+          setColumns={setColumnConfigs}
+          columns={columnConfigs}
+          handleSort={(columnName, sortOrder) =>
+            handleSort(columnName, sortOrder, columnConfigs, hotRef)
+          }
+          handleFilter={(columnIndex, condition, value, checkedValues) =>
+            handleFilter(columnIndex, condition, value, hotRef, checkedValues, filteredColumns, setFilteredColumns)
+          }
+          tableContainerRef={tableContainerRef}
+          countAndRemoveDuplicates={(remove) =>
+            countAndRemoveDuplicates(data, setData, hotRef, remove)
+          }
+          addRow={() => addRow(data, setData, columnConfigs, hotRef)}
+          addColumn={() =>
+            addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)
+          }
+          handleFindReplace={(findText, replaceText) =>
+            handleFindReplace(
+              findText,
+              replaceText,
+              selectedColumnIndex,
+              selectedColumnName,
+              data,
+              setData,
+              hotRef
+            )
+          }
+          handleUndo={() => handleUndo(hotRef)}
+          handleRedo={() => handleRedo(hotRef)}
           hotRef={hotRef}
           filteredColumns={filteredColumns}
           setFilteredColumns={setFilteredColumns}
         />
-        <HistorySidebar
-          isHistoryVisible={isHistoryVisible}
-          uploadHistory={uploadHistory}
-          clickedIndex={clickedIndex}
-          onHistoryItemClick={handleHistoryClick}
-          onHistoryItemDelete={(index) =>
-            handleHistoryDelete(
-              index,
-              uploadHistory,
-              currentDataId,
-              setData,
-              initializeColumns,
-              setCurrentDataId,
-              setActions,
-              setOriginalFileName,
-              setUploadHistory,
-              setShowConfirmation,
-              setConfirmationMessage,
-              setOnConfirmAction
-            )
-          }
-          toggleHistory={() => toggleHistory(setHistoryVisible)}
-          currentDataId={currentDataId}
-        />
+        <div className="content-area">
+          <div className="handsontable-container" ref={tableContainerRef}>
+            <div className="hot-table-wrapper">
+              <HotTable
+                ref={hotRef}
+                data={data}
+                colHeaders={true}
+                columns={columnConfigs.map((col) => ({
+                  ...col,
+                  renderer: (instance, td, row, col, prop, value, cellProperties) =>
+                    customRenderer(
+                      instance,
+                      td,
+                      row,
+                      col,
+                      prop,
+                      value,
+                      cellProperties,
+                      textStyles
+                    ),
+                }))}
+                rowHeaders={true}
+                width="100%"
+                height="100%"
+                autoWrapRow={true}
+                autoWrapCol={true}
+                columnSorting={true}
+                filters={true}
+                manualColumnResize={true}
+                autoColumnSize={true}
+                afterSelectionEnd={(r1, c1, r2, c2) =>
+                  handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex)
+                }
+                afterGetColHeader={(col, TH) => {
+                  const TR = TH.parentNode;
+                  const THEAD = TR.parentNode;
+                  const headerLevel = (-1) * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
+
+                  if (headerLevel === -1 && filteredColumns[col]) {
+                    TH.classList.add('green-header');
+                  }
+                }}
+                outsideClickDeselects={false}
+                fillHandle={true}
+                comments={true}
+                licenseKey="non-commercial-and-evaluation"
+                undoRedo={true}
+                settings={{ textStyles }}
+              />
+            </div>
+          </div>
+          <MainSidebar
+            data={data}
+            columnConfigs={columnConfigs}
+            selectedColumnIndex={selectedColumnIndex}
+            selectedColumnName={selectedColumnName}
+            handleFilter={handleFilter}
+            hotRef={hotRef}
+            filteredColumns={filteredColumns}
+            setFilteredColumns={setFilteredColumns}
+          />
+          <HistorySidebar
+            isHistoryVisible={isHistoryVisible}
+            uploadHistory={uploadHistory}
+            clickedIndex={clickedIndex}
+            onHistoryItemClick={handleHistoryClick}
+            onHistoryItemDelete={(index) =>
+              handleHistoryDelete(
+                index,
+                uploadHistory,
+                currentDataId,
+                setData,
+                initializeColumns,
+                setCurrentDataId,
+                setActions,
+                setOriginalFileName,
+                setUploadHistory,
+                setShowConfirmation,
+                setConfirmationMessage,
+                setOnConfirmAction
+              )
+            }
+            toggleHistory={() => toggleHistory(setHistoryVisible)}
+            currentDataId={currentDataId}
+          />
+        </div>
+        {showConfirmation && (
+          <ConfirmationWindow
+            message={confirmationMessage}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+          />
+        )}
       </div>
-      {showConfirmation && (
-        <ConfirmationWindow
-          message={confirmationMessage}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
-      )}
-    </div>
+    </ErrorBoundary>
   );
 }
 

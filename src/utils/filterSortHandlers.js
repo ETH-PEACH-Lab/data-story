@@ -33,7 +33,6 @@ export const handleFilter = (
   const filtersPlugin = hotInstance.getPlugin('filters');
   filtersPlugin.clearConditions(columnIndex);
 
-  // Fetch all distinct values directly inside handleFilter
   const allDistinctValues = [...new Set(hotInstance.getSourceDataAtCol(columnIndex).map(value => (value !== null && value !== undefined ? value : '')))];
   
   if (condition === 'by_value') {

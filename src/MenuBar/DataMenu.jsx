@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './MenuBar.module.css';
 
 const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort, handleFilter, tableContainerRef, hotRef, filteredColumns, setFilteredColumns }) => {
@@ -131,27 +131,21 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
     setFilterDropdownVisible(false);
   };
 
-  // Handle checkbox state change for filtering values
-  const handleCheckboxChange = (value) => {
+  const handleCheckboxChange = useCallback((value) => {
     setCheckedValues((prevCheckedValues) => {
       const newCheckedValues = prevCheckedValues.includes(value)
         ? prevCheckedValues.filter(v => v !== value)
         : [...prevCheckedValues, value];
-      applyCheckboxFilter(newCheckedValues); // Apply filter immediately
-      updateFilteredColumns(newCheckedValues); // Update filteredColumns
+
+      // Apply filter and update state outside of the render phase
+      setTimeout(() => {
+        applyCheckboxFilter(newCheckedValues);
+        updateFilteredColumns(newCheckedValues);
+      }, 0);
+
       return newCheckedValues;
     });
-  };
-
-  // Apply changes based on selected checkboxes
-  const applyFilterChanges = () => {
-    setColumnFilters({
-      ...columnFilters,
-      [selectedColumnIndex]: { condition: filterCondition, value: filterValue, checkedValues },
-    });
-    applyCheckboxFilter(checkedValues);
-    setFilterDropdownVisible(false);
-  };
+  }, []);
 
   // Apply checkbox filter conditions to the table
   const applyCheckboxFilter = (checkedValues) => {
@@ -190,8 +184,10 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
         ...prevCheckedValues,
         ...filteredValues.filter(value => !prevCheckedValues.includes(value)),
       ];
-      applyCheckboxFilter(newCheckedValues); // Apply filter immediately
-      updateFilteredColumns(newCheckedValues); // Update filteredColumns
+      setTimeout(() => {
+        applyCheckboxFilter(newCheckedValues);
+        updateFilteredColumns(newCheckedValues);
+      }, 0);
       return newCheckedValues;
     });
   };
@@ -200,8 +196,10 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
   const clearAll = () => {
     setCheckedValues((prevCheckedValues) => {
       const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
-      applyCheckboxFilter(newCheckedValues); // Apply filter immediately
-      updateFilteredColumns(newCheckedValues); // Update filteredColumns
+      setTimeout(() => {
+        applyCheckboxFilter(newCheckedValues);
+        updateFilteredColumns(newCheckedValues);
+      }, 0);
       return newCheckedValues;
     });
   };
