@@ -93,14 +93,14 @@ function MainSidebar({
               return cellValue === filterValue;
             case 'neq':
               return cellValue !== filterValue;
-              case 'begins_with':
-                return typeof cellValue === 'string' && cellValue.startsWith(filterValue);
-              case 'ends_with':
-                return typeof cellValue === 'string' && cellValue.endsWith(filterValue);
-              case 'contains':
-                return typeof cellValue === 'string' && cellValue.includes(filterValue);
-              case 'not_contains':
-                return typeof cellValue === 'string' && !cellValue.includes(filterValue);
+            case 'begins_with':
+              return typeof cellValue === 'string' && cellValue.startsWith(filterValue);
+            case 'ends_with':
+              return typeof cellValue === 'string' && cellValue.endsWith(filterValue);
+            case 'contains':
+              return typeof cellValue === 'string' && cellValue.includes(filterValue);
+            case 'not_contains':
+              return typeof cellValue === 'string' && !cellValue.includes(filterValue);
             default:
               return true;
           }
@@ -109,7 +109,7 @@ function MainSidebar({
         setCheckedValues(newCheckedValues);
         setConfirmedCheckedValues(newCheckedValues);
         setConfirmedSelectedColumn(selectedColumnIndex);
-        handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+        handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
     };     
 
     const handleCheckboxChange = (value) => {
@@ -125,7 +125,7 @@ function MainSidebar({
             
             setConfirmedSelectedColumn(selectedColumnIndex);
             setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
-            handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
             
             return newCheckedValues;
         });
@@ -144,7 +144,7 @@ function MainSidebar({
             ];
             
             setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
-            handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
             
             return newCheckedValues;
         });
@@ -160,7 +160,7 @@ function MainSidebar({
             const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
             
             setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
-            handleFilter(selectedColumnName, 'by_value', '', columnConfigs, hotRef, newCheckedValues);
+            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
             
             return newCheckedValues;
         });
@@ -172,7 +172,7 @@ function MainSidebar({
 
     const handleClearAllFilters = () => {
         columnConfigs.forEach((col, index) => {
-            handleFilter(col.data, 'none', '', columnConfigs, hotRef, []);
+            handleFilter(index, 'none', '', hotRef, []);
         });
 
         setFilterCondition('none');

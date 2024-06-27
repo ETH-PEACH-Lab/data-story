@@ -123,6 +123,12 @@ function App() {
     );
   }, []);
 
+  useEffect(() => {
+    if (hotRef.current) {
+      console.log('Handsontable instance:', hotRef.current.hotInstance);
+    }
+  }, [hotRef.current]);
+
   return (
     <div className="container">
       <h1>Data-Story</h1>
@@ -173,8 +179,8 @@ function App() {
         handleSort={(columnName, sortOrder) =>
           handleSort(columnName, sortOrder, columnConfigs, hotRef)
         }
-        handleFilter={(columnName, condition, value, checkedValues) =>
-          handleFilter(columnName, condition, value, columnConfigs, hotRef, checkedValues)
+        handleFilter={(columnIndex, condition, value, checkedValues) =>
+          handleFilter(columnIndex, condition, value, hotRef, checkedValues)
         }
         tableContainerRef={tableContainerRef}
         countAndRemoveDuplicates={(remove) =>

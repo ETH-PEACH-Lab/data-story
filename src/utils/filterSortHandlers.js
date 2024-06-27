@@ -13,15 +13,16 @@ export const handleSort = (columnName, sortOrder, columnConfigs, hotRef) => {
   });
 };
 
-export const handleFilter = (columnName, condition, value, columnConfigs, hotRef, checkedValues) => {
-  if (!columnName || !condition) return;
+export const handleFilter = (columnIndex, condition, value, hotRef, checkedValues) => {
+  if (columnIndex === undefined || columnIndex === null || !condition) return;
 
-  const columnIndex = columnConfigs.findIndex(col => col.title === columnName);
-  if (columnIndex === -1) return;
-
-  const hotInstance = hotRef.current.hotInstance;
+  const hotInstance = hotRef.current?.hotInstance;
+  if (!hotInstance) {
+    console.error("Handsontable instance not found.");
+    return;
+  }
+  
   const filtersPlugin = hotInstance.getPlugin('filters');
-
   filtersPlugin.clearConditions(columnIndex);
 
   if (condition === 'by_value') {

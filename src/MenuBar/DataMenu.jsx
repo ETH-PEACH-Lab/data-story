@@ -123,7 +123,7 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
 
   // Apply filtering to selected column
   const handleFilterClick = () => {
-    handleFilter(selectedColumnName, filterCondition, filterValue);
+    handleFilter(selectedColumnIndex, filterCondition, filterValue, hotRef, checkedValues);
     setColumnFilters({
       ...columnFilters,
       [selectedColumnIndex]: { condition: filterCondition, value: filterValue, checkedValues },
