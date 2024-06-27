@@ -230,20 +230,13 @@ function App() {
               manualColumnResize={true}
               autoColumnSize={true}
               afterSelectionEnd={(r1, c1, r2, c2) =>
-                handleSelectionEnd(
-                  r1,
-                  c1,
-                  r2,
-                  c2,
-                  selectedCellsRef,
-                  setSelectedColumnIndex
-                )
+                handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex)
               }
               afterGetColHeader={(col, TH) => {
                 const TR = TH.parentNode;
                 const THEAD = TR.parentNode;
                 const headerLevel = (-1) * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
-
+            
                 if (headerLevel === -1 && headerColors[col]) {
                   TH.classList.add('green-header');
                 }

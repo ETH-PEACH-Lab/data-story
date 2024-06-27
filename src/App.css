@@ -76,4 +76,8 @@
   .handsontable THEAD TH.green-header {
     background: rgb(174, 216, 174);
   }
+
+  .handsontable THEAD TH.green-header.ht__highlight {
+    background: rgb(120, 159, 120) !important;
+  }
   
