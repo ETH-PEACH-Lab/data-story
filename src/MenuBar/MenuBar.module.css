@@ -115,12 +115,12 @@
 .applyButton {
     background-color: white;
     border: 1px solid #ccc;
-    padding: 5px 10px;
-    margin-left: 10px;
+    padding: 2px 5px;
+    margin-left: 8px;
     cursor: pointer;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
-    min-width: 82px;
+    min-width: 80px;
 }
 
 .applyButton:hover {

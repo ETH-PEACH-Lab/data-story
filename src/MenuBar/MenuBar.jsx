@@ -25,7 +25,9 @@ const MenuBar = ({
   handleFindReplace,
   handleUndo,
   handleRedo,
-  hotRef
+  hotRef,
+  filteredColumns,
+  setFilteredColumns
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -65,6 +67,8 @@ const MenuBar = ({
               handleFilter={handleFilter}
               tableContainerRef={tableContainerRef}
               hotRef={hotRef}
+              filteredColumns={filteredColumns}
+              setFilteredColumns={setFilteredColumns}
             /> 
   };
 

@@ -32,9 +32,6 @@ import { handleUndo, handleRedo } from './utils/undoRedoHandlers';
 
 registerAllModules();
 
-// Define the constant array to determine which headers should be green
-const headerColors = [true, false, true, false, true, true, false, true, false, true, true, false, true, false, true, true, false, true, false, true]; // Example: only color 1st, 3rd, and 5th headers green
-
 function App() {
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
@@ -48,6 +45,7 @@ function App() {
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
   const [originalFileName, setOriginalFileName] = useState('');
   const [textStyles, setTextStyles] = useState({});
+  const [filteredColumns, setFilteredColumns] = useState([]);
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
   const tableContainerRef = useRef(null);
@@ -68,6 +66,7 @@ function App() {
       }));
 
       setColumnConfigs(columnConfigs);
+      setFilteredColumns(Array(columnsCount).fill(false)); // Initialize filteredColumns array
     }
   };
 
@@ -180,7 +179,7 @@ function App() {
           handleSort(columnName, sortOrder, columnConfigs, hotRef)
         }
         handleFilter={(columnIndex, condition, value, checkedValues) =>
-          handleFilter(columnIndex, condition, value, hotRef, checkedValues)
+          handleFilter(columnIndex, condition, value, hotRef, checkedValues, filteredColumns, setFilteredColumns)
         }
         tableContainerRef={tableContainerRef}
         countAndRemoveDuplicates={(remove) =>
@@ -204,6 +203,8 @@ function App() {
         handleUndo={() => handleUndo(hotRef)}
         handleRedo={() => handleRedo(hotRef)}
         hotRef={hotRef}
+        filteredColumns={filteredColumns}
+        setFilteredColumns={setFilteredColumns}
       />
       <div className="content-area">
         <div className="handsontable-container" ref={tableContainerRef}>
@@ -243,7 +244,7 @@ function App() {
                 const THEAD = TR.parentNode;
                 const headerLevel = (-1) * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
             
-                if (headerLevel === -1 && headerColors[col]) {
+                if (headerLevel === -1 && filteredColumns[col]) {
                   TH.classList.add('green-header');
                 }
               }}
@@ -263,6 +264,8 @@ function App() {
           selectedColumnName={selectedColumnName}
           handleFilter={handleFilter}
           hotRef={hotRef}
+          filteredColumns={filteredColumns}
+          setFilteredColumns={setFilteredColumns}
         />
         <HistorySidebar
           isHistoryVisible={isHistoryVisible}

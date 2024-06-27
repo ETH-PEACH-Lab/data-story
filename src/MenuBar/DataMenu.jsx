@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './MenuBar.module.css';
 
-const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort, handleFilter, tableContainerRef, hotRef }) => {
+const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort, handleFilter, tableContainerRef, hotRef, filteredColumns, setFilteredColumns }) => {
   const [isSortDropdownVisible, setSortDropdownVisible] = useState(false);
   const [sortOrder, setSortOrder] = useState('');
   const [isFilterDropdownVisible, setFilterDropdownVisible] = useState(false);
@@ -123,7 +123,7 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
 
   // Apply filtering to selected column
   const handleFilterClick = () => {
-    handleFilter(selectedColumnIndex, filterCondition, filterValue, hotRef, checkedValues);
+    handleFilter(selectedColumnIndex, filterCondition, filterValue, hotRef, checkedValues, filteredColumns, setFilteredColumns);
     setColumnFilters({
       ...columnFilters,
       [selectedColumnIndex]: { condition: filterCondition, value: filterValue, checkedValues },
@@ -134,9 +134,12 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
   // Handle checkbox state change for filtering values
   const handleCheckboxChange = (value) => {
     setCheckedValues((prevCheckedValues) => {
-      return prevCheckedValues.includes(value)
+      const newCheckedValues = prevCheckedValues.includes(value)
         ? prevCheckedValues.filter(v => v !== value)
         : [...prevCheckedValues, value];
+      applyCheckboxFilter(newCheckedValues); // Apply filter immediately
+      updateFilteredColumns(newCheckedValues); // Update filteredColumns
+      return newCheckedValues;
     });
   };
 
@@ -156,28 +159,51 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
       const hotInstance = hotRef.current.hotInstance;
       const filtersPlugin = hotInstance.getPlugin('filters');
       filtersPlugin.clearConditions(selectedColumnIndex);
-      if (checkedValues.length > 0) {
+      if (checkedValues.length > 0 && checkedValues.length < allDistinctValues.length) {
         filtersPlugin.addCondition(selectedColumnIndex, 'by_value', [checkedValues]);
+      } else if (checkedValues.length === 0) {
+        filtersPlugin.addCondition(selectedColumnIndex, 'by_value', [[]]);
       } else {
-        filtersPlugin.addCondition(selectedColumnIndex, 'eq', ['nonexistent_value']);
+        filtersPlugin.clearConditions(selectedColumnIndex);
       }
       filtersPlugin.filter();
     }
   };
 
+  // Update filteredColumns state
+  const updateFilteredColumns = (newCheckedValues) => {
+    setFilteredColumns((prevFilteredColumns) => {
+      const newFilteredColumns = { ...prevFilteredColumns };
+      if (newCheckedValues.length < allDistinctValues.length) {
+        newFilteredColumns[selectedColumnIndex] = true;
+      } else {
+        newFilteredColumns[selectedColumnIndex] = false;
+      }
+      return newFilteredColumns;
+    });
+  };
+
   // Select all checkboxes in the current filtered list
   const selectAll = () => {
-    setCheckedValues((prevCheckedValues) => [
-      ...prevCheckedValues,
-      ...filteredValues.filter(value => !prevCheckedValues.includes(value)),
-    ]);
+    setCheckedValues((prevCheckedValues) => {
+      const newCheckedValues = [
+        ...prevCheckedValues,
+        ...filteredValues.filter(value => !prevCheckedValues.includes(value)),
+      ];
+      applyCheckboxFilter(newCheckedValues); // Apply filter immediately
+      updateFilteredColumns(newCheckedValues); // Update filteredColumns
+      return newCheckedValues;
+    });
   };
 
   // Clear all checkboxes in the current filtered list
   const clearAll = () => {
-    setCheckedValues((prevCheckedValues) =>
-      prevCheckedValues.filter(value => !filteredValues.includes(value))
-    );
+    setCheckedValues((prevCheckedValues) => {
+      const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
+      applyCheckboxFilter(newCheckedValues); // Apply filter immediately
+      updateFilteredColumns(newCheckedValues); // Update filteredColumns
+      return newCheckedValues;
+    });
   };
 
   const stopPropagation = (e) => {
@@ -193,12 +219,7 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
       ...columnFilters,
       [selectedColumnIndex]: { condition: 'none', value: '', checkedValues: [] },
     });
-    if (hotRef.current) {
-      const hotInstance = hotRef.current.hotInstance;
-      const filtersPlugin = hotInstance.getPlugin('filters');
-      filtersPlugin.clearConditions(selectedColumnIndex);
-      filtersPlugin.filter();
-    }
+    handleFilter(selectedColumnIndex, 'none', '', hotRef, [], filteredColumns, setFilteredColumns);
     setFilterDropdownVisible(false);
     setFilterSubmenu('');
   };
@@ -310,10 +331,9 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
                   style={{ ...getSubDropdownPosition(valueButtonRef) }}
                   onClick={stopPropagation}
                 >
-                  <div className={styles.distinctValuesList}>
-                    <div className={styles.selectClearAll}>
-                      <button onClick={selectAll} className={styles.applyButton}>Select All</button>
-                      <button onClick={clearAll} className={styles.applyButton}>Clear All</button>
+                  <div className={styles.selectClearAll}>
+                      <button onClick={selectAll} className={styles.applyButton}>Check All</button>
+                      <button onClick={clearAll} className={styles.applyButton}>Uncheck All</button>
                     </div>
                     <input
                       type="text"
@@ -323,6 +343,7 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
                       placeholder="Search values"
                       style={{ marginBottom: '10px', width: '100%' }}
                     />
+                  <div className={styles.distinctValuesList}>
                     <ul>
                       {filteredValues.map((value, index) => (
                         <li key={index}>
@@ -335,11 +356,6 @@ const DataMenu = ({ columns, selectedColumnIndex, selectedColumnName, handleSort
                         </li>
                       ))}
                     </ul>
-                  </div>
-                  <div className={styles.applyButtonContainer}>
-                    <button onClick={applyFilterChanges} className={styles.applyButton}>
-                      Apply
-                    </button>
                   </div>
                 </div>
               )}

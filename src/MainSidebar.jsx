@@ -11,7 +11,9 @@ function MainSidebar({
     selectedColumnIndex,
     selectedColumnName,
     handleFilter,
-    hotRef
+    hotRef,
+    filteredColumns,
+    setFilteredColumns
 }) {
     const [isFirstTableExpanded, setIsFirstTableExpanded] = useState(false);
     const [isSecondTableExpanded, setIsSecondTableExpanded] = useState(false);
@@ -79,6 +81,7 @@ function MainSidebar({
             return;
         }
         setFilterConditionError(''); // Clear error message if a column is selected
+    
         const column = columnConfigs[selectedColumnIndex]?.data;
         if (!column) return;
     
@@ -109,8 +112,18 @@ function MainSidebar({
         setCheckedValues(newCheckedValues);
         setConfirmedCheckedValues(newCheckedValues);
         setConfirmedSelectedColumn(selectedColumnIndex);
-        handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
-    };     
+    
+        handleFilter(
+            selectedColumnIndex,
+            filterCondition,
+            filterValue,
+            hotRef,
+            newCheckedValues, // Pass updated checkedValues
+            filteredColumns,
+            setFilteredColumns
+        );
+    };
+    
 
     const handleCheckboxChange = (value) => {
         if (selectedColumnIndex === null) {
@@ -125,7 +138,7 @@ function MainSidebar({
             
             setConfirmedSelectedColumn(selectedColumnIndex);
             setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
-            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
+            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues, filteredColumns, setFilteredColumns);
             
             return newCheckedValues;
         });
@@ -144,7 +157,7 @@ function MainSidebar({
             ];
             
             setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
-            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
+            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues, filteredColumns, setFilteredColumns);
             
             return newCheckedValues;
         });
@@ -160,7 +173,7 @@ function MainSidebar({
             const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
             
             setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
-            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues);
+            handleFilter(selectedColumnIndex, 'by_value', '', hotRef, newCheckedValues, filteredColumns, setFilteredColumns);
             
             return newCheckedValues;
         });
@@ -172,12 +185,11 @@ function MainSidebar({
 
     const handleClearAllFilters = () => {
         columnConfigs.forEach((col, index) => {
-            handleFilter(index, 'none', '', hotRef, []);
+            handleFilter(index, 'none', '', hotRef, [], filteredColumns, setFilteredColumns);
         });
 
         setFilterCondition('none');
         setFilterValue('');
-        setCheckedValues(allDistinctValues);
         setCheckedValues(allDistinctValues);
         setConfirmedSelectedColumn(null);
         setFilterConditionError(''); // Clear error message when filters are reset
@@ -302,7 +314,9 @@ function MainSidebar({
             )}
             <div className={styles.separator}></div> {/* Add separator */}
             <p>
-                You can apply different filters to different columns simultainously. <br />Here you can reset them all.
+                You can apply different filters to different columns simultainously. <br />
+                Any columns that currently have a filter applied to them have a green header. <br />
+                Here you can reset them all.
             </p>
             <div className="clear-all-filters">
                 <button onClick={handleClearAllFilters} className={styles.applyButton}>
