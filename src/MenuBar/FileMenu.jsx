@@ -3,7 +3,10 @@ import styles from './MenuBar.module.css';
 
 const FileMenu = ({ onSaveCurrent, onDataLoaded, toggleHistory, fileInputRef, hotRef }) => {
   const generateEmptyDataset = () => {
-    const emptyData = Array.from({ length: 5 }, () => Array(5).fill(null));
+    const columns = Array.from({ length: 5 }, (_, i) => `Column ${i + 1}`);
+    const emptyData = Array.from({ length: 5 }, () => 
+      columns.reduce((acc, column) => ({ ...acc, [column]: null }), {})
+    );
     return { data: emptyData };
   };
 
