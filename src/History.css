@@ -59,6 +59,10 @@
     width: 55px;
     background-color: #F2EFE5;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
   .collapsed-button:hover {
