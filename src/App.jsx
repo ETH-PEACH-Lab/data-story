@@ -118,7 +118,9 @@ function App() {
         setHistoryIdCounter,
         setUploadHistory,
         actions,
-        originalFileName
+        originalFileName,
+        setTextStyles,
+        setFilteredColumns
       )
     );
   }, []);
@@ -160,7 +162,9 @@ function App() {
               setHistoryIdCounter,
               setUploadHistory,
               actions,
-              originalFileName
+              originalFileName,
+              setTextStyles,
+              setFilteredColumns
             )
           }
           toggleHistory={() => toggleHistory(setHistoryVisible)}

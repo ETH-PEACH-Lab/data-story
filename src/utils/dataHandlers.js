@@ -12,7 +12,9 @@ export const handleDataLoaded = (
   setHistoryIdCounter,
   setUploadHistory,
   actions,
-  originalFileName
+  originalFileName,
+  setTextStyles, // Add this parameter
+  setFilteredColumns // Add this parameter
 ) => {
   const dataWithTypes = newData.map((row) => {
     const newRow = {};
@@ -44,6 +46,8 @@ export const handleDataLoaded = (
     actions,
     originalFileName
   );
+  setTextStyles({}); // Reset text styles
+  setFilteredColumns(Array(initialColumnConfigs.length).fill(false)); // Reset filtered columns
 };
 
 export const fetchData = async (handleDataLoaded) => {
