@@ -354,3 +354,45 @@ class ClearFormattingAction extends Handsontable.plugins.UndoRedo.Action {
   }
   
   export { SortAction };
+
+  class FilterAction extends Handsontable.plugins.UndoRedo.Action {
+    constructor(previousConditionsStack, currentConditionsStack, previousFilteredColumns, currentFilteredColumns, setFilteredColumns) {
+      super();
+      this.previousConditionsStack = previousConditionsStack;
+      this.currentConditionsStack = currentConditionsStack;
+      this.previousFilteredColumns = previousFilteredColumns;
+      this.currentFilteredColumns = currentFilteredColumns;
+      this.setFilteredColumns = setFilteredColumns;
+      this.actionType = 'filter';
+    }
+  
+    undo(instance, undoneCallback) {
+      const filtersPlugin = instance.getPlugin('filters');
+  
+      filtersPlugin.conditionCollection.importAllConditions(this.previousConditionsStack.slice());
+      filtersPlugin.filter();
+  
+      this.setFilteredColumns([...this.previousFilteredColumns]);
+      instance.render();
+  
+      if (undoneCallback) {
+        undoneCallback();
+      }
+    }
+  
+    redo(instance, redoneCallback) {
+      const filtersPlugin = instance.getPlugin('filters');
+  
+      filtersPlugin.conditionCollection.importAllConditions(this.currentConditionsStack.slice());
+      filtersPlugin.filter();
+  
+      this.setFilteredColumns([...this.currentFilteredColumns]);
+      instance.render();
+  
+      if (redoneCallback) {
+        redoneCallback();
+      }
+    }
+  }
+  
+  export { FilterAction };

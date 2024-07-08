@@ -1,4 +1,4 @@
-import { SortAction } from '../CustomUndoRedo';
+import { SortAction, FilterAction } from '../CustomUndoRedo';
 
 export const handleSort = (columnName, sortOrder, columnConfigs, hotRef) => {
   if (!columnName || !sortOrder) return;
@@ -42,6 +42,9 @@ export const handleFilter = (
   }
 
   const filtersPlugin = hotInstance.getPlugin('filters');
+  const previousConditionsStack = filtersPlugin.conditionCollection.exportAllConditions();
+  const previousFilteredColumns = [...filteredColumns];
+
   filtersPlugin.clearConditions(columnIndex);
 
   const allDistinctValues = [...new Set(hotInstance.getSourceDataAtCol(columnIndex).map(value => (value !== null && value !== undefined ? value : '')))];
@@ -61,5 +64,11 @@ export const handleFilter = (
   }
 
   filtersPlugin.filter();
+  const currentConditionsStack = filtersPlugin.conditionCollection.exportAllConditions();
+  const currentFilteredColumns = [...filteredColumns];
+
   setFilteredColumns([...filteredColumns]);
+
+  const wrappedAction = () => new FilterAction(previousConditionsStack, currentConditionsStack, previousFilteredColumns, currentFilteredColumns, setFilteredColumns);
+  hotInstance.undoRedo.done(wrappedAction);
 };
