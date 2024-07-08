@@ -11,13 +11,14 @@ export const handleDataLoaded = (
   historyIdCounter,
   setHistoryIdCounter,
   setUploadHistory,
-  actions,
+  setActions,
   originalFileName,
   setTextStyles,
   setFilteredColumns,
   hotRef,
   setInitialActionStack,
-  setInitialActionStackLength
+  setInitialActionStackLength,
+  isNewTable = false
 ) => {
   const dataWithTypes = newData.map((row) => {
     const newRow = {};
@@ -45,15 +46,17 @@ export const handleDataLoaded = (
     setCurrentDataId,
     historyIdCounter,
     setHistoryIdCounter,
-    actions,
+    [],
     originalFileName,
-    {}
+    {},
+    0,
+    hotRef // Pass hotRef
   );
   setTextStyles({});
   setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
-  // Reset the initial action stack length and state
-  if (hotRef && hotRef.current) {
+  // Reset the initial action stack length and state if it's a new table
+  if (isNewTable || (hotRef && hotRef.current)) {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
     undoRedo.clear();
     setInitialActionStackLength(0);

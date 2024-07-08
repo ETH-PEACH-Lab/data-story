@@ -29,6 +29,21 @@ const HistorySidebar = ({ isHistoryVisible, uploadHistory, onHistoryItemClick, o
               >
                 <strong>{entry.fileName}</strong> - <em>{entry.timestamp}</em>
                 <div>ID: {entry.id}, Derived from: {entry.parentId}</div>
+                {entry.actions && entry.actions.length > 0 && (
+                  <details>
+                    <summary>Actions since last save</summary>
+                    <ul style={{ color: 'gray' }}>
+                      {entry.actions.map((action, actionIndex) => (
+                        <li key={actionIndex}>
+                          <details>
+                            <summary>{action.actionType}</summary>
+                            <pre>{JSON.stringify(action, null, 2)}</pre>
+                          </details>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
                 <button
                   onClick={(event) => {
                     event.stopPropagation();
@@ -38,13 +53,6 @@ const HistorySidebar = ({ isHistoryVisible, uploadHistory, onHistoryItemClick, o
                 >
                   Delete
                 </button>
-                {entry.actions && entry.actions.length > 0 && (
-                  <ul>
-                    {entry.actions.map((action, actionIndex) => (
-                      <li key={actionIndex}>{action}</li>
-                    ))}
-                  </ul>
-                )}
               </li>
             ))}
           </ul>

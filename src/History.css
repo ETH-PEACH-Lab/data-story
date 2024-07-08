@@ -43,12 +43,29 @@
   }
   
   .history-entry ul {
+    list-style-type: disc;
     margin-top: 0;
     padding-left: 20px;
   }
   
   .history-entry li {
     margin-bottom: 2px; 
+  }
+
+  .history-entry details {
+    margin-top: 10px;
+  }
+
+  .history-entry summary {
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .history-entry pre {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 0;
   }
 
   .collapsed-button {

@@ -14,7 +14,9 @@ const FileMenu = ({
   setOnConfirmAction,
   setOnCancelAction,
   initialActionStack,
-  initialActionStackLength
+  setInitialActionStack, // Add this
+  initialActionStackLength,
+  setInitialActionStackLength // Add this
 }) => {
   const generateEmptyDataset = () => {
     const columns = Array.from({ length: 5 }, (_, i) => `Column ${i + 1}`);
@@ -44,25 +46,25 @@ const FileMenu = ({
         onSaveCurrent();
         if (item === 'New') {
           const { data } = generateEmptyDataset();
-          onDataLoaded(data, `New Table ${Date.now()}`, hotRef);
+          onDataLoaded(data, `New Table ${Date.now()}`);
+          resetFiltersAndSorting();
         } else if (item === 'Open') {
           fileInputRef.current.click();
         }
-        resetFiltersAndSorting();
       });
       setOnCancelAction(() => () => {
         if (item === 'New') {
           const { data } = generateEmptyDataset();
-          onDataLoaded(data, `New Table ${Date.now()}`, hotRef);
+          onDataLoaded(data, `New Table ${Date.now()}`);
+          resetFiltersAndSorting();
         } else if (item === 'Open') {
           fileInputRef.current.click();
         }
-        resetFiltersAndSorting();
       });
     } else {
       if (item === 'New') {
         const { data } = generateEmptyDataset();
-        onDataLoaded(data, `New Table ${Date.now()}`, hotRef);
+        onDataLoaded(data, `New Table ${Date.now()}`);
         resetFiltersAndSorting();
       } else if (item === 'Open') {
         fileInputRef.current.click();
@@ -82,7 +84,7 @@ const FileMenu = ({
       reader.onload = (e) => {
         const text = e.target.result;
         const data = Papa.parse(text, { header: true }).data;
-        onDataLoaded(data, file.name, hotRef);
+        onDataLoaded(data, file.name);
         resetFiltersAndSorting();
       };
       reader.readAsText(file);
@@ -94,6 +96,9 @@ const FileMenu = ({
     hotInstance.getPlugin('filters').clearConditions();
     hotInstance.getPlugin('filters').filter();
     hotInstance.getPlugin('columnSorting').clearSort();
+    hotInstance.undoRedo.clear();
+    setInitialActionStack([]);
+    setInitialActionStackLength(0);
   };
 
   return (

@@ -61,13 +61,13 @@ function App() {
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
   const tableContainerRef = useRef(null);
-  const fileInputRef = useRef(null); // Add file input ref
+  const fileInputRef = useRef(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [onConfirmAction, setOnConfirmAction] = useState(null);
-  const [onCancelAction, setOnCancelAction] = useState(null); // Add a state for onCancel action
+  const [onCancelAction, setOnCancelAction] = useState(null);
   const [initialActionStackLength, setInitialActionStackLength] = useState(0);
-  const [initialActionStack, setInitialActionStack] = useState([]); // Add a state for the initial action stack
+  const [initialActionStack, setInitialActionStack] = useState([]);
 
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
@@ -83,15 +83,6 @@ function App() {
 
       setColumnConfigs(columnConfigs);
       setFilteredColumns(Array(columnsCount).fill(false)); // Initialize filteredColumns array
-    }
-  };
-
-  const handleReplaceClick = () => {
-    if (selectedColumnIndex !== null && replacementValue !== undefined) {
-      const columnId = columnConfigs[selectedColumnIndex]?.data;
-      if (columnId) {
-        handleMissingValue(columnId, replacementValue);
-      }
     }
   };
 
@@ -112,7 +103,9 @@ function App() {
           setHistoryIdCounter,
           actions,
           originalFileName,
-          textStyles
+          textStyles,
+          initialActionStack,
+          hotRef
         );
         switchHistoryEntry(historyEntry, index);
       });
@@ -125,15 +118,15 @@ function App() {
   };
 
   const switchHistoryEntry = (historyEntry, index) => {
-    setData(JSON.parse(JSON.stringify(historyEntry.data))); // Ensure deep copy of data
-    setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {}))); // Ensure deep copy of styles
+    setData(JSON.parse(JSON.stringify(historyEntry.data)));
+    setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
     initializeColumns(historyEntry.data);
     setClickedIndex(index);
     setCurrentDataId(historyEntry.id);
     setActions(historyEntry.actions);
     setOriginalFileName(historyEntry.fileName);
     setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-    setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Set the initial action stack length
+    setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
     setTimeout(() => {
       setClickedIndex(-1);
     }, 500);
@@ -168,11 +161,11 @@ function App() {
         historyIdCounter,
         setHistoryIdCounter,
         setUploadHistory,
-        actions,
+        setActions,
         originalFileName,
         setTextStyles,
         setFilteredColumns,
-        hotRef, // Pass hotRef to reset the action stack
+        hotRef,
         setInitialActionStack,
         setInitialActionStackLength
       )
@@ -203,7 +196,9 @@ function App() {
               setHistoryIdCounter,
               actions,
               originalFileName,
-              textStyles // Pass textStyles
+              textStyles,
+              initialActionStackLength,
+              hotRef
             );
             setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
             setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after saving
@@ -220,11 +215,11 @@ function App() {
               historyIdCounter,
               setHistoryIdCounter,
               setUploadHistory,
-              actions,
+              setActions,
               originalFileName,
               setTextStyles,
               setFilteredColumns,
-              hotRef, // Pass hotRef to reset the action stack
+              hotRef,
               setInitialActionStack,
               setInitialActionStackLength
             );
@@ -275,7 +270,7 @@ function App() {
           hotRef={hotRef}
           filteredColumns={filteredColumns}
           setFilteredColumns={setFilteredColumns}
-          fileInputRef={fileInputRef} // Pass fileInputRef to MenuBar
+          fileInputRef={fileInputRef}
           showConfirmation={showConfirmation}
           setShowConfirmation={setShowConfirmation}
           setConfirmationMessage={setConfirmationMessage}
@@ -283,6 +278,8 @@ function App() {
           setOnCancelAction={setOnCancelAction}
           initialActionStack={initialActionStack}
           initialActionStackLength={initialActionStackLength}
+          setInitialActionStack={setInitialActionStack} // Pass this
+          setInitialActionStackLength={setInitialActionStackLength} // Pass this
         />
         <div className="content-area">
           <div className="handsontable-container" ref={tableContainerRef}>
@@ -305,7 +302,7 @@ function App() {
                       textStyles
                     ),
                   columnSorting: {
-                    headerAction: false, // Disable sorting via header click
+                    headerAction: false,
                   },
                 }))}
                 rowHeaders={true}

@@ -30,11 +30,13 @@ const MenuBar = ({
   setFilteredColumns,
   showConfirmation,
   setShowConfirmation,
-   setConfirmationMessage,
+  setConfirmationMessage,
   setOnConfirmAction,
   setOnCancelAction,
   initialActionStack,
   initialActionStackLength,
+  setInitialActionStack,
+  setInitialActionStackLength
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -52,7 +54,9 @@ const MenuBar = ({
               setOnConfirmAction={setOnConfirmAction}
               setOnCancelAction={setOnCancelAction}
               initialActionStack={initialActionStack}
+              setInitialActionStack={setInitialActionStack}
               initialActionStackLength={initialActionStackLength}
+              setInitialActionStackLength={setInitialActionStackLength}
             />,
     'Edit': <EditMenu 
               countAndRemoveDuplicates={countAndRemoveDuplicates}
