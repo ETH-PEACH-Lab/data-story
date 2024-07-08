@@ -61,6 +61,7 @@ function App() {
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
   const tableContainerRef = useRef(null);
+  const fileInputRef = useRef(null); // Add file input ref
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [onConfirmAction, setOnConfirmAction] = useState(null);
@@ -171,7 +172,9 @@ function App() {
         originalFileName,
         setTextStyles,
         setFilteredColumns,
-        hotRef // Pass hotRef to reset the action stack
+        hotRef, // Pass hotRef to reset the action stack
+        setInitialActionStack,
+        setInitialActionStackLength
       )
     );
   }, []);
@@ -221,7 +224,9 @@ function App() {
               originalFileName,
               setTextStyles,
               setFilteredColumns,
-              hotRef // Pass hotRef to reset the action stack
+              hotRef, // Pass hotRef to reset the action stack
+              setInitialActionStack,
+              setInitialActionStackLength
             );
             setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
             setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after loading
@@ -270,6 +275,7 @@ function App() {
           hotRef={hotRef}
           filteredColumns={filteredColumns}
           setFilteredColumns={setFilteredColumns}
+          fileInputRef={fileInputRef} // Pass fileInputRef to MenuBar
         />
         <div className="content-area">
           <div className="handsontable-container" ref={tableContainerRef}>

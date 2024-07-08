@@ -13,9 +13,11 @@ export const handleDataLoaded = (
   setUploadHistory,
   actions,
   originalFileName,
-  setTextStyles, 
+  setTextStyles,
   setFilteredColumns,
-  hotRef // Add hotRef to reset the action stack
+  hotRef,
+  setInitialActionStack,
+  setInitialActionStackLength
 ) => {
   const dataWithTypes = newData.map((row) => {
     const newRow = {};
