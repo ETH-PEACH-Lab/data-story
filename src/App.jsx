@@ -34,6 +34,16 @@ import { handleUndo, handleRedo } from './utils/undoRedoHandlers';
 
 registerAllModules();
 
+const areActionStacksEqual = (stack1, stack2, length) => {
+  if (stack1.length !== stack2.length) return false;
+  for (let i = 0; i < Math.min(length, stack1.length); i++) {
+    if (JSON.stringify(stack1[i]) !== JSON.stringify(stack2[i])) {
+      return false;
+    }
+  }
+  return true;
+};
+
 function App() {
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
@@ -54,6 +64,9 @@ function App() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [onConfirmAction, setOnConfirmAction] = useState(null);
+  const [onCancelAction, setOnCancelAction] = useState(null);
+  const [initialActionStackLength, setInitialActionStackLength] = useState(0);
+  const [initialActionStack, setInitialActionStack] = useState([]);
 
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
@@ -72,22 +85,43 @@ function App() {
     }
   };
 
-  const handleReplaceClick = () => {
-    if (selectedColumnIndex !== null && replacementValue !== undefined) {
-      const columnId = columnConfigs[selectedColumnIndex]?.data;
-      if (columnId) {
-        handleMissingValue(columnId, replacementValue);
-      }
+  const handleHistoryClick = (historyEntry, index) => {
+    const undoRedo = hotRef.current.hotInstance.undoRedo;
+    if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
+      // Show confirmation if there are unsaved changes
+      setConfirmationMessage('You have unsaved changes. Do you want to save them?');
+      setShowConfirmation(true);
+      setOnConfirmAction(() => () => {
+        saveDataToHistory(
+          data,
+          originalFileName,
+          currentDataId,
+          setUploadHistory,
+          setCurrentDataId,
+          historyIdCounter,
+          setHistoryIdCounter,
+          actions,
+          originalFileName
+        );
+        switchHistoryEntry(historyEntry, index);
+      });
+      setOnCancelAction(() => () => {
+        switchHistoryEntry(historyEntry, index); // Switch without saving
+      });
+    } else {
+      switchHistoryEntry(historyEntry, index);
     }
   };
 
-  const handleHistoryClick = (historyEntry, index) => {
-    setData(historyEntry.data);
+  const switchHistoryEntry = (historyEntry, index) => {
+    setData(JSON.parse(JSON.stringify(historyEntry.data))); // Ensure deep copy of data
     initializeColumns(historyEntry.data);
     setClickedIndex(index);
     setCurrentDataId(historyEntry.id);
     setActions(historyEntry.actions);
     setOriginalFileName(historyEntry.fileName);
+    setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+    setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
     setTimeout(() => {
       setClickedIndex(-1);
     }, 500);
@@ -101,8 +135,12 @@ function App() {
   };
 
   const handleCancel = () => {
+    if (onCancelAction) {
+      onCancelAction();
+    }
     setShowConfirmation(false);
     setOnConfirmAction(null);
+    setOnCancelAction(null); // Clear the onCancel action
   };
 
   useEffect(() => {
@@ -128,6 +166,8 @@ function App() {
 
   useEffect(() => {
     if (hotRef.current) {
+      setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+      setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
       console.log('Handsontable instance:', hotRef.current.hotInstance);
     }
   }, [hotRef.current]);
@@ -137,7 +177,7 @@ function App() {
       <div className="container">
         <h1>Data-Story</h1>
         <MenuBar
-          onSaveCurrent={() =>
+          onSaveCurrent={() => {
             saveDataToHistory(
               data,
               originalFileName,
@@ -148,9 +188,11 @@ function App() {
               setHistoryIdCounter,
               actions,
               originalFileName
-            )
-          }
-          onDataLoaded={(newData, fileName) =>
+            );
+            setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+            setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after saving
+          }}
+          onDataLoaded={(newData, fileName) => {
             handleDataLoaded(
               newData,
               fileName,
@@ -166,8 +208,10 @@ function App() {
               originalFileName,
               setTextStyles,
               setFilteredColumns
-            )
-          }
+            );
+            setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+            setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after loading
+          }}
           toggleHistory={() => toggleHistory(setHistoryVisible)}
           onStyleChange={(styleType, value) =>
             handleStyleChange(
