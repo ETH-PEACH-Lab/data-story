@@ -27,7 +27,14 @@ const MenuBar = ({
   handleRedo,
   hotRef,
   filteredColumns,
-  setFilteredColumns
+  setFilteredColumns,
+  showConfirmation,
+  setShowConfirmation,
+   setConfirmationMessage,
+  setOnConfirmAction,
+  setOnCancelAction,
+  initialActionStack,
+  initialActionStackLength,
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const fileInputRef = useRef(null);
@@ -39,6 +46,13 @@ const MenuBar = ({
               toggleHistory={toggleHistory} 
               fileInputRef={fileInputRef} 
               hotRef={hotRef}
+              showConfirmation={showConfirmation}
+              setShowConfirmation={setShowConfirmation}
+              setConfirmationMessage={setConfirmationMessage}
+              setOnConfirmAction={setOnConfirmAction}
+              setOnCancelAction={setOnCancelAction}
+              initialActionStack={initialActionStack}
+              initialActionStackLength={initialActionStackLength}
             />,
     'Edit': <EditMenu 
               countAndRemoveDuplicates={countAndRemoveDuplicates}

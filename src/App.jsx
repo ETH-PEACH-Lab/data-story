@@ -276,6 +276,13 @@ function App() {
           filteredColumns={filteredColumns}
           setFilteredColumns={setFilteredColumns}
           fileInputRef={fileInputRef} // Pass fileInputRef to MenuBar
+          showConfirmation={showConfirmation}
+          setShowConfirmation={setShowConfirmation}
+          setConfirmationMessage={setConfirmationMessage}
+          setOnConfirmAction={setOnConfirmAction}
+          setOnCancelAction={setOnCancelAction}
+          initialActionStack={initialActionStack}
+          initialActionStackLength={initialActionStackLength}
         />
         <div className="content-area">
           <div className="handsontable-container" ref={tableContainerRef}>
