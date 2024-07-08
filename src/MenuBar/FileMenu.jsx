@@ -13,7 +13,7 @@ const FileMenu = ({ onSaveCurrent, onDataLoaded, toggleHistory, fileInputRef, ho
   const handleMenuClick = (item) => {
     if (item === 'New') {
       const { data } = generateEmptyDataset();
-      onDataLoaded(data, `New Table ${Date.now()}`);
+      onDataLoaded(data, `New Table ${Date.now()}`, hotRef);
       resetFiltersAndSorting();
     } else if (item === 'Open') {
       fileInputRef.current.click();

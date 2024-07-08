@@ -14,7 +14,8 @@ export const handleDataLoaded = (
   actions,
   originalFileName,
   setTextStyles, 
-  setFilteredColumns 
+  setFilteredColumns,
+  hotRef // Add hotRef to reset the action stack
 ) => {
   const dataWithTypes = newData.map((row) => {
     const newRow = {};
@@ -44,10 +45,18 @@ export const handleDataLoaded = (
     setHistoryIdCounter,
     actions,
     originalFileName,
-    {} // Pass empty styles initially
+    {}
   );
-  setTextStyles({}); 
-  setFilteredColumns(Array(initialColumnConfigs.length).fill(false)); 
+  setTextStyles({});
+  setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
+
+  // Reset the initial action stack length and state
+  if (hotRef && hotRef.current) {
+    const undoRedo = hotRef.current.hotInstance.undoRedo;
+    undoRedo.clear();
+    setInitialActionStackLength(0);
+    setInitialActionStack([]);
+  }
 };
 
 export const fetchData = async (handleDataLoaded) => {

@@ -64,9 +64,9 @@ function App() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [onConfirmAction, setOnConfirmAction] = useState(null);
-  const [onCancelAction, setOnCancelAction] = useState(null);
+  const [onCancelAction, setOnCancelAction] = useState(null); // Add a state for onCancel action
   const [initialActionStackLength, setInitialActionStackLength] = useState(0);
-  const [initialActionStack, setInitialActionStack] = useState([]);
+  const [initialActionStack, setInitialActionStack] = useState([]); // Add a state for the initial action stack
 
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
@@ -82,6 +82,15 @@ function App() {
 
       setColumnConfigs(columnConfigs);
       setFilteredColumns(Array(columnsCount).fill(false)); // Initialize filteredColumns array
+    }
+  };
+
+  const handleReplaceClick = () => {
+    if (selectedColumnIndex !== null && replacementValue !== undefined) {
+      const columnId = columnConfigs[selectedColumnIndex]?.data;
+      if (columnId) {
+        handleMissingValue(columnId, replacementValue);
+      }
     }
   };
 
@@ -101,7 +110,8 @@ function App() {
           historyIdCounter,
           setHistoryIdCounter,
           actions,
-          originalFileName
+          originalFileName,
+          textStyles
         );
         switchHistoryEntry(historyEntry, index);
       });
@@ -160,7 +170,8 @@ function App() {
         actions,
         originalFileName,
         setTextStyles,
-        setFilteredColumns
+        setFilteredColumns,
+        hotRef // Pass hotRef to reset the action stack
       )
     );
   }, []);
@@ -209,7 +220,8 @@ function App() {
               actions,
               originalFileName,
               setTextStyles,
-              setFilteredColumns
+              setFilteredColumns,
+              hotRef // Pass hotRef to reset the action stack
             );
             setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
             setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after loading
