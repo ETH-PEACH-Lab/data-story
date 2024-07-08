@@ -34,7 +34,6 @@ export const handleDataLoaded = (
   setColumnConfigs(initialColumnConfigs);
   setOriginalFileName(fileName);
   setCurrentDataId(historyIdCounter);
-  setHistoryIdCounter((prev) => prev + 1);
   saveDataToHistory(
     dataWithTypes,
     fileName,
