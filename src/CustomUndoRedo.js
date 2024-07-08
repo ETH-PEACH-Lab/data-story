@@ -315,3 +315,42 @@ class ClearFormattingAction extends Handsontable.plugins.UndoRedo.Action {
   }
   
   export { ClearFormattingAction };
+
+  class SortAction extends Handsontable.plugins.UndoRedo.Action {
+    constructor(previousSortConfig, currentSortConfig) {
+      super();
+      this.previousSortConfig = previousSortConfig;
+      this.currentSortConfig = currentSortConfig;
+      this.actionType = 'sort';
+    }
+  
+    undo(instance, undoneCallback) {
+      const sortPlugin = instance.getPlugin('columnSorting');
+      sortPlugin.clearSort();
+  
+      if (this.previousSortConfig.length) {
+        sortPlugin.sort(this.previousSortConfig);
+      }
+      
+      instance.render();
+      if (undoneCallback) {
+        undoneCallback();
+      }
+    }
+  
+    redo(instance, redoneCallback) {
+      const sortPlugin = instance.getPlugin('columnSorting');
+      sortPlugin.clearSort();
+  
+      if (this.currentSortConfig.length) {
+        sortPlugin.sort(this.currentSortConfig);
+      }
+      
+      instance.render();
+      if (redoneCallback) {
+        redoneCallback();
+      }
+    }
+  }
+  
+  export { SortAction };
