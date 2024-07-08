@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import 'handsontable/dist/handsontable.full.min.css';
 import { HotTable } from '@handsontable/react';
+import Handsontable from 'handsontable';
 import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
@@ -232,6 +233,9 @@ function App() {
                       cellProperties,
                       textStyles
                     ),
+                  columnSorting: {
+                    headerAction: false, // Disable sorting via header click
+                  },
                 }))}
                 rowHeaders={true}
                 width="100%"
