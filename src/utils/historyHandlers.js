@@ -53,16 +53,16 @@ export const toggleHistory = (setHistoryVisible) => {
     }
   };
   
-  export const saveDataToHistory = (newData, fileName, parentId, setUploadHistory, setCurrentDataId, historyIdCounter, setHistoryIdCounter, actions, originalFileName) => {
+  export const saveDataToHistory = (newData, fileName, parentId, setUploadHistory, setCurrentDataId, historyIdCounter, setHistoryIdCounter, actions, originalFileName, textStyles) => {
     const timestamp = new Date().toLocaleString();
     const fileNameToUse = fileName || originalFileName || "initial dataset";
     const dataCopy = JSON.parse(JSON.stringify(newData));
+    const stylesCopy = JSON.parse(JSON.stringify(textStyles)); // Deep copy of styles
     const newHistoryId = historyIdCounter;
     setHistoryIdCounter(prev => prev + 1);
     setUploadHistory(prevHistory => [
       ...prevHistory, 
-      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions] }
+      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: [...actions], styles: stylesCopy }
     ]);
     setCurrentDataId(newHistoryId);
   };
-  

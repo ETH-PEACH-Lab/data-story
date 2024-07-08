@@ -13,8 +13,8 @@ export const handleDataLoaded = (
   setUploadHistory,
   actions,
   originalFileName,
-  setTextStyles, // Add this parameter
-  setFilteredColumns // Add this parameter
+  setTextStyles, 
+  setFilteredColumns 
 ) => {
   const dataWithTypes = newData.map((row) => {
     const newRow = {};
@@ -27,7 +27,7 @@ export const handleDataLoaded = (
   const initialColumnConfigs = Object.keys(newData[0] || {}).map((key, index) => ({
     data: key,
     title: key,
-    type: 'text', // Set the type to 'text'
+    type: 'text', 
   }));
 
   setData(dataWithTypes);
@@ -43,10 +43,11 @@ export const handleDataLoaded = (
     historyIdCounter,
     setHistoryIdCounter,
     actions,
-    originalFileName
+    originalFileName,
+    {} // Pass empty styles initially
   );
-  setTextStyles({}); // Reset text styles
-  setFilteredColumns(Array(initialColumnConfigs.length).fill(false)); // Reset filtered columns
+  setTextStyles({}); 
+  setFilteredColumns(Array(initialColumnConfigs.length).fill(false)); 
 };
 
 export const fetchData = async (handleDataLoaded) => {

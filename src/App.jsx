@@ -115,13 +115,14 @@ function App() {
 
   const switchHistoryEntry = (historyEntry, index) => {
     setData(JSON.parse(JSON.stringify(historyEntry.data))); // Ensure deep copy of data
+    setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {}))); // Ensure deep copy of styles
     initializeColumns(historyEntry.data);
     setClickedIndex(index);
     setCurrentDataId(historyEntry.id);
     setActions(historyEntry.actions);
     setOriginalFileName(historyEntry.fileName);
     setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-    setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
+    setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Set the initial action stack length
     setTimeout(() => {
       setClickedIndex(-1);
     }, 500);
@@ -187,7 +188,8 @@ function App() {
               historyIdCounter,
               setHistoryIdCounter,
               actions,
-              originalFileName
+              originalFileName,
+              textStyles // Pass textStyles
             );
             setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
             setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after saving
