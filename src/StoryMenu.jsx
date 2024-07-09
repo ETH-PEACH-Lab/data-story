@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
-import styles from './StoryMenu.module.css'; 
+import styles from './StoryMenu.module.css';
+import Story from './Story';
 
 const StoryMenu = () => {
   const [activeMenu, setActiveMenu] = useState('');
 
+  const handleMenuClick = (menu) => {
+    setActiveMenu(activeMenu === menu ? '' : menu);
+  };
+
+  const addTextBox = () => {
+    const storyComponent = document.querySelector('.story-container');
+    if (storyComponent) {
+      const addEvent = new CustomEvent('addTextBox');
+      storyComponent.dispatchEvent(addEvent);
+    }
+  };
+
   const menuOptions = {
     'Insert': (
       <div className={styles.secondaryMenuBar}>
-        {['Chart', 'Table', 'Function'].map((item, index) => (
+        {['Text', 'Chart', 'Table', 'Function'].map((item, index) => (
           <div key={index} className={styles.secondaryMenuItem}>
-            <button className={styles.button}>{item}</button>
+            <button
+              className={styles.button}
+              onClick={item === 'Text' ? addTextBox : undefined}
+            >
+              {item}
+            </button>
           </div>
         ))}
       </div>
@@ -23,10 +41,6 @@ const StoryMenu = () => {
         ))}
       </div>
     ),
-  };
-
-  const handleMenuClick = (menu) => {
-    setActiveMenu(activeMenu === menu ? '' : menu);
   };
 
   return (

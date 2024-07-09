@@ -1,0 +1,23 @@
+.story-container {
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .story-textarea {
+    width: 100%;
+    height: auto;
+    min-height: 110px; /* Ensure a reasonable minimum height */
+    font-size: 16px; /* Match the font size */
+    background-color: transparent; /* Match the background color */
+    border: none; /* Remove the border */
+    outline: none; /* Remove the outline on focus */
+    padding: 10px; /* Add some padding for better appearance */
+    resize: vertical; /* Allow vertical resizing */
+    box-sizing: border-box; /* Include padding in width and height calculations */
+  }
+  
+  .story-text {
+    white-space: pre-wrap; /* Preserve line breaks */
+    font-size: 16px; /* Match the font size */
+    padding: 10px; /* Add some padding for better appearance */
+  }
