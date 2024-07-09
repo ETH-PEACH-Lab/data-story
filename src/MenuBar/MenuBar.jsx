@@ -105,11 +105,6 @@ const MenuBar = ({
             </button>
           </div>
         ))}
-        <div className={styles.saveButton} onClick={onSaveCurrent}>
-          <button className={styles.button}>
-            Save Current Version
-          </button>
-        </div>
       </div>
       {activeMenu && (
         <div className={styles.secondaryMenuBar}>

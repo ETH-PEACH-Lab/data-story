@@ -7,6 +7,7 @@ import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
+import StoryMenu from './StoryMenu'; // Import the new StoryMenu component
 import ConfirmationWindow from './ConfirmationWindow';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -66,7 +67,7 @@ function App() {
 
   const handleHistoryClick = (historyEntry, index) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
-  
+
     const performSwitch = () => {
       switchHistoryEntry(
         historyEntry,
@@ -85,7 +86,7 @@ function App() {
         setInitialActionStackLength
       );
     };
-  
+
     if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
       setConfirmationMessage('You have unsaved changes. Do you want to save them?');
       setShowConfirmation(true);
@@ -163,104 +164,138 @@ function App() {
   return (
     <ErrorBoundary>
       <div className="container">
-        <h1>Data-Story</h1>
-        <MenuBar
-          onSaveCurrent={() => {
-            saveDataToHistory(
-              data,
-              originalFileName,
-              currentDataId,
-              setUploadHistory,
-              setCurrentDataId,
-              historyIdCounter,
-              setHistoryIdCounter,
-              actions,
-              originalFileName,
-              textStyles,
-              initialActionStackLength,
-              hotRef
-            );
-            setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-            setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after saving
-          }}
-          onDataLoaded={(newData, fileName) => {
-            handleDataLoaded(
-              newData,
-              fileName,
-              setData,
-              setColumnConfigs,
-              setOriginalFileName,
-              setCurrentDataId,
-              saveDataToHistory,
-              historyIdCounter,
-              setHistoryIdCounter,
-              setUploadHistory,
-              setActions,
-              originalFileName,
-              setTextStyles,
-              setFilteredColumns,
-              hotRef,
-              setInitialActionStack,
-              setInitialActionStackLength
-            );
-            setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-            setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after loading
-          }}
-          toggleHistory={() => toggleHistory(setHistoryVisible)}
-          onStyleChange={(styleType, value) =>
-            handleStyleChange(
-              styleType,
-              value,
-              selectedCellsRef,
-              setTextStyles,
-              hotRef
-            )
-          }
-          selectedColumnIndex={selectedColumnIndex}
-          selectedColumnName={selectedColumnName}
-          setColumns={setColumnConfigs}
-          columns={columnConfigs}
-          handleSort={(columnName, sortOrder) =>
-            handleSort(columnName, sortOrder, columnConfigs, hotRef)
-          }
-          handleFilter={(columnIndex, condition, value, checkedValues) =>
-            handleFilter(columnIndex, condition, value, hotRef, checkedValues, filteredColumns, setFilteredColumns)
-          }
-          tableContainerRef={tableContainerRef}
-          countAndRemoveDuplicates={(remove) =>
-            countAndRemoveDuplicates(data, setData, hotRef, remove)
-          }
-          addRow={() => addRow(data, setData, columnConfigs, hotRef)}
-          addColumn={() =>
-            addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)
-          }
-          handleFindReplace={(findText, replaceText) =>
-            handleFindReplace(
-              findText,
-              replaceText,
-              selectedColumnIndex,
-              selectedColumnName,
-              data,
-              setData,
-              hotRef
-            )
-          }
-          handleUndo={() => handleUndo(hotRef)}
-          handleRedo={() => handleRedo(hotRef)}
-          hotRef={hotRef}
-          filteredColumns={filteredColumns}
-          setFilteredColumns={setFilteredColumns}
-          fileInputRef={fileInputRef}
-          showConfirmation={showConfirmation}
-          setShowConfirmation={setShowConfirmation}
-          setConfirmationMessage={setConfirmationMessage}
-          setOnConfirmAction={setOnConfirmAction}
-          setOnCancelAction={setOnCancelAction}
-          initialActionStack={initialActionStack}
-          initialActionStackLength={initialActionStackLength}
-          setInitialActionStack={setInitialActionStack} // Pass this
-          setInitialActionStackLength={setInitialActionStackLength} // Pass this
-        />
+        <div className="top-banner">
+          <h1>Data-Story</h1>
+          <div className="save-button-container">
+            <button
+              className="save-button"
+              onClick={() => {
+                saveDataToHistory(
+                  data,
+                  originalFileName,
+                  currentDataId,
+                  setUploadHistory,
+                  setCurrentDataId,
+                  historyIdCounter,
+                  setHistoryIdCounter,
+                  actions,
+                  originalFileName,
+                  textStyles,
+                  initialActionStackLength,
+                  hotRef
+                );
+                setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+                setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
+              }}
+            >
+              Save Current Version
+            </button>
+          </div>
+        </div>
+        <div className="menu-bar-container">
+          <div className="menu-bar">
+            <MenuBar
+              onSaveCurrent={() => {
+                saveDataToHistory(
+                  data,
+                  originalFileName,
+                  currentDataId,
+                  setUploadHistory,
+                  setCurrentDataId,
+                  historyIdCounter,
+                  setHistoryIdCounter,
+                  actions,
+                  originalFileName,
+                  textStyles,
+                  initialActionStackLength,
+                  hotRef
+                );
+                setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+                setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after saving
+              }}
+              onDataLoaded={(newData, fileName) => {
+                handleDataLoaded(
+                  newData,
+                  fileName,
+                  setData,
+                  setColumnConfigs,
+                  setOriginalFileName,
+                  setCurrentDataId,
+                  saveDataToHistory,
+                  historyIdCounter,
+                  setHistoryIdCounter,
+                  setUploadHistory,
+                  setActions,
+                  originalFileName,
+                  setTextStyles,
+                  setFilteredColumns,
+                  hotRef,
+                  setInitialActionStack,
+                  setInitialActionStackLength
+                );
+                setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+                setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after loading
+              }}
+              toggleHistory={() => toggleHistory(setHistoryVisible)}
+              onStyleChange={(styleType, value) =>
+                handleStyleChange(
+                  styleType,
+                  value,
+                  selectedCellsRef,
+                  setTextStyles,
+                  hotRef
+                )
+              }
+              selectedColumnIndex={selectedColumnIndex}
+              selectedColumnName={selectedColumnName}
+              setColumns={setColumnConfigs}
+              columns={columnConfigs}
+              handleSort={(columnName, sortOrder) =>
+                handleSort(columnName, sortOrder, columnConfigs, hotRef)
+              }
+              handleFilter={(columnIndex, condition, value, checkedValues) =>
+                handleFilter(columnIndex, condition, value, hotRef, checkedValues, filteredColumns, setFilteredColumns)
+              }
+              tableContainerRef={tableContainerRef}
+              countAndRemoveDuplicates={(remove) =>
+                countAndRemoveDuplicates(data, setData, hotRef, remove)
+              }
+              addRow={() => addRow(data, setData, columnConfigs, hotRef)}
+              addColumn={() =>
+                addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)
+              }
+              handleFindReplace={(findText, replaceText) =>
+                handleFindReplace(
+                  findText,
+                  replaceText,
+                  selectedColumnIndex,
+                  selectedColumnName,
+                  data,
+                  setData,
+                  hotRef
+                )
+              }
+              handleUndo={() => handleUndo(hotRef)}
+              handleRedo={() => handleRedo(hotRef)}
+              hotRef={hotRef}
+              filteredColumns={filteredColumns}
+              setFilteredColumns={setFilteredColumns}
+              fileInputRef={fileInputRef}
+              showConfirmation={showConfirmation}
+              setShowConfirmation={setShowConfirmation}
+              setConfirmationMessage={setConfirmationMessage}
+              setOnConfirmAction={setOnConfirmAction}
+              setOnCancelAction={setOnCancelAction}
+              initialActionStack={initialActionStack}
+              initialActionStackLength={initialActionStackLength}
+              setInitialActionStack={setInitialActionStack} // Pass this
+              setInitialActionStackLength={setInitialActionStackLength} // Pass this
+            />
+          </div>
+          <div className="sidebar-menu-bar">
+            <StoryMenu /> {/* Add the new StoryMenu component here */}
+          </div>
+        </div>
         <div className="content-area">
           <div className="handsontable-container" ref={tableContainerRef}>
             <div className="hot-table-wrapper">

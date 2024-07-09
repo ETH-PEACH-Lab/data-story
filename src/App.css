@@ -2,23 +2,23 @@
   width: 100%;
   height: 100%;
   max-width: none;
-  }
-  
-  html, body {
+}
+
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  }
-  
-  .container {
+}
+
+.container {
   height: 100%;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  }
-  
-  .container h1 {
+}
+
+.container h1 {
   position: relative;
   background-color: #E3E1D9;
   padding: 10px;
@@ -26,28 +26,82 @@
   top: 0px;
   margin-right: 75px;
   font-family: 'Inter', sans-serif;
-  }
-  
-  .content-area {
+}
+
+.top-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-right: 75px;
+  background-color: #E3E1D9;
+  position: relative;
+}
+
+.save-button-container {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background-color: rgb(213, 210, 191);
+  color: rgb(0, 0, 0);
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.save-button:hover {
+  background-color: #c6c3b8;
+}
+
+.menu-bar-container {
+  display: flex;
+  width: 100%;
+}
+
+.menu-bar {
+  display: flex;
+  flex: 1;
+  background: #D9D9D9;
+  min-height: 70px;
+  margin-right: 95px;
+  position: relative;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.sidebar-menu-bar {
+  width: 45%;
+  background: #D9D9D9;
+  min-height: 70px;
+  right: 75px;
+  position: relative;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.content-area {
+  display: flex;
   flex: 1;
   width: 100%;
-  display: flex;
   box-sizing: border-box;
   overflow: hidden;
-  }
-  
-  .handsontable-container {
+}
+
+.handsontable-container {
   flex: 1;
-  margin-right: 40px;
-  margin-left: 55px;
+  margin-right: 95px;
   overflow: hidden;
   position: relative;
-  right: 55px;
   display: flex;
   flex-direction: column;
-  }
-  
-  .sidebar {
+}
+
+.sidebar {
   width: 45%;
   flex-shrink: 0;
   right: 75px;
@@ -59,25 +113,24 @@
   z-index: 1;
   font-family: 'Inter', sans-serif;
   overflow-y: auto;
-  }
+}
 
-  .hot-table-wrapper {
-    flex: 1;
-    overflow: hidden;
-  }
+.hot-table-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
 
-  .small-table-wrapper {
-    overflow: auto;
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
+.small-table-wrapper {
+  overflow: auto;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
 
-  .handsontable THEAD TH.green-header {
-    background: rgb(174, 216, 174);
-  }
+.handsontable THEAD TH.green-header {
+  background: rgb(174, 216, 174);
+}
 
-  .handsontable THEAD TH.green-header.ht__highlight {
-    background: rgb(120, 159, 120) !important;
-  }
-  
+.handsontable THEAD TH.green-header.ht__highlight {
+  background: rgb(120, 159, 120) !important;
+}
