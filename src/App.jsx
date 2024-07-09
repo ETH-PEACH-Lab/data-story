@@ -7,9 +7,10 @@ import MainSidebar from './MainSidebar';
 import HistorySidebar from './HistorySidebar';
 import { registerAllModules } from 'handsontable/registry';
 import MenuBar from './MenuBar/MenuBar';
-import StoryMenu from './StoryMenu'; // Import the new StoryMenu component
+import StoryMenu from './StoryMenu';
 import ConfirmationWindow from './ConfirmationWindow';
 import ErrorBoundary from './ErrorBoundary';
+import TutorialMenu from './TutorialMenu';  // Import the new VerticalMenu component
 
 import {
   handleDataLoaded,
@@ -288,12 +289,12 @@ function App() {
               setOnCancelAction={setOnCancelAction}
               initialActionStack={initialActionStack}
               initialActionStackLength={initialActionStackLength}
-              setInitialActionStack={setInitialActionStack} // Pass this
-              setInitialActionStackLength={setInitialActionStackLength} // Pass this
+              setInitialActionStack={setInitialActionStack}
+              setInitialActionStackLength={setInitialActionStackLength}
             />
           </div>
           <div className="sidebar-menu-bar">
-            <StoryMenu /> {/* Add the new StoryMenu component here */}
+            <StoryMenu />
           </div>
         </div>
         <div className="content-area">

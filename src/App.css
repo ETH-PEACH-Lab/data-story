@@ -102,9 +102,7 @@ html, body {
 }
 
 .sidebar {
-  width: 45%;
-  flex-shrink: 0;
-  right: 75px;
+  flex-grow: 1;
   padding: 20px;
   background-color: #E3E1D9;
   height: 100%;
@@ -133,4 +131,15 @@ html, body {
 
 .handsontable THEAD TH.green-header.ht__highlight {
   background: rgb(120, 159, 120) !important;
+}
+
+.main-sidebar-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: stretch;
+  width: 45%; /* Adjust width to match previous sidebar width */
+  height: 100%;
+  right: 75px;
+  background-color: #E3E1D9; /* Match the sidebar background color */
 }
