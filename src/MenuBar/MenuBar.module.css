@@ -66,7 +66,7 @@
     position: absolute;
     display: flex;
     margin-left: -20px;
-    margin-top: -111px;
+    margin-top: -131px;
     flex-direction: column;
     background: white;
     border: 1px solid #ccc;
@@ -95,7 +95,7 @@
     background: white;
     border: 1px solid #ccc;
     padding: 5px;
-    z-index: 200;
+    z-index: 1;
 }
 
 .inputContainer {

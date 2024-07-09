@@ -28,6 +28,63 @@ html, body {
   font-family: 'Inter', sans-serif;
 }
 
+.top-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-right: 75px;
+  background-color: #E3E1D9;
+  position: relative;
+}
+
+.save-button-container {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background-color: rgb(213, 210, 191);
+  color: rgb(0, 0, 0);
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.save-button:hover {
+  background-color: #c6c3b8;
+}
+
+.menu-bar-container {
+  display: flex;
+  width: 100%;
+  overflow: visible;
+}
+
+.menu-bar {
+  display: flex;
+  flex: 1;
+  background: #D9D9D9;
+  min-height: 70px;
+  margin-right: 95px;
+  position: relative;
+  overflow-x: auto;
+  overflow: visible;
+  z-index: 100;
+}
+
+.sidebar-menu-bar {
+  width: 45%;
+  background: #D9D9D9;
+  min-height: 70px;
+  right: 75px;
+  position: relative;
+  overflow-x: auto;
+}
+
 .content-area {
   display: flex;
   flex: 1;
@@ -43,6 +100,7 @@ html, body {
   position: relative;
   display: flex;
   flex-direction: column;
+  z-index: 50;
 }
 
 .sidebar {
@@ -52,7 +110,7 @@ html, body {
   height: 100%;
   box-sizing: border-box;
   position: relative;
-  z-index: 1;
+  z-index: 50;
   font-family: 'Inter', sans-serif;
   overflow-y: auto;
 }
@@ -60,6 +118,7 @@ html, body {
 .hot-table-wrapper {
   flex: 1;
   overflow: hidden;
+  
 }
 
 .small-table-wrapper {
@@ -71,10 +130,12 @@ html, body {
 
 .handsontable THEAD TH.green-header {
   background: rgb(174, 216, 174);
+  z-index: 50;
 }
 
 .handsontable THEAD TH.green-header.ht__highlight {
   background: rgb(120, 159, 120) !important;
+  z-index: 50;
 }
 
 .main-sidebar-container {
@@ -86,4 +147,5 @@ html, body {
   height: 100%;
   right: 75px;
   background-color: #E3E1D9; /* Match the sidebar background color */
+  z-index: 50;
 }
