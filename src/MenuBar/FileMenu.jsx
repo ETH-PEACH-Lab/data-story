@@ -104,7 +104,7 @@ const FileMenu = ({
 
   return (
     <>
-      {['New', 'Open', 'Save', 'History', 'View Comments'].map((item, index) => (
+      {['New', 'Open', 'Save', 'History'].map((item, index) => (
         <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
           <button className={styles.button}>{item}</button>
         </div>

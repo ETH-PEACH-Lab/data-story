@@ -113,6 +113,13 @@ const DataMenu = ({
     setSortDropdownVisible(false);
   };
 
+  // Reset Sorting for the selected column
+  const handleResetSortClick = () => {
+    handleSort(selectedColumnName, 'reset');
+    setSortOrder('');
+    setSortDropdownVisible(false);
+  };
+
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
@@ -252,6 +259,9 @@ const DataMenu = ({
                 <button onClick={handleSortClick} className={styles.applyButton}>
                   Apply
                 </button>
+              </div>
+              <div className={styles.textOption} onClick={handleResetSortClick}>
+                Reset all sorting
               </div>
             </div>
           )}

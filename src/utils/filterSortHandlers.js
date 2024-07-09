@@ -1,6 +1,21 @@
 import { SortAction, FilterAction } from '../CustomUndoRedo';
 
 export const handleSort = (columnName, sortOrder, columnConfigs, hotRef) => {
+  if (!columnName && sortOrder === 'reset') {
+    const hotInstance = hotRef.current.hotInstance;
+    const sortPlugin = hotInstance.getPlugin('columnSorting');
+
+    const previousSortConfig = sortPlugin.getSortConfig().slice();
+
+    sortPlugin.clearSort();
+    hotInstance.render();
+
+    const wrappedAction = () => new SortAction(previousSortConfig, []);
+    hotInstance.undoRedo.done(wrappedAction);
+
+    return;
+  }
+
   if (!columnName || !sortOrder) return;
 
   const columnIndex = columnConfigs.findIndex(col => col.title === columnName);

@@ -14,7 +14,7 @@ const InsertMenu = ({ addRow, addColumn }) => {
 
     return (
         <>
-            {['Column', 'Row', 'Chart', 'Functions', 'Comment', 'Image', 'Tick Box'].map((item, index) => (
+            {['Column', 'Row', 'Chart', 'Functions', 'Image', 'Tick Box'].map((item, index) => (
                 <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
                     <button className={styles.button}>{item}</button>
                 </div>
