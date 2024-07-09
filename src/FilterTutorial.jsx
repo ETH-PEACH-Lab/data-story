@@ -1,4 +1,3 @@
-// src/FilterTutorial.jsx
 import React, { useCallback, useState, useEffect } from 'react';
 import { HotTable } from '@handsontable/react';
 import { textRenderer } from 'handsontable/renderers/textRenderer';

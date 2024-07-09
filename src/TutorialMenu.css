@@ -32,3 +32,6 @@
     text-align: center;
   }
   
+  .vertical-button.active {
+    background-color: #a9a6a0;  /* Darker shade for active button */
+  }
