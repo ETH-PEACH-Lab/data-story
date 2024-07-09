@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './MenuBar.module.css';
 import Papa from 'papaparse';
 
@@ -6,7 +6,6 @@ const FileMenu = ({
   onSaveCurrent,
   onDataLoaded,
   toggleHistory,
-  fileInputRef,
   hotRef,
   showConfirmation,
   setShowConfirmation,
@@ -14,10 +13,12 @@ const FileMenu = ({
   setOnConfirmAction,
   setOnCancelAction,
   initialActionStack,
-  setInitialActionStack, // Add this
+  setInitialActionStack, 
   initialActionStackLength,
-  setInitialActionStackLength // Add this
+  setInitialActionStackLength 
 }) => {
+  const fileInputRef = useRef(null);
+
   const generateEmptyDataset = () => {
     const columns = Array.from({ length: 5 }, (_, i) => `Column ${i + 1}`);
     const emptyData = Array.from({ length: 5 }, () =>

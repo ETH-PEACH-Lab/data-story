@@ -1,6 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styles from './MenuBar.module.css';
-import Papa from 'papaparse';
 import FileMenu from './FileMenu';
 import EditMenu from './EditMenu';
 import FormatMenu from './FormatMenu';
@@ -39,14 +38,12 @@ const MenuBar = ({
   setInitialActionStackLength
 }) => {
   const [activeMenu, setActiveMenu] = useState('');
-  const fileInputRef = useRef(null);
 
   const menuOptions = {
     'File': <FileMenu 
               onSaveCurrent={onSaveCurrent} 
               onDataLoaded={onDataLoaded} 
               toggleHistory={toggleHistory} 
-              fileInputRef={fileInputRef} 
               hotRef={hotRef}
               showConfirmation={showConfirmation}
               setShowConfirmation={setShowConfirmation}
@@ -94,18 +91,6 @@ const MenuBar = ({
     setActiveMenu(activeMenu === menu ? '' : menu);
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      Papa.parse(file, {
-        header: true,
-        complete: (results) => {
-          onDataLoaded(results.data, file.name);
-        }
-      });
-    }
-  };
-
   return (
     <div className={styles.menuBarContainer}>
       <div className={styles.menuBar}>
@@ -131,13 +116,6 @@ const MenuBar = ({
           {menuOptions[activeMenu]}
         </div>
       )}
-      <input
-        type="file"
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-        accept=".csv"
-      />
     </div>
   );
 };

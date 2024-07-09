@@ -13,12 +13,15 @@ import ErrorBoundary from './ErrorBoundary';
 import {
   handleDataLoaded,
   fetchData,
+  initializeColumns
 } from './utils/dataHandlers';
 import {
   toggleHistory,
   logAction,
   handleHistoryDelete,
   saveDataToHistory,
+  areActionStacksEqual,
+  switchHistoryEntry
 } from './utils/historyHandlers';
 import { handleStyleChange, customRenderer } from './utils/styleHandlers';
 import {
@@ -33,16 +36,6 @@ import { handleFindReplace } from './utils/findReplaceHandlers';
 import { handleUndo, handleRedo } from './utils/undoRedoHandlers';
 
 registerAllModules();
-
-const areActionStacksEqual = (stack1, stack2, length) => {
-  if (stack1.length !== stack2.length) return false;
-  for (let i = 0; i < Math.min(length, stack1.length); i++) {
-    if (JSON.stringify(stack1[i]) !== JSON.stringify(stack2[i])) {
-      return false;
-    }
-  }
-  return true;
-};
 
 function App() {
   const [data, setData] = useState([]);
@@ -71,25 +64,29 @@ function App() {
 
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
-  const initializeColumns = (newData) => {
-    if (newData.length > 0) {
-      const columnNames = Object.keys(newData[0]);
-      const columnsCount = columnNames.length;
-
-      const columnConfigs = Array.from({ length: columnsCount }, (_, index) => ({
-        data: columnNames[index] || `column${index + 1}`,
-        title: columnNames[index] || `Column ${index + 1}`,
-      }));
-
-      setColumnConfigs(columnConfigs);
-      setFilteredColumns(Array(columnsCount).fill(false)); // Initialize filteredColumns array
-    }
-  };
-
   const handleHistoryClick = (historyEntry, index) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
+  
+    const performSwitch = () => {
+      switchHistoryEntry(
+        historyEntry,
+        index,
+        setData,
+        setTextStyles,
+        initializeColumns,
+        setColumnConfigs,
+        setFilteredColumns,
+        setClickedIndex,
+        setCurrentDataId,
+        setActions,
+        setOriginalFileName,
+        hotRef,
+        setInitialActionStack,
+        setInitialActionStackLength
+      );
+    };
+  
     if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
-      // Show confirmation if there are unsaved changes
       setConfirmationMessage('You have unsaved changes. Do you want to save them?');
       setShowConfirmation(true);
       setOnConfirmAction(() => () => {
@@ -107,29 +104,12 @@ function App() {
           initialActionStack,
           hotRef
         );
-        switchHistoryEntry(historyEntry, index);
+        performSwitch();
       });
-      setOnCancelAction(() => () => {
-        switchHistoryEntry(historyEntry, index); // Switch without saving
-      });
+      setOnCancelAction(performSwitch);
     } else {
-      switchHistoryEntry(historyEntry, index);
+      performSwitch();
     }
-  };
-
-  const switchHistoryEntry = (historyEntry, index) => {
-    setData(JSON.parse(JSON.stringify(historyEntry.data)));
-    setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
-    initializeColumns(historyEntry.data);
-    setClickedIndex(index);
-    setCurrentDataId(historyEntry.id);
-    setActions(historyEntry.actions);
-    setOriginalFileName(historyEntry.fileName);
-    setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-    setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
-    setTimeout(() => {
-      setClickedIndex(-1);
-    }, 500);
   };
 
   const handleConfirm = () => {
@@ -291,16 +271,7 @@ function App() {
                 columns={columnConfigs.map((col) => ({
                   ...col,
                   renderer: (instance, td, row, col, prop, value, cellProperties) =>
-                    customRenderer(
-                      instance,
-                      td,
-                      row,
-                      col,
-                      prop,
-                      value,
-                      cellProperties,
-                      textStyles
-                    ),
+                    customRenderer(instance, td, row, col, prop, value, cellProperties, textStyles),
                   columnSorting: {
                     headerAction: false,
                   },

@@ -84,3 +84,43 @@ export const saveDataToHistory = (
   ]);
   setCurrentDataId(newHistoryId);
 };
+
+export const areActionStacksEqual = (stack1, stack2, length) => {
+  if (stack1.length !== stack2.length) return false;
+  for (let i = 0; i < Math.min(length, stack1.length); i++) {
+    if (JSON.stringify(stack1[i]) !== JSON.stringify(stack2[i])) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export const switchHistoryEntry = (
+  historyEntry,
+  index,
+  setData,
+  setTextStyles,
+  initializeColumns,
+  setColumnConfigs,
+  setFilteredColumns, // Add this
+  setClickedIndex,
+  setCurrentDataId,
+  setActions,
+  setOriginalFileName,
+  hotRef,
+  setInitialActionStack,
+  setInitialActionStackLength
+) => {
+  setData(JSON.parse(JSON.stringify(historyEntry.data)));
+  setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
+  initializeColumns(historyEntry.data, setColumnConfigs, setFilteredColumns); // Ensure proper arguments
+  setClickedIndex(index);
+  setCurrentDataId(historyEntry.id);
+  setActions(historyEntry.actions);
+  setOriginalFileName(historyEntry.fileName);
+  setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
+  setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
+  setTimeout(() => {
+    setClickedIndex(-1);
+  }, 500);
+};
