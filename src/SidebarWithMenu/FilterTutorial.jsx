@@ -3,7 +3,7 @@ import { HotTable } from '@handsontable/react';
 import { textRenderer } from 'handsontable/renderers/textRenderer';
 import FilterConditionComponent from './FilterConditionComponent';
 import FilterValueComponent from './FilterValueComponent';
-import styles from './FilterComponent.module.css';
+import styles from './Tutorial.module.css';
 
 function FilterTutorial({
   data,

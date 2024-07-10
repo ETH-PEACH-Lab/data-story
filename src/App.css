@@ -172,6 +172,10 @@ html, body {
   z-index: 50;
 }
 
+.shift-right {
+  margin-left: 20px;
+}
+
 .main-sidebar-container {
   display: flex;
   flex-direction: column;

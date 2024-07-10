@@ -22,25 +22,27 @@ function MainSidebar({
 
   const menuOptions = {
     'Filtering': (
-      <FilterTutorial
-        data={data}
-        columnConfigs={columnConfigs}
-        selectedColumnIndex={selectedColumnIndex}
-        selectedColumnName={selectedColumnName}
-        handleFilter={handleFilter}
-        hotRef={hotRef}
-        filteredColumns={filteredColumns}
-        setFilteredColumns={setFilteredColumns}
-      />
+      <div className="shift-right">
+        <FilterTutorial
+          data={data}
+          columnConfigs={columnConfigs}
+          selectedColumnIndex={selectedColumnIndex}
+          selectedColumnName={selectedColumnName}
+          handleFilter={handleFilter}
+          hotRef={hotRef}
+          filteredColumns={filteredColumns}
+          setFilteredColumns={setFilteredColumns}
+        />
+      </div>
     ),
     'Option 2': (
-      <div className="placeholder">
+      <div className="shift-right">
         <h2>Option 2</h2>
         <p>This is the content for Option 2.</p>
       </div>
     ),
     'Option 3': (
-      <div className="placeholder">
+      <div className="shift-right">
         <h2>Option 3</h2>
         <p>This is the content for Option 3.</p>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './FilterComponent.module.css';
+import styles from './Tutorial.module.css';
 
 const FilterConditionComponent = ({ 
   filterCondition, 
