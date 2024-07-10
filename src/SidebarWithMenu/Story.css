@@ -65,6 +65,7 @@
   gap: 0px;
   margin-left: 0px;
   overflow: visible;
+  z-index: 10;
 }
 
 .edit-menu button {
