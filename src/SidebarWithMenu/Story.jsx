@@ -3,19 +3,26 @@ import EditableText from './EditableText';
 import './Story.css';
 
 function Story({ texts, setTexts }) {
-  const handleTextChange = (index, newText) => {
+  const handleTextChange = (index, newTextObj) => {
     const newTexts = [...texts];
-    newTexts[index] = newText;
+    newTexts[index] = newTextObj;
     setTexts(newTexts);
   };
 
-  const handleAddTextBox = () => {
-    setTexts([...texts, '--Text--']);
+  const handleAddTextBox = (type) => {
+    const newText = {
+      text: type === 'title' ? '--Title--' : type === 'subtitle' ? '--Subtitle--' : '--Text--',
+      fontSize: type === 'title' ? '32px' : type === 'subtitle' ? '24px' : '16px',
+    };
+    setTexts([...texts, newText]);
   };
 
   useEffect(() => {
-    const handleAddTextBoxEvent = () => {
-      handleAddTextBox();
+    const handleAddTextBoxEvent = (event) => {
+      if (event.detail && event.detail.type) {
+        const { type } = event.detail;
+        handleAddTextBox(type);
+      }
     };
 
     document.addEventListener('addTextBox', handleAddTextBoxEvent);
@@ -24,14 +31,38 @@ function Story({ texts, setTexts }) {
     };
   }, [texts]);
 
+  const handleDelete = (index) => {
+    const newTexts = texts.filter((_, i) => i !== index);
+    setTexts(newTexts);
+  };
+
+  const handleMoveUp = (index) => {
+    if (index > 0) {
+      const newTexts = [...texts];
+      [newTexts[index - 1], newTexts[index]] = [newTexts[index], newTexts[index - 1]];
+      setTexts(newTexts);
+    }
+  };
+
+  const handleMoveDown = (index) => {
+    if (index < texts.length - 1) {
+      const newTexts = [...texts];
+      [newTexts[index + 1], newTexts[index]] = [newTexts[index], newTexts[index + 1]];
+      setTexts(newTexts);
+    }
+  };
+
   return (
     <div className="story-container">
-      {texts.map((text, index) => (
+      {texts.map((textObj, index) => (
         <EditableText
           key={index}
           index={index}
-          text={text}
+          textObj={textObj}
           onTextChange={handleTextChange}
+          onDelete={handleDelete}
+          onMoveUp={handleMoveUp}
+          onMoveDown={handleMoveDown}
         />
       ))}
     </div>

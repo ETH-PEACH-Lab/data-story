@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Story.css';
 
-function EditableText({ text, onTextChange, index }) {
+function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMoveDown }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const menuRef = useRef(null);
+  const toggleRef = useRef(null);
+  const textareaRef = useRef(null);
 
   const handleTextClick = () => {
     setIsEditing(true);
@@ -23,26 +27,54 @@ function EditableText({ text, onTextChange, index }) {
     }
   }, [isEditing]);
 
-  const textareaRef = React.createRef();
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current && !menuRef.current.contains(event.target) &&
+        toggleRef.current && !toggleRef.current.contains(event.target)
+      ) {
+        setIsMenuVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div onClick={handleTextClick}>
-      {isEditing ? (
-        <textarea
-          value={text}
-          onChange={(e) => {
-            onTextChange(index, e.target.value);
-            autoResize(e.target);
-          }}
-          onInput={(e) => autoResize(e.target)}
-          onBlur={handleBlur}
-          autoFocus
-          className="story-textarea"
-          ref={textareaRef}
-        />
-      ) : (
-        <p className="story-text">{text}</p>
+    <div className="editable-text-container">
+      <div className="edit-menu-toggle" ref={toggleRef}>
+        <button onClick={() => setIsMenuVisible(!isMenuVisible)}>⋮</button>
+      </div>
+      {isMenuVisible && (
+        <div className="edit-menu" ref={menuRef}>
+          <button onClick={() => onMoveUp(index)}>↑</button>
+          <button onClick={() => onMoveDown(index)}>↓</button>
+          <button onClick={() => onDelete(index)}>✖</button>
+        </div>
       )}
+      <div onClick={handleTextClick} className="editable-text">
+        {isEditing ? (
+          <textarea
+            value={textObj.text}
+            onChange={(e) => {
+              onTextChange(index, { ...textObj, text: e.target.value });
+              autoResize(e.target);
+            }}
+            onInput={(e) => autoResize(e.target)}
+            onBlur={handleBlur}
+            autoFocus
+            className="story-textarea"
+            style={{ fontSize: textObj.fontSize }}
+            ref={textareaRef}
+          />
+        ) : (
+          <p className="story-text" style={{ fontSize: textObj.fontSize }}>{textObj.text}</p>
+        )}
+      </div>
     </div>
   );
 }

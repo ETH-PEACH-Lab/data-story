@@ -1,17 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styles from './StoryMenu.module.css';
 
 const StoryMenu = () => {
   const [activeMenu, setActiveMenu] = useState('');
+  const [isTextDropdownVisible, setTextDropdownVisible] = useState(false);
+  const textButtonRef = useRef(null);
+  const textDropdownRef = useRef(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
   const handleMenuClick = (menu) => {
     setActiveMenu(activeMenu === menu ? '' : menu);
   };
 
-  const addTextBox = () => {
-    const addEvent = new CustomEvent('addTextBox');
+  const addTextBox = (type) => {
+    const addEvent = new CustomEvent('addTextBox', { detail: { type } });
     document.dispatchEvent(addEvent);
+    setTextDropdownVisible(false);
   };
+
+  const handleClickOutside = (event) => {
+    if (
+      !(
+        (textDropdownRef.current && textDropdownRef.current.contains(event.target)) ||
+        (textButtonRef.current && textButtonRef.current.contains(event.target))
+      )
+    ) {
+      setTextDropdownVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    if (isTextDropdownVisible && textButtonRef.current) {
+      const buttonRect = textButtonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: buttonRect.bottom,
+        left: buttonRect.left,
+      });
+    }
+  }, [isTextDropdownVisible]);
 
   const menuOptions = {
     'Insert': (
@@ -20,10 +53,24 @@ const StoryMenu = () => {
           <div key={index} className={styles.secondaryMenuItem}>
             <button
               className={styles.button}
-              onClick={item === 'Text' ? addTextBox : undefined}
+              onClick={item === 'Text' ? () => setTextDropdownVisible(!isTextDropdownVisible) : undefined}
+              ref={item === 'Text' ? textButtonRef : null}
             >
               {item}
             </button>
+            {item === 'Text' && isTextDropdownVisible && (
+              <div
+                className={styles.dropdown}
+                style={{ top: `${dropdownPosition.top}px`, left: `${dropdownPosition.left}px` }}
+                ref={textDropdownRef}
+              >
+                {['Title', 'Subtitle', 'Text'].map((option, index) => (
+                  <div key={index} className={styles.textOption} onClick={() => addTextBox(option.toLowerCase())}>
+                    {option}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

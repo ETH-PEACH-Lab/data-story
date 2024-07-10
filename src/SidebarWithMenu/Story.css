@@ -3,6 +3,7 @@
   width: 100%;
   overflow-y: auto; 
   height: calc(100% - 70px);
+  overflow: visible;
 }
 
 .story-textarea {
@@ -22,5 +23,62 @@
 .story-text {
   white-space: pre-wrap; /* Preserve line breaks */
   font-size: 16px; /* Match the font size */
-  padding: 10px; /* Add some padding for better appearance */
+  padding-right: 10px;
+  padding-top: 0px;
+}
+
+.editable-text-container {
+  display: flex;
+  align-items: flex-start;
+  right: 24px;
+  width: calc(100% + 24px);
+  position: relative;
+  margin-bottom: -20px;
+}
+
+.editable-text {
+  flex-grow: 1;
+  position: relative;
+  right: 4px;
+}
+
+.edit-menu-toggle {
+  margin-left: 0px;
+}
+
+.edit-menu-toggle button {
+  background: none;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.edit-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  align-items: center;
+  gap: 0px;
+  margin-left: 0px;
+  overflow: visible;
+}
+
+.edit-menu button {
+  background: none;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  left: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: antiquewhite;
+  clip-path: polygon(15% 15%, 85% 15%, 85% 85%, 15% 85%);
 }

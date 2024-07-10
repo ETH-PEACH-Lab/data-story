@@ -14,7 +14,7 @@ function MainSidebar({
   setFilteredColumns,
 }) {
   const [activeMenu, setActiveMenu] = useState('');
-  const [texts, setTexts] = useState(['Text']); // Initialize with 'Text'
+  const [texts, setTexts] = useState([{ text: '--Text--', fontSize: '16px' }]); // Initialize with 'Text'
 
   const handleMenuClick = (menu) => {
     setActiveMenu(activeMenu === menu ? '' : menu);
