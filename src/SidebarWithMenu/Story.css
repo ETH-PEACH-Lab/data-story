@@ -30,7 +30,7 @@
 .editable-text-container {
   display: flex;
   align-items: flex-start;
-  right: 24px;
+  right: 6px;
   width: calc(100% + 24px);
   position: relative;
   margin-bottom: -20px;

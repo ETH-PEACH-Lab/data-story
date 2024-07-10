@@ -29,20 +29,29 @@ const StoryMenu = () => {
     }
   };
 
+  const updateDropdownPosition = () => {
+    if (textButtonRef.current) {
+      const buttonRect = textButtonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: buttonRect.bottom + window.scrollY-131,
+        right: buttonRect.left + window.scrollX,
+      });
+    }
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('resize', updateDropdownPosition);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('resize', updateDropdownPosition);
     };
   }, []);
 
   useLayoutEffect(() => {
-    if (isTextDropdownVisible && textButtonRef.current) {
-      const buttonRect = textButtonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: buttonRect.bottom,
-        left: buttonRect.left,
-      });
+    if (isTextDropdownVisible) {
+      updateDropdownPosition();
     }
   }, [isTextDropdownVisible]);
 

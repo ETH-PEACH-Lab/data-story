@@ -65,8 +65,8 @@
 .dropdown {
     position: absolute;
     display: flex;
-    margin-left: -483px;
-    margin-top: -130px;
+    margin-left: -10px;
+    margin-top: 0px;
     flex-direction: column;
     background: white;
     border: 1px solid #ccc;
