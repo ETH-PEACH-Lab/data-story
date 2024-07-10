@@ -40,6 +40,11 @@ const FileMenu = ({
   const handleMenuClick = (item) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
 
+    if (item === 'History') {
+      toggleHistory();
+      return;
+    }
+
     if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
       setConfirmationMessage('You have unsaved changes. Do you want to save them?');
       setShowConfirmation(true);
@@ -72,8 +77,6 @@ const FileMenu = ({
         resetFiltersAndSorting();
       } else if (item === 'Save') {
         onSaveCurrent();
-      } else if (item === 'History') {
-        toggleHistory();
       }
     }
   };

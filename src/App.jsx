@@ -214,7 +214,8 @@ function App() {
             setOnCancelAction={setOnCancelAction}
             initialActionStack={initialActionStack}
             initialActionStackLength={initialActionStackLength}
-            handleStyleChange={handleStyleChange}  // Add this line
+            handleStyleChange={handleStyleChange} 
+            toggleHistory={() => toggleHistory(setHistoryVisible)}
           />
           <SidebarWithStoryMenu
             data={data}

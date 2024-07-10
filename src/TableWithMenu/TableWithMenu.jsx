@@ -50,6 +50,7 @@ const TableWithMenu = ({
   initialActionStackLength,
   initializeColumns, 
   handleStyleChange,
+  toggleHistory
 }) => {
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
@@ -98,6 +99,7 @@ const TableWithMenu = ({
             setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
             setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length); // Update initial action stack length after loading
           }}
+          toggleHistory={toggleHistory}
           onStyleChange={(styleType, value) =>
             handleStyleChange(
               styleType,
