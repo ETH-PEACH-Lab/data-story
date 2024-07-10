@@ -70,6 +70,7 @@ html, body {
 .menu-bar {
   display: flex;
   flex: 1;
+  top: 0;
   background: #D9D9D9;
   min-height: 70px;
   margin-right: 95px;
@@ -95,6 +96,7 @@ html, body {
   right: 75px;
   left: 0px;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -111,9 +113,10 @@ html, body {
 
 .sidebar-content-area {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex: 1;
   width: 45%;
+  height: 100%;
   right: 75px;
   position: relative;
   box-sizing: border-box;

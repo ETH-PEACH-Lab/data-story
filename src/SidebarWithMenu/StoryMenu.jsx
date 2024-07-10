@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from './StoryMenu.module.css';
-import Story from './Story';
 
 const StoryMenu = () => {
   const [activeMenu, setActiveMenu] = useState('');
@@ -10,11 +9,8 @@ const StoryMenu = () => {
   };
 
   const addTextBox = () => {
-    const storyComponent = document.querySelector('.story-container');
-    if (storyComponent) {
-      const addEvent = new CustomEvent('addTextBox');
-      storyComponent.dispatchEvent(addEvent);
-    }
+    const addEvent = new CustomEvent('addTextBox');
+    document.dispatchEvent(addEvent);
   };
 
   const menuOptions = {
@@ -34,7 +30,7 @@ const StoryMenu = () => {
     ),
     'Format': (
       <div className={styles.secondaryMenuBar}>
-        {['Text', 'Color'].map((item, index) => (
+        {['Bla', 'Color'].map((item, index) => (
           <div key={index} className={styles.secondaryMenuItem}>
             <button className={styles.button}>{item}</button>
           </div>
