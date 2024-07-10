@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditableText from './EditableText';
 import './Story.css';
 
 function Story({ texts, setTexts }) {
+  const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
+
   const handleTextChange = (index, newTextObj) => {
     const newTexts = [...texts];
     newTexts[index] = newTextObj;
@@ -34,6 +36,7 @@ function Story({ texts, setTexts }) {
   const handleDelete = (index) => {
     const newTexts = texts.filter((_, i) => i !== index);
     setTexts(newTexts);
+    setVisibleMenuIndex(null); // Hide menu when an item is deleted
   };
 
   const handleMoveUp = (index) => {
@@ -41,6 +44,7 @@ function Story({ texts, setTexts }) {
       const newTexts = [...texts];
       [newTexts[index - 1], newTexts[index]] = [newTexts[index], newTexts[index - 1]];
       setTexts(newTexts);
+      setVisibleMenuIndex(index - 1); // Show menu of the moved up item
     }
   };
 
@@ -49,6 +53,7 @@ function Story({ texts, setTexts }) {
       const newTexts = [...texts];
       [newTexts[index + 1], newTexts[index]] = [newTexts[index], newTexts[index + 1]];
       setTexts(newTexts);
+      setVisibleMenuIndex(index + 1); // Show menu of the moved down item
     }
   };
 
@@ -63,6 +68,8 @@ function Story({ texts, setTexts }) {
           onDelete={handleDelete}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
+          isMenuVisible={visibleMenuIndex === index}
+          setVisibleMenuIndex={setVisibleMenuIndex}
         />
       ))}
     </div>

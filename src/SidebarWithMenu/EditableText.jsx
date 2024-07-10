@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Story.css';
 
-function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMoveDown }) {
+function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMoveDown, isMenuVisible, setVisibleMenuIndex }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const menuRef = useRef(null);
-  const toggleRef = useRef(null);
   const textareaRef = useRef(null);
 
   const handleTextClick = () => {
@@ -30,10 +27,10 @@ function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMove
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        menuRef.current && !menuRef.current.contains(event.target) &&
-        toggleRef.current && !toggleRef.current.contains(event.target)
+        textareaRef.current &&
+        !textareaRef.current.contains(event.target)
       ) {
-        setIsMenuVisible(false);
+        setVisibleMenuIndex(null);
       }
     };
 
@@ -42,17 +39,23 @@ function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMove
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [setVisibleMenuIndex]);
 
   return (
     <div className="editable-text-container">
-      <div className="edit-menu-toggle" ref={toggleRef}>
-        <button onClick={() => setIsMenuVisible(!isMenuVisible)}>⋮</button>
+      <div className="edit-menu-toggle">
+        <button onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}>⋮</button>
       </div>
       {isMenuVisible && (
-        <div className="edit-menu" ref={menuRef}>
-          <button onClick={() => onMoveUp(index)}>↑</button>
-          <button onClick={() => onMoveDown(index)}>↓</button>
+        <div className="edit-menu">
+          <button onClick={() => {
+            onMoveUp(index);
+            setVisibleMenuIndex(index - 1);
+          }}>↑</button>
+          <button onClick={() => {
+            onMoveDown(index);
+            setVisibleMenuIndex(index + 1);
+          }}>↓</button>
           <button onClick={() => onDelete(index)}>✖</button>
         </div>
       )}
