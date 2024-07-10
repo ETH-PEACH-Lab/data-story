@@ -14,12 +14,12 @@ function MainSidebar({
   setFilteredColumns,
 }) {
   const [activeMenu, setActiveMenu] = useState('');
-  const [textboxes, setTextboxes] = useState([
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'
+  const [texts, setTexts] = useState([
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
   ]);
 
-  const handleAddTextbox = () => {
-    setTextboxes([...textboxes, 'New textbox content']);
+  const handleMenuClick = (menu) => {
+    setActiveMenu(activeMenu === menu ? '' : menu);
   };
 
   const menuOptions = {
@@ -49,10 +49,6 @@ function MainSidebar({
     ),
   };
 
-  const handleMenuClick = (menu) => {
-    setActiveMenu(activeMenu === menu ? '' : menu);
-  };
-
   return (
     <div className="main-sidebar-container">
       <div className="text-and-menu-container">
@@ -60,7 +56,7 @@ function MainSidebar({
           {activeMenu ? (
             menuOptions[activeMenu]
           ) : (
-            <Story textboxes={textboxes} setTextboxes={setTextboxes} />  // Pass textboxes state to Story
+            <Story texts={texts} setTexts={setTexts} />
           )}
         </div>
         <TutorialMenu buttons={['Filtering', 'Option 2', 'Option 3']} activeMenu={activeMenu} onMenuClick={handleMenuClick} />
