@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styles from './StoryMenu.module.css';
 
-const StoryMenu = () => {
+const StoryMenu = ({ columnConfigs }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const [isTextDropdownVisible, setTextDropdownVisible] = useState(false);
+  const [isFunctionDropdownVisible, setFunctionDropdownVisible] = useState(false);
+  const [selectedColumn, setSelectedColumn] = useState('');
+  const [selectedFunction, setSelectedFunction] = useState('');
   const textButtonRef = useRef(null);
   const textDropdownRef = useRef(null);
+  const functionButtonRef = useRef(null);
+  const functionDropdownRef = useRef(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
   const handleMenuClick = (menu) => {
@@ -22,18 +27,21 @@ const StoryMenu = () => {
     if (
       !(
         (textDropdownRef.current && textDropdownRef.current.contains(event.target)) ||
-        (textButtonRef.current && textButtonRef.current.contains(event.target))
+        (textButtonRef.current && textButtonRef.current.contains(event.target)) ||
+        (functionDropdownRef.current && functionDropdownRef.current.contains(event.target)) ||
+        (functionButtonRef.current && functionButtonRef.current.contains(event.target))
       )
     ) {
       setTextDropdownVisible(false);
+      setFunctionDropdownVisible(false);
     }
   };
 
-  const updateDropdownPosition = () => {
-    if (textButtonRef.current) {
-      const buttonRect = textButtonRef.current.getBoundingClientRect();
+  const updateDropdownPosition = (buttonRef, setDropdownPosition) => {
+    if (buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
-        top: buttonRect.bottom + window.scrollY-131,
+        top: buttonRect.bottom + window.scrollY - 131,
         right: buttonRect.left + window.scrollX,
       });
     }
@@ -41,19 +49,28 @@ const StoryMenu = () => {
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
-    window.addEventListener('resize', updateDropdownPosition);
+    window.addEventListener('resize', () => updateDropdownPosition(textButtonRef, setDropdownPosition));
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('resize', updateDropdownPosition);
+      window.removeEventListener('resize', () => updateDropdownPosition(textButtonRef, setDropdownPosition));
     };
   }, []);
 
   useLayoutEffect(() => {
     if (isTextDropdownVisible) {
-      updateDropdownPosition();
+      updateDropdownPosition(textButtonRef, setDropdownPosition);
     }
-  }, [isTextDropdownVisible]);
+    if (isFunctionDropdownVisible) {
+      updateDropdownPosition(functionButtonRef, setDropdownPosition);
+    }
+  }, [isTextDropdownVisible, isFunctionDropdownVisible]);
+
+  const handleFunctionApply = () => {
+    const functionEvent = new CustomEvent('applyFunction', { detail: { column: selectedColumn, func: selectedFunction } });
+    document.dispatchEvent(functionEvent);
+    setFunctionDropdownVisible(false);
+  };
 
   const menuOptions = {
     'Insert': (
@@ -62,8 +79,8 @@ const StoryMenu = () => {
           <div key={index} className={styles.secondaryMenuItem}>
             <button
               className={styles.button}
-              onClick={item === 'Text' ? () => setTextDropdownVisible(!isTextDropdownVisible) : undefined}
-              ref={item === 'Text' ? textButtonRef : null}
+              onClick={item === 'Text' ? () => setTextDropdownVisible(!isTextDropdownVisible) : (item === 'Function' ? () => setFunctionDropdownVisible(!isFunctionDropdownVisible) : undefined)}
+              ref={item === 'Text' ? textButtonRef : (item === 'Function' ? functionButtonRef : null)}
             >
               {item}
             </button>
@@ -78,6 +95,41 @@ const StoryMenu = () => {
                     {option}
                   </div>
                 ))}
+              </div>
+            )}
+            {item === 'Function' && isFunctionDropdownVisible && (
+              <div
+                className={styles.dropdown}
+                style={{ top: `${dropdownPosition.top}px`, left: `${dropdownPosition.left}px` }}
+                ref={functionDropdownRef}
+              >
+                <div className={styles.dropdownSection}>
+                  <label className={styles.dropdownTitle}>Select Column:</label>
+                  <select
+                    value={selectedColumn}
+                    onChange={(e) => setSelectedColumn(e.target.value)}
+                    className={styles.selectInput}
+                  >
+                    <option value="" disabled>Select a column</option>
+                    {columnConfigs.map((col, index) => (
+                      <option key={index} value={col.title}>{col.title}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.dropdownSection}>
+                  <label className={styles.dropdownTitle}>Select Function:</label>
+                  <select
+                    value={selectedFunction}
+                    onChange={(e) => setSelectedFunction(e.target.value)}
+                    className={styles.selectInput}
+                  >
+                    <option value="" disabled>Select a function</option>
+                    {['AVG', 'MAX', 'MIN', 'COUNT'].map((func, index) => (
+                      <option key={index} value={func}>{func}</option>
+                    ))}
+                  </select>
+                </div>
+                <button className={styles.applyButton} onClick={handleFunctionApply}>Insert</button>
               </div>
             )}
           </div>

@@ -16,7 +16,9 @@ const SidebarWithStoryMenu = ({
     <div className="sidebar-content-area">
       <div className="main-sidebar-container">
         <div className="menu-bar-container">
-          <StoryMenu />
+          <StoryMenu 
+            columnConfigs={columnConfigs}
+          />
         </div>
         <MainSidebar
           data={data}

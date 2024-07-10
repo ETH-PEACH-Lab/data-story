@@ -84,3 +84,19 @@
 .textOption:hover {
     background-color: #f0f0f0;
 }
+
+.applyButton {
+    position: relative;
+    width: 70px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 2px 5px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+.applyButton:hover {
+    background-color: #f0f0f0;
+}
