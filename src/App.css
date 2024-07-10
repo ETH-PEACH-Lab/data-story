@@ -118,6 +118,7 @@ html, body {
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
+  z-index: 55;
 }
 
 .handsontable-container {
@@ -137,7 +138,7 @@ html, body {
   height: 100%;
   box-sizing: border-box;
   position: relative;
-  z-index: 50;
+  z-index: 55;
   font-family: 'Inter', sans-serif;
   overflow-y: auto;
 }
@@ -173,5 +174,25 @@ html, body {
   width: 100%; /* Adjust width to match previous sidebar width */
   height: 100%;
   background-color: #E3E1D9; /* Match the sidebar background color */
-  z-index: 50;
+  z-index: 55;
+}
+
+.text-and-menu-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: stretch;
+  width: 100%; /* Adjust width to match previous sidebar width */
+  height: 100%;
+  background-color: #E3E1D9; /* Match the sidebar background color */
+  z-index: 55;
+}
+
+.rectangle {
+  width: 20px;
+  height: 70px; /* Make it as tall as the menu bar */
+  background-color: white;
+  right: 75px;
+  position: absolute; /* Position it absolutely within the container */
+  z-index: 1110; /* Ensure it appears above other elements */
 }

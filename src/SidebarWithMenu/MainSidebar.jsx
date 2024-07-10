@@ -55,14 +55,16 @@ function MainSidebar({
 
   return (
     <div className="main-sidebar-container">
-      <div className="sidebar" style={{ paddingRight: '15px' }}>
-        {activeMenu ? (
-          menuOptions[activeMenu]
-        ) : (
-          <Story textboxes={textboxes} setTextboxes={setTextboxes} />  // Pass textboxes state to Story
-        )}
+      <div className="text-and-menu-container">
+        <div className="sidebar" style={{ paddingRight: '15px' }}>
+          {activeMenu ? (
+            menuOptions[activeMenu]
+          ) : (
+            <Story textboxes={textboxes} setTextboxes={setTextboxes} />  // Pass textboxes state to Story
+          )}
+        </div>
+        <TutorialMenu buttons={['Filtering', 'Option 2', 'Option 3']} activeMenu={activeMenu} onMenuClick={handleMenuClick} />
       </div>
-      <TutorialMenu buttons={['Filtering', 'Option 2', 'Option 3']} activeMenu={activeMenu} onMenuClick={handleMenuClick} />
     </div>
   );
 }

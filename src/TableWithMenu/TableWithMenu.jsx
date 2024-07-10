@@ -56,6 +56,7 @@ const TableWithMenu = ({
 
   return (
     <div className="table-content-area">
+      <div className="rectangle"></div>
       <div className="menu-bar-container">
         <MenuBar
           onSaveCurrent={() => {
