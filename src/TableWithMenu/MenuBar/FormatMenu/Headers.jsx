@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../MenuBar.module.css';
-import { HeaderAction } from '../../CustomUndoRedo';
+import { HeaderAction } from '../../../CustomUndoRedo';
 
 const Headers = ({ position, stopPropagation, selectedColumnIndex, selectedColumnName, setColumns, hotRef }) => {
   const [newColumnName, setNewColumnName] = useState('');

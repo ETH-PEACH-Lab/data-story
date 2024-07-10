@@ -18,7 +18,9 @@ export const handleHistoryDelete = (
   setUploadHistory,
   setShowConfirmation,
   setConfirmationMessage,
-  setOnConfirmAction
+  setOnConfirmAction,
+  setColumnConfigs,
+  setFilteredColumns
 ) => {
   const historyEntryToDelete = uploadHistory[index];
   const isDeletingCurrentData = historyEntryToDelete.id === currentDataId;
@@ -33,7 +35,7 @@ export const handleHistoryDelete = (
     setOnConfirmAction(() => () => {
       if (isDeletingCurrentData) {
         setData([]);
-        initializeColumns([]);
+        initializeColumns([], setColumnConfigs, setFilteredColumns); // Ensure proper arguments
         setCurrentDataId(null);
         setActions([]);
         setOriginalFileName('');
@@ -44,7 +46,7 @@ export const handleHistoryDelete = (
     if (isDeletingCurrentData) {
       const parentEntry = newHistory.find((entry) => entry.id === parentId);
       setData(parentEntry.data);
-      initializeColumns(parentEntry.data);
+      initializeColumns(parentEntry.data, setColumnConfigs, setFilteredColumns); // Ensure proper arguments
       setCurrentDataId(parentEntry.id);
       setActions(parentEntry.actions);
       setOriginalFileName(parentEntry.fileName);

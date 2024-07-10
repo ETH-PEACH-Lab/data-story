@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../MenuBar.module.css';
-import { TypeAction } from '../../CustomUndoRedo';
+import { TypeAction } from '../../../CustomUndoRedo';
 
 const Type = ({ position, stopPropagation, selectedColumnIndex, columns, setColumns, typeMapping, reverseTypeMapping, selectedColumnName, hotRef }) => {
   const [newColumnType, setNewColumnType] = useState('');

@@ -9,6 +9,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: 'Inter', sans-serif;
 }
 
 .container {
@@ -61,6 +62,8 @@ html, body {
 .menu-bar-container {
   display: flex;
   width: 100%;
+  margin-right: 10px;
+  position: relative;
   overflow: visible;
 }
 
@@ -87,8 +90,32 @@ html, body {
 
 .content-area {
   display: flex;
+  flex-direction: row;
+  position: relative;
+  right: 75px;
+  left: 0px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.table-content-area {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.sidebar-content-area {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 45%;
+  right: 75px;
+  position: relative;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -140,12 +167,11 @@ html, body {
 
 .main-sidebar-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   position: relative;
   align-items: stretch;
-  width: 45%; /* Adjust width to match previous sidebar width */
+  width: 100%; /* Adjust width to match previous sidebar width */
   height: 100%;
-  right: 75px;
   background-color: #E3E1D9; /* Match the sidebar background color */
   z-index: 50;
 }

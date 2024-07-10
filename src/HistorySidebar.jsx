@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './History.css';
 import treeify from 'object-treeify';
 
-const HistorySidebar = ({ isHistoryVisible, uploadHistory, onHistoryItemClick, onHistoryItemDelete, toggleHistory, currentDataId }) => {
+const HistorySidebar = ({ isHistoryVisible, uploadHistory, onHistoryItemClick, onHistoryItemDelete, toggleHistory, currentDataId, setColumnConfigs, initializeColumns }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
 
   useEffect(() => {
