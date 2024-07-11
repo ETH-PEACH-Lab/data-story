@@ -111,7 +111,7 @@ const StoryMenu = ({ columnConfigs }) => {
             {item === 'Function' && isFunctionDropdownVisible && (
               <div
                 className={styles.dropdown}
-                style={{ top: `${functionDropdownPosition.top}px` }}
+                style={{ top: `${functionDropdownPosition.top}px`, marginLeft: '112px'}}
                 ref={functionDropdownRef}
               >
                 <div className={styles.dropdownSection} style={{ display: 'flex', flexDirection: 'row', gap: '11px' }}>
