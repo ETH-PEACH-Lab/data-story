@@ -50,7 +50,8 @@ const TableWithMenu = ({
   initialActionStackLength,
   initializeColumns, 
   handleStyleChange,
-  toggleHistory
+  toggleHistory,
+  setSelectedRange,
 }) => {
   const selectedColumnName = selectedColumnIndex !== null ? columnConfigs[selectedColumnIndex]?.title : '';
 
@@ -180,8 +181,9 @@ const TableWithMenu = ({
             manualColumnResize={true}
             autoColumnSize={true}
             afterSelectionEnd={(r1, c1, r2, c2) =>
-              handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex)
+              handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex, setSelectedRange, hotRef)
             }
+            selectionMode="range"
             afterGetColHeader={(col, TH) => {
               const TR = TH.parentNode;
               const THEAD = TR.parentNode;

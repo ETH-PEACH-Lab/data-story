@@ -42,6 +42,7 @@ function App() {
   const [filteredColumns, setFilteredColumns] = useState([]);
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
+  const [selectedRange, setSelectedRange] = useState(null);
   const tableContainerRef = useRef(null);
   const fileInputRef = useRef(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -216,6 +217,7 @@ function App() {
             initialActionStackLength={initialActionStackLength}
             handleStyleChange={handleStyleChange} 
             toggleHistory={() => toggleHistory(setHistoryVisible)}
+            setSelectedRange={setSelectedRange}
           />
           <SidebarWithStoryMenu
             data={data}
@@ -226,6 +228,8 @@ function App() {
             hotRef={hotRef}
             filteredColumns={filteredColumns}
             setFilteredColumns={setFilteredColumns}
+            selectedRange={selectedRange}
+            tableContainerRef={tableContainerRef}
           />
         </div>
         <HistorySidebar

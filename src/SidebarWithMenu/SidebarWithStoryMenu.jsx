@@ -11,6 +11,8 @@ const SidebarWithStoryMenu = ({
   hotRef,
   filteredColumns,
   setFilteredColumns,
+  selectedRange,
+  tableContainerRef
 }) => {
   return (
     <div className="sidebar-content-area">
@@ -18,6 +20,8 @@ const SidebarWithStoryMenu = ({
         <div className="menu-bar-container">
           <StoryMenu 
             columnConfigs={columnConfigs}
+            selectedRange={selectedRange}
+            tableContainerRef={tableContainerRef}
           />
         </div>
         <MainSidebar

@@ -1,24 +1,37 @@
 import { InsertColumnAction, InsertRowAction } from '../CustomUndoRedo';
 
-export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex) => {
-    const selectedCells = [];
-    const minRow = Math.min(r1, r2);
-    const maxRow = Math.max(r1, r2);
-    const minCol = Math.min(c1, c2);
-    const maxCol = Math.max(c1, c2);
-    for (let row = minRow; row <= maxRow; row++) {
-      for (let col = minCol; col <= maxCol; col++) {
-        selectedCells.push([row, col]);
-      }
+export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex, setSelectedRange, hotRef) => {
+  const selectedCells = [];
+  const minRow = Math.min(r1, r2);
+  const maxRow = Math.max(r1, r2);
+  const minCol = Math.min(c1, c2);
+  const maxCol = Math.max(c1, c2);
+  for (let row = minRow; row <= maxRow; row++) {
+    for (let col = minCol; col <= maxCol; col++) {
+      selectedCells.push([row, col]);
     }
-    selectedCellsRef.current = selectedCells;
-  
-    if (minCol === maxCol) {
-      setSelectedColumnIndex(minCol);
-    } else {
-      setSelectedColumnIndex(null);
-    }
-  };
+  }
+  selectedCellsRef.current = selectedCells;
+
+  if (minCol === maxCol) {
+    setSelectedColumnIndex(minCol);
+  } else {
+    setSelectedColumnIndex(null);
+  }
+
+  const hotInstance = hotRef.current.hotInstance;
+  const allRowsSelected = (minCol === 0 && maxCol === hotInstance.countCols() - 1) || minCol === -1;
+  const allColsSelected = (minRow === 0 && maxRow === hotInstance.countRows() - 1) || minRow === -1;
+
+  setSelectedRange({ 
+    minRow: Math.max(minRow, 0), 
+    maxRow, 
+    minCol: Math.max(minCol, 0), 
+    maxCol, 
+    allRows: allRowsSelected, 
+    allCols: allColsSelected 
+  });
+};
   
   export const addRow = (data, setData, columnConfigs, hotRef) => {
     const newRowIndex = data.length;

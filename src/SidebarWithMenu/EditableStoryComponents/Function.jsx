@@ -1,5 +1,5 @@
-import React from 'react';
-import '../Story.css';
+
+import React from 'react';import '../Story.css';
 import EditMenu from './EditMenu';
 
 const Function = ({ column, func, index, onDelete, onMoveUp, onMoveDown, isMenuVisible, setVisibleMenuIndex }) => {
@@ -18,7 +18,7 @@ const Function = ({ column, func, index, onDelete, onMoveUp, onMoveDown, isMenuV
         />
       )}
       <div className="function">
-      <strong>{func}</strong> of column "{column}": 
+        <strong>{func}</strong> of {column}
       </div>
     </div>
   );

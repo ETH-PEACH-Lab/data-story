@@ -1,17 +1,14 @@
+// StoryMenu.jsx
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styles from './StoryMenu.module.css';
 
-const StoryMenu = ({ columnConfigs }) => {
+const StoryMenu = ({ selectedRange, tableContainerRef }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const [isTextDropdownVisible, setTextDropdownVisible] = useState(false);
   const [isFunctionDropdownVisible, setFunctionDropdownVisible] = useState(false);
-  const [selectedColumn, setSelectedColumn] = useState('');
   const [selectedFunction, setSelectedFunction] = useState('');
-  const textButtonRef = useRef(null);
-  const textDropdownRef = useRef(null);
   const functionButtonRef = useRef(null);
   const functionDropdownRef = useRef(null);
-  const [textDropdownPosition, setTextDropdownPosition] = useState({ top: 0, left: 0 });
   const [functionDropdownPosition, setFunctionDropdownPosition] = useState({ top: 0, left: 0 });
 
   const handleMenuClick = (menu) => {
@@ -34,13 +31,11 @@ const StoryMenu = ({ columnConfigs }) => {
   const handleClickOutside = (event) => {
     if (
       !(
-        (textDropdownRef.current && textDropdownRef.current.contains(event.target)) ||
-        (textButtonRef.current && textButtonRef.current.contains(event.target)) ||
         (functionDropdownRef.current && functionDropdownRef.current.contains(event.target)) ||
-        (functionButtonRef.current && functionButtonRef.current.contains(event.target))
+        (functionButtonRef.current && functionButtonRef.current.contains(event.target)) ||
+        (tableContainerRef.current && tableContainerRef.current.contains(event.target))
       )
     ) {
-      setTextDropdownVisible(false);
       setFunctionDropdownVisible(false);
     }
   };
@@ -57,32 +52,48 @@ const StoryMenu = ({ columnConfigs }) => {
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     window.addEventListener('resize', () => {
-      if (isTextDropdownVisible) updateDropdownPosition(textButtonRef, setTextDropdownPosition);
+      if (isTextDropdownVisible) updateDropdownPosition(functionButtonRef, setFunctionDropdownPosition);
       if (isFunctionDropdownVisible) updateDropdownPosition(functionButtonRef, setFunctionDropdownPosition);
     });
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('resize', () => {
-        if (isTextDropdownVisible) updateDropdownPosition(textButtonRef, setTextDropdownPosition);
+        if (isTextDropdownVisible) updateDropdownPosition(functionButtonRef, setFunctionDropdownPosition);
         if (isFunctionDropdownVisible) updateDropdownPosition(functionButtonRef, setFunctionDropdownPosition);
       });
     };
   }, [isTextDropdownVisible, isFunctionDropdownVisible]);
 
   useLayoutEffect(() => {
-    if (isTextDropdownVisible) {
-      updateDropdownPosition(textButtonRef, setTextDropdownPosition);
-    }
     if (isFunctionDropdownVisible) {
       updateDropdownPosition(functionButtonRef, setFunctionDropdownPosition);
     }
-  }, [isTextDropdownVisible, isFunctionDropdownVisible]);
+  }, [isFunctionDropdownVisible]);
 
-  const handleFunctionApply = () => {
-    addComponent('function', selectedColumn, selectedFunction);
+  const generateRangeString = () => {
+    if (selectedRange.allCols) {
+      const colWord = selectedRange.minCol === selectedRange.maxCol ? 'Column' : 'Columns';
+      const colRange = selectedRange.minCol === selectedRange.maxCol ? `${selectedRange.minCol + 1}` : `${selectedRange.minCol + 1}-${selectedRange.maxCol + 1}`;
+      return `${colWord}: ${colRange}`;
+    } else if (selectedRange.allRows) {
+      const rowWord = selectedRange.minRow === selectedRange.maxRow ? 'Row' : 'Rows';
+      const rowRange = selectedRange.minRow === selectedRange.maxRow ? `${selectedRange.minRow + 1}` : `${selectedRange.minRow + 1}-${selectedRange.maxRow + 1}`;
+      return `${rowWord}: ${rowRange}`;
+    } else {
+      const rowWord = selectedRange.minRow === selectedRange.maxRow ? 'Row' : 'Rows';
+      const colWord = selectedRange.minCol === selectedRange.maxCol ? 'Column' : 'Columns';
+      const rowRange = selectedRange.minRow === selectedRange.maxRow ? `${selectedRange.minRow + 1}` : `${selectedRange.minRow + 1}-${selectedRange.maxRow + 1}`;
+      const colRange = selectedRange.minCol === selectedRange.maxCol ? `${selectedRange.minCol + 1}` : `${selectedRange.minCol + 1}-${selectedRange.maxCol + 1}`;
+      return `${rowWord}: ${rowRange}, ${colWord}: ${colRange}`;
+    }
   };
 
+  const handleFunctionApply = () => {
+    const rangeString = generateRangeString();
+    addComponent('function', rangeString, selectedFunction);
+  };
+  
   const menuOptions = {
     'Insert': (
       <div className={styles.secondaryMenuBar}>
@@ -91,15 +102,15 @@ const StoryMenu = ({ columnConfigs }) => {
             <button
               className={styles.button}
               onClick={item === 'Text' ? () => { setTextDropdownVisible(!isTextDropdownVisible); setFunctionDropdownVisible(false); } : (item === 'Function' ? () => { setFunctionDropdownVisible(!isFunctionDropdownVisible); setTextDropdownVisible(false); } : undefined)}
-              ref={item === 'Text' ? textButtonRef : (item === 'Function' ? functionButtonRef : null)}
+              ref={item === 'Text' ? functionButtonRef : (item === 'Function' ? functionButtonRef : null)}
             >
               {item}
             </button>
             {item === 'Text' && isTextDropdownVisible && (
               <div
                 className={styles.dropdown}
-                style={{ top: `${textDropdownPosition.top}px`}}
-                ref={textDropdownRef}
+                style={{ top: `${functionDropdownPosition.top}px`}}
+                ref={functionDropdownRef}
               >
                 {['Title', 'Subtitle', 'Text'].map((option, index) => (
                   <div key={index} className={styles.textOption} onClick={() => addComponent(option.toLowerCase())}>
@@ -114,20 +125,13 @@ const StoryMenu = ({ columnConfigs }) => {
                 style={{ top: `${functionDropdownPosition.top}px`, marginLeft: '112px'}}
                 ref={functionDropdownRef}
               >
-                <div className={styles.dropdownSection} style={{ display: 'flex', flexDirection: 'row', gap: '11px' }}>
-                  <label className={styles.dropdownTitle}>Select Column:</label>
-                  <select
-                    value={selectedColumn}
-                    onChange={(e) => setSelectedColumn(e.target.value)}
-                    className={styles.selectInput}
-                  >
-                    <option value="" disabled>Select a column</option>
-                    {columnConfigs.map((col, index) => (
-                      <option key={index} value={col.title}>{col.title}</option>
-                    ))}
-                  </select>
+                <div className={styles.dropdownSection}>
+                  <label className={styles.dropdownTitle}>Selected Range:</label>
+                  <div className={styles.selectedRangeDisplay}>
+                    {selectedRange ? generateRangeString() : 'No range selected'}
+                  </div>
                 </div>
-                <div className={styles.dropdownSection} style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                <div className={styles.dropdownSection}>
                   <label className={styles.dropdownTitle}>Select Function:</label>
                   <select
                     value={selectedFunction}
