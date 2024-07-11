@@ -12,7 +12,9 @@ const SidebarWithStoryMenu = ({
   filteredColumns,
   setFilteredColumns,
   selectedRange,
-  tableContainerRef
+  tableContainerRef,
+  setShowConfirmation,
+  setConfirmationMessage
 }) => {
   return (
     <div className="sidebar-content-area">
@@ -22,6 +24,9 @@ const SidebarWithStoryMenu = ({
             columnConfigs={columnConfigs}
             selectedRange={selectedRange}
             tableContainerRef={tableContainerRef}
+            hotRef={hotRef}
+            setShowConfirmation={setShowConfirmation}
+            setConfirmationMessage={setConfirmationMessage}
           />
         </div>
         <MainSidebar

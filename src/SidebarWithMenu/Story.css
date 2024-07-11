@@ -102,3 +102,9 @@
   position: relative;
   margin-bottom: 0px;
 }
+
+.bold-underline {
+  font-weight: bold;
+  text-decoration: underline;
+  color: rgb(0, 131, 0);
+}

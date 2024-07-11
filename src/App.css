@@ -204,5 +204,5 @@ html, body {
   background-color: white;
   right: 75px;
   position: absolute; /* Position it absolutely within the container */
-  z-index: 1110; /* Ensure it appears above other elements */
+  z-index: 999; /* Ensure it appears above other elements */
 }

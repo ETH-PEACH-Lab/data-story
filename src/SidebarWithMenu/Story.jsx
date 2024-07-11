@@ -12,9 +12,9 @@ function Story({ components, setComponents }) {
     setComponents(newComponents);
   };
 
-  const handleAddComponent = (type, column = '', func = '') => {
+  const handleAddComponent = (type, column = '', func = '', result = '') => {
     const newComponent = type === 'function'
-      ? { type, column, func }
+      ? { type, column, func, result }
       : { type, text: type === 'title' ? '--Title--' : type === 'subtitle' ? '--Subtitle--' : '--Text--', fontSize: type === 'title' ? '32px' : type === 'subtitle' ? '24px' : '16px' };
     setComponents([...components, newComponent]);
   };
@@ -22,8 +22,8 @@ function Story({ components, setComponents }) {
   useEffect(() => {
     const handleAddComponentEvent = (event) => {
       if (event.detail && event.detail.type) {
-        const { type, column, func } = event.detail;
-        handleAddComponent(type, column, func);
+        const { type, column, func, result } = event.detail;
+        handleAddComponent(type, column, func, result);
       }
     };
 
@@ -67,6 +67,7 @@ function Story({ components, setComponents }) {
             index={index}
             column={component.column}
             func={component.func}
+            result={component.result} // Ensure result is passed here
             onDelete={handleDelete}
             onMoveUp={handleMoveUp}
             onMoveDown={handleMoveDown}

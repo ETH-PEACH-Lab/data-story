@@ -230,6 +230,8 @@ function App() {
             setFilteredColumns={setFilteredColumns}
             selectedRange={selectedRange}
             tableContainerRef={tableContainerRef}
+            setShowConfirmation={setShowConfirmation}
+            setConfirmationMessage={setConfirmationMessage}
           />
         </div>
         <HistorySidebar
@@ -264,7 +266,7 @@ function App() {
           <ConfirmationWindow
             message={confirmationMessage}
             onConfirm={handleConfirm}
-            onCancel={handleCancel}
+            onCancel={null}
           />
         )}
       </div>

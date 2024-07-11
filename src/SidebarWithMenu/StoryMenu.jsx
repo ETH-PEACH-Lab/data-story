@@ -1,8 +1,7 @@
-// StoryMenu.jsx
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styles from './StoryMenu.module.css';
 
-const StoryMenu = ({ selectedRange, tableContainerRef }) => {
+const StoryMenu = ({ columnConfigs, selectedRange, tableContainerRef, hotRef, setShowConfirmation, setConfirmationMessage }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const [isTextDropdownVisible, setTextDropdownVisible] = useState(false);
   const [isFunctionDropdownVisible, setFunctionDropdownVisible] = useState(false);
@@ -21,8 +20,70 @@ const StoryMenu = ({ selectedRange, tableContainerRef }) => {
     }
   };
 
-  const addComponent = (type, column = '', func = '') => {
-    const addEvent = new CustomEvent('addComponent', { detail: { type, column, func } });
+  const calculateFunctionResult = (func, data) => {
+    if (!data || data.length === 0) return { result: 'No data', warning: '' };
+
+    // Convert comma decimal separators to dots
+    const convertedData = data.map(row => row.map(cell => typeof cell === 'string' ? cell.replace(',', '.') : cell));
+
+    const numbers = convertedData.map(row => row.map(cell => parseFloat(cell)).filter(val => !isNaN(val)));
+    const flatNumbers = [].concat(...numbers);
+
+    const hasNonNumericValues = data.flat().some(cell => isNaN(parseFloat(cell.toString().replace(',', '.'))));
+
+    let result;
+    let warning = '';
+    switch (func) {
+      case 'AVERAGE':
+        if (flatNumbers.length === 0) return { result: 'No numeric data', warning: hasNonNumericValues ? 'Warning: Some selected cells do not contain numeric data.' : '' };
+        result = (flatNumbers.reduce((acc, num) => acc + num, 0) / flatNumbers.length).toFixed(2);
+        break;
+      case 'SUM':
+        if (flatNumbers.length === 0) return { result: 'No numeric data', warning: hasNonNumericValues ? 'Warning: Some selected cells do not contain numeric data.' : '' };
+        result = flatNumbers.reduce((acc, num) => acc + num, 0).toFixed(2);
+        break;
+      case 'MAX':
+        if (flatNumbers.length === 0) return { result: 'No numeric data', warning: hasNonNumericValues ? 'Warning: Some selected cells do not contain numeric data.' : '' };
+        result = Math.max(...flatNumbers).toFixed(2);
+        break;
+      case 'MIN':
+        if (flatNumbers.length === 0) return { result: 'No numeric data', warning: hasNonNumericValues ? 'Warning: Some selected cells do not contain numeric data.' : '' };
+        result = Math.min(...flatNumbers).toFixed(2);
+        break;
+      case 'COUNT':
+        result = data.flat().length;
+        break;
+      case 'COUNT EMPTY':
+        result = data.reduce((acc, row) => acc + row.filter(cell => cell === '').length, 0);
+        break;
+      case 'COUNT UNIQUE':
+        const uniqueValues = new Set(data.flat().filter(cell => cell !== ''));
+        result = uniqueValues.size;
+        break;
+      default:
+        result = 'Unknown function';
+    }
+
+    if (hasNonNumericValues && ['AVERAGE', 'SUM', 'MAX', 'MIN'].includes(func)) {
+      warning = 'Warning: This function requires numerical values only.';
+    }
+
+    return { result, warning };
+  };
+
+  const getSelectedCellsData = () => {
+    if (!selectedRange || !hotRef.current) {
+      return [];
+    }
+
+    const hotInstance = hotRef.current.hotInstance;
+    const { minRow, maxRow, minCol, maxCol } = selectedRange;
+
+    return hotInstance.getData(minRow, minCol, maxRow, maxCol);
+  };
+
+  const addComponent = (type, column = '', func = '', result = '') => {
+    const addEvent = new CustomEvent('addComponent', { detail: { type, column, func, result } });
     document.dispatchEvent(addEvent);
     setTextDropdownVisible(false);
     setFunctionDropdownVisible(false);
@@ -91,9 +152,17 @@ const StoryMenu = ({ selectedRange, tableContainerRef }) => {
 
   const handleFunctionApply = () => {
     const rangeString = generateRangeString();
-    addComponent('function', rangeString, selectedFunction);
+    const selectedData = getSelectedCellsData();
+    const { result, warning } = calculateFunctionResult(selectedFunction, selectedData);
+
+    if (warning) {
+      setConfirmationMessage(warning);
+      setShowConfirmation(true);
+    } else {
+      addComponent('function', rangeString, selectedFunction, result);
+    }
   };
-  
+
   const menuOptions = {
     'Insert': (
       <div className={styles.secondaryMenuBar}>

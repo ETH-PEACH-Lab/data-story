@@ -1,8 +1,8 @@
-
-import React from 'react';import '../Story.css';
+import React from 'react';
+import '../Story.css';
 import EditMenu from './EditMenu';
 
-const Function = ({ column, func, index, onDelete, onMoveUp, onMoveDown, isMenuVisible, setVisibleMenuIndex }) => {
+const Function = ({ column, func, index, onDelete, onMoveUp, onMoveDown, isMenuVisible, setVisibleMenuIndex, result }) => {
   return (
     <div className="function-container">
       <div className="edit-menu-toggle">
@@ -18,7 +18,7 @@ const Function = ({ column, func, index, onDelete, onMoveUp, onMoveDown, isMenuV
         />
       )}
       <div className="function">
-        <strong>{func}</strong> of {column}
+        <strong>{func}</strong> of {column}: <span className="bold-underline">{result}</span>
       </div>
     </div>
   );
