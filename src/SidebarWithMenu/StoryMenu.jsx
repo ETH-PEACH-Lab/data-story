@@ -50,7 +50,6 @@ const StoryMenu = ({ columnConfigs }) => {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
         top: buttonRect.bottom + window.scrollY - 131,
-        left: buttonRect.left + window.scrollX - 616,
       });
     }
   };
@@ -99,7 +98,7 @@ const StoryMenu = ({ columnConfigs }) => {
             {item === 'Text' && isTextDropdownVisible && (
               <div
                 className={styles.dropdown}
-                style={{ top: `${textDropdownPosition.top}px`, left: `${textDropdownPosition.left}px` }}
+                style={{ top: `${textDropdownPosition.top}px`}}
                 ref={textDropdownRef}
               >
                 {['Title', 'Subtitle', 'Text'].map((option, index) => (
@@ -112,7 +111,7 @@ const StoryMenu = ({ columnConfigs }) => {
             {item === 'Function' && isFunctionDropdownVisible && (
               <div
                 className={styles.dropdown}
-                style={{ top: `${functionDropdownPosition.top}px`, left: `${functionDropdownPosition.left}px` }}
+                style={{ top: `${functionDropdownPosition.top}px` }}
                 ref={functionDropdownRef}
               >
                 <div className={styles.dropdownSection} style={{ display: 'flex', flexDirection: 'row', gap: '11px' }}>
