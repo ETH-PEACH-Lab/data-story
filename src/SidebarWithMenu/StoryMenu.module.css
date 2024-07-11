@@ -65,6 +65,7 @@
 .dropdown {
     position: absolute;
     display: flex;
+    width: max-content;
     margin-left: -10px;
     margin-top: 0px;
     flex-direction: column;
