@@ -24,10 +24,11 @@ const StoryMenu = ({ columnConfigs }) => {
     }
   };
 
-  const addTextBox = (type) => {
-    const addEvent = new CustomEvent('addTextBox', { detail: { type } });
+  const addComponent = (type, column = '', func = '') => {
+    const addEvent = new CustomEvent('addComponent', { detail: { type, column, func } });
     document.dispatchEvent(addEvent);
     setTextDropdownVisible(false);
+    setFunctionDropdownVisible(false);
   };
 
   const handleClickOutside = (event) => {
@@ -80,9 +81,7 @@ const StoryMenu = ({ columnConfigs }) => {
   }, [isTextDropdownVisible, isFunctionDropdownVisible]);
 
   const handleFunctionApply = () => {
-    const functionEvent = new CustomEvent('applyFunction', { detail: { column: selectedColumn, func: selectedFunction } });
-    document.dispatchEvent(functionEvent);
-    setFunctionDropdownVisible(false);
+    addComponent('function', selectedColumn, selectedFunction);
   };
 
   const menuOptions = {
@@ -104,7 +103,7 @@ const StoryMenu = ({ columnConfigs }) => {
                 ref={textDropdownRef}
               >
                 {['Title', 'Subtitle', 'Text'].map((option, index) => (
-                  <div key={index} className={styles.textOption} onClick={() => addTextBox(option.toLowerCase())}>
+                  <div key={index} className={styles.textOption} onClick={() => addComponent(option.toLowerCase())}>
                     {option}
                   </div>
                 ))}
@@ -137,7 +136,7 @@ const StoryMenu = ({ columnConfigs }) => {
                     className={styles.selectInput}
                   >
                     <option value="" disabled>Select a function</option>
-                    {['AVG', 'MAX', 'MIN', 'COUNT'].map((func, index) => (
+                    {['AVERAGE', 'SUM', 'MAX', 'MIN', 'COUNT', 'COUNT EMPTY', 'COUNT UNIQUE'].map((func, index) => (
                       <option key={index} value={func}>{func}</option>
                     ))}
                   </select>

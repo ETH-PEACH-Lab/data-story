@@ -14,7 +14,9 @@ function MainSidebar({
   setFilteredColumns,
 }) {
   const [activeMenu, setActiveMenu] = useState('');
-  const [texts, setTexts] = useState([{ text: '--Text--', fontSize: '16px' }]); // Initialize with 'Text'
+  const [components, setComponents] = useState([
+    { type: 'text', text: '--Text--', fontSize: '16px' }
+  ]); // Initialize with a text component
 
   const handleMenuClick = (menu) => {
     setActiveMenu(activeMenu === menu ? '' : menu);
@@ -56,7 +58,7 @@ function MainSidebar({
           {activeMenu ? (
             menuOptions[activeMenu]
           ) : (
-            <Story texts={texts} setTexts={setTexts} />
+            <Story components={components} setComponents={setComponents} />
           )}
         </div>
         <TutorialMenu buttons={['Filtering', 'Option 2', 'Option 3']} activeMenu={activeMenu} onMenuClick={handleMenuClick} />

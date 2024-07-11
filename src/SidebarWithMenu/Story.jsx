@@ -1,76 +1,91 @@
 import React, { useEffect, useState } from 'react';
-import EditableText from './EditableText';
+import EditableText from './EditableStoryComponents/EditableText';
+import Function from './EditableStoryComponents/Function';
 import './Story.css';
 
-function Story({ texts, setTexts }) {
+function Story({ components, setComponents }) {
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
 
   const handleTextChange = (index, newTextObj) => {
-    const newTexts = [...texts];
-    newTexts[index] = newTextObj;
-    setTexts(newTexts);
+    const newComponents = [...components];
+    newComponents[index] = { ...newComponents[index], ...newTextObj };
+    setComponents(newComponents);
   };
 
-  const handleAddTextBox = (type) => {
-    const newText = {
-      text: type === 'title' ? '--Title--' : type === 'subtitle' ? '--Subtitle--' : '--Text--',
-      fontSize: type === 'title' ? '32px' : type === 'subtitle' ? '24px' : '16px',
-    };
-    setTexts([...texts, newText]);
+  const handleAddComponent = (type, column = '', func = '') => {
+    const newComponent = type === 'function'
+      ? { type, column, func }
+      : { type, text: type === 'title' ? '--Title--' : type === 'subtitle' ? '--Subtitle--' : '--Text--', fontSize: type === 'title' ? '32px' : type === 'subtitle' ? '24px' : '16px' };
+    setComponents([...components, newComponent]);
   };
 
   useEffect(() => {
-    const handleAddTextBoxEvent = (event) => {
+    const handleAddComponentEvent = (event) => {
       if (event.detail && event.detail.type) {
-        const { type } = event.detail;
-        handleAddTextBox(type);
+        const { type, column, func } = event.detail;
+        handleAddComponent(type, column, func);
       }
     };
 
-    document.addEventListener('addTextBox', handleAddTextBoxEvent);
+    document.addEventListener('addComponent', handleAddComponentEvent);
+    
     return () => {
-      document.removeEventListener('addTextBox', handleAddTextBoxEvent);
+      document.removeEventListener('addComponent', handleAddComponentEvent);
     };
-  }, [texts]);
+  }, [components]);
 
   const handleDelete = (index) => {
-    const newTexts = texts.filter((_, i) => i !== index);
-    setTexts(newTexts);
-    setVisibleMenuIndex(null); // Hide menu when an item is deleted
+    const newComponents = components.filter((_, i) => i !== index);
+    setComponents(newComponents);
+    setVisibleMenuIndex(null);
   };
 
   const handleMoveUp = (index) => {
     if (index > 0) {
-      const newTexts = [...texts];
-      [newTexts[index - 1], newTexts[index]] = [newTexts[index], newTexts[index - 1]];
-      setTexts(newTexts);
-      setVisibleMenuIndex(index - 1); // Show menu of the moved up item
+      const newComponents = [...components];
+      [newComponents[index - 1], newComponents[index]] = [newComponents[index], newComponents[index - 1]];
+      setComponents(newComponents);
+      setVisibleMenuIndex(index - 1);
     }
   };
 
   const handleMoveDown = (index) => {
-    if (index < texts.length - 1) {
-      const newTexts = [...texts];
-      [newTexts[index + 1], newTexts[index]] = [newTexts[index], newTexts[index + 1]];
-      setTexts(newTexts);
-      setVisibleMenuIndex(index + 1); // Show menu of the moved down item
+    if (index < components.length - 1) {
+      const newComponents = [...components];
+      [newComponents[index + 1], newComponents[index]] = [newComponents[index], newComponents[index + 1]];
+      setComponents(newComponents);
+      setVisibleMenuIndex(index + 1);
     }
   };
 
   return (
     <div className="story-container">
-      {texts.map((textObj, index) => (
-        <EditableText
-          key={index}
-          index={index}
-          textObj={textObj}
-          onTextChange={handleTextChange}
-          onDelete={handleDelete}
-          onMoveUp={handleMoveUp}
-          onMoveDown={handleMoveDown}
-          isMenuVisible={visibleMenuIndex === index}
-          setVisibleMenuIndex={setVisibleMenuIndex}
-        />
+      {components.map((component, index) => (
+        component.type === 'function' ? (
+          <Function
+            key={index}
+            index={index}
+            column={component.column}
+            func={component.func}
+            onDelete={handleDelete}
+            onMoveUp={handleMoveUp}
+            onMoveDown={handleMoveDown}
+            isMenuVisible={visibleMenuIndex === index}
+            setVisibleMenuIndex={setVisibleMenuIndex}
+          />
+        ) : (
+          <EditableText
+            key={index}
+            index={index}
+            textObj={component}
+            onTextChange={handleTextChange}
+            onDelete={handleDelete}
+            onMoveUp={handleMoveUp}
+            onMoveDown={handleMoveDown}
+            isMenuVisible={visibleMenuIndex === index}
+            setVisibleMenuIndex={setVisibleMenuIndex}
+          />
+        )
       ))}
     </div>
   );
