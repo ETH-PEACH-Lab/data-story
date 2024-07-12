@@ -25,20 +25,6 @@ function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMove
     }
   }, [isEditing]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (textareaRef.current && !textareaRef.current.contains(event.target)) {
-        setVisibleMenuIndex(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [setVisibleMenuIndex]);
-
   return (
     <div className="editable-text-container">
       <div className="edit-menu-toggle">

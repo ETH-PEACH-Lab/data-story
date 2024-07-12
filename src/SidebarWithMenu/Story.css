@@ -66,6 +66,7 @@
   gap: 0px;
   margin-left: 0px;
   overflow: visible;
+  background-color: #E3E1D9;
   z-index: 10;
 }
 
@@ -81,7 +82,7 @@
   border-radius: 0;
   justify-content: center;
   align-items: center;
-  background-color: antiquewhite;
+  background-color: #E3E1D9;
   clip-path: polygon(15% 15%, 85% 15%, 85% 85%, 15% 85%);
 }
 
