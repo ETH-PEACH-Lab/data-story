@@ -10,6 +10,7 @@ html, body {
   padding: 0;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
+  background-color: white;
 }
 
 .container {
@@ -37,6 +38,7 @@ html, body {
   margin-right: 75px;
   background-color: #E3E1D9;
   position: relative;
+  color: black;
 }
 
 .save-button-container {
