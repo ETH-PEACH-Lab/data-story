@@ -62,6 +62,9 @@ const EditMenu = ({ countAndRemoveDuplicates, tableContainerRef, selectedColumnI
     setRemoveDuplicatesDropdownVisible(false);
   };
 
+  // TODO: move undo redo buttons outside of menu
+  // TODO: move edit Header to this menu
+
   return (
     <>
       {['Undo', 'Redo', 'Find and Replace', 'Remove Duplicates'].map((item, index) => (

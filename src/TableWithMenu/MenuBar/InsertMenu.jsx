@@ -12,9 +12,13 @@ const InsertMenu = ({ addRow, addColumn }) => {
         }
     };
 
+// TODO: implement Chart
+// TODO: implement Function
+// TODO: implement Table?
+
     return (
         <>
-            {['Column', 'Row', 'Chart', 'Functions', 'Image'].map((item, index) => (
+            {['Column', 'Row', 'Chart', 'Functions'].map((item, index) => (
                 <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
                     <button className={styles.button}>{item}</button>
                 </div>

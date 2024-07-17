@@ -200,6 +200,10 @@ const FormatMenu = ({ onStyleChange, selectedColumnIndex, selectedColumnName, se
     };
   }, [dropdownState]);
 
+  // TODO: move Header button to edit menu
+  // TODO: remove type button
+  // TODO: implement conditional formatting
+
   return (
     <>
       {menuItems.map((item, index) => {

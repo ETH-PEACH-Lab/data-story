@@ -11,6 +11,7 @@ html, body {
   overflow: hidden;
   font-family: 'Inter', sans-serif;
   background-color: white;
+  color: black;
 }
 
 .container {
@@ -207,4 +208,46 @@ html, body {
   right: 75px;
   position: absolute; /* Position it absolutely within the container */
   z-index: 999; /* Ensure it appears above other elements */
+}
+
+.table-content-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.page-footer {
+  display: flex;
+  align-items: center;
+  padding: 0px;
+  background-color: #E3E1D9;
+}
+
+.nav-button {
+  margin: 0px;
+  padding: 10px 20px;
+  background-color: rgb(213, 210, 191);
+  color: rgb(0, 0, 0);
+  border: none;
+  cursor: pointer;
+  border-radius: 0px;
+  font-size: 18px;
+}
+
+.nav-button:disabled {
+  background-color: #c6c3b8;
+  cursor: not-allowed;
+}
+
+.empty-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 24px;
+  color: #555;
 }

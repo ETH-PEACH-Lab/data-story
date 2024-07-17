@@ -105,9 +105,11 @@ const FileMenu = ({
     setInitialActionStackLength(0);
   };
 
+  // TODO: save button for save on machine
+
   return (
     <>
-      {['New', 'Open', 'Save', 'History'].map((item, index) => (
+      {['New', 'Open', 'History'].map((item, index) => (
         <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
           <button className={styles.button}>{item}</button>
         </div>

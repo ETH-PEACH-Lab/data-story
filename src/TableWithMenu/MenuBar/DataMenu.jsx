@@ -233,7 +233,7 @@ const DataMenu = ({
 
   return (
     <>
-      {['Sort', 'Filter', 'Column Stats'].map((item, index) => (
+      {['Sort', 'Filter'].map((item, index) => (
         <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
           <button ref={item === 'Sort' ? sortButtonRef : item === 'Filter' ? filterButtonRef : null} className={styles.button}>{item}</button>
           {item === 'Sort' && isSortDropdownVisible && (
