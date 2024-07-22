@@ -83,11 +83,24 @@ const TableWithMenu = ({
   const [pages, setPages] = useState([{ id: 0, content: "table" }]);
   const [chartConfigs, setChartConfigs] = useState([]);
   const [selectedRange, setSelectedRangeState] = useState(null);
+  const [chartNotes, setChartNotes] = useState({});
+  const [editingNote, setEditingNote] = useState(null);
 
   const selectedColumnName =
     selectedColumnIndex !== null
       ? columnConfigs[selectedColumnIndex]?.title
       : "";
+
+  const handleNoteChange = (e, chartIndex) => {
+    setChartNotes({
+      ...chartNotes,
+      [chartIndex]: e.target.value,
+    });
+  };
+
+  const handleNoteBlur = () => {
+    setEditingNote(null);
+  };
 
   const renderChart = (type, data, index, aggregate, aggregateFunction) => {
     const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
@@ -116,11 +129,21 @@ const TableWithMenu = ({
     }[type];
 
     return ChartComponent ? (
-      <div
-        className="chart-container"
-        style={{ height: "100%", width: "calc(100% - 85px)" }}
-      >
-        <ChartComponent key={index} data={chartData} options={chartOptions} />
+      <div className="handsontable-container">
+        <textarea
+          className="editable-textarea"
+          value={chartNotes[index] || "Title"}
+          onChange={(e) => handleNoteChange(e, index)}
+          onBlur={handleNoteBlur}
+          onFocus={() => setEditingNote(index)}
+          style={{
+            outline: editingNote === index ? "1px dashed black" : "none",
+            backgroundColor: editingNote === index ? "white" : "transparent",
+          }}
+        />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <ChartComponent key={index} data={chartData} options={chartOptions} />
+        </div>
       </div>
     ) : null;
   };
@@ -250,14 +273,8 @@ const TableWithMenu = ({
       const chartIndex = parseInt(currentPageContent.split("-")[1], 10);
       const { type, data, aggregate, aggregateFunction } =
         chartConfigs[chartIndex];
-      return renderChart(type, data, currentPage, aggregate, aggregateFunction);
+      return renderChart(type, data, chartIndex, aggregate, aggregateFunction);
     }
-  };
-
-  const addPage = () => {
-    const newPageId = pages.length;
-    setPages([...pages, { id: newPageId, content: "empty" }]);
-    setCurrentPage(newPageId);
   };
 
   const addChartPage = (type, data, aggregate, aggregateFunction) => {
@@ -270,6 +287,10 @@ const TableWithMenu = ({
       ...chartConfigs,
       { type, data, aggregate, aggregateFunction },
     ]);
+    setChartNotes({
+      ...chartNotes,
+      [chartConfigs.length]: "Title", // Set initial note to "Title"
+    });
     setCurrentPage(newPageId);
   };
 
