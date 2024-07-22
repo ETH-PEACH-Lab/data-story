@@ -1,19 +1,7 @@
 import React, { useState } from "react";
 import { HotTable } from "@handsontable/react";
-import { Line, Bar, Pie, Scatter } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import MenuBar from "./MenuBar/MenuBar";
+import Chart from "./Chart";
 import {
   handleSelectionEnd,
   addRow,
@@ -26,18 +14,6 @@ import { handleFindReplace } from "../utils/findReplaceHandlers";
 import { handleUndo, handleRedo } from "../utils/undoRedoHandlers";
 import { handleStyleChange, customRenderer } from "../utils/styleHandlers";
 import "../App.css";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 const TableWithMenu = ({
   data,
@@ -90,106 +66,6 @@ const TableWithMenu = ({
     selectedColumnIndex !== null
       ? columnConfigs[selectedColumnIndex]?.title
       : "";
-
-  const handleNoteChange = (e, chartIndex) => {
-    setChartNotes({
-      ...chartNotes,
-      [chartIndex]: e.target.value,
-    });
-  };
-
-  const handleNoteBlur = () => {
-    setEditingNote(null);
-  };
-
-  const renderChart = (type, data, index, aggregate, aggregateFunction) => {
-    const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
-
-    const chartData = {
-      labels: aggregatedData.x,
-      datasets: aggregatedData.y.map((series, idx) => ({
-        label: `Series ${idx + 1}`,
-        data: series,
-        fill: false,
-        backgroundColor: `rgba(${idx * 60}, ${idx * 30}, ${idx * 90}, 0.6)`,
-        borderColor: `rgba(${idx * 60}, ${idx * 30}, ${idx * 90}, 1)`,
-      })),
-    };
-
-    const chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-    };
-
-    const ChartComponent = {
-      line: Line,
-      bar: Bar,
-      pie: Pie,
-      scatter: Scatter,
-    }[type];
-
-    return ChartComponent ? (
-      <div className="handsontable-container">
-        <textarea
-          className="editable-textarea"
-          value={chartNotes[index] || "Title"}
-          onChange={(e) => handleNoteChange(e, index)}
-          onBlur={handleNoteBlur}
-          onFocus={() => setEditingNote(index)}
-          style={{
-            outline: editingNote === index ? "1px dashed black" : "none",
-            backgroundColor: editingNote === index ? "white" : "transparent",
-          }}
-        />
-        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <ChartComponent key={index} data={chartData} options={chartOptions} />
-        </div>
-      </div>
-    ) : null;
-  };
-
-  const aggregateData = (data, aggregate, aggregateFunction) => {
-    if (!aggregate) return data;
-
-    const aggregatedData = {
-      x: [],
-      y: [],
-    };
-    const xValues = [...new Set(data.x)];
-    xValues.forEach((xValue) => {
-      const yValues = data.y.flatMap((series) =>
-        series.filter((_, index) => data.x[index] === xValue)
-      );
-
-      let aggregatedYValue;
-      switch (aggregateFunction) {
-        case "SUM":
-          aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
-          break;
-        case "AVERAGE":
-          aggregatedYValue =
-            yValues.reduce((acc, curr) => acc + curr, 0) / yValues.length;
-          break;
-        case "COUNT":
-          aggregatedYValue = yValues.length;
-          break;
-        case "MAX":
-          aggregatedYValue = Math.max(...yValues);
-          break;
-        case "MIN":
-          aggregatedYValue = Math.min(...yValues);
-          break;
-        default:
-          aggregatedYValue = yValues[0];
-          break;
-      }
-
-      aggregatedData.x.push(xValue);
-      if (!aggregatedData.y[0]) aggregatedData.y[0] = [];
-      aggregatedData.y[0].push(aggregatedYValue);
-    });
-    return aggregatedData;
-  };
 
   const renderPageContent = () => {
     const currentPageContent = pages.find(
@@ -273,7 +149,19 @@ const TableWithMenu = ({
       const chartIndex = parseInt(currentPageContent.split("-")[1], 10);
       const { type, data, aggregate, aggregateFunction } =
         chartConfigs[chartIndex];
-      return renderChart(type, data, chartIndex, aggregate, aggregateFunction);
+      return (
+        <Chart
+          type={type}
+          data={data}
+          index={chartIndex}
+          aggregate={aggregate}
+          aggregateFunction={aggregateFunction}
+          chartNotes={chartNotes}
+          setChartNotes={setChartNotes}
+          editingNote={editingNote}
+          setEditingNote={setEditingNote}
+        />
+      );
     }
   };
 
@@ -289,7 +177,7 @@ const TableWithMenu = ({
     ]);
     setChartNotes({
       ...chartNotes,
-      [chartConfigs.length]: "Title", // Set initial note to "Title"
+      [chartConfigs.length]: "Title",
     });
     setCurrentPage(newPageId);
   };
