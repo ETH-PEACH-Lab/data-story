@@ -223,8 +223,6 @@ const TableWithMenu = ({
           )}
         </div>
       );
-    } else {
-      return <div className="empty-page">Page {currentPage + 1}</div>;
     }
   };
 
@@ -380,9 +378,6 @@ const TableWithMenu = ({
               : `Empty Page ${index}`}
           </button>
         ))}
-        <button className="nav-button" onClick={addPage}>
-          +
-        </button>
       </div>
     </div>
   );
