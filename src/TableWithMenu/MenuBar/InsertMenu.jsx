@@ -1,11 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react';
-import styles from './MenuBar.module.css';
+import React, { useState, useRef, useEffect } from "react";
+import styles from "./MenuBar.module.css";
 
-const InsertMenu = ({ addRow, addColumn, hotRef }) => {
+const InsertMenu = ({
+  addRow,
+  addColumn,
+  hotRef,
+  addChartPage,
+  selectedRange,
+}) => {
   const [isChartDropdownVisible, setChartDropdownVisible] = useState(false);
-  const [selectedChartType, setSelectedChartType] = useState('');
-  const [chartData, setChartData] = useState({ x: '', y: [] });
-  const [selectedRange, setSelectedRange] = useState(null);
+  const [selectedChartType, setSelectedChartType] = useState("");
+  const [chartData, setChartData] = useState({ x: [], y: [] });
   const [isXAxisLocked, setXAxisLocked] = useState(false);
   const [isYAxisLocked, setYAxisLocked] = useState([]);
   const [lockedRange, setLockedRange] = useState({ x: null, y: [] });
@@ -14,14 +19,12 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
   const chartButtonRef = useRef(null);
 
   const handleMenuClick = (item) => {
-    if (item === 'Row') {
+    if (item === "Row") {
       addRow();
-    } else if (item === 'Column') {
+    } else if (item === "Column") {
       addColumn();
-    } else if (item === 'Chart') {
+    } else if (item === "Chart") {
       setChartDropdownVisible(!isChartDropdownVisible);
-    } else {
-      console.log(`${item} clicked`);
     }
   };
 
@@ -38,36 +41,21 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
   };
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
   useEffect(() => {
-    const hotInstance = hotRef.current.hotInstance;
-    const handleAfterSelectionEnd = (r1, c1, r2, c2) => {
-      const allCols = c1 === -1 || c2 === -1 || (Math.min(c1, c2) === 0 && Math.max(c1, c2) === hotInstance.countCols() - 1);
-      const allRows = r1 === -1 || r2 === -1 || (Math.min(r1, r2) === 0 && Math.max(r1, r2) === hotInstance.countRows() - 1);
-      
-      setSelectedRange({
-        minRow: Math.max(Math.min(r1, r2), 0),
-        maxRow: Math.max(r1, r2),
-        minCol: Math.max(Math.min(c1, c2), 0),
-        maxCol: Math.max(c1, c2),
-        allCols,
-        allRows,
-      });
-    };
-    hotInstance.addHook('afterSelectionEnd', handleAfterSelectionEnd);
-    return () => {
-      hotInstance.removeHook('afterSelectionEnd', handleAfterSelectionEnd);
-    };
-  }, [hotRef]);
+    if (selectedRange) {
+      // Do something with the selected range if needed
+    }
+  }, [selectedRange]);
 
   const handleChartTypeChange = (event) => {
     setSelectedChartType(event.target.value);
-    setChartData({ x: '', y: [] }); // Reset chart data when type changes
+    setChartData({ x: [], y: [] }); // Reset chart data when type changes
     setXAxisLocked(false);
     setYAxisLocked([]);
     setLockedRange({ x: null, y: [] });
@@ -75,7 +63,7 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
   };
 
   const handleApplyChartData = (axis, index = 0) => {
-    if (isInvalidRange()) {
+    if (!selectedRange || isInvalidRange(selectedRange)) {
       return;
     }
 
@@ -86,20 +74,20 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
       selectedRange.maxRow,
       selectedRange.maxCol
     );
-    if (axis === 'x') {
+    if (axis === "x") {
       setChartData((prevState) => ({
         ...prevState,
-        x: selectedData.flat().join(', '), // Flatten data and join as string
+        x: selectedData.flat(), // Flatten data
       }));
       setXAxisLocked(true);
       setLockedRange((prevState) => ({
         ...prevState,
         x: selectedRange,
       }));
-    } else if (axis === 'y') {
+    } else if (axis === "y") {
       setChartData((prevState) => {
         const newY = [...prevState.y];
-        newY[index] = selectedData.flat().join(', ');
+        newY[index] = selectedData.flat();
         return {
           ...prevState,
           y: newY,
@@ -122,20 +110,20 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
   };
 
   const handleResetChartData = (axis, index = 0) => {
-    if (axis === 'x') {
+    if (axis === "x") {
       setChartData((prevState) => ({
         ...prevState,
-        x: '',
+        x: [],
       }));
       setXAxisLocked(false);
       setLockedRange((prevState) => ({
         ...prevState,
         x: null,
       }));
-    } else if (axis === 'y') {
+    } else if (axis === "y") {
       setChartData((prevState) => {
         const newY = [...prevState.y];
-        newY[index] = '';
+        newY[index] = [];
         return {
           ...prevState,
           y: newY,
@@ -171,7 +159,7 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
   };
 
   const generateRangeString = (range) => {
-    if (!range) return '';
+    if (!range) return "";
     const singleCol = range.maxCol === range.minCol;
     const singleRow = range.maxRow === range.minRow;
 
@@ -184,22 +172,27 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
     } else if (range.allRows) {
       return `Row: ${range.minRow + 1}`;
     } else {
-      const rowWord = !singleRow ? 'Rows' : 'Row';
-      const colWord = !singleCol ? 'Columns' : 'Column';
-      const rowRange = !singleRow ? `${range.minRow + 1}-${range.maxRow + 1}` : `${range.minRow + 1}`;
-      const colRange = !singleCol ? `${range.minCol + 1}-${range.maxCol + 1}` : `${range.minCol + 1}`;
+      const rowWord = !singleRow ? "Rows" : "Row";
+      const colWord = !singleCol ? "Columns" : "Column";
+      const rowRange = !singleRow
+        ? `${range.minRow + 1}-${range.maxRow + 1}`
+        : `${range.minRow + 1}`;
+      const colRange = !singleCol
+        ? `${range.minCol + 1}-${range.maxCol + 1}`
+        : `${range.minCol + 1}`;
       return `${rowWord}: ${rowRange}, ${colWord}: ${colRange}`;
     }
   };
 
-  const isInvalidRange = () => {
-    if (!selectedRange) return false;
-    const rowCount = selectedRange.maxRow - selectedRange.minRow + 1;
-    const colCount = selectedRange.maxCol - selectedRange.minCol + 1;
+  const isInvalidRange = (range) => {
+    if (!range) return false;
+    const rowCount = range.maxRow - range.minRow + 1;
+    const colCount = range.maxCol - range.minCol + 1;
     return rowCount > 1 && colCount > 1;
   };
 
-  const isAddChartDisabled = !isXAxisLocked || !isYAxisLocked.every((locked) => locked);
+  const isAddChartDisabled =
+    !isXAxisLocked || !isYAxisLocked.every((locked) => locked);
 
   const handleAddSeries = () => {
     setSeriesCount((prevCount) => prevCount + 1);
@@ -210,14 +203,35 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
     }));
   };
 
+  const handleAddChart = () => {
+    if (!isAddChartDisabled) {
+      addChartPage(selectedChartType, chartData); // Pass chart type and data
+      // Reset state for new chart
+      setSelectedChartType("");
+      setChartData({ x: [], y: [] });
+      setXAxisLocked(false);
+      setYAxisLocked([]);
+      setLockedRange({ x: null, y: [] });
+      setSeriesCount(1);
+      setChartDropdownVisible(false); // Optionally close the dropdown after adding the chart
+    }
+  };
+
   return (
     <>
-      {['Column', 'Row', 'Chart', 'Functions'].map((item, index) => (
-        <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
-          <button ref={item === 'Chart' ? chartButtonRef : null} className={styles.button}>
+      {["Column", "Row", "Chart", "Functions"].map((item, index) => (
+        <div
+          key={index}
+          className={styles.secondaryMenuItem}
+          onClick={() => handleMenuClick(item)}
+        >
+          <button
+            ref={item === "Chart" ? chartButtonRef : null}
+            className={styles.button}
+          >
             {item}
           </button>
-          {item === 'Chart' && isChartDropdownVisible && (
+          {item === "Chart" && isChartDropdownVisible && (
             <div
               className={styles.Dropdown}
               style={{
@@ -236,42 +250,82 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
                 >
                   <option value="">Select chart type</option>
                   <option value="line">Line</option>
-                  <option value="column">Column</option>
+                  <option value="bar">Bar</option>
                   <option value="pie">Pie</option>
                   <option value="scatter">Scatter</option>
                 </select>
               </div>
-              {(selectedChartType === 'line' || selectedChartType === 'scatter' || selectedChartType === 'column') && (
+              {(selectedChartType === "line" ||
+                selectedChartType === "scatter" ||
+                selectedChartType === "bar") && (
                 <>
-                  <div className={styles.textOption} style={{ backgroundColor: isXAxisLocked ? '#e0e0e0' : 'transparent' }}>
+                  <div
+                    className={styles.textOption}
+                    style={{
+                      backgroundColor: isXAxisLocked
+                        ? "#e0e0e0"
+                        : "transparent",
+                    }}
+                  >
                     <label>
-                      Selected X-axis: {isXAxisLocked ? generateRangeString(lockedRange.x) : generateRangeString(selectedRange)}
-                      {isInvalidRange() && !isXAxisLocked && (
-                        <strong style={{ color: 'red' }}> Please select data of a single row/column</strong>
+                      Selected X-axis:{" "}
+                      {isXAxisLocked
+                        ? generateRangeString(lockedRange.x)
+                        : generateRangeString(selectedRange)}
+                      {isInvalidRange(selectedRange) && !isXAxisLocked && (
+                        <strong style={{ color: "red" }}>
+                          {" "}
+                          Please select data of a single row/column
+                        </strong>
                       )}
                     </label>
                     <button
-                      onClick={() => isXAxisLocked ? handleResetChartData('x') : handleApplyChartData('x')}
+                      onClick={() =>
+                        isXAxisLocked
+                          ? handleResetChartData("x")
+                          : handleApplyChartData("x")
+                      }
                       className={styles.applyButton}
-                      disabled={isInvalidRange() && !isXAxisLocked}
+                      disabled={isInvalidRange(selectedRange) && !isXAxisLocked}
                     >
-                      {isXAxisLocked ? 'Reset' : 'Apply'}
+                      {isXAxisLocked ? "Reset" : "Apply"}
                     </button>
                   </div>
                   {Array.from({ length: seriesCount }).map((_, index) => (
-                    <div key={index} className={styles.textOption} style={{ backgroundColor: isYAxisLocked[index] ? '#e0e0e0' : 'transparent' }}>
+                    <div
+                      key={index}
+                      className={styles.textOption}
+                      style={{
+                        backgroundColor: isYAxisLocked[index]
+                          ? "#e0e0e0"
+                          : "transparent",
+                      }}
+                    >
                       <label>
-                        Selected Series {index + 1}: {isYAxisLocked[index] ? generateRangeString(lockedRange.y[index]) : generateRangeString(selectedRange)}
-                        {isInvalidRange() && !isYAxisLocked[index] && (
-                          <strong style={{ color: 'red' }}> Please select data of a single row/column</strong>
-                        )}
+                        Selected Series {index + 1}:{" "}
+                        {isYAxisLocked[index]
+                          ? generateRangeString(lockedRange.y[index])
+                          : generateRangeString(selectedRange)}
+                        {isInvalidRange(selectedRange) &&
+                          !isYAxisLocked[index] && (
+                            <strong style={{ color: "red" }}>
+                              {" "}
+                              Please select data of a single row/column
+                            </strong>
+                          )}
                       </label>
                       <button
-                        onClick={() => isYAxisLocked[index] ? handleResetChartData('y', index) : handleApplyChartData('y', index)}
+                        onClick={() =>
+                          isYAxisLocked[index]
+                            ? handleResetChartData("y", index)
+                            : handleApplyChartData("y", index)
+                        }
                         className={styles.applyButton}
-                        disabled={isInvalidRange() && !isYAxisLocked[index]}
+                        disabled={
+                          isInvalidRange(selectedRange) && !isYAxisLocked[index]
+                        }
                       >
-                        {isYAxisLocked[index] ? 'Reset' : 'Apply'}
+                        {isYAxisLocked[index] ? "Reset" : "Apply"}
                       </button>
                       <button
                         onClick={() => handleRemoveSeries(index)}
@@ -291,46 +345,90 @@ const InsertMenu = ({ addRow, addColumn, hotRef }) => {
                     </button>
                   </div>
                   <div className={styles.textOption}>
-                    <button className={styles.applyButton} disabled={isAddChartDisabled}>
+                    <button
+                      onClick={handleAddChart}
+                      className={styles.applyButton}
+                      disabled={isAddChartDisabled}
+                    >
                       Add Chart
                     </button>
                   </div>
                 </>
               )}
-              {selectedChartType === 'pie' && (
+              {selectedChartType === "pie" && (
                 <>
-                  <div className={styles.textOption} style={{ backgroundColor: isXAxisLocked ? '#e0e0e0' : 'transparent' }}>
+                  <div
+                    className={styles.textOption}
+                    style={{
+                      backgroundColor: isXAxisLocked
+                        ? "#e0e0e0"
+                        : "transparent",
+                    }}
+                  >
                     <label>
-                      Selected Labels: {isXAxisLocked ? generateRangeString(lockedRange.x) : generateRangeString(selectedRange)}
-                      {isInvalidRange() && !isXAxisLocked && (
-                        <strong style={{ color: 'red' }}> Please select data of a single row/column</strong>
+                      Selected Labels:{" "}
+                      {isXAxisLocked
+                        ? generateRangeString(lockedRange.x)
+                        : generateRangeString(selectedRange)}
+                      {isInvalidRange(selectedRange) && !isXAxisLocked && (
+                        <strong style={{ color: "red" }}>
+                          {" "}
+                          Please select data of a single row/column
+                        </strong>
                       )}
                     </label>
                     <button
-                      onClick={() => isXAxisLocked ? handleResetChartData('x') : handleApplyChartData('x')}
+                      onClick={() =>
+                        isXAxisLocked
+                          ? handleResetChartData("x")
+                          : handleApplyChartData("x")
+                      }
                       className={styles.applyButton}
-                      disabled={isInvalidRange() && !isXAxisLocked}
+                      disabled={isInvalidRange(selectedRange) && !isXAxisLocked}
                     >
-                      {isXAxisLocked ? 'Reset' : 'Apply'}
+                      {isXAxisLocked ? "Reset" : "Apply"}
                     </button>
                   </div>
-                  <div className={styles.textOption} style={{ backgroundColor: isYAxisLocked[0] ? '#e0e0e0' : 'transparent' }}>
+                  <div
+                    className={styles.textOption}
+                    style={{
+                      backgroundColor: isYAxisLocked[0]
+                        ? "#e0e0e0"
+                        : "transparent",
+                    }}
+                  >
                     <label>
-                      Selected Values: {isYAxisLocked[0] ? generateRangeString(lockedRange.y[0]) : generateRangeString(selectedRange)}
-                      {isInvalidRange() && !isYAxisLocked[0] && (
-                        <strong style={{ color: 'red' }}> Please select data of a single row/column</strong>
+                      Selected Values:{" "}
+                      {isYAxisLocked[0]
+                        ? generateRangeString(lockedRange.y[0])
+                        : generateRangeString(selectedRange)}
+                      {isInvalidRange(selectedRange) && !isYAxisLocked[0] && (
+                        <strong style={{ color: "red" }}>
+                          {" "}
+                          Please select data of a single row/column
+                        </strong>
                       )}
                     </label>
                     <button
-                      onClick={() => isYAxisLocked[0] ? handleResetChartData('y', 0) : handleApplyChartData('y', 0)}
+                      onClick={() =>
+                        isYAxisLocked[0]
+                          ? handleResetChartData("y", 0)
+                          : handleApplyChartData("y", 0)
+                      }
                       className={styles.applyButton}
-                      disabled={isInvalidRange() && !isYAxisLocked[0]}
+                      disabled={
+                        isInvalidRange(selectedRange) && !isYAxisLocked[0]
+                      }
                     >
-                      {isYAxisLocked[0] ? 'Reset' : 'Apply'}
+                      {isYAxisLocked[0] ? "Reset" : "Apply"}
                     </button>
                   </div>
                   <div className={styles.textOption}>
-                    <button className={styles.applyButton} disabled={isAddChartDisabled}>
+                    <button
+                      onClick={handleAddChart}
+                      className={styles.applyButton}
+                      disabled={isAddChartDisabled}
+                    >
                       Add Chart
                     </button>
                   </div>

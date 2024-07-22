@@ -14,10 +14,12 @@
   "homepage": "https://eth-peach-lab.github.io/data-story/",
   "dependencies": {
     "@handsontable/react": "^14.3.0",
+    "chart.js": "^4.4.3",
     "handsontable": "^14.3.0",
     "papaparse": "^5.4.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0"

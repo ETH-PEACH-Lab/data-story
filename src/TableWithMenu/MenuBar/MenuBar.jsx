@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import styles from './MenuBar.module.css';
-import FileMenu from './FileMenu';
-import EditMenu from './EditMenu';
-import FormatMenu from './FormatMenu';
-import InsertMenu from './InsertMenu';
-import DataMenu from './DataMenu';
+import React, { useState } from "react";
+import styles from "./MenuBar.module.css";
+import FileMenu from "./FileMenu";
+import EditMenu from "./EditMenu";
+import FormatMenu from "./FormatMenu";
+import InsertMenu from "./InsertMenu";
+import DataMenu from "./DataMenu";
 
-const MenuBar = ({ 
-  onSaveCurrent, 
-  onDataLoaded, 
-  toggleHistory, 
-  onStyleChange, 
-  selectedColumnIndex, 
-  selectedColumnName, 
-  setColumns, 
-  columns, 
-  handleSort, 
-  handleFilter, 
-  tableContainerRef, 
+const MenuBar = ({
+  onSaveCurrent,
+  onDataLoaded,
+  toggleHistory,
+  onStyleChange,
+  selectedColumnIndex,
+  selectedColumnName,
+  setColumns,
+  columns,
+  handleSort,
+  handleFilter,
+  tableContainerRef,
   countAndRemoveDuplicates,
   addRow,
   addColumn,
@@ -35,60 +35,78 @@ const MenuBar = ({
   initialActionStack,
   initialActionStackLength,
   setInitialActionStack,
-  setInitialActionStackLength
+  setInitialActionStackLength,
+  addChartPage, // New prop to add chart page
+  selectedRange, // Pass selectedRange to InsertMenu
 }) => {
-  const [activeMenu, setActiveMenu] = useState('');
+  const [activeMenu, setActiveMenu] = useState("");
 
   const menuOptions = {
-    'File': <FileMenu 
-              onSaveCurrent={onSaveCurrent} 
-              onDataLoaded={onDataLoaded} 
-              toggleHistory={toggleHistory} 
-              hotRef={hotRef}
-              showConfirmation={showConfirmation}
-              setShowConfirmation={setShowConfirmation}
-              setConfirmationMessage={setConfirmationMessage}
-              setOnConfirmAction={setOnConfirmAction}
-              setOnCancelAction={setOnCancelAction}
-              initialActionStack={initialActionStack}
-              setInitialActionStack={setInitialActionStack}
-              initialActionStackLength={initialActionStackLength}
-              setInitialActionStackLength={setInitialActionStackLength}
-            />,
-    'Edit': <EditMenu 
-              countAndRemoveDuplicates={countAndRemoveDuplicates}
-              tableContainerRef={tableContainerRef}
-              selectedColumnIndex={selectedColumnIndex}
-              selectedColumnName={selectedColumnName}
-              handleFindReplace={handleFindReplace}
-              handleUndo={handleUndo}
-              handleRedo={handleRedo}
-            />,
-    'Format': <FormatMenu 
-                onStyleChange={onStyleChange} 
-                selectedColumnIndex={selectedColumnIndex} 
-                selectedColumnName={selectedColumnName} 
-                setColumns={setColumns} 
-                columns={columns} 
-                tableContainerRef={tableContainerRef}
-                hotRef={hotRef}
-              />,
-    'Insert': <InsertMenu addRow={addRow} addColumn={addColumn} hotRef={hotRef} />,
-    'Data': <DataMenu
-              columns={columns}
-              selectedColumnIndex={selectedColumnIndex}
-              selectedColumnName={selectedColumnName}
-              handleSort={handleSort}
-              handleFilter={handleFilter}
-              tableContainerRef={tableContainerRef}
-              hotRef={hotRef}
-              filteredColumns={filteredColumns}
-              setFilteredColumns={setFilteredColumns}
-            /> 
+    File: (
+      <FileMenu
+        onSaveCurrent={onSaveCurrent}
+        onDataLoaded={onDataLoaded}
+        toggleHistory={toggleHistory}
+        hotRef={hotRef}
+        showConfirmation={showConfirmation}
+        setShowConfirmation={setShowConfirmation}
+        setConfirmationMessage={setConfirmationMessage}
+        setOnConfirmAction={setOnConfirmAction}
+        setOnCancelAction={setOnCancelAction}
+        initialActionStack={initialActionStack}
+        setInitialActionStack={setInitialActionStack}
+        initialActionStackLength={initialActionStackLength}
+        setInitialActionStackLength={setInitialActionStackLength}
+      />
+    ),
+    Edit: (
+      <EditMenu
+        countAndRemoveDuplicates={countAndRemoveDuplicates}
+        tableContainerRef={tableContainerRef}
+        selectedColumnIndex={selectedColumnIndex}
+        selectedColumnName={selectedColumnName}
+        handleFindReplace={handleFindReplace}
+        handleUndo={handleUndo}
+        handleRedo={handleRedo}
+      />
+    ),
+    Format: (
+      <FormatMenu
+        onStyleChange={onStyleChange}
+        selectedColumnIndex={selectedColumnIndex}
+        selectedColumnName={selectedColumnName}
+        setColumns={setColumns}
+        columns={columns}
+        tableContainerRef={tableContainerRef}
+        hotRef={hotRef}
+      />
+    ),
+    Insert: (
+      <InsertMenu
+        addRow={addRow}
+        addColumn={addColumn}
+        hotRef={hotRef}
+        addChartPage={addChartPage}
+        selectedRange={selectedRange} // Pass selectedRange to InsertMenu
+      />
+    ), // Pass the addChartPage prop
+    Data: (
+      <DataMenu
+        columns={columns}
+        selectedColumnIndex={selectedColumnIndex}
+        selectedColumnName={selectedColumnName}
+        handleSort={handleSort}
+        handleFilter={handleFilter}
+        tableContainerRef={tableContainerRef}
+        hotRef={hotRef}
+        filteredColumns={filteredColumns}
+        setFilteredColumns={setFilteredColumns}
+      />
+    ),
   };
 
   const handleMenuClick = (menu) => {
-    setActiveMenu(activeMenu === menu ? '' : menu);
+    setActiveMenu(activeMenu === menu ? "" : menu);
   };
 
   return (
@@ -97,19 +115,17 @@ const MenuBar = ({
         {Object.keys(menuOptions).map((menu, index) => (
           <div
             key={index}
-            className={`${styles.menuItem} ${activeMenu === menu ? styles.activeMenuItem : ''}`}
+            className={`${styles.menuItem} ${
+              activeMenu === menu ? styles.activeMenuItem : ""
+            }`}
             onClick={() => handleMenuClick(menu)}
           >
-            <button className={styles.button}>
-              {menu}
-            </button>
+            <button className={styles.button}>{menu}</button>
           </div>
         ))}
       </div>
       {activeMenu && (
-        <div className={styles.secondaryMenuBar}>
-          {menuOptions[activeMenu]}
-        </div>
+        <div className={styles.secondaryMenuBar}>{menuOptions[activeMenu]}</div>
       )}
     </div>
   );
