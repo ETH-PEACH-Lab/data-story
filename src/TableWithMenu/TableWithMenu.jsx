@@ -89,11 +89,44 @@ const TableWithMenu = ({
       ? columnConfigs[selectedColumnIndex]?.title
       : "";
 
+  const renderChart = (type, data, index) => {
+    const chartData = {
+      labels: data.x,
+      datasets: data.y.map((series, idx) => ({
+        label: `Series ${idx + 1}`,
+        data: series,
+        fill: false,
+        backgroundColor: `rgba(${idx * 60}, ${idx * 30}, ${idx * 90}, 0.6)`,
+        borderColor: `rgba(${idx * 60}, ${idx * 30}, ${idx * 90}, 1)`,
+      })),
+    };
+
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+    };
+
+    const ChartComponent = {
+      line: Line,
+      bar: Bar,
+      pie: Pie,
+      scatter: Scatter,
+    }[type];
+
+    return ChartComponent ? (
+      <div
+        className="chart-container"
+        style={{ height: "100%", width: "calc(100% - 85px)" }}
+      >
+        <ChartComponent key={index} data={chartData} options={chartOptions} />
+      </div>
+    ) : null;
+  };
+
   const renderPageContent = () => {
     const currentPageContent = pages.find(
       (page) => page.id === currentPage
     )?.content;
-
     if (currentPageContent === "table") {
       return (
         <div className="handsontable-container" ref={tableContainerRef}>
@@ -101,7 +134,7 @@ const TableWithMenu = ({
             <HotTable
               ref={hotRef}
               data={data}
-              colHeaders={true}
+              colHeaders
               columns={columnConfigs.map((col) => ({
                 ...col,
                 renderer: (
@@ -123,19 +156,17 @@ const TableWithMenu = ({
                     cellProperties,
                     textStyles
                   ),
-                columnSorting: {
-                  headerAction: false,
-                },
+                columnSorting: { headerAction: false },
               }))}
-              rowHeaders={true}
+              rowHeaders
               width="100%"
               height="100%"
-              autoWrapRow={true}
-              autoWrapCol={true}
-              columnSorting={true}
-              filters={true}
-              manualColumnResize={true}
-              autoColumnSize={true}
+              autoWrapRow
+              autoWrapCol
+              columnSorting
+              filters
+              manualColumnResize
+              autoColumnSize
               afterSelectionEnd={(r1, c1, r2, c2) =>
                 handleSelectionEnd(
                   r1,
@@ -150,21 +181,21 @@ const TableWithMenu = ({
               }
               selectionMode="range"
               afterGetColHeader={(col, TH) => {
-                const TR = TH.parentNode;
-                const THEAD = TR.parentNode;
                 const headerLevel =
-                  -1 * THEAD.childNodes.length +
-                  Array.prototype.indexOf.call(THEAD.childNodes, TR);
-
+                  -1 * TH.parentNode.parentNode.childNodes.length +
+                  Array.prototype.indexOf.call(
+                    TH.parentNode.parentNode.childNodes,
+                    TH.parentNode
+                  );
                 if (headerLevel === -1 && filteredColumns[col]) {
                   TH.classList.add("green-header");
                 }
               }}
               outsideClickDeselects={false}
-              fillHandle={true}
-              comments={true}
+              fillHandle
+              comments
               licenseKey="non-commercial-and-evaluation"
-              undoRedo={true}
+              undoRedo
               settings={{ textStyles }}
             />
           </div>
@@ -173,56 +204,7 @@ const TableWithMenu = ({
     } else if (currentPageContent.startsWith("chart")) {
       const chartIndex = parseInt(currentPageContent.split("-")[1], 10);
       const { type, data } = chartConfigs[chartIndex];
-      const chartData = {
-        labels: data.x,
-        datasets: data.y.map((series, index) => ({
-          label: `Series ${index + 1}`,
-          data: series,
-          fill: false,
-          backgroundColor: `rgba(${index * 60}, ${index * 30}, ${
-            index * 90
-          }, 0.6)`,
-          borderColor: `rgba(${index * 60}, ${index * 30}, ${index * 90}, 1)`,
-        })),
-      };
-
-      const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-      };
-
-      let ChartComponent;
-      switch (type) {
-        case "line":
-          ChartComponent = Line;
-          break;
-        case "bar":
-          ChartComponent = Bar;
-          break;
-        case "pie":
-          ChartComponent = Pie;
-          break;
-        case "scatter":
-          ChartComponent = Scatter;
-          break;
-        default:
-          ChartComponent = null;
-      }
-
-      return (
-        <div
-          className="chart-container"
-          style={{ height: "100%", width: "calc(100% - 85px)" }}
-        >
-          {ChartComponent && (
-            <ChartComponent
-              key={currentPage}
-              data={chartData}
-              options={chartOptions}
-            />
-          )}
-        </div>
-      );
+      return renderChart(type, data, currentPage);
     }
   };
 
@@ -267,7 +249,7 @@ const TableWithMenu = ({
             ]);
             setInitialActionStackLength(
               hotRef.current.hotInstance.undoRedo.doneActions.length
-            ); // Update initial action stack length after saving
+            );
           }}
           onDataLoaded={(newData, fileName) => {
             handleDataLoaded(
@@ -294,7 +276,7 @@ const TableWithMenu = ({
             ]);
             setInitialActionStackLength(
               hotRef.current.hotInstance.undoRedo.doneActions.length
-            ); // Update initial action stack length after loading
+            );
           }}
           toggleHistory={toggleHistory}
           onStyleChange={(styleType, value) =>
@@ -358,8 +340,8 @@ const TableWithMenu = ({
           initialActionStackLength={initialActionStackLength}
           setInitialActionStack={setInitialActionStack}
           setInitialActionStackLength={setInitialActionStackLength}
-          addChartPage={addChartPage} // Pass the addChartPage function to MenuBar
-          selectedRange={selectedRange} // Pass the selectedRange to MenuBar
+          addChartPage={addChartPage}
+          selectedRange={selectedRange}
         />
       </div>
       {renderPageContent()}
