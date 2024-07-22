@@ -15,6 +15,9 @@ const InsertMenu = ({
   const [isYAxisLocked, setYAxisLocked] = useState([]);
   const [lockedRange, setLockedRange] = useState({ x: null, y: [] });
   const [seriesCount, setSeriesCount] = useState(1);
+  const [aggregate, setAggregate] = useState(false); // New state for aggregate checkbox
+  const [selectedAggregateFunction, setSelectedAggregateFunction] =
+    useState("AVERAGE"); // State for selected aggregate function
   const chartDropdownRef = useRef(null);
   const chartButtonRef = useRef(null);
 
@@ -190,9 +193,63 @@ const InsertMenu = ({
     }));
   };
 
+  const aggregateData = (data, aggregateFunction) => {
+    const aggregatedData = {
+      x: [],
+      y: [],
+    };
+    const xValues = [...new Set(data.x)];
+    xValues.forEach((xValue) => {
+      const yValues = data.y
+        .flatMap((series) =>
+          series.filter((_, index) => data.x[index] === xValue)
+        )
+        .map(Number);
+
+      let aggregatedYValue;
+      switch (aggregateFunction) {
+        case "SUM":
+          aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
+          break;
+        case "AVERAGE":
+          aggregatedYValue =
+            yValues.reduce((acc, curr) => acc + curr, 0) / yValues.length;
+          break;
+        case "COUNT":
+          aggregatedYValue = yValues.length;
+          break;
+        case "MAX":
+          aggregatedYValue = Math.max(...yValues);
+          break;
+        case "MIN":
+          aggregatedYValue = Math.min(...yValues);
+          break;
+        default:
+          aggregatedYValue = yValues[0];
+          break;
+      }
+
+      aggregatedData.x.push(xValue);
+      if (!aggregatedData.y[0]) aggregatedData.y[0] = [];
+      aggregatedData.y[0].push(aggregatedYValue);
+    });
+    return aggregatedData;
+  };
+
   const handleAddChart = () => {
     if (!isAddChartDisabled) {
-      addChartPage(selectedChartType, chartData);
+      let chartDataToUse = chartData;
+
+      if (aggregate) {
+        chartDataToUse = aggregateData(chartData, selectedAggregateFunction);
+      }
+
+      addChartPage(
+        selectedChartType,
+        chartDataToUse,
+        aggregate,
+        selectedAggregateFunction
+      );
       resetChartData();
       setChartDropdownVisible(false);
     }
@@ -222,6 +279,33 @@ const InsertMenu = ({
           <option value="scatter">Scatter</option>
         </select>
       </div>
+      {selectedChartType && (
+        <div className={styles.textOption}>
+          <label>
+            <input
+              type="checkbox"
+              checked={aggregate}
+              onChange={(e) => setAggregate(e.target.checked)}
+            />
+            {selectedChartType === "pie"
+              ? "Aggregate Labels"
+              : "Aggregate X-axis"}
+          </label>
+          {aggregate && (
+            <select
+              value={selectedAggregateFunction}
+              onChange={(e) => setSelectedAggregateFunction(e.target.value)}
+              className={styles.input}
+            >
+              <option value="SUM">SUM</option>
+              <option value="AVERAGE">AVERAGE</option>
+              <option value="COUNT">COUNT</option>
+              <option value="MAX">MAX</option>
+              <option value="MIN">MIN</option>
+            </select>
+          )}
+        </div>
+      )}
       {(selectedChartType === "line" ||
         selectedChartType === "scatter" ||
         selectedChartType === "bar") && (
@@ -364,7 +448,7 @@ const AxisSelection = ({
       <button
         onClick={handleRemoveSeries}
         className={styles.applyButton}
-        disabled={seriesCount === 1} // Disable removing the last series
+        disabled={seriesCount === 1}
       >
         Remove
       </button>

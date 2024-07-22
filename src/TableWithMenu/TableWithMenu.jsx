@@ -89,10 +89,12 @@ const TableWithMenu = ({
       ? columnConfigs[selectedColumnIndex]?.title
       : "";
 
-  const renderChart = (type, data, index) => {
+  const renderChart = (type, data, index, aggregate, aggregateFunction) => {
+    const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
+
     const chartData = {
-      labels: data.x,
-      datasets: data.y.map((series, idx) => ({
+      labels: aggregatedData.x,
+      datasets: aggregatedData.y.map((series, idx) => ({
         label: `Series ${idx + 1}`,
         data: series,
         fill: false,
@@ -121,6 +123,49 @@ const TableWithMenu = ({
         <ChartComponent key={index} data={chartData} options={chartOptions} />
       </div>
     ) : null;
+  };
+
+  const aggregateData = (data, aggregate, aggregateFunction) => {
+    if (!aggregate) return data;
+
+    const aggregatedData = {
+      x: [],
+      y: [],
+    };
+    const xValues = [...new Set(data.x)];
+    xValues.forEach((xValue) => {
+      const yValues = data.y.flatMap((series) =>
+        series.filter((_, index) => data.x[index] === xValue)
+      );
+
+      let aggregatedYValue;
+      switch (aggregateFunction) {
+        case "SUM":
+          aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
+          break;
+        case "AVERAGE":
+          aggregatedYValue =
+            yValues.reduce((acc, curr) => acc + curr, 0) / yValues.length;
+          break;
+        case "COUNT":
+          aggregatedYValue = yValues.length;
+          break;
+        case "MAX":
+          aggregatedYValue = Math.max(...yValues);
+          break;
+        case "MIN":
+          aggregatedYValue = Math.min(...yValues);
+          break;
+        default:
+          aggregatedYValue = yValues[0];
+          break;
+      }
+
+      aggregatedData.x.push(xValue);
+      if (!aggregatedData.y[0]) aggregatedData.y[0] = [];
+      aggregatedData.y[0].push(aggregatedYValue);
+    });
+    return aggregatedData;
   };
 
   const renderPageContent = () => {
@@ -203,8 +248,9 @@ const TableWithMenu = ({
       );
     } else if (currentPageContent.startsWith("chart")) {
       const chartIndex = parseInt(currentPageContent.split("-")[1], 10);
-      const { type, data } = chartConfigs[chartIndex];
-      return renderChart(type, data, currentPage);
+      const { type, data, aggregate, aggregateFunction } =
+        chartConfigs[chartIndex];
+      return renderChart(type, data, currentPage, aggregate, aggregateFunction);
     }
   };
 
@@ -214,13 +260,16 @@ const TableWithMenu = ({
     setCurrentPage(newPageId);
   };
 
-  const addChartPage = (type, data) => {
+  const addChartPage = (type, data, aggregate, aggregateFunction) => {
     const newPageId = pages.length;
     setPages([
       ...pages,
       { id: newPageId, content: `chart-${chartConfigs.length}` },
     ]);
-    setChartConfigs([...chartConfigs, { type, data }]);
+    setChartConfigs([
+      ...chartConfigs,
+      { type, data, aggregate, aggregateFunction },
+    ]);
     setCurrentPage(newPageId);
   };
 
