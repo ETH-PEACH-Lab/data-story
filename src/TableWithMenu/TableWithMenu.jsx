@@ -12,7 +12,7 @@ import { countAndRemoveDuplicates } from '../utils/duplicateHandlers';
 import { handleFindReplace } from '../utils/findReplaceHandlers';
 import { handleUndo, handleRedo } from '../utils/undoRedoHandlers';
 import { handleStyleChange, customRenderer } from '../utils/styleHandlers';
-import '../App.css'; // Ensure you have a CSS file for styling
+import '../App.css';
 
 const TableWithMenu = ({
   data,

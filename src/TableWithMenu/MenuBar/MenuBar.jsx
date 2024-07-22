@@ -73,7 +73,7 @@ const MenuBar = ({
                 tableContainerRef={tableContainerRef}
                 hotRef={hotRef}
               />,
-    'Insert': <InsertMenu addRow={addRow} addColumn={addColumn} />,
+    'Insert': <InsertMenu addRow={addRow} addColumn={addColumn} hotRef={hotRef} />,
     'Data': <DataMenu
               columns={columns}
               selectedColumnIndex={selectedColumnIndex}
