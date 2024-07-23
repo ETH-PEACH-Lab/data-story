@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import styles from './MenuBar.module.css';
+import { useState, useRef, useEffect, useCallback } from "react";
+import styles from "./MenuBar.module.css";
 
 const DataMenu = ({
   columns,
@@ -10,20 +10,20 @@ const DataMenu = ({
   tableContainerRef,
   hotRef,
   filteredColumns,
-  setFilteredColumns
+  setFilteredColumns,
 }) => {
   const [isSortDropdownVisible, setSortDropdownVisible] = useState(false);
-  const [sortOrder, setSortOrder] = useState('');
+  const [sortOrder, setSortOrder] = useState("");
   const [isFilterDropdownVisible, setFilterDropdownVisible] = useState(false);
-  const [filterCondition, setFilterCondition] = useState('none');
-  const [filterValue, setFilterValue] = useState('');
+  const [filterCondition, setFilterCondition] = useState("none");
+  const [filterValue, setFilterValue] = useState("");
   const [allDistinctValues, setAllDistinctValues] = useState([]);
   const [filteredValues, setFilteredValues] = useState([]);
   const [checkedValues, setCheckedValues] = useState([]);
-  const [filterSubmenu, setFilterSubmenu] = useState('');
-  const [searchValue, setSearchValue] = useState('');
-  const [filterConditionError, setFilterConditionError] = useState('');
-  const [filterValueError, setFilterValueError] = useState('');
+  const [filterSubmenu, setFilterSubmenu] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [filterConditionError, setFilterConditionError] = useState("");
+  const [filterValueError, setFilterValueError] = useState("");
 
   // Reference Declarations
   const sortButtonRef = useRef(null);
@@ -35,24 +35,34 @@ const DataMenu = ({
 
   // Close Dropdown if Click Outside
   const handleClickOutside = (event) => {
-    if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target) &&
-      sortButtonRef.current && !sortButtonRef.current.contains(event.target) &&
-      (!tableContainerRef.current || !tableContainerRef.current.contains(event.target))) {
+    if (
+      sortDropdownRef.current &&
+      !sortDropdownRef.current.contains(event.target) &&
+      sortButtonRef.current &&
+      !sortButtonRef.current.contains(event.target) &&
+      (!tableContainerRef.current ||
+        !tableContainerRef.current.contains(event.target))
+    ) {
       setSortDropdownVisible(false);
     }
-    if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target) &&
-      filterButtonRef.current && !filterButtonRef.current.contains(event.target) &&
-      (!tableContainerRef.current || !tableContainerRef.current.contains(event.target))) {
+    if (
+      filterDropdownRef.current &&
+      !filterDropdownRef.current.contains(event.target) &&
+      filterButtonRef.current &&
+      !filterButtonRef.current.contains(event.target) &&
+      (!tableContainerRef.current ||
+        !tableContainerRef.current.contains(event.target))
+    ) {
       setFilterDropdownVisible(false);
-      setFilterSubmenu('');
+      setFilterSubmenu("");
     }
   };
 
   // Initialize Event Listeners for 'click outside' detection
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -61,14 +71,22 @@ const DataMenu = ({
     if (selectedColumnIndex !== null && hotRef.current) {
       const hotInstance = hotRef.current.hotInstance;
       const columnData = hotInstance.getSourceDataAtCol(selectedColumnIndex);
-      const uniqueValues = [...new Set(columnData.map(value => (value !== null && value !== undefined ? value : '')))];
-      
+      const uniqueValues = [
+        ...new Set(
+          columnData.map((value) =>
+            value !== null && value !== undefined ? value : ""
+          )
+        ),
+      ];
+
       const visibleData = hotInstance.getDataAtCol(selectedColumnIndex);
       const visibleUniqueValues = [...new Set(visibleData)];
-      
+
       setAllDistinctValues(uniqueValues);
       setFilteredValues(uniqueValues);
-      setCheckedValues(uniqueValues.filter(value => visibleUniqueValues.includes(value)));
+      setCheckedValues(
+        uniqueValues.filter((value) => visibleUniqueValues.includes(value))
+      );
     }
   }, [selectedColumnIndex, hotRef]);
 
@@ -80,19 +98,23 @@ const DataMenu = ({
 
   // Filter list based on text input
   useEffect(() => {
-    if (searchValue === '') {
+    if (searchValue === "") {
       setFilteredValues(allDistinctValues);
     } else {
-      setFilteredValues(allDistinctValues.filter(value => value.toString().toLowerCase().includes(searchValue.toLowerCase())));
+      setFilteredValues(
+        allDistinctValues.filter((value) =>
+          value.toString().toLowerCase().includes(searchValue.toLowerCase())
+        )
+      );
     }
   }, [searchValue, allDistinctValues]);
 
   // Toggle Dropdown visibility
   const handleMenuClick = (item) => {
-    if (item === 'Sort') {
+    if (item === "Sort") {
       setSortDropdownVisible(!isSortDropdownVisible);
       setFilterDropdownVisible(false);
-    } else if (item === 'Filter') {
+    } else if (item === "Filter") {
       setFilterDropdownVisible(!isFilterDropdownVisible);
       setSortDropdownVisible(false);
       if (!isFilterDropdownVisible) {
@@ -108,15 +130,15 @@ const DataMenu = ({
 
   // Apply Sorting
   const handleSortClick = () => {
-    handleSort(selectedColumnName, sortOrder);
-    setSortOrder('');
+    handleSort(selectedColumnName, sortOrder, columns, hotRef);
+    setSortOrder("");
     setSortDropdownVisible(false);
   };
 
   // Reset Sorting for the selected column
   const handleResetSortClick = () => {
-    handleSort(selectedColumnName, 'reset');
-    setSortOrder('');
+    handleSort(selectedColumnName, "reset", columns, hotRef);
+    setSortOrder("");
     setSortDropdownVisible(false);
   };
 
@@ -151,51 +173,66 @@ const DataMenu = ({
   // Apply Filter by Condition
   const handleFilterClick = () => {
     if (selectedColumnIndex === null) {
-      setFilterConditionError('Please select a column');
+      setFilterConditionError("Please select a column");
       return;
     }
-    setFilterConditionError(''); // Clear error message if a column is selected
+    setFilterConditionError(""); // Clear error message if a column is selected
 
     const column = columns[selectedColumnIndex];
     if (!column) return;
 
-    const newCheckedValues = allDistinctValues.filter(value => {
+    const newCheckedValues = allDistinctValues.filter((value) => {
       switch (filterCondition) {
-        case 'empty':
-          return value === '';
-        case 'not_empty':
-          return value !== '';
-        case 'eq':
+        case "empty":
+          return value === "";
+        case "not_empty":
+          return value !== "";
+        case "eq":
           return value === filterValue;
-        case 'neq':
+        case "neq":
           return value !== filterValue;
-        case 'begins_with':
-          return typeof value === 'string' && value.startsWith(filterValue);
-        case 'ends_with':
-          return typeof value === 'string' && value.endsWith(filterValue);
-        case 'contains':
-          return typeof value === 'string' && value.includes(filterValue);
-        case 'not_contains':
-          return typeof value === 'string' && !value.includes(filterValue);
+        case "begins_with":
+          return typeof value === "string" && value.startsWith(filterValue);
+        case "ends_with":
+          return typeof value === "string" && value.endsWith(filterValue);
+        case "contains":
+          return typeof value === "string" && value.includes(filterValue);
+        case "not_contains":
+          return typeof value === "string" && !value.includes(filterValue);
         default:
           return true;
       }
     });
 
     setCheckedValues(newCheckedValues);
-    handleFilter(selectedColumnIndex, filterCondition, filterValue, newCheckedValues, filteredColumns, setFilteredColumns);
+    handleFilter(
+      selectedColumnIndex,
+      filterCondition,
+      filterValue,
+      newCheckedValues,
+      filteredColumns,
+      setFilteredColumns
+    );
     setFilterDropdownVisible(false);
-    setFilterSubmenu('');
+    setFilterSubmenu("");
   };
 
   const handleCheckboxChange = (value) => {
-    setCheckedValues(prevCheckedValues => {
+    setCheckedValues((prevCheckedValues) => {
       const newCheckedValues = prevCheckedValues.includes(value)
-        ? prevCheckedValues.filter(v => v !== value)
+        ? prevCheckedValues.filter((v) => v !== value)
         : [...prevCheckedValues, value];
 
-      setTimeout(() => { // Ensure the state update happens outside of the render phase
-        handleFilter(selectedColumnIndex, 'by_value', '', newCheckedValues, filteredColumns, setFilteredColumns);
+      setTimeout(() => {
+        // Ensure the state update happens outside of the render phase
+        handleFilter(
+          selectedColumnIndex,
+          "by_value",
+          "",
+          newCheckedValues,
+          filteredColumns,
+          setFilteredColumns
+        );
       }, 0);
 
       return newCheckedValues;
@@ -203,48 +240,97 @@ const DataMenu = ({
   };
 
   const selectAll = () => {
-    setCheckedValues(prevCheckedValues => {
-      const newCheckedValues = [...new Set([...prevCheckedValues, ...filteredValues])];
-      setTimeout(() => { // Ensure the state update happens outside of the render phase
-        handleFilter(selectedColumnIndex, 'by_value', '', newCheckedValues, filteredColumns, setFilteredColumns);
+    setCheckedValues((prevCheckedValues) => {
+      const newCheckedValues = [
+        ...new Set([...prevCheckedValues, ...filteredValues]),
+      ];
+      setTimeout(() => {
+        // Ensure the state update happens outside of the render phase
+        handleFilter(
+          selectedColumnIndex,
+          "by_value",
+          "",
+          newCheckedValues,
+          filteredColumns,
+          setFilteredColumns
+        );
       }, 0);
       return newCheckedValues;
     });
   };
 
   const clearAll = () => {
-    setCheckedValues(prevCheckedValues => {
-      const newCheckedValues = prevCheckedValues.filter(value => !filteredValues.includes(value));
-      setTimeout(() => { // Ensure the state update happens outside of the render phase
-        handleFilter(selectedColumnIndex, 'by_value', '', newCheckedValues, filteredColumns, setFilteredColumns);
+    setCheckedValues((prevCheckedValues) => {
+      const newCheckedValues = prevCheckedValues.filter(
+        (value) => !filteredValues.includes(value)
+      );
+      setTimeout(() => {
+        // Ensure the state update happens outside of the render phase
+        handleFilter(
+          selectedColumnIndex,
+          "by_value",
+          "",
+          newCheckedValues,
+          filteredColumns,
+          setFilteredColumns
+        );
       }, 0);
       return newCheckedValues;
     });
   };
 
   const resetFilter = () => {
-    setFilterCondition('none');
-    setFilterValue('');
+    setFilterCondition("none");
+    setFilterValue("");
     setCheckedValues(allDistinctValues);
-    setTimeout(() => { // Ensure the state update happens outside of the render phase
-      handleFilter(selectedColumnIndex, 'none', '', [], filteredColumns, setFilteredColumns);
+    setTimeout(() => {
+      // Ensure the state update happens outside of the render phase
+      handleFilter(
+        selectedColumnIndex,
+        "none",
+        "",
+        [],
+        filteredColumns,
+        setFilteredColumns
+      );
     }, 0);
   };
 
   return (
     <>
-      {['Sort', 'Filter'].map((item, index) => (
-        <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
-          <button ref={item === 'Sort' ? sortButtonRef : item === 'Filter' ? filterButtonRef : null} className={styles.button}>{item}</button>
-          {item === 'Sort' && isSortDropdownVisible && (
+      {["Sort", "Filter"].map((item, index) => (
+        <div
+          key={index}
+          className={styles.secondaryMenuItem}
+          onClick={() => handleMenuClick(item)}
+        >
+          <button
+            ref={
+              item === "Sort"
+                ? sortButtonRef
+                : item === "Filter"
+                ? filterButtonRef
+                : null
+            }
+            className={styles.button}
+          >
+            {item}
+          </button>
+          {item === "Sort" && isSortDropdownVisible && (
             <div
               className={styles.Dropdown}
-              style={{ top: sortButtonRef.current?.getBoundingClientRect().bottom, left: sortButtonRef.current?.getBoundingClientRect().left }}
+              style={{
+                top: sortButtonRef.current?.getBoundingClientRect().bottom,
+                left: sortButtonRef.current?.getBoundingClientRect().left,
+              }}
               onClick={stopPropagation}
               ref={sortDropdownRef}
             >
               <div className={styles.textOption}>
-                <div>{`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
+                <div>
+                  {`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` ||
+                    "No column selected"}
+                </div>
               </div>
               <div className={`${styles.textOption} ${styles.inputContainer}`}>
                 <select
@@ -252,11 +338,16 @@ const DataMenu = ({
                   onChange={handleSortOrderChange}
                   className={styles.input}
                 >
-                  <option value="" disabled>Select order</option>
+                  <option value="" disabled>
+                    Select order
+                  </option>
                   <option value="Ascending">Ascending</option>
                   <option value="Descending">Descending</option>
                 </select>
-                <button onClick={handleSortClick} className={styles.applyButton}>
+                <button
+                  onClick={handleSortClick}
+                  className={styles.applyButton}
+                >
                   Apply
                 </button>
               </div>
@@ -265,32 +356,48 @@ const DataMenu = ({
               </div>
             </div>
           )}
-          {item === 'Filter' && isFilterDropdownVisible && (
+          {item === "Filter" && isFilterDropdownVisible && (
             <div
               className={styles.Dropdown}
-              style={{ top: filterButtonRef.current?.getBoundingClientRect().bottom, left: filterButtonRef.current?.getBoundingClientRect().left }}
+              style={{
+                top: filterButtonRef.current?.getBoundingClientRect().bottom,
+                left: filterButtonRef.current?.getBoundingClientRect().left,
+              }}
               onClick={stopPropagation}
               ref={filterDropdownRef}
             >
               <div className={styles.textOption}>
-                <div>{`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` || 'No column selected'}</div>
+                <div>
+                  {`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` ||
+                    "No column selected"}
+                </div>
               </div>
-              <div className={styles.textOption} onClick={() => setFilterSubmenu('condition')} ref={conditionButtonRef}>
+              <div
+                className={styles.textOption}
+                onClick={() => setFilterSubmenu("condition")}
+                ref={conditionButtonRef}
+              >
                 Filter by condition
               </div>
-              <div className={styles.textOption} onClick={() => setFilterSubmenu('value')} ref={valueButtonRef}>
+              <div
+                className={styles.textOption}
+                onClick={() => setFilterSubmenu("value")}
+                ref={valueButtonRef}
+              >
                 Filter by value
               </div>
               <div className={styles.textOption} onClick={resetFilter}>
                 Reset filter for this column
               </div>
-              {filterSubmenu === 'condition' && (
+              {filterSubmenu === "condition" && (
                 <div
                   className={styles.Dropdown}
                   style={{ ...getSubDropdownPosition(conditionButtonRef) }}
                   onClick={stopPropagation}
                 >
-                  <div className={`${styles.textOption} ${styles.inputContainer}`}>
+                  <div
+                    className={`${styles.textOption} ${styles.inputContainer}`}
+                  >
                     <select
                       value={filterCondition}
                       onChange={handleFilterConditionChange}
@@ -306,30 +413,39 @@ const DataMenu = ({
                       <option value="contains">Contains</option>
                       <option value="not_contains">Does not contain</option>
                     </select>
-                    {(filterCondition !== 'none' && filterCondition !== 'empty' && filterCondition !== 'not_empty') && (
-                      <input
-                        type="text"
-                        value={filterValue}
-                        onChange={handleFilterValueChange}
-                        className={styles.input}
-                        placeholder="Value"
-                      />
-                    )}
-                    <button onClick={handleFilterClick} className={styles.applyButton}>
+                    {filterCondition !== "none" &&
+                      filterCondition !== "empty" &&
+                      filterCondition !== "not_empty" && (
+                        <input
+                          type="text"
+                          value={filterValue}
+                          onChange={handleFilterValueChange}
+                          className={styles.input}
+                          placeholder="Value"
+                        />
+                      )}
+                    <button
+                      onClick={handleFilterClick}
+                      className={styles.applyButton}
+                    >
                       Apply
                     </button>
                   </div>
                 </div>
               )}
-              {filterSubmenu === 'value' && (
+              {filterSubmenu === "value" && (
                 <div
                   className={styles.Dropdown}
                   style={{ ...getSubDropdownPosition(valueButtonRef) }}
                   onClick={stopPropagation}
                 >
                   <div className={styles.selectClearAll}>
-                    <button onClick={selectAll} className={styles.applyButton}>Check All</button>
-                    <button onClick={clearAll} className={styles.applyButton}>Uncheck All</button>
+                    <button onClick={selectAll} className={styles.applyButton}>
+                      Check All
+                    </button>
+                    <button onClick={clearAll} className={styles.applyButton}>
+                      Uncheck All
+                    </button>
                   </div>
                   <input
                     type="text"
@@ -337,7 +453,7 @@ const DataMenu = ({
                     onChange={handleSearchValueChange}
                     className={styles.input}
                     placeholder="Search values"
-                    style={{ marginBottom: '10px', width: '100%' }}
+                    style={{ marginBottom: "10px", width: "100%" }}
                   />
                   <div className={styles.distinctValuesList}>
                     <ul>

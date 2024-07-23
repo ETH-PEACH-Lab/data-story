@@ -1,10 +1,10 @@
 import { SortAction, FilterAction } from '../CustomUndoRedo';
 
 export const handleSort = (columnName, sortOrder, columnConfigs, hotRef) => {
-  if (!columnName && sortOrder === 'reset') {
-    const hotInstance = hotRef.current.hotInstance;
-    const sortPlugin = hotInstance.getPlugin('columnSorting');
+  const hotInstance = hotRef.current.hotInstance;
+  const sortPlugin = hotInstance.getPlugin('columnSorting');
 
+  if (sortOrder === 'reset') {
     const previousSortConfig = sortPlugin.getSortConfig().slice();
 
     sortPlugin.clearSort();
@@ -21,9 +21,6 @@ export const handleSort = (columnName, sortOrder, columnConfigs, hotRef) => {
   const columnIndex = columnConfigs.findIndex(col => col.title === columnName);
   if (columnIndex === -1) return;
 
-  const hotInstance = hotRef.current.hotInstance;
-  const sortPlugin = hotInstance.getPlugin('columnSorting');
-
   const previousSortConfig = sortPlugin.getSortConfig().slice();
   const newSortConfig = [{
     column: columnIndex,
@@ -32,7 +29,6 @@ export const handleSort = (columnName, sortOrder, columnConfigs, hotRef) => {
 
   sortPlugin.sort(newSortConfig);
 
-  // Record the SortAction for undo/redo
   const wrappedAction = () => new SortAction(previousSortConfig, newSortConfig);
   hotInstance.undoRedo.done(wrappedAction);
 
