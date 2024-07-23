@@ -1,28 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './App.css';
-import 'handsontable/dist/handsontable.full.min.css';
-import { registerAllModules } from 'handsontable/registry';
-import TableWithMenu from './TableWithMenu/TableWithMenu';
-import SidebarWithStoryMenu from './SidebarWithMenu/SidebarWithStoryMenu';
-import HistorySidebar from './HistorySidebar';
-import ErrorBoundary from './ErrorBoundary';
-import ConfirmationWindow from './ConfirmationWindow';
+import React, { useState, useEffect, useRef } from "react";
+import "./App.css";
+import "handsontable/dist/handsontable.full.min.css";
+import { registerAllModules } from "handsontable/registry";
+import TableWithMenu from "./TableWithMenu/TableWithMenu";
+import SidebarWithStoryMenu from "./SidebarWithMenu/SidebarWithStoryMenu";
+import HistorySidebar from "./HistorySidebar";
+import ErrorBoundary from "./ErrorBoundary";
+import ConfirmationWindow from "./ConfirmationWindow";
 
 import {
   handleDataLoaded,
   fetchData,
-  initializeColumns
-} from './utils/dataHandlers';
-import { handleSort, handleFilter } from './utils/filterSortHandlers';
+  initializeColumns,
+} from "./utils/dataHandlers";
+import { handleSort, handleFilter } from "./utils/filterSortHandlers";
 import {
   toggleHistory,
   logAction,
   handleHistoryDelete,
   saveDataToHistory,
   areActionStacksEqual,
-  switchHistoryEntry
-} from './utils/historyHandlers';
-import { handleStyleChange } from './utils/styleHandlers';
+  switchHistoryEntry,
+} from "./utils/historyHandlers";
+import { handleStyleChange } from "./utils/styleHandlers";
 
 registerAllModules();
 
@@ -35,9 +35,9 @@ function App() {
   const [currentDataId, setCurrentDataId] = useState(0);
   const [actions, setActions] = useState([]);
   const [clickedIndex, setClickedIndex] = useState(-1);
-  const [replacementValue, setReplacementValue] = useState('');
+  const [replacementValue, setReplacementValue] = useState("");
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
-  const [originalFileName, setOriginalFileName] = useState('');
+  const [originalFileName, setOriginalFileName] = useState("");
   const [textStyles, setTextStyles] = useState({});
   const [filteredColumns, setFilteredColumns] = useState([]);
   const hotRef = useRef(null);
@@ -46,7 +46,7 @@ function App() {
   const tableContainerRef = useRef(null);
   const fileInputRef = useRef(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState('');
+  const [confirmationMessage, setConfirmationMessage] = useState("");
   const [onConfirmAction, setOnConfirmAction] = useState(null);
   const [onCancelAction, setOnCancelAction] = useState(null);
   const [initialActionStackLength, setInitialActionStackLength] = useState(0);
@@ -75,7 +75,9 @@ function App() {
     };
 
     if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
-      setConfirmationMessage('You have unsaved changes. Do you want to save them?');
+      setConfirmationMessage(
+        "You have unsaved changes. Do you want to save them?"
+      );
       setShowConfirmation(true);
       setOnConfirmAction(() => () => {
         saveDataToHistory(
@@ -94,7 +96,7 @@ function App() {
         );
         performSwitch();
       });
-      setOnCancelAction(performSwitch);
+      setOnCancelAction(() => performSwitch);
     } else {
       performSwitch();
     }
@@ -142,9 +144,13 @@ function App() {
 
   useEffect(() => {
     if (hotRef.current) {
-      setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-      setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
-      console.log('Handsontable instance:', hotRef.current.hotInstance);
+      setInitialActionStack([
+        ...hotRef.current.hotInstance.undoRedo.doneActions,
+      ]);
+      setInitialActionStackLength(
+        hotRef.current.hotInstance.undoRedo.doneActions.length
+      );
+      console.log("Handsontable instance:", hotRef.current.hotInstance);
     }
   }, [hotRef.current]);
 
@@ -171,8 +177,12 @@ function App() {
                   initialActionStackLength,
                   hotRef
                 );
-                setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-                setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
+                setInitialActionStack([
+                  ...hotRef.current.hotInstance.undoRedo.doneActions,
+                ]);
+                setInitialActionStackLength(
+                  hotRef.current.hotInstance.undoRedo.doneActions.length
+                );
               }}
             >
               Save Current Version
@@ -215,7 +225,7 @@ function App() {
             setOnCancelAction={setOnCancelAction}
             initialActionStack={initialActionStack}
             initialActionStackLength={initialActionStackLength}
-            handleStyleChange={handleStyleChange} 
+            handleStyleChange={handleStyleChange}
             toggleHistory={() => toggleHistory(setHistoryVisible)}
             setSelectedRange={setSelectedRange}
           />
@@ -266,7 +276,7 @@ function App() {
           <ConfirmationWindow
             message={confirmationMessage}
             onConfirm={handleConfirm}
-            onCancel={null}
+            onCancel={handleCancel} // Pass handleCancel here
           />
         )}
       </div>
