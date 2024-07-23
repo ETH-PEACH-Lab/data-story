@@ -67,6 +67,24 @@ const TableWithMenu = ({
       ? columnConfigs[selectedColumnIndex]?.title
       : "";
 
+  const setSeriesLabels = (chartIndex, newLabels) => {
+    const newChartConfigs = [...chartConfigs];
+    newChartConfigs[chartIndex] = {
+      ...newChartConfigs[chartIndex],
+      seriesLabels: newLabels,
+    };
+    setChartConfigs(newChartConfigs);
+  };
+
+  const setPieLabels = (chartIndex, newLabels) => {
+    const newChartConfigs = [...chartConfigs];
+    newChartConfigs[chartIndex] = {
+      ...newChartConfigs[chartIndex],
+      pieLabels: newLabels,
+    };
+    setChartConfigs(newChartConfigs);
+  };
+
   const renderPageContent = () => {
     const currentPageContent = pages.find(
       (page) => page.id === currentPage
@@ -147,8 +165,14 @@ const TableWithMenu = ({
       );
     } else if (currentPageContent.startsWith("chart")) {
       const chartIndex = parseInt(currentPageContent.split("-")[1], 10);
-      const { type, data, aggregate, aggregateFunction } =
-        chartConfigs[chartIndex];
+      const {
+        type,
+        data,
+        aggregate,
+        aggregateFunction,
+        seriesLabels,
+        pieLabels,
+      } = chartConfigs[chartIndex];
       return (
         <Chart
           type={type}
@@ -160,6 +184,10 @@ const TableWithMenu = ({
           setChartNotes={setChartNotes}
           editingNote={editingNote}
           setEditingNote={setEditingNote}
+          seriesLabels={seriesLabels}
+          setSeriesLabels={setSeriesLabels}
+          pieLabels={pieLabels}
+          setPieLabels={setPieLabels}
         />
       );
     }
@@ -173,7 +201,15 @@ const TableWithMenu = ({
     ]);
     setChartConfigs([
       ...chartConfigs,
-      { type, data, aggregate, aggregateFunction },
+      {
+        type,
+        data,
+        aggregate,
+        aggregateFunction,
+        seriesLabels:
+          type !== "pie" ? data.y.map((_, idx) => `Series ${idx + 1}`) : [],
+        pieLabels: type === "pie" ? data.x : [],
+      },
     ]);
     setChartNotes({
       ...chartNotes,

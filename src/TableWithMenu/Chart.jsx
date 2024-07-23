@@ -25,6 +25,27 @@ ChartJS.register(
   Legend
 );
 
+// Function to generate muted rainbow colors
+const generateMutedRainbowColors = (numColors) => {
+  const colors = [];
+  for (let i = 0; i < numColors; i++) {
+    const hue = (i * 360) / numColors;
+    const saturation = 50; // Decreased saturation for muted effect
+    const lightness = 60; // Adjusted lightness for a balanced look
+    colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+  }
+  return colors;
+};
+
+// Function to shuffle an array
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 const Chart = ({
   type,
   data,
@@ -35,6 +56,10 @@ const Chart = ({
   setChartNotes,
   editingNote,
   setEditingNote,
+  seriesLabels,
+  setSeriesLabels,
+  pieLabels,
+  setPieLabels,
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({
@@ -92,14 +117,47 @@ const Chart = ({
 
   const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
 
+  const [selectedItem, setSelectedItem] = useState("");
+  const [newLabel, setNewLabel] = useState("");
+
+  const handleItemSelect = (e) => {
+    setSelectedItem(e.target.value);
+  };
+
+  const handleNewLabelChange = (e) => {
+    setNewLabel(e.target.value);
+  };
+
+  const handleRenameItem = () => {
+    if (type === "pie") {
+      const newLabels = pieLabels.map((label, idx) =>
+        idx === parseInt(selectedItem) ? newLabel : label
+      );
+      setPieLabels(index, newLabels);
+    } else {
+      const newLabels = seriesLabels.map((label, idx) =>
+        idx === parseInt(selectedItem) ? newLabel : label
+      );
+      setSeriesLabels(index, newLabels);
+    }
+    setSelectedItem("");
+    setNewLabel("");
+  };
+
+  const colors = shuffleArray(
+    generateMutedRainbowColors(
+      type === "pie" ? aggregatedData.y[0].length : aggregatedData.y.length
+    )
+  );
+
   const chartData = {
-    labels: aggregatedData.x,
+    labels: type === "pie" ? pieLabels : aggregatedData.x,
     datasets: aggregatedData.y.map((series, idx) => ({
-      label: `Series ${idx + 1}`,
+      label: type === "pie" ? "" : seriesLabels[idx],
       data: series,
       fill: false,
-      backgroundColor: `rgba(${idx * 60}, ${idx * 30}, ${idx * 90}, 0.6)`,
-      borderColor: `rgba(${idx * 60}, ${idx * 30}, ${idx * 90}, 1)`,
+      backgroundColor: type === "pie" ? colors : colors[idx],
+      borderColor: type === "pie" ? colors : colors[idx],
     })),
   };
 
@@ -117,6 +175,23 @@ const Chart = ({
 
   return ChartComponent ? (
     <div className="handsontable-container">
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <select onChange={handleItemSelect} value={selectedItem}>
+          <option value="">Select {type === "pie" ? "Slice" : "Series"}</option>
+          {(type === "pie" ? pieLabels : seriesLabels).map((label, idx) => (
+            <option key={idx} value={idx}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          value={newLabel}
+          onChange={handleNewLabelChange}
+          placeholder={`New ${type === "pie" ? "Slice" : "Series"} Label`}
+        />
+        <button onClick={handleRenameItem}>Rename</button>
+      </div>
       <textarea
         className="editable-textarea"
         value={chartNotes[index] || "Title"}

@@ -15,9 +15,9 @@ const InsertMenu = ({
   const [isYAxisLocked, setYAxisLocked] = useState([]);
   const [lockedRange, setLockedRange] = useState({ x: null, y: [] });
   const [seriesCount, setSeriesCount] = useState(1);
-  const [aggregate, setAggregate] = useState(false); // New state for aggregate checkbox
+  const [aggregate, setAggregate] = useState(false);
   const [selectedAggregateFunction, setSelectedAggregateFunction] =
-    useState("AVERAGE"); // State for selected aggregate function
+    useState("AVERAGE");
   const chartDropdownRef = useRef(null);
   const chartButtonRef = useRef(null);
 
