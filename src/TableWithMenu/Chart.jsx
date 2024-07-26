@@ -30,8 +30,8 @@ const generateMutedRainbowColors = (numColors) => {
   const colors = [];
   for (let i = 0; i < numColors; i++) {
     const hue = (i * 360) / numColors;
-    const saturation = 50; // Decreased saturation for muted effect
-    const lightness = 60; // Adjusted lightness for a balanced look
+    const saturation = 50;
+    const lightness = 60;
     colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
   }
   return colors;
@@ -60,6 +60,7 @@ const Chart = ({
   setSeriesLabels,
   pieLabels,
   setPieLabels,
+  aggregateData,
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({
@@ -72,50 +73,10 @@ const Chart = ({
     setEditingNote(null);
   };
 
-  const aggregateData = (data, aggregate, aggregateFunction) => {
-    if (!aggregate) return data;
-
-    const aggregatedData = {
-      x: [],
-      y: [],
-    };
-    const xValues = [...new Set(data.x)];
-    xValues.forEach((xValue) => {
-      const yValues = data.y.flatMap((series) =>
-        series.filter((_, index) => data.x[index] === xValue)
-      );
-
-      let aggregatedYValue;
-      switch (aggregateFunction) {
-        case "SUM":
-          aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
-          break;
-        case "AVERAGE":
-          aggregatedYValue =
-            yValues.reduce((acc, curr) => acc + curr, 0) / yValues.length;
-          break;
-        case "COUNT":
-          aggregatedYValue = yValues.length;
-          break;
-        case "MAX":
-          aggregatedYValue = Math.max(...yValues);
-          break;
-        case "MIN":
-          aggregatedYValue = Math.min(...yValues);
-          break;
-        default:
-          aggregatedYValue = yValues[0];
-          break;
-      }
-
-      aggregatedData.x.push(xValue);
-      if (!aggregatedData.y[0]) aggregatedData.y[0] = [];
-      aggregatedData.y[0].push(aggregatedYValue);
-    });
-    return aggregatedData;
-  };
-
+  // Apply aggregation
   const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
+
+  console.log("Aggregated Data for Chart:", aggregatedData);
 
   const [selectedItem, setSelectedItem] = useState("");
   const [newLabel, setNewLabel] = useState("");
@@ -153,7 +114,7 @@ const Chart = ({
   const chartData = {
     labels: type === "pie" ? pieLabels : aggregatedData.x,
     datasets: aggregatedData.y.map((series, idx) => ({
-      label: type === "pie" ? "" : seriesLabels[idx],
+      label: type === "pie" ? "" : seriesLabels[idx] || `Series ${idx + 1}`,
       data: series,
       fill: false,
       backgroundColor: type === "pie" ? colors : colors[idx],

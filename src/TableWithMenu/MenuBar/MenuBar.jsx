@@ -36,8 +36,9 @@ const MenuBar = ({
   initialActionStackLength,
   setInitialActionStack,
   setInitialActionStackLength,
-  addChartPage, // New prop to add chart page
-  selectedRange, // Pass selectedRange to InsertMenu
+  addChartPage,
+  selectedRange,
+  aggregateData,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
 
@@ -87,9 +88,10 @@ const MenuBar = ({
         addColumn={addColumn}
         hotRef={hotRef}
         addChartPage={addChartPage}
-        selectedRange={selectedRange} // Pass selectedRange to InsertMenu
+        selectedRange={selectedRange}
+        aggregateData={aggregateData}
       />
-    ), // Pass the addChartPage prop
+    ),
     Data: (
       <DataMenu
         columns={columns}

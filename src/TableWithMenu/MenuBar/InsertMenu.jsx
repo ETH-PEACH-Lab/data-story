@@ -7,6 +7,7 @@ const InsertMenu = ({
   hotRef,
   addChartPage,
   selectedRange,
+  aggregateData,
 }) => {
   const [isChartDropdownVisible, setChartDropdownVisible] = useState(false);
   const [selectedChartType, setSelectedChartType] = useState("");
@@ -18,6 +19,7 @@ const InsertMenu = ({
   const [aggregate, setAggregate] = useState(false);
   const [selectedAggregateFunction, setSelectedAggregateFunction] =
     useState("AVERAGE");
+  const [seriesLabels, setSeriesLabels] = useState([]);
   const chartDropdownRef = useRef(null);
   const chartButtonRef = useRef(null);
 
@@ -73,6 +75,7 @@ const InsertMenu = ({
     setYAxisLocked([]);
     setLockedRange({ x: null, y: [] });
     setSeriesCount(1);
+    setSeriesLabels([]);
   };
 
   const handleApplyChartData = (axis, index = 0) => {
@@ -87,6 +90,9 @@ const InsertMenu = ({
         selectedRange.maxCol
       )
       .flat();
+
+    // Always use the column header for the series label
+    const header = hotInstance.getColHeader(selectedRange.minCol);
 
     if (axis === "x") {
       setChartData((prevState) => ({ ...prevState, x: selectedData }));
@@ -107,6 +113,13 @@ const InsertMenu = ({
         const newY = [...prevState.y];
         newY[index] = selectedRange;
         return { ...prevState, y: newY };
+      });
+
+      // Set the series label based on the header
+      setSeriesLabels((prevLabels) => {
+        const newLabels = [...prevLabels];
+        newLabels[index] = header;
+        return newLabels;
       });
     }
   };
@@ -132,6 +145,7 @@ const InsertMenu = ({
         newY[index] = null;
         return { ...prevState, y: newY };
       });
+      setSeriesLabels((prevLabels) => prevLabels.filter((_, i) => i !== index));
     }
   };
 
@@ -146,6 +160,7 @@ const InsertMenu = ({
       y: prevState.y.filter((_, i) => i !== index),
     }));
     setSeriesCount((prevCount) => prevCount - 1);
+    setSeriesLabels((prevLabels) => prevLabels.filter((_, i) => i !== index));
   };
 
   const generateRangeString = (range) => {
@@ -191,49 +206,8 @@ const InsertMenu = ({
       ...prevRange,
       y: [...prevRange.y, null],
     }));
-  };
-
-  const aggregateData = (data, aggregateFunction) => {
-    const aggregatedData = {
-      x: [],
-      y: [],
-    };
-    const xValues = [...new Set(data.x)];
-    xValues.forEach((xValue) => {
-      const yValues = data.y
-        .flatMap((series) =>
-          series.filter((_, index) => data.x[index] === xValue)
-        )
-        .map(Number);
-
-      let aggregatedYValue;
-      switch (aggregateFunction) {
-        case "SUM":
-          aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
-          break;
-        case "AVERAGE":
-          aggregatedYValue =
-            yValues.reduce((acc, curr) => acc + curr, 0) / yValues.length;
-          break;
-        case "COUNT":
-          aggregatedYValue = yValues.length;
-          break;
-        case "MAX":
-          aggregatedYValue = Math.max(...yValues);
-          break;
-        case "MIN":
-          aggregatedYValue = Math.min(...yValues);
-          break;
-        default:
-          aggregatedYValue = yValues[0];
-          break;
-      }
-
-      aggregatedData.x.push(xValue);
-      if (!aggregatedData.y[0]) aggregatedData.y[0] = [];
-      aggregatedData.y[0].push(aggregatedYValue);
-    });
-    return aggregatedData;
+    // Default to an empty string, will be set upon data application
+    setSeriesLabels((prevLabels) => [...prevLabels, ""]);
   };
 
   const handleAddChart = () => {
@@ -241,14 +215,19 @@ const InsertMenu = ({
       let chartDataToUse = chartData;
 
       if (aggregate) {
-        chartDataToUse = aggregateData(chartData, selectedAggregateFunction);
+        chartDataToUse = aggregateData(
+          chartData,
+          aggregate,
+          selectedAggregateFunction
+        );
       }
 
       addChartPage(
         selectedChartType,
         chartDataToUse,
         aggregate,
-        selectedAggregateFunction
+        selectedAggregateFunction,
+        seriesLabels
       );
       resetChartData();
       setChartDropdownVisible(false);
@@ -299,7 +278,6 @@ const InsertMenu = ({
             >
               <option value="SUM">SUM</option>
               <option value="AVERAGE">AVERAGE</option>
-              <option value="COUNT">COUNT</option>
               <option value="MAX">MAX</option>
               <option value="MIN">MIN</option>
             </select>

@@ -85,6 +85,65 @@ const TableWithMenu = ({
     setChartConfigs(newChartConfigs);
   };
 
+  const aggregateData = (data, aggregate, aggregateFunction) => {
+    if (!aggregate) return data;
+
+    const aggregatedData = {
+      x: [],
+      y: Array(data.y.length)
+        .fill(null)
+        .map(() => []),
+    };
+
+    const groupedData = {};
+    data.x.forEach((xValue, index) => {
+      if (!groupedData[xValue]) {
+        groupedData[xValue] = Array(data.y.length)
+          .fill(null)
+          .map(() => []);
+      }
+      data.y.forEach((series, seriesIndex) => {
+        groupedData[xValue][seriesIndex].push(Number(series[index]));
+      });
+    });
+
+    console.log("Grouped Data:", JSON.stringify(groupedData, null, 2));
+
+    Object.keys(groupedData).forEach((xValue) => {
+      aggregatedData.x.push(parseFloat(xValue));
+      groupedData[xValue].forEach((yValues, seriesIndex) => {
+        let aggregatedYValue;
+        console.log(
+          `Aggregating for x=${xValue}, seriesIndex=${seriesIndex}, yValues=${yValues}`
+        );
+        switch (aggregateFunction) {
+          case "SUM":
+            aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
+            break;
+          case "AVERAGE":
+            aggregatedYValue =
+              yValues.reduce((acc, curr) => acc + curr, 0) / yValues.length;
+            break;
+          case "COUNT":
+            aggregatedYValue = yValues.length;
+            break;
+          case "MAX":
+            aggregatedYValue = Math.max(...yValues);
+            break;
+          case "MIN":
+            aggregatedYValue = Math.min(...yValues);
+            break;
+          default:
+            aggregatedYValue = yValues[0];
+            break;
+        }
+        aggregatedData.y[seriesIndex].push(aggregatedYValue);
+      });
+    });
+
+    console.log("Aggregated Data:", JSON.stringify(aggregatedData, null, 2));
+    return aggregatedData;
+  };
   const renderPageContent = () => {
     const currentPageContent = pages.find(
       (page) => page.id === currentPage
@@ -188,12 +247,19 @@ const TableWithMenu = ({
           setSeriesLabels={setSeriesLabels}
           pieLabels={pieLabels}
           setPieLabels={setPieLabels}
+          aggregateData={aggregateData}
         />
       );
     }
   };
 
-  const addChartPage = (type, data, aggregate, aggregateFunction) => {
+  const addChartPage = (
+    type,
+    data,
+    aggregate,
+    aggregateFunction,
+    seriesLabels
+  ) => {
     const newPageId = pages.length;
     setPages([
       ...pages,
@@ -206,8 +272,7 @@ const TableWithMenu = ({
         data,
         aggregate,
         aggregateFunction,
-        seriesLabels:
-          type !== "pie" ? data.y.map((_, idx) => `Series ${idx + 1}`) : [],
+        seriesLabels: type !== "pie" ? seriesLabels : [],
         pieLabels: type === "pie" ? data.x : [],
       },
     ]);
@@ -336,6 +401,7 @@ const TableWithMenu = ({
           setInitialActionStackLength={setInitialActionStackLength}
           addChartPage={addChartPage}
           selectedRange={selectedRange}
+          aggregateData={aggregateData}
         />
       </div>
       {renderPageContent()}
