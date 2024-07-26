@@ -25,27 +25,6 @@ ChartJS.register(
   Legend
 );
 
-// Function to generate muted rainbow colors
-const generateMutedRainbowColors = (numColors) => {
-  const colors = [];
-  for (let i = 0; i < numColors; i++) {
-    const hue = (i * 360) / numColors;
-    const saturation = 50;
-    const lightness = 60;
-    colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
-  }
-  return colors;
-};
-
-// Function to shuffle an array
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
-
 const Chart = ({
   type,
   data,
@@ -61,6 +40,7 @@ const Chart = ({
   pieLabels,
   setPieLabels,
   aggregateData,
+  colors,
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({
@@ -75,8 +55,6 @@ const Chart = ({
 
   // Apply aggregation
   const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
-
-  console.log("Aggregated Data for Chart:", aggregatedData);
 
   const [selectedItem, setSelectedItem] = useState("");
   const [newLabel, setNewLabel] = useState("");
@@ -104,12 +82,6 @@ const Chart = ({
     setSelectedItem("");
     setNewLabel("");
   };
-
-  const colors = shuffleArray(
-    generateMutedRainbowColors(
-      type === "pie" ? aggregatedData.y[0].length : aggregatedData.y.length
-    )
-  );
 
   const chartData = {
     labels: type === "pie" ? pieLabels : aggregatedData.x,

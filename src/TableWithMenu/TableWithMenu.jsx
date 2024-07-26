@@ -15,6 +15,25 @@ import { handleUndo, handleRedo } from "../utils/undoRedoHandlers";
 import { handleStyleChange, customRenderer } from "../utils/styleHandlers";
 import "../App.css";
 
+const generateMutedRainbowColors = (numColors) => {
+  const colors = [];
+  for (let i = 0; i < numColors; i++) {
+    const hue = (i * 360) / numColors;
+    const saturation = 50;
+    const lightness = 60;
+    colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+  }
+  return colors;
+};
+
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 const TableWithMenu = ({
   data,
   setData,
@@ -144,6 +163,7 @@ const TableWithMenu = ({
     console.log("Aggregated Data:", JSON.stringify(aggregatedData, null, 2));
     return aggregatedData;
   };
+
   const renderPageContent = () => {
     const currentPageContent = pages.find(
       (page) => page.id === currentPage
@@ -231,6 +251,7 @@ const TableWithMenu = ({
         aggregateFunction,
         seriesLabels,
         pieLabels,
+        colors,
       } = chartConfigs[chartIndex];
       return (
         <Chart
@@ -248,6 +269,7 @@ const TableWithMenu = ({
           pieLabels={pieLabels}
           setPieLabels={setPieLabels}
           aggregateData={aggregateData}
+          colors={colors}
         />
       );
     }
@@ -260,6 +282,8 @@ const TableWithMenu = ({
     aggregateFunction,
     seriesLabels
   ) => {
+    const numColors = type === "pie" ? data.x.length : data.y.length;
+    const generatedColors = shuffleArray(generateMutedRainbowColors(numColors));
     const newPageId = pages.length;
     setPages([
       ...pages,
@@ -274,6 +298,7 @@ const TableWithMenu = ({
         aggregateFunction,
         seriesLabels: type !== "pie" ? seriesLabels : [],
         pieLabels: type === "pie" ? data.x : [],
+        colors: generatedColors,
       },
     ]);
     setChartNotes({
