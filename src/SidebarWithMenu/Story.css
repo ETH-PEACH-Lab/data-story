@@ -1,9 +1,10 @@
 .story-container {
   cursor: pointer;
   width: 100%;
+  position: relative;
   overflow-y: auto; 
-  height: calc(100% - 70px);
-  overflow: visible;
+  height: calc(100% - 100px);
+  overflow-y: auto;
 }
 
 .story-textarea {
@@ -27,6 +28,7 @@
   padding-right: 10px;
   padding-top: 0px;
   color: black;
+  line-height: 1.2;
 }
 
 .editable-text-container {
@@ -35,8 +37,7 @@
   right: 6px;
   width: calc(100% + 24px);
   position: relative;
-  margin-bottom: -14px;
-  margin-top: -6px;
+  overflow: auto;
 }
 
 .editable-text {
@@ -111,4 +112,21 @@
   font-weight: bold;
   text-decoration: underline;
   color: rgb(0, 131, 0);
+}
+
+.quill-editor-container {
+  min-height: 100px;
+  z-index: 10;
+  line-height: 1;
+  overflow: visible;
+}
+
+.quill-editor-container h1 {
+  font-size: 1.5rem;
+  /* Adjust the size as needed */
+}
+
+.quill-editor-container h2 {
+  font-size: 1.25rem;
+  /* Adjust the size as needed */
 }
