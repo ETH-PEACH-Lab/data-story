@@ -67,6 +67,7 @@ const Chart = ({
   aggregateData,
   colors,
   setColors,
+  updateChartTitle, // Receive the update function
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({
@@ -143,16 +144,18 @@ const Chart = ({
   };
 
   const handleTitleChange = () => {
+    const updatedTitle = titleText.trim() || `Chart ${index}`;
     setChartOptions((prevOptions) => ({
       ...prevOptions,
       plugins: {
         ...prevOptions.plugins,
         title: {
           ...prevOptions.plugins.title,
-          text: titleText,
+          text: updatedTitle,
         },
       },
     }));
+    updateChartTitle(index, titleText.trim());
   };
 
   const handleXAxisTitleChange = () => {

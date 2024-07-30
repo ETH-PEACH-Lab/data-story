@@ -77,7 +77,9 @@ const TableWithMenu = ({
   setSelectedRange,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [pages, setPages] = useState([{ id: 0, content: "table" }]);
+  const [pages, setPages] = useState([
+    { id: 0, content: "table", title: "Table" },
+  ]);
   const [chartConfigs, setChartConfigs] = useState([]);
   const [selectedRange, setSelectedRangeState] = useState(null);
   const [chartNotes, setChartNotes] = useState({});
@@ -278,6 +280,7 @@ const TableWithMenu = ({
           setColors={(chartIndex, newColors) =>
             setColors(chartIndex, newColors)
           }
+          updateChartTitle={updateChartTitle} // Pass the update function
         />
       );
     }
@@ -295,7 +298,11 @@ const TableWithMenu = ({
     const newPageId = pages.length;
     setPages([
       ...pages,
-      { id: newPageId, content: `chart-${chartConfigs.length}` },
+      {
+        id: newPageId,
+        content: `chart-${chartConfigs.length}`,
+        title: `Chart ${chartConfigs.length}`,
+      },
     ]);
     setChartConfigs([
       ...chartConfigs,
@@ -314,6 +321,16 @@ const TableWithMenu = ({
       [chartConfigs.length]: "Title",
     });
     setCurrentPage(newPageId);
+  };
+
+  const updateChartTitle = (chartIndex, newTitle) => {
+    setPages((prevPages) =>
+      prevPages.map((page) =>
+        page.content === `chart-${chartIndex}`
+          ? { ...page, title: newTitle || `Chart ${chartIndex}` }
+          : page
+      )
+    );
   };
 
   return (
@@ -446,11 +463,7 @@ const TableWithMenu = ({
             onClick={() => setCurrentPage(page.id)}
             disabled={currentPage === page.id}
           >
-            {page.content === "table"
-              ? "Table"
-              : page.content.startsWith("chart")
-              ? `Chart ${page.content.split("-")[1]}`
-              : `Empty Page ${index}`}
+            {page.title}
           </button>
         ))}
       </div>
