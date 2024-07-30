@@ -8,7 +8,7 @@ import {
   LineElement,
   BarElement,
   ArcElement,
-  Title,
+  Title as ChartTitle,
   Tooltip,
   Legend,
 } from "chart.js";
@@ -21,7 +21,7 @@ ChartJS.register(
   LineElement,
   BarElement,
   ArcElement,
-  Title,
+  ChartTitle,
   Tooltip,
   Legend
 );
@@ -87,6 +87,10 @@ const Chart = ({
   const [isRenamingVisible, setIsRenamingVisible] = useState(false);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
   const [currentColor, setCurrentColor] = useState("");
+  const [titleText, setTitleText] = useState("");
+  const [xAxisTitle, setXAxisTitle] = useState("");
+  const [yAxisTitle, setYAxisTitle] = useState("");
+  const [selectedModification, setSelectedModification] = useState("");
 
   const customColors = generateMutedRainbowColors(18).map((color) => {
     const [h, s, l] = color.match(/\d+/g).map(Number);
@@ -138,6 +142,51 @@ const Chart = ({
     setColors(index, newColors);
   };
 
+  const handleTitleChange = () => {
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
+      plugins: {
+        ...prevOptions.plugins,
+        title: {
+          ...prevOptions.plugins.title,
+          text: titleText,
+        },
+      },
+    }));
+  };
+
+  const handleXAxisTitleChange = () => {
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
+      scales: {
+        ...prevOptions.scales,
+        x: {
+          ...prevOptions.scales.x,
+          title: {
+            ...prevOptions.scales.x.title,
+            text: xAxisTitle,
+          },
+        },
+      },
+    }));
+  };
+
+  const handleYAxisTitleChange = () => {
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
+      scales: {
+        ...prevOptions.scales,
+        y: {
+          ...prevOptions.scales.y,
+          title: {
+            ...prevOptions.scales.y.title,
+            text: yAxisTitle,
+          },
+        },
+      },
+    }));
+  };
+
   const chartData = {
     labels: type === "pie" ? pieLabels : aggregatedData.x,
     datasets:
@@ -158,10 +207,40 @@ const Chart = ({
           })),
   };
 
-  const chartOptions = {
+  const [chartOptions, setChartOptions] = useState({
     responsive: true,
     maintainAspectRatio: false,
-  };
+    plugins: {
+      title: {
+        display: true,
+        text: "title",
+        font: {
+          size: 24, // Set the font size
+        },
+        color: "#000", // Set the font color to black
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "x-axis",
+          font: {
+            size: 16, // Set the font size for x-axis title
+          },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "y-axis",
+          font: {
+            size: 16, // Set the font size for y-axis title
+          },
+        },
+      },
+    },
+  });
 
   const ChartComponent = {
     line: Line,
@@ -185,6 +264,73 @@ const Chart = ({
           </button>
           {isRenamingVisible && (
             <div style={{ display: "flex", marginLeft: "10px" }}>
+              <select
+                onChange={(e) => setSelectedModification(e.target.value)}
+                value={selectedModification}
+              >
+                <option value="">Select Modification</option>
+                <option value="title">Title</option>
+                <option value="axis-titles">Axis Titles</option>
+                <option value="color">Color</option>
+                <option value="name">Name</option>
+              </select>
+            </div>
+          )}
+        </div>
+
+        {isRenamingVisible && selectedModification === "title" && (
+          <div style={{ marginTop: "10px" }}>
+            <input
+              type="text"
+              value={titleText}
+              onChange={(e) => setTitleText(e.target.value)}
+              placeholder="New Title"
+              style={{ marginLeft: "10px" }}
+            />
+            <button onClick={handleTitleChange} style={{ marginLeft: "10px" }}>
+              Change Text
+            </button>
+          </div>
+        )}
+
+        {isRenamingVisible && selectedModification === "axis-titles" && (
+          <div style={{ marginTop: "10px" }}>
+            <div style={{ marginBottom: "10px" }}>
+              <input
+                type="text"
+                value={xAxisTitle}
+                onChange={(e) => setXAxisTitle(e.target.value)}
+                placeholder="New X-Axis Title"
+                style={{ marginLeft: "10px" }}
+              />
+              <button
+                onClick={handleXAxisTitleChange}
+                style={{ marginLeft: "10px" }}
+              >
+                Change X-Axis
+              </button>
+            </div>
+            <div>
+              <input
+                type="text"
+                value={yAxisTitle}
+                onChange={(e) => setYAxisTitle(e.target.value)}
+                placeholder="New Y-Axis Title"
+                style={{ marginLeft: "10px" }}
+              />
+              <button
+                onClick={handleYAxisTitleChange}
+                style={{ marginLeft: "10px" }}
+              >
+                Change Y-Axis
+              </button>
+            </div>
+          </div>
+        )}
+
+        {isRenamingVisible && selectedModification === "color" && (
+          <div style={{ marginTop: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <select onChange={handleItemSelect} value={selectedItem}>
                 <option value="">
                   Select {type === "pie" ? "Slice" : "Series"}
@@ -197,30 +343,6 @@ const Chart = ({
                   )
                 )}
               </select>
-            </div>
-          )}
-        </div>
-        {isRenamingVisible && (
-          <div style={{ marginTop: "10px" }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <input
-                type="text"
-                value={newLabel}
-                onChange={handleNewLabelChange}
-                placeholder={`New ${type === "pie" ? "Slice" : "Series"} Label`}
-                style={{ marginLeft: "10px" }}
-              />
-              <button onClick={handleRenameItem} style={{ marginLeft: "10px" }}>
-                Rename
-              </button>
-            </div>
-            <div
-              style={{
-                marginTop: "10px",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
               <div
                 onClick={() => setColorPickerVisible(!colorPickerVisible)}
                 style={{
@@ -263,18 +385,36 @@ const Chart = ({
             </div>
           </div>
         )}
+
+        {isRenamingVisible && selectedModification === "name" && (
+          <div style={{ marginTop: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <select onChange={handleItemSelect} value={selectedItem}>
+                <option value="">
+                  Select {type === "pie" ? "Slice" : "Series"}
+                </option>
+                {(type === "pie" ? pieLabels : seriesLabels).map(
+                  (label, idx) => (
+                    <option key={idx} value={idx}>
+                      {label}
+                    </option>
+                  )
+                )}
+              </select>
+              <input
+                type="text"
+                value={newLabel}
+                onChange={handleNewLabelChange}
+                placeholder={`New ${type === "pie" ? "Slice" : "Series"} Label`}
+                style={{ marginLeft: "10px" }}
+              />
+              <button onClick={handleRenameItem} style={{ marginLeft: "10px" }}>
+                Rename
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-      <textarea
-        className="editable-textarea"
-        value={chartNotes[index] || "Title"}
-        onChange={handleNoteChange}
-        onBlur={handleNoteBlur}
-        onFocus={() => setEditingNote(index)}
-        style={{
-          outline: editingNote === index ? "1px dashed black" : "none",
-          backgroundColor: editingNote === index ? "white" : "transparent",
-        }}
-      />
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <ChartComponent key={index} data={chartData} options={chartOptions} />
       </div>
