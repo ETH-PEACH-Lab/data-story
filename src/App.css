@@ -223,9 +223,13 @@ body {
 
 .page-footer {
   display: flex;
+  height: 41px;
+  width: calc(50vw - 115px);
   align-items: center;
   padding: 0px;
   background-color: #e3e1d9;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .nav-button {

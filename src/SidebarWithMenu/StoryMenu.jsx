@@ -306,14 +306,14 @@ const StoryMenu = ({
             }}
             ref={functionButtonRef}
           >
-            Function
+            Add Function
           </button>
           {isFunctionDropdownVisible && (
             <div
               className={styles.dropdown}
               style={{
                 top: `${functionDropdownPosition.top}px`,
-                marginLeft: "112px",
+                marginLeft: "69px",
               }}
               ref={functionDropdownRef}
             >
