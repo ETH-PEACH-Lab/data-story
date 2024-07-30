@@ -26,6 +26,8 @@ const generateMutedRainbowColors = (numColors) => {
   return colors;
 };
 
+const mutedRainbowColors = generateMutedRainbowColors(20);
+
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -104,6 +106,15 @@ const TableWithMenu = ({
     setChartConfigs(newChartConfigs);
   };
 
+  const setColors = (chartIndex, newColors) => {
+    const newChartConfigs = [...chartConfigs];
+    newChartConfigs[chartIndex] = {
+      ...newChartConfigs[chartIndex],
+      colors: newColors,
+    };
+    setChartConfigs(newChartConfigs);
+  };
+
   const aggregateData = (data, aggregate, aggregateFunction) => {
     if (!aggregate) return data;
 
@@ -126,15 +137,10 @@ const TableWithMenu = ({
       });
     });
 
-    console.log("Grouped Data:", JSON.stringify(groupedData, null, 2));
-
     Object.keys(groupedData).forEach((xValue) => {
       aggregatedData.x.push(parseFloat(xValue));
       groupedData[xValue].forEach((yValues, seriesIndex) => {
         let aggregatedYValue;
-        console.log(
-          `Aggregating for x=${xValue}, seriesIndex=${seriesIndex}, yValues=${yValues}`
-        );
         switch (aggregateFunction) {
           case "SUM":
             aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
@@ -160,7 +166,6 @@ const TableWithMenu = ({
       });
     });
 
-    console.log("Aggregated Data:", JSON.stringify(aggregatedData, null, 2));
     return aggregatedData;
   };
 
@@ -270,6 +275,9 @@ const TableWithMenu = ({
           setPieLabels={setPieLabels}
           aggregateData={aggregateData}
           colors={colors}
+          setColors={(chartIndex, newColors) =>
+            setColors(chartIndex, newColors)
+          }
         />
       );
     }
