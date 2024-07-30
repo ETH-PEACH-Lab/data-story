@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import FilterTutorial from './FilterTutorial';
-import TutorialMenu from './TutorialMenu';
-import Story from './Story';
+import React, { useState } from "react";
+import FilterTutorial from "./FilterTutorial";
+import TutorialMenu from "./TutorialMenu";
+import Story from "./Story";
 
 function MainSidebar({
   data,
@@ -13,17 +13,17 @@ function MainSidebar({
   filteredColumns,
   setFilteredColumns,
 }) {
-  const [activeMenu, setActiveMenu] = useState('');
+  const [activeMenu, setActiveMenu] = useState("");
   const [components, setComponents] = useState([
-    { type: 'text', text: '--Text--', fontSize: '16px' }
+    { type: "text", text: "--Text--", fontSize: "16px" },
   ]); // Initialize with a text component
 
   const handleMenuClick = (menu) => {
-    setActiveMenu(activeMenu === menu ? '' : menu);
+    setActiveMenu(activeMenu === menu ? "" : menu);
   };
 
   const menuOptions = {
-    'Filtering': (
+    Filtering: (
       <div className="shift-right">
         <FilterTutorial
           data={data}
@@ -37,13 +37,13 @@ function MainSidebar({
         />
       </div>
     ),
-    'Option 2': (
+    "Option 2": (
       <div className="shift-right">
         <h2>Option 2</h2>
         <p>This is the content for Option 2.</p>
       </div>
     ),
-    'Option 3': (
+    "Option 3": (
       <div className="shift-right">
         <h2>Option 3</h2>
         <p>This is the content for Option 3.</p>
@@ -54,14 +54,18 @@ function MainSidebar({
   return (
     <div className="main-sidebar-container">
       <div className="text-and-menu-container">
-        <div className="sidebar" style={{ paddingRight: '15px' }}>
+        <div className="sidebar" style={{ paddingRight: "15px" }}>
           {activeMenu ? (
             menuOptions[activeMenu]
           ) : (
             <Story components={components} setComponents={setComponents} />
           )}
         </div>
-        <TutorialMenu buttons={['Filtering', 'Option 2', 'Option 3']} activeMenu={activeMenu} onMenuClick={handleMenuClick} />
+        <TutorialMenu
+          buttons={["Filtering", "Option 2", "Option 3"]}
+          activeMenu={activeMenu}
+          onMenuClick={handleMenuClick}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './Story.css';
+import React, { useState, useEffect, useRef } from "react";
+import "./Story.css";
 
-function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMoveDown, isMenuVisible, setVisibleMenuIndex }) {
+function EditableText({
+  textObj,
+  onTextChange,
+  index,
+  onDelete,
+  onMoveUp,
+  onMoveDown,
+  isMenuVisible,
+  setVisibleMenuIndex,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef(null);
 
@@ -14,8 +23,8 @@ function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMove
   };
 
   const autoResize = (textarea) => {
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
   };
 
   useEffect(() => {
@@ -26,36 +35,45 @@ function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMove
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        textareaRef.current &&
-        !textareaRef.current.contains(event.target)
-      ) {
+      if (textareaRef.current && !textareaRef.current.contains(event.target)) {
         setVisibleMenuIndex(null);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setVisibleMenuIndex]);
 
   return (
     <div className="editable-text-container">
       <div className="edit-menu-toggle">
-        <button onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}>⋮</button>
+        <button
+          onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
+        >
+          ⋮
+        </button>
       </div>
       {isMenuVisible && (
         <div className="edit-menu">
-          <button onClick={() => {
-            onMoveUp(index);
-            setVisibleMenuIndex(index - 1);
-          }}>↑</button>
-          <button onClick={() => {
-            onMoveDown(index);
-            setVisibleMenuIndex(index + 1);
-          }}>↓</button>
+          <button
+            onClick={() => {
+              onMoveUp(index);
+              setVisibleMenuIndex(index - 1);
+            }}
+          >
+            ↑
+          </button>
+          <button
+            onClick={() => {
+              onMoveDown(index);
+              setVisibleMenuIndex(index + 1);
+            }}
+          >
+            ↓
+          </button>
           <button onClick={() => onDelete(index)}>✖</button>
         </div>
       )}
@@ -75,7 +93,9 @@ function EditableText({ textObj, onTextChange, index, onDelete, onMoveUp, onMove
             ref={textareaRef}
           />
         ) : (
-          <p className="story-text" style={{ fontSize: textObj.fontSize }}>{textObj.text}</p>
+          <p className="story-text" style={{ fontSize: textObj.fontSize }}>
+            {textObj.text}
+          </p>
         )}
       </div>
     </div>
