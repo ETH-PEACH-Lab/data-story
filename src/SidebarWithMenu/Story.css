@@ -126,12 +126,10 @@
 
 .quill-editor-container h1 {
   font-size: 1.5rem;
-  /* Adjust the size as needed */
 }
 
 .quill-editor-container h2 {
   font-size: 1.25rem;
-  /* Adjust the size as needed */
 }
 
 .chart-container{
@@ -152,28 +150,25 @@
 .table-container {
   display: flex;
   align-items: flex-start;
-  width: 100%;
-  /* Ensure full width */
+  right: 6px;
+  width: calc(100% + 24px);
   position: relative;
   margin-bottom: 0px;
 }
 
 .table-wrapper {
   width: 100%;
-  /* Ensure full width */
 }
 
 .small-table-wrapper {
   overflow: auto;
   width: 100%;
-  /* Ensure full width */
   height: 100%;
 }
 
 .expandButton {
   display: block;
   width: 100%;
-  /* Ensure full width */
   padding: 1px;
   margin: 0;
   border: none;
