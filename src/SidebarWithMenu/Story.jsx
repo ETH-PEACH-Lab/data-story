@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import EditableText from "./EditableStoryComponents/EditableText";
 import Function from "./EditableStoryComponents/Function";
 import StoryChart from "./EditableStoryComponents/StoryChart";
+import StoryTable from "./EditableStoryComponents/StoryTable"; // Import the StoryTable component
 import "./Story.css";
 
-function Story({ components, setComponents }) {
+function Story({ components, setComponents, data, columnConfigs }) {
+  // Add data and columnConfigs as props
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
 
   const handleTextChange = (index, newTextObj) => {
@@ -18,6 +20,8 @@ function Story({ components, setComponents }) {
       type === "function"
         ? { type, column, func, result }
         : type === "chart"
+        ? { type }
+        : type === "table"
         ? { type }
         : { type, text: "--Text--", fontSize: "16px" };
     setComponents([...components, newComponent]);
@@ -92,6 +96,20 @@ function Story({ components, setComponents }) {
               <StoryChart
                 key={index}
                 index={index}
+                onDelete={handleDelete}
+                onMoveUp={handleMoveUp}
+                onMoveDown={handleMoveDown}
+                isMenuVisible={visibleMenuIndex === index}
+                setVisibleMenuIndex={setVisibleMenuIndex}
+              />
+            );
+          case "table":
+            return (
+              <StoryTable
+                key={index}
+                index={index}
+                data={data} // Pass data
+                columnConfigs={columnConfigs} // Pass columnConfigs
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}

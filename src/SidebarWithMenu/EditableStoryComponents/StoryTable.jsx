@@ -1,9 +1,8 @@
-import React from "react";
 import "../Story.css";
-import EditMenu from "./EditMenu";
 import React, { useCallback, useState } from "react";
 import { HotTable } from "@handsontable/react";
 import { textRenderer } from "handsontable/renderers/textRenderer";
+import EditMenu from "./EditMenu";
 
 const StoryTable = ({
   index,
@@ -12,6 +11,8 @@ const StoryTable = ({
   onMoveDown,
   isMenuVisible,
   setVisibleMenuIndex,
+  data,
+  columnConfigs,
 }) => {
   const [isTableExpanded, setIsTableExpanded] = useState(false);
 
@@ -30,11 +31,8 @@ const StoryTable = ({
         value,
         cellProperties,
       ]);
-      if (col === selectedColumnIndex) {
-        td.style.backgroundColor = "lightsteelblue";
-      }
     },
-    [selectedColumnIndex]
+    []
   );
 
   return (
@@ -55,7 +53,7 @@ const StoryTable = ({
           setVisibleMenuIndex={setVisibleMenuIndex}
         />
       )}
-      <div className={styles.tableWrapper}>
+      <div className="table-wrapper">
         <div
           className="small-table-wrapper"
           style={{
@@ -79,10 +77,7 @@ const StoryTable = ({
             disableVisualSelection={true}
           />
         </div>
-        <button
-          className={styles.expandButton}
-          onClick={toggleFirstTableExpand}
-        >
+        <button className="expandButton" onClick={toggleFirstTableExpand}>
           {isTableExpanded ? "Collapse Table" : "Expand Table"}
         </button>
       </div>

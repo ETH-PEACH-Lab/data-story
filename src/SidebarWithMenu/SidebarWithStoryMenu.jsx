@@ -74,7 +74,12 @@ const SidebarWithStoryMenu = ({
             {activeMenu ? (
               menuOptions[activeMenu]
             ) : (
-              <Story components={components} setComponents={setComponents} />
+              <Story
+                components={components}
+                setComponents={setComponents}
+                data={data}
+                columnConfigs={columnConfigs}
+              />
             )}
           </div>
           <TutorialMenu

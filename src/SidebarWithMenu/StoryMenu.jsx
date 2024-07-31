@@ -298,7 +298,12 @@ const StoryMenu = ({
           >
             Add Chart
           </button>
-          <button className={styles.button}>Add Table</button>
+          <button
+            className={styles.button}
+            onClick={() => addComponent("table")}
+          >
+            Add Table
+          </button>
         </div>
       </div>
     ),
