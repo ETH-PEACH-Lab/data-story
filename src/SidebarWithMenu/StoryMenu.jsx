@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import styles from "./StoryMenu.module.css";
+import ChartMenu from "./ChartMenu";
+import TextMenu from "./TextMenu";
+import TableMenu from "./TableMenu";
+import FunctionMenu from "./FunctionMenu";
 
 const StoryMenu = ({
   columnConfigs,
@@ -9,21 +13,21 @@ const StoryMenu = ({
   setConfirmationMessage,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
-  const [highlightAdditionalOptions, setHighlightAdditionalOptions] = useState(
-    []
-  );
   const [selectedFunction, setSelectedFunction] = useState("");
   const [selectedRangeState, setSelectedRangeState] = useState(null);
   const [isColumnDropdownVisible, setColumnDropdownVisible] = useState(false);
   const [isHighlightDropdownVisible, setHighlightDropdownVisible] =
     useState(false);
   const [highlightOption, setHighlightOption] = useState("");
+  const [highlightAdditionalOptions, setHighlightAdditionalOptions] = useState(
+    []
+  );
+  const [highlightCondition, setHighlightCondition] = useState("");
+  const [highlightValue, setHighlightValue] = useState("");
   const [tableDropdownPosition, setTableDropdownPosition] = useState({
     top: 0,
     left: 0,
   });
-  const [highlightCondition, setHighlightCondition] = useState("");
-  const [highlightValue, setHighlightValue] = useState("");
   const [highlightDropdownPosition, setHighlightDropdownPosition] = useState({
     top: 0,
     left: 0,
@@ -31,6 +35,7 @@ const StoryMenu = ({
   const [selectedColumns, setSelectedColumns] = useState(
     columnConfigs.map((column) => column.title)
   );
+
   const tableButtonRef = useRef(null);
   const columnDropdownRef = useRef(null);
   const highlightButtonRef = useRef(null);
@@ -72,107 +77,6 @@ const StoryMenu = ({
     } else {
       setHighlightAdditionalOptions([]);
     }
-  };
-
-  const calculateFunctionResult = (func, data) => {
-    if (!data || data.length === 0) return { result: "No data", warning: "" };
-
-    const convertedData = data.map((row) =>
-      row.map((cell) =>
-        typeof cell === "string" ? cell.replace(",", ".") : cell
-      )
-    );
-
-    const numbers = convertedData.map((row) =>
-      row.map((cell) => parseFloat(cell)).filter((val) => !isNaN(val))
-    );
-    const flatNumbers = [].concat(...numbers);
-
-    const hasNonNumericValues = data
-      .flat()
-      .some((cell) => isNaN(parseFloat(cell.toString().replace(",", "."))));
-
-    let result;
-    let warning = "";
-    switch (func) {
-      case "AVERAGE":
-        if (flatNumbers.length === 0)
-          return {
-            result: "No numeric data",
-            warning: hasNonNumericValues
-              ? "Warning: Some selected cells do not contain numeric data."
-              : "",
-          };
-        result = (
-          flatNumbers.reduce((acc, num) => acc + num, 0) / flatNumbers.length
-        ).toFixed(2);
-        break;
-      case "SUM":
-        if (flatNumbers.length === 0)
-          return {
-            result: "No numeric data",
-            warning: hasNonNumericValues
-              ? "Warning: Some selected cells do not contain numeric data."
-              : "",
-          };
-        result = flatNumbers.reduce((acc, num) => acc + num, 0).toFixed(2);
-        break;
-      case "MAX":
-        if (flatNumbers.length === 0)
-          return {
-            result: "No numeric data",
-            warning: hasNonNumericValues
-              ? "Warning: Some selected cells do not contain numeric data."
-              : "",
-          };
-        result = Math.max(...flatNumbers).toFixed(2);
-        break;
-      case "MIN":
-        if (flatNumbers.length === 0)
-          return {
-            result: "No numeric data",
-            warning: hasNonNumericValues
-              ? "Warning: Some selected cells do not contain numeric data."
-              : "",
-          };
-        result = Math.min(...flatNumbers).toFixed(2);
-        break;
-      case "COUNT":
-        result = data.flat().length;
-        break;
-      case "COUNT EMPTY":
-        result = data.reduce(
-          (acc, row) => acc + row.filter((cell) => cell === "").length,
-          0
-        );
-        break;
-      case "COUNT UNIQUE":
-        const uniqueValues = new Set(data.flat().filter((cell) => cell !== ""));
-        result = uniqueValues.size;
-        break;
-      default:
-        result = "Unknown function";
-    }
-
-    if (
-      hasNonNumericValues &&
-      ["AVERAGE", "SUM", "MAX", "MIN"].includes(func)
-    ) {
-      warning = "Warning: This function requires numerical values only.";
-    }
-
-    return { result, warning };
-  };
-
-  const getSelectedCellsData = () => {
-    if (!selectedRangeState || !hotRef.current) {
-      return [];
-    }
-
-    const hotInstance = hotRef.current.hotInstance;
-    const { minRow, maxRow, minCol, maxCol } = selectedRangeState;
-
-    return hotInstance.getData(minRow, minCol, maxRow, maxCol);
   };
 
   const addComponent = (type, column = "", func = "", result = "") => {
@@ -275,64 +179,15 @@ const StoryMenu = ({
     }
   }, [isColumnDropdownVisible, isHighlightDropdownVisible]);
 
-  const generateRangeString = () => {
-    if (!selectedRangeState) return "No range selected";
-
-    if (selectedRangeState.allCols) {
-      const colWord =
-        selectedRangeState.minCol === selectedRangeState.maxCol
-          ? "Column"
-          : "Columns";
-      const colRange =
-        selectedRangeState.minCol === selectedRangeState.maxCol
-          ? `${selectedRangeState.minCol + 1}`
-          : `${selectedRangeState.minCol + 1}-${selectedRangeState.maxCol + 1}`;
-      return `${colWord}: ${colRange}`;
-    } else if (selectedRangeState.allRows) {
-      const rowWord =
-        selectedRangeState.minRow === selectedRangeState.maxRow
-          ? "Row"
-          : "Rows";
-      const rowRange =
-        selectedRangeState.minRow === selectedRangeState.maxRow
-          ? `${selectedRangeState.minRow + 1}`
-          : `${selectedRangeState.minRow + 1}-${selectedRangeState.maxRow + 1}`;
-      return `${rowWord}: ${rowRange}`;
-    } else {
-      const rowWord =
-        selectedRangeState.minRow === selectedRangeState.maxRow
-          ? "Row"
-          : "Rows";
-      const colWord =
-        selectedRangeState.minCol === selectedRangeState.maxCol
-          ? "Column"
-          : "Columns";
-      const rowRange =
-        selectedRangeState.minRow === selectedRangeState.maxRow
-          ? `${selectedRangeState.minRow + 1}`
-          : `${selectedRangeState.minRow + 1}-${selectedRangeState.maxRow + 1}`;
-      const colRange =
-        selectedRangeState.minCol === selectedRangeState.maxCol
-          ? `${selectedRangeState.minCol + 1}`
-          : `${selectedRangeState.minCol + 1}-${selectedRangeState.maxCol + 1}`;
-      return `${rowWord}: ${rowRange}, ${colWord}: ${colRange}`;
+  const getSelectedCellsData = () => {
+    if (!selectedRangeState || !hotRef.current) {
+      return [];
     }
-  };
 
-  const handleFunctionApply = () => {
-    const rangeString = generateRangeString();
-    const selectedData = getSelectedCellsData();
-    const { result, warning } = calculateFunctionResult(
-      selectedFunction,
-      selectedData
-    );
+    const hotInstance = hotRef.current.hotInstance;
+    const { minRow, maxRow, minCol, maxCol } = selectedRangeState;
 
-    if (warning) {
-      setConfirmationMessage(warning);
-      setShowConfirmation(true);
-    } else {
-      addComponent("function", rangeString, selectedFunction, result);
-    }
+    return hotInstance.getData(minRow, minCol, maxRow, maxCol);
   };
 
   const handleAddTable = () => {
@@ -375,192 +230,40 @@ const StoryMenu = ({
 
   const menuOptions = {
     Table: (
-      <div className={styles.secondaryMenuBar}>
-        <div className={styles.secondaryMenuItem}>
-          <button
-            className={styles.button}
-            ref={tableButtonRef}
-            onClick={toggleColumnDropdown}
-          >
-            All columns
-          </button>
-          {isColumnDropdownVisible && (
-            <div
-              ref={columnDropdownRef}
-              className={styles.dropdown}
-              style={{
-                top: tableDropdownPosition.top + 35,
-                left: tableDropdownPosition.left + 10,
-              }}
-            >
-              {columnConfigs.map((column, index) => (
-                <div
-                  key={index}
-                  className={styles.textOption}
-                  onClick={() => handleColumnSelect(column.title)}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedColumns.includes(column.title)}
-                    readOnly
-                  />
-                  {column.title}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className={styles.secondaryMenuItem}>
-          <button
-            className={styles.button}
-            ref={highlightButtonRef}
-            onClick={toggleHighlightDropdown}
-          >
-            Highlight 1
-          </button>
-          {isHighlightDropdownVisible && (
-            <div
-              ref={highlightDropdownRef}
-              className={styles.dropdown}
-              style={{
-                top: highlightDropdownPosition.top + 35,
-                left: highlightDropdownPosition.left + 177,
-              }}
-            >
-              <div className={styles.textOption}>
-                <span>Select</span>
-                <select
-                  value={highlightOption}
-                  onChange={handleHighlightOptionChange}
-                  className={styles.selectInput}
-                >
-                  <option value="">nothing</option>
-                  <option value="Columns">Columns</option>
-                  <option value="Rows">Rows</option>
-                  <option value="Cells">Cells</option>
-                </select>
-              </div>
-              {highlightOption === "Cells" &&
-                highlightAdditionalOptions.length > 0 && (
-                  <div className={styles.additionalOptions}>
-                    {highlightAdditionalOptions.map((option, index) => (
-                      <div key={index} className={styles.textOption}>
-                        {option === "where" ? (
-                          <>
-                            <span>where</span>
-                            <select
-                              value={highlightCondition}
-                              onChange={handleHighlightConditionChange}
-                              className={styles.selectInput}
-                            >
-                              <option value="empty">empty</option>
-                              <option value="not empty">not empty</option>
-                              <option value="is equal">is equal</option>
-                              <option value="is not equal">is not equal</option>
-                              <option value="is bigger than">
-                                is bigger than
-                              </option>
-                              <option value="is bigger or equal than">
-                                is bigger or equal than
-                              </option>
-                              <option value="is less than">is less than</option>
-                              <option value="is less or equal than">
-                                is less or equal than
-                              </option>
-                              <option value="begins with">begins with</option>
-                              <option value="ends with">ends with</option>
-                              <option value="contains">contains</option>
-                              <option value="does not contain">
-                                does not contain
-                              </option>
-                              <option value="currently selected">
-                                currently selected
-                              </option>
-                            </select>
-                            {[
-                              "is equal",
-                              "is not equal",
-                              "begins with",
-                              "ends with",
-                              "contains",
-                              "does not contain",
-                              "is bigger than",
-                              "is bigger or equal than",
-                              "is less than",
-                              "is less or equal than",
-                            ].includes(highlightCondition) && (
-                              <input
-                                type="text"
-                                value={highlightValue}
-                                onChange={handleHighlightValueChange}
-                                className={styles.inputField}
-                                style={{ width: "50%" }}
-                              />
-                            )}
-                          </>
-                        ) : (
-                          <span>{option}</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-            </div>
-          )}
-        </div>
-        <div className={styles.secondaryMenuItem}>
-          <button className={styles.button}>Highlight 2</button>
-        </div>
-        <div className={styles.secondaryMenuItem}>
-          <button className={styles.button} onClick={handleAddTable}>
-            Insert
-          </button>
-        </div>
-      </div>
+      <TableMenu
+        columnConfigs={columnConfigs}
+        tableButtonRef={tableButtonRef}
+        columnDropdownRef={columnDropdownRef}
+        isColumnDropdownVisible={isColumnDropdownVisible}
+        tableDropdownPosition={tableDropdownPosition}
+        selectedColumns={selectedColumns}
+        toggleColumnDropdown={toggleColumnDropdown}
+        handleColumnSelect={handleColumnSelect}
+        addComponent={addComponent}
+        highlightButtonRef={highlightButtonRef}
+        highlightDropdownRef={highlightDropdownRef}
+        isHighlightDropdownVisible={isHighlightDropdownVisible}
+        highlightDropdownPosition={highlightDropdownPosition}
+        toggleHighlightDropdown={toggleHighlightDropdown}
+        highlightOption={highlightOption}
+        handleHighlightOptionChange={handleHighlightOptionChange}
+        highlightAdditionalOptions={highlightAdditionalOptions}
+        highlightCondition={highlightCondition}
+        handleHighlightConditionChange={handleHighlightConditionChange}
+        highlightValue={highlightValue}
+        handleHighlightValueChange={handleHighlightValueChange}
+      />
     ),
     Function: (
-      <div className={styles.secondaryMenuBar}>
-        <div
-          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
-        >
-          {generateRangeString()}
-        </div>
-        <div
-          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
-        >
-          <select
-            value={selectedFunction}
-            onChange={(e) => setSelectedFunction(e.target.value)}
-            className={styles.selectInput}
-          >
-            <option value="" disabled>
-              Select a function
-            </option>
-            {[
-              "AVERAGE",
-              "SUM",
-              "MAX",
-              "MIN",
-              "COUNT",
-              "COUNT EMPTY",
-              "COUNT UNIQUE",
-            ].map((func, index) => (
-              <option key={index} value={func}>
-                {func}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className={styles.secondaryMenuItem}>
-          <button
-            className={styles.button}
-            onClick={handleFunctionApply}
-            disabled={!selectedRangeState || !selectedFunction}
-          >
-            Insert
-          </button>
-        </div>
-      </div>
+      <FunctionMenu
+        selectedRangeState={selectedRangeState}
+        getSelectedCellsData={getSelectedCellsData}
+        setSelectedFunction={setSelectedFunction}
+        selectedFunction={selectedFunction}
+        setShowConfirmation={setShowConfirmation}
+        setConfirmationMessage={setConfirmationMessage}
+        addComponent={addComponent}
+      />
     ),
   };
 
@@ -600,9 +303,10 @@ const StoryMenu = ({
           <button className={styles.button}>Text</button>
         </div>
       </div>
-      {activeMenu && activeMenu !== "Text" && activeMenu !== "Chart" && (
-        <div className={styles.secondaryMenuBar}>{menuOptions[activeMenu]}</div>
-      )}
+      {activeMenu === "Chart" && <ChartMenu addComponent={addComponent} />}
+      {activeMenu === "Text" && <TextMenu addComponent={addComponent} />}
+      {activeMenu === "Table" && menuOptions.Table}
+      {activeMenu === "Function" && menuOptions.Function}
     </div>
   );
 };
