@@ -53,6 +53,11 @@
     outline: none;
 }
 
+.button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
 .secondaryMenuBar {
     display: flex;
     flex-direction: row;
@@ -100,4 +105,9 @@
 
 .applyButton:hover {
     background-color: #f0f0f0;
+}
+
+.paddingContainer {
+    padding-left: 10px;
+    padding-right: 10px;
 }

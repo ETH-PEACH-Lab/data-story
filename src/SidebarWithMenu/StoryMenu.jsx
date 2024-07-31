@@ -9,23 +9,32 @@ const StoryMenu = ({
   setConfirmationMessage,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
-  const [isFunctionDropdownVisible, setFunctionDropdownVisible] =
-    useState(false);
+  const [isTableDropdownVisible, setTableDropdownVisible] = useState(false);
   const [selectedFunction, setSelectedFunction] = useState("");
   const [selectedRangeState, setSelectedRangeState] = useState(null); // Local state for selected range
-  const functionButtonRef = useRef(null);
-  const functionDropdownRef = useRef(null);
-  const [functionDropdownPosition, setFunctionDropdownPosition] = useState({
+  const tableButtonRef = useRef(null);
+  const tableDropdownRef = useRef(null);
+  const [tableDropdownPosition, setTableDropdownPosition] = useState({
     top: 0,
     left: 0,
   });
 
   const handleMenuClick = (menu) => {
-    if (activeMenu === menu) {
+    if (menu === "Chart") {
+      addComponent("chart");
+      setActiveMenu("");
+    } else if (menu === "Text") {
+      addComponent("text");
+      setActiveMenu("");
+    } else if (activeMenu === menu) {
       setActiveMenu("");
     } else {
       setActiveMenu(menu);
-      setFunctionDropdownVisible(false);
+      if (menu === "Table") {
+        setTableDropdownVisible(true);
+      } else {
+        setTableDropdownVisible(false);
+      }
     }
   };
 
@@ -135,21 +144,21 @@ const StoryMenu = ({
       detail: { type, column, func, result },
     });
     document.dispatchEvent(addEvent);
-    setFunctionDropdownVisible(false);
+    setTableDropdownVisible(false);
   };
 
   const handleClickOutside = (event) => {
     if (
       !(
-        (functionDropdownRef.current &&
-          functionDropdownRef.current.contains(event.target)) ||
-        (functionButtonRef.current &&
-          functionButtonRef.current.contains(event.target)) ||
+        (tableDropdownRef.current &&
+          tableDropdownRef.current.contains(event.target)) ||
+        (tableButtonRef.current &&
+          tableButtonRef.current.contains(event.target)) ||
         (tableContainerRef.current &&
           tableContainerRef.current.contains(event.target))
       )
     ) {
-      setFunctionDropdownVisible(false);
+      setTableDropdownVisible(false);
     }
   };
 
@@ -191,8 +200,8 @@ const StoryMenu = ({
 
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("resize", () => {
-      if (isFunctionDropdownVisible)
-        updateDropdownPosition(functionButtonRef, setFunctionDropdownPosition);
+      if (isTableDropdownVisible)
+        updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
     });
 
     return () => {
@@ -201,20 +210,17 @@ const StoryMenu = ({
       }
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("resize", () => {
-        if (isFunctionDropdownVisible)
-          updateDropdownPosition(
-            functionButtonRef,
-            setFunctionDropdownPosition
-          );
+        if (isTableDropdownVisible)
+          updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
       });
     };
-  }, [isFunctionDropdownVisible, hotRef]);
+  }, [isTableDropdownVisible, hotRef]);
 
   useLayoutEffect(() => {
-    if (isFunctionDropdownVisible) {
-      updateDropdownPosition(functionButtonRef, setFunctionDropdownPosition);
+    if (isTableDropdownVisible) {
+      updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
     }
-  }, [isFunctionDropdownVisible]);
+  }, [isTableDropdownVisible]);
 
   const generateRangeString = () => {
     if (!selectedRangeState) return "No range selected";
@@ -276,97 +282,81 @@ const StoryMenu = ({
     }
   };
 
+  const handleAddTable = () => {
+    // Handle add table logic here
+    addComponent("table");
+  };
+
   const menuOptions = {
-    Text: (
+    Table: (
       <div className={styles.secondaryMenuBar}>
-        <div className={styles.secondaryMenuItem}>
-          <button
-            className={styles.button}
-            onClick={() => addComponent("text")}
-          >
-            Add Text
-          </button>
+        <div
+          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
+        >
+          <input type="text" className={styles.selectInput} />
         </div>
-      </div>
-    ),
-    Element: (
-      <div className={styles.secondaryMenuBar}>
+        <div
+          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
+        >
+          <select className={styles.selectInput}>
+            <option value="">Highlighter 1</option>
+          </select>
+        </div>
+        <div
+          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
+        >
+          <select className={styles.selectInput}>
+            <option value="">Highlighter 2</option>
+          </select>
+        </div>
         <div className={styles.secondaryMenuItem}>
-          <button
-            className={styles.button}
-            onClick={() => addComponent("chart")}
-          >
-            Add Chart
-          </button>
-          <button
-            className={styles.button}
-            onClick={() => addComponent("table")}
-          >
-            Add Table
+          <button className={styles.button} onClick={handleAddTable}>
+            Add
           </button>
         </div>
       </div>
     ),
     Function: (
       <div className={styles.secondaryMenuBar}>
+        <div
+          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
+        >
+          {generateRangeString()}
+        </div>
+        <div
+          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
+        >
+          <select
+            value={selectedFunction}
+            onChange={(e) => setSelectedFunction(e.target.value)}
+            className={styles.selectInput}
+          >
+            <option value="" disabled>
+              Select a function
+            </option>
+            {[
+              "AVERAGE",
+              "SUM",
+              "MAX",
+              "MIN",
+              "COUNT",
+              "COUNT EMPTY",
+              "COUNT UNIQUE",
+            ].map((func, index) => (
+              <option key={index} value={func}>
+                {func}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className={styles.secondaryMenuItem}>
           <button
             className={styles.button}
-            onClick={() => {
-              setFunctionDropdownVisible(!isFunctionDropdownVisible);
-            }}
-            ref={functionButtonRef}
+            onClick={handleFunctionApply}
+            disabled={!selectedRangeState || !selectedFunction}
           >
-            Add Function
+            Insert
           </button>
-          {isFunctionDropdownVisible && (
-            <div
-              className={styles.dropdown}
-              style={{
-                top: `${functionDropdownPosition.top}px`,
-                marginLeft: "69px",
-              }}
-              ref={functionDropdownRef}
-            >
-              <div className={styles.dropdownSection}>
-                <label className={styles.dropdownTitle}>Selected Range:</label>
-                <div className={styles.selectedRangeDisplay}>
-                  {generateRangeString()}
-                </div>
-              </div>
-              <div className={styles.dropdownSection}>
-                <label className={styles.dropdownTitle}>Select Function:</label>
-                <select
-                  value={selectedFunction}
-                  onChange={(e) => setSelectedFunction(e.target.value)}
-                  className={styles.selectInput}
-                >
-                  <option value="" disabled>
-                    Select a function
-                  </option>
-                  {[
-                    "AVERAGE",
-                    "SUM",
-                    "MAX",
-                    "MIN",
-                    "COUNT",
-                    "COUNT EMPTY",
-                    "COUNT UNIQUE",
-                  ].map((func, index) => (
-                    <option key={index} value={func}>
-                      {func}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <button
-                className={styles.applyButton}
-                onClick={handleFunctionApply}
-              >
-                Insert
-              </button>
-            </div>
-          )}
         </div>
       </div>
     ),
@@ -375,6 +365,20 @@ const StoryMenu = ({
   return (
     <div className={styles.menuBarContainer}>
       <div className={styles.menuBar}>
+        <div
+          className={`${styles.menuItem} ${
+            activeMenu === "Chart" ? styles.activeMenuItem : ""
+          }`}
+          onClick={() => handleMenuClick("Chart")}
+        >
+          <button className={styles.button}>Chart</button>
+        </div>
+        <div
+          className={`${styles.menuItem} ${
+            activeMenu === "Table" ? styles.activeMenuItem : ""
+          }`}
+          onClick={() => handleMenuClick("Table")}
+        ></div>
         {Object.keys(menuOptions).map((menu, index) => (
           <div
             key={index}
@@ -386,8 +390,16 @@ const StoryMenu = ({
             <button className={styles.button}>{menu}</button>
           </div>
         ))}
+        <div
+          className={`${styles.menuItem} ${
+            activeMenu === "Text" ? styles.activeMenuItem : ""
+          }`}
+          onClick={() => handleMenuClick("Text")}
+        >
+          <button className={styles.button}>Text</button>
+        </div>
       </div>
-      {activeMenu && (
+      {activeMenu && activeMenu !== "Text" && (
         <div className={styles.secondaryMenuBar}>{menuOptions[activeMenu]}</div>
       )}
     </div>
