@@ -9,10 +9,22 @@ const StoryMenu = ({
   setConfirmationMessage,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
+  const [highlightAdditionalOptions, setHighlightAdditionalOptions] = useState(
+    []
+  );
   const [selectedFunction, setSelectedFunction] = useState("");
-  const [selectedRangeState, setSelectedRangeState] = useState(null); // Local state for selected range
+  const [selectedRangeState, setSelectedRangeState] = useState(null);
   const [isColumnDropdownVisible, setColumnDropdownVisible] = useState(false);
+  const [isHighlightDropdownVisible, setHighlightDropdownVisible] =
+    useState(false);
+  const [highlightOption, setHighlightOption] = useState("");
   const [tableDropdownPosition, setTableDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [highlightCondition, setHighlightCondition] = useState("");
+  const [highlightValue, setHighlightValue] = useState("");
+  const [highlightDropdownPosition, setHighlightDropdownPosition] = useState({
     top: 0,
     left: 0,
   });
@@ -21,6 +33,8 @@ const StoryMenu = ({
   );
   const tableButtonRef = useRef(null);
   const columnDropdownRef = useRef(null);
+  const highlightButtonRef = useRef(null);
+  const highlightDropdownRef = useRef(null);
 
   const handleMenuClick = (menu) => {
     if (menu === "Chart") {
@@ -33,7 +47,30 @@ const StoryMenu = ({
       setActiveMenu("");
     } else {
       setActiveMenu(menu);
-      setColumnDropdownVisible(false); // Ensure dropdown is hidden when switching menus
+      setColumnDropdownVisible(false);
+      setHighlightDropdownVisible(false);
+
+      if (menu === "Table") {
+        setSelectedColumns(columnConfigs.map((column) => column.title));
+      }
+    }
+  };
+
+  const handleHighlightConditionChange = (e) => {
+    setHighlightCondition(e.target.value);
+  };
+
+  const handleHighlightValueChange = (e) => {
+    setHighlightValue(e.target.value);
+  };
+
+  const handleHighlightOptionChange = (e) => {
+    const value = e.target.value;
+    setHighlightOption(value);
+    if (value === "Cells") {
+      setHighlightAdditionalOptions(["of all columns", "of all rows", "where"]);
+    } else {
+      setHighlightAdditionalOptions([]);
     }
   };
 
@@ -144,6 +181,7 @@ const StoryMenu = ({
     });
     document.dispatchEvent(addEvent);
     setColumnDropdownVisible(false);
+    setHighlightDropdownVisible(false); // Hide highlight dropdown on component add
   };
 
   const handleClickOutside = (event) => {
@@ -154,14 +192,21 @@ const StoryMenu = ({
     ) {
       setColumnDropdownVisible(false);
     }
+    if (
+      highlightDropdownRef.current &&
+      !highlightDropdownRef.current.contains(event.target) &&
+      !highlightButtonRef.current.contains(event.target)
+    ) {
+      setHighlightDropdownVisible(false);
+    }
   };
 
   const updateDropdownPosition = (buttonRef, setDropdownPosition) => {
     if (buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
-        top: window.scrollY,
-        left: window.scrollX,
+        top: 0 + window.scrollY,
+        left: 0 + window.scrollX,
       });
     }
   };
@@ -197,6 +242,11 @@ const StoryMenu = ({
     window.addEventListener("resize", () => {
       if (isColumnDropdownVisible)
         updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
+      if (isHighlightDropdownVisible)
+        updateDropdownPosition(
+          highlightButtonRef,
+          setHighlightDropdownPosition
+        );
     });
 
     return () => {
@@ -207,15 +257,23 @@ const StoryMenu = ({
       window.removeEventListener("resize", () => {
         if (isColumnDropdownVisible)
           updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
+        if (isHighlightDropdownVisible)
+          updateDropdownPosition(
+            highlightButtonRef,
+            setHighlightDropdownPosition
+          );
       });
     };
-  }, [isColumnDropdownVisible, hotRef]);
+  }, [isColumnDropdownVisible, isHighlightDropdownVisible, hotRef]);
 
   useLayoutEffect(() => {
     if (isColumnDropdownVisible) {
       updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
     }
-  }, [isColumnDropdownVisible]);
+    if (isHighlightDropdownVisible) {
+      updateDropdownPosition(highlightButtonRef, setHighlightDropdownPosition);
+    }
+  }, [isColumnDropdownVisible, isHighlightDropdownVisible]);
 
   const generateRangeString = () => {
     if (!selectedRangeState) return "No range selected";
@@ -279,6 +337,7 @@ const StoryMenu = ({
 
   const handleAddTable = () => {
     addComponent("table");
+    setSelectedColumns(columnConfigs.map((column) => column.title));
   };
 
   const handleColumnSelect = (column) => {
@@ -295,9 +354,20 @@ const StoryMenu = ({
     event.stopPropagation(); // Stop event propagation
     setColumnDropdownVisible((prevVisible) => {
       if (!prevVisible) {
-        // If dropdown is becoming visible, select all columns
-        setSelectedColumns(columnConfigs.map((column) => column.title));
         updateDropdownPosition(tableButtonRef, setTableDropdownPosition); // Update position when opening
+      }
+      return !prevVisible;
+    });
+  };
+
+  const toggleHighlightDropdown = (event) => {
+    event.stopPropagation(); // Stop event propagation
+    setHighlightDropdownVisible((prevVisible) => {
+      if (!prevVisible) {
+        updateDropdownPosition(
+          highlightButtonRef,
+          setHighlightDropdownPosition
+        ); // Update position when opening
       }
       return !prevVisible;
     });
@@ -306,9 +376,7 @@ const StoryMenu = ({
   const menuOptions = {
     Table: (
       <div className={styles.secondaryMenuBar}>
-        <div
-          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
-        >
+        <div className={styles.secondaryMenuItem}>
           <button
             className={styles.button}
             ref={tableButtonRef}
@@ -343,7 +411,102 @@ const StoryMenu = ({
           )}
         </div>
         <div className={styles.secondaryMenuItem}>
-          <button className={styles.button}>Highlight 1</button>
+          <button
+            className={styles.button}
+            ref={highlightButtonRef}
+            onClick={toggleHighlightDropdown}
+          >
+            Highlight 1
+          </button>
+          {isHighlightDropdownVisible && (
+            <div
+              ref={highlightDropdownRef}
+              className={styles.dropdown}
+              style={{
+                top: highlightDropdownPosition.top + 35,
+                left: highlightDropdownPosition.left + 177,
+              }}
+            >
+              <div className={styles.textOption}>
+                <span>Select</span>
+                <select
+                  value={highlightOption}
+                  onChange={handleHighlightOptionChange}
+                  className={styles.selectInput}
+                >
+                  <option value="">nothing</option>
+                  <option value="Columns">Columns</option>
+                  <option value="Rows">Rows</option>
+                  <option value="Cells">Cells</option>
+                </select>
+              </div>
+              {highlightOption === "Cells" &&
+                highlightAdditionalOptions.length > 0 && (
+                  <div className={styles.additionalOptions}>
+                    {highlightAdditionalOptions.map((option, index) => (
+                      <div key={index} className={styles.textOption}>
+                        {option === "where" ? (
+                          <>
+                            <span>where</span>
+                            <select
+                              value={highlightCondition}
+                              onChange={handleHighlightConditionChange}
+                              className={styles.selectInput}
+                            >
+                              <option value="empty">empty</option>
+                              <option value="not empty">not empty</option>
+                              <option value="is equal">is equal</option>
+                              <option value="is not equal">is not equal</option>
+                              <option value="is bigger than">
+                                is bigger than
+                              </option>
+                              <option value="is bigger or equal than">
+                                is bigger or equal than
+                              </option>
+                              <option value="is less than">is less than</option>
+                              <option value="is less or equal than">
+                                is less or equal than
+                              </option>
+                              <option value="begins with">begins with</option>
+                              <option value="ends with">ends with</option>
+                              <option value="contains">contains</option>
+                              <option value="does not contain">
+                                does not contain
+                              </option>
+                              <option value="currently selected">
+                                currently selected
+                              </option>
+                            </select>
+                            {[
+                              "is equal",
+                              "is not equal",
+                              "begins with",
+                              "ends with",
+                              "contains",
+                              "does not contain",
+                              "is bigger than",
+                              "is bigger or equal than",
+                              "is less than",
+                              "is less or equal than",
+                            ].includes(highlightCondition) && (
+                              <input
+                                type="text"
+                                value={highlightValue}
+                                onChange={handleHighlightValueChange}
+                                className={styles.inputField}
+                                style={{ width: "50%" }}
+                              />
+                            )}
+                          </>
+                        ) : (
+                          <span>{option}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+            </div>
+          )}
         </div>
         <div className={styles.secondaryMenuItem}>
           <button className={styles.button}>Highlight 2</button>
