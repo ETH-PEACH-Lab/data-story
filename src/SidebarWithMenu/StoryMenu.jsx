@@ -9,15 +9,18 @@ const StoryMenu = ({
   setConfirmationMessage,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
-  const [isTableDropdownVisible, setTableDropdownVisible] = useState(false);
   const [selectedFunction, setSelectedFunction] = useState("");
   const [selectedRangeState, setSelectedRangeState] = useState(null); // Local state for selected range
-  const tableButtonRef = useRef(null);
-  const tableDropdownRef = useRef(null);
+  const [isColumnDropdownVisible, setColumnDropdownVisible] = useState(false);
   const [tableDropdownPosition, setTableDropdownPosition] = useState({
     top: 0,
     left: 0,
   });
+  const [selectedColumns, setSelectedColumns] = useState(
+    columnConfigs.map((column) => column.title)
+  );
+  const tableButtonRef = useRef(null);
+  const columnDropdownRef = useRef(null);
 
   const handleMenuClick = (menu) => {
     if (menu === "Chart") {
@@ -30,11 +33,7 @@ const StoryMenu = ({
       setActiveMenu("");
     } else {
       setActiveMenu(menu);
-      if (menu === "Table") {
-        setTableDropdownVisible(true);
-      } else {
-        setTableDropdownVisible(false);
-      }
+      setColumnDropdownVisible(false); // Ensure dropdown is hidden when switching menus
     }
   };
 
@@ -144,21 +143,16 @@ const StoryMenu = ({
       detail: { type, column, func, result },
     });
     document.dispatchEvent(addEvent);
-    setTableDropdownVisible(false);
+    setColumnDropdownVisible(false);
   };
 
   const handleClickOutside = (event) => {
     if (
-      !(
-        (tableDropdownRef.current &&
-          tableDropdownRef.current.contains(event.target)) ||
-        (tableButtonRef.current &&
-          tableButtonRef.current.contains(event.target)) ||
-        (tableContainerRef.current &&
-          tableContainerRef.current.contains(event.target))
-      )
+      columnDropdownRef.current &&
+      !columnDropdownRef.current.contains(event.target) &&
+      !tableButtonRef.current.contains(event.target) // Add this condition
     ) {
-      setTableDropdownVisible(false);
+      setColumnDropdownVisible(false);
     }
   };
 
@@ -166,7 +160,8 @@ const StoryMenu = ({
     if (buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
-        top: buttonRect.bottom + window.scrollY - 131,
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
       });
     }
   };
@@ -200,7 +195,7 @@ const StoryMenu = ({
 
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("resize", () => {
-      if (isTableDropdownVisible)
+      if (isColumnDropdownVisible)
         updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
     });
 
@@ -210,17 +205,17 @@ const StoryMenu = ({
       }
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("resize", () => {
-        if (isTableDropdownVisible)
+        if (isColumnDropdownVisible)
           updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
       });
     };
-  }, [isTableDropdownVisible, hotRef]);
+  }, [isColumnDropdownVisible, hotRef]);
 
   useLayoutEffect(() => {
-    if (isTableDropdownVisible) {
+    if (isColumnDropdownVisible) {
       updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
     }
-  }, [isTableDropdownVisible]);
+  }, [isColumnDropdownVisible]);
 
   const generateRangeString = () => {
     if (!selectedRangeState) return "No range selected";
@@ -283,8 +278,29 @@ const StoryMenu = ({
   };
 
   const handleAddTable = () => {
-    // Handle add table logic here
     addComponent("table");
+  };
+
+  const handleColumnSelect = (column) => {
+    setSelectedColumns((prev) => {
+      if (prev.includes(column)) {
+        return prev.filter((col) => col !== column);
+      } else {
+        return [...prev, column];
+      }
+    });
+  };
+
+  const toggleColumnDropdown = (event) => {
+    event.stopPropagation(); // Stop event propagation
+    setColumnDropdownVisible((prevVisible) => {
+      if (!prevVisible) {
+        // If dropdown is becoming visible, select all columns
+        setSelectedColumns(columnConfigs.map((column) => column.title));
+        updateDropdownPosition(tableButtonRef, setTableDropdownPosition); // Update position when opening
+      }
+      return !prevVisible;
+    });
   };
 
   const menuOptions = {
@@ -293,7 +309,34 @@ const StoryMenu = ({
         <div
           className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
         >
-          <input type="text" className={styles.selectInput} />
+          <button className={styles.button} onClick={toggleColumnDropdown}>
+            All columns
+          </button>
+          {isColumnDropdownVisible && (
+            <div
+              ref={columnDropdownRef}
+              className={styles.dropdown}
+              style={{
+                top: tableDropdownPosition.top + 35,
+                left: tableDropdownPosition.left + 10,
+              }}
+            >
+              {columnConfigs.map((column, index) => (
+                <div
+                  key={index}
+                  className={styles.textOption}
+                  onClick={() => handleColumnSelect(column.title)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedColumns.includes(column.title)}
+                    readOnly
+                  />
+                  {column.title}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div
           className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
@@ -311,7 +354,7 @@ const StoryMenu = ({
         </div>
         <div className={styles.secondaryMenuItem}>
           <button className={styles.button} onClick={handleAddTable}>
-            Add
+            Insert
           </button>
         </div>
       </div>
@@ -378,18 +421,17 @@ const StoryMenu = ({
             activeMenu === "Table" ? styles.activeMenuItem : ""
           }`}
           onClick={() => handleMenuClick("Table")}
-        ></div>
-        {Object.keys(menuOptions).map((menu, index) => (
-          <div
-            key={index}
-            className={`${styles.menuItem} ${
-              activeMenu === menu ? styles.activeMenuItem : ""
-            }`}
-            onClick={() => handleMenuClick(menu)}
-          >
-            <button className={styles.button}>{menu}</button>
-          </div>
-        ))}
+        >
+          <button className={styles.button}>Table</button>
+        </div>
+        <div
+          className={`${styles.menuItem} ${
+            activeMenu === "Function" ? styles.activeMenuItem : ""
+          }`}
+          onClick={() => handleMenuClick("Function")}
+        >
+          <button className={styles.button}>Function</button>
+        </div>
         <div
           className={`${styles.menuItem} ${
             activeMenu === "Text" ? styles.activeMenuItem : ""
@@ -399,7 +441,7 @@ const StoryMenu = ({
           <button className={styles.button}>Text</button>
         </div>
       </div>
-      {activeMenu && activeMenu !== "Text" && (
+      {activeMenu && activeMenu !== "Text" && activeMenu !== "Chart" && (
         <div className={styles.secondaryMenuBar}>{menuOptions[activeMenu]}</div>
       )}
     </div>

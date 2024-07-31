@@ -71,6 +71,7 @@
     position: absolute;
     display: flex;
     width: max-content;
+    max-height: 250px;
     margin-left: -10px;
     margin-top: 0px;
     flex-direction: column;
@@ -78,6 +79,7 @@
     border: 1px solid #ccc;
     padding: 5px;
     z-index: 205;
+    overflow: auto;
 }
 
 .textOption {

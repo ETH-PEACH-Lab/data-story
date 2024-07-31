@@ -4,7 +4,6 @@
   position: relative;
   overflow-x: auto; 
   height: calc(100% - 100px);
-  overflow-y: auto;
 }
 
 .story-textarea {
@@ -36,7 +35,7 @@
   align-items: flex-start;
   min-height: 60px;
   right: 6px;
-  width: calc(100% + 4px);
+  width: 100%;
   position: relative;
   overflow: visible;
 }
@@ -94,6 +93,7 @@
 .function {
   padding: 6px;
   border: 2px solid #ccc;
+  width: calc(100% + 24px);
   margin-top: 8px;
   background-color: transparent;
   font-size: 16px;
@@ -105,7 +105,7 @@
   display: flex;
   align-items: flex-start;
   right: 6px;
-  width: calc(100% + 24px);
+  width: fit-content;
   position: relative;
   margin-bottom: 0px;
 }
@@ -125,18 +125,18 @@
 }
 
 .quill-editor-container h1 {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .quill-editor-container h2 {
-  font-size: 1.25rem;
+  font-size: 2rem;
 }
 
 .chart-container{
   display: flex;
   align-items: flex-start;
   right: 6px;
-  width: calc(100% + 24px);
+  width: calc(100% - 24px);
   position: relative;
   margin-bottom: 0px;
 }
@@ -151,7 +151,7 @@
   display: flex;
   align-items: flex-start;
   right: 6px;
-  width: calc(100% + 24px);
+  width: calc(100% - 24px);
   position: relative;
   margin-bottom: 0px;
 }
@@ -161,7 +161,7 @@
 }
 
 .small-table-wrapper {
-  overflow: auto;
+  overflow: hidden;
   width: 100%;
   height: 100%;
 }
