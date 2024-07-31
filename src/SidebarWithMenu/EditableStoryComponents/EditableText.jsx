@@ -3,6 +3,7 @@ import "../Story.css";
 import EditMenu from "./EditMenu";
 import Quill from "quill";
 import "quill/dist/quill.bubble.css";
+import "quill/dist/quill.snow.css"; // Importing the Snow theme CSS for color tool
 
 function EditableText({
   textObj,
@@ -36,6 +37,7 @@ function EditableText({
           toolbar: [
             [{ header: [1, 2, false] }],
             ["bold", "italic", "underline"],
+            [{ color: [] }],
           ],
         },
         theme: "bubble",
