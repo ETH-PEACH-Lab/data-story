@@ -150,7 +150,7 @@ const StoryMenu = ({
     if (
       columnDropdownRef.current &&
       !columnDropdownRef.current.contains(event.target) &&
-      !tableButtonRef.current.contains(event.target) // Add this condition
+      !tableButtonRef.current.contains(event.target)
     ) {
       setColumnDropdownVisible(false);
     }
@@ -160,8 +160,8 @@ const StoryMenu = ({
     if (buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
-        top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
+        top: window.scrollY,
+        left: window.scrollX,
       });
     }
   };
@@ -309,7 +309,11 @@ const StoryMenu = ({
         <div
           className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
         >
-          <button className={styles.button} onClick={toggleColumnDropdown}>
+          <button
+            className={styles.button}
+            ref={tableButtonRef}
+            onClick={toggleColumnDropdown}
+          >
             All columns
           </button>
           {isColumnDropdownVisible && (
@@ -338,19 +342,11 @@ const StoryMenu = ({
             </div>
           )}
         </div>
-        <div
-          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
-        >
-          <select className={styles.selectInput}>
-            <option value="">Highlighter 1</option>
-          </select>
+        <div className={styles.secondaryMenuItem}>
+          <button className={styles.button}>Highlight 1</button>
         </div>
-        <div
-          className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}
-        >
-          <select className={styles.selectInput}>
-            <option value="">Highlighter 2</option>
-          </select>
+        <div className={styles.secondaryMenuItem}>
+          <button className={styles.button}>Highlight 2</button>
         </div>
         <div className={styles.secondaryMenuItem}>
           <button className={styles.button} onClick={handleAddTable}>
