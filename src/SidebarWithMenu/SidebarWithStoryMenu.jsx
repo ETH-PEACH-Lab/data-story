@@ -1,6 +1,8 @@
-import React from 'react';
-import MainSidebar from './MainSidebar';
-import StoryMenu from './StoryMenu';
+import React, { useState } from "react";
+import FilterTutorial from "./FilterTutorial";
+import TutorialMenu from "./TutorialMenu";
+import Story from "./Story";
+import StoryMenu from "./StoryMenu";
 
 const SidebarWithStoryMenu = ({
   data,
@@ -14,22 +16,21 @@ const SidebarWithStoryMenu = ({
   selectedRange,
   tableContainerRef,
   setShowConfirmation,
-  setConfirmationMessage
+  setConfirmationMessage,
 }) => {
-  return (
-    <div className="sidebar-content-area">
-      <div className="main-sidebar-container">
-        <div className="menu-bar-container">
-          <StoryMenu 
-            columnConfigs={columnConfigs}
-            selectedRange={selectedRange}
-            tableContainerRef={tableContainerRef}
-            hotRef={hotRef}
-            setShowConfirmation={setShowConfirmation}
-            setConfirmationMessage={setConfirmationMessage}
-          />
-        </div>
-        <MainSidebar
+  const [activeMenu, setActiveMenu] = useState("");
+  const [components, setComponents] = useState([
+    { type: "text", text: "--Text--", fontSize: "16px" },
+  ]);
+
+  const handleMenuClick = (menu) => {
+    setActiveMenu(activeMenu === menu ? "" : menu);
+  };
+
+  const menuOptions = {
+    Filtering: (
+      <div className="shift-right">
+        <FilterTutorial
           data={data}
           columnConfigs={columnConfigs}
           selectedColumnIndex={selectedColumnIndex}
@@ -39,6 +40,49 @@ const SidebarWithStoryMenu = ({
           filteredColumns={filteredColumns}
           setFilteredColumns={setFilteredColumns}
         />
+      </div>
+    ),
+    "Option 2": (
+      <div className="shift-right">
+        <h2>Option 2</h2>
+        <p>This is the content for Option 2.</p>
+      </div>
+    ),
+    "Option 3": (
+      <div className="shift-right">
+        <h2>Option 3</h2>
+        <p>This is the content for Option 3.</p>
+      </div>
+    ),
+  };
+
+  return (
+    <div className="sidebar-content-area">
+      <div className="main-sidebar-container">
+        <div className="menu-bar-container">
+          <StoryMenu
+            columnConfigs={columnConfigs}
+            selectedRange={selectedRange}
+            tableContainerRef={tableContainerRef}
+            hotRef={hotRef}
+            setShowConfirmation={setShowConfirmation}
+            setConfirmationMessage={setConfirmationMessage}
+          />
+        </div>
+        <div className="text-and-menu-container">
+          <div className="sidebar" style={{ paddingRight: "15px" }}>
+            {activeMenu ? (
+              menuOptions[activeMenu]
+            ) : (
+              <Story components={components} setComponents={setComponents} />
+            )}
+          </div>
+          <TutorialMenu
+            buttons={["Filtering", "Option 2", "Option 3"]}
+            activeMenu={activeMenu}
+            onMenuClick={handleMenuClick}
+          />
+        </div>
       </div>
     </div>
   );
