@@ -2,19 +2,16 @@ import React from "react";
 import "../Story.css";
 import EditMenu from "./EditMenu";
 
-const Function = ({
-  column,
-  func,
+const StoryChart = ({
   index,
   onDelete,
   onMoveUp,
   onMoveDown,
   isMenuVisible,
   setVisibleMenuIndex,
-  result,
 }) => {
   return (
-    <div className="function-container">
+    <div className="chart-container">
       <div className="edit-menu-toggle">
         <button
           onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
@@ -31,12 +28,9 @@ const Function = ({
           setVisibleMenuIndex={setVisibleMenuIndex}
         />
       )}
-      <div className="function">
-        <strong>{func}</strong> of {column}:{" "}
-        <span className="bold-underline">{result}</span>
-      </div>
+      <div className="chart">Placeholder</div>
     </div>
   );
 };
 
-export default Function;
+export default StoryChart;

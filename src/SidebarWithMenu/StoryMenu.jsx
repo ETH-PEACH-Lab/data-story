@@ -292,7 +292,13 @@ const StoryMenu = ({
     Element: (
       <div className={styles.secondaryMenuBar}>
         <div className={styles.secondaryMenuItem}>
-          <button className={styles.button}>Element</button>
+          <button
+            className={styles.button}
+            onClick={() => addComponent("chart")}
+          >
+            Add Chart
+          </button>
+          <button className={styles.button}>Add Table</button>
         </div>
       </div>
     ),

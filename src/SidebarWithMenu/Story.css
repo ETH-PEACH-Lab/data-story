@@ -2,7 +2,7 @@
   cursor: pointer;
   width: 100%;
   position: relative;
-  overflow-y: auto; 
+  overflow-x: auto; 
   height: calc(100% - 100px);
   overflow-y: auto;
 }
@@ -34,10 +34,11 @@
 .editable-text-container {
   display: flex;
   align-items: flex-start;
+  min-height: 60px;
   right: 6px;
   width: calc(100% + 4px);
   position: relative;
-  overflow: auto;
+  overflow: visible;
 }
 
 .editable-text {
@@ -48,6 +49,7 @@
 
 .edit-menu-toggle {
   margin-left: 0px;
+  z-index: 14;
 }
 
 .edit-menu-toggle button {
@@ -55,7 +57,6 @@
   position: relative;
   height: 100%;
   width: 100%;
-  
   border: none;
   cursor: pointer;
   font-size: 16px;
@@ -70,7 +71,7 @@
   margin-left: 0px;
   overflow: visible;
   background-color: #E3E1D9;
-  z-index: 10;
+  z-index: 15;
 }
 
 .edit-menu button {
@@ -80,6 +81,7 @@
   width: 100%;
   left: 4px;
   border: none;
+  margin-top: -6px;
   cursor: pointer;
   font-size: 12px;
   border-radius: 0;
@@ -119,6 +121,7 @@
   z-index: 10;
   line-height: 1;
   overflow: visible;
+  z-index: 300;
 }
 
 .quill-editor-container h1 {
@@ -129,4 +132,19 @@
 .quill-editor-container h2 {
   font-size: 1.25rem;
   /* Adjust the size as needed */
+}
+
+.chart-container{
+  display: flex;
+  align-items: flex-start;
+  right: 6px;
+  width: calc(100% + 24px);
+  position: relative;
+  margin-bottom: 0px;
+}
+
+.chart{
+  flex-grow: 1;
+  position: relative;
+  right: 4px; 
 }
