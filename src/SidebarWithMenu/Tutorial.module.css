@@ -8,9 +8,11 @@
 
   .textOption {
     padding: 5px 10px;
+    max-height: 50px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    overflow: auto;
   }
   
   .inputContainer {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import styles from "./StoryMenu.module.css";
 
 const TableMenu = ({
@@ -28,6 +28,11 @@ const TableMenu = ({
   setHighlightValue,
   updateDropdownPosition,
 }) => {
+  const [isSecondaryDropdownVisible, setSecondaryDropdownVisible] =
+    useState(false);
+  const [highlightSelectedColumns, setHighlightSelectedColumns] = useState([]);
+  const secondaryDropdownRef = useRef(null);
+
   const handleHighlightConditionChange = (e) => {
     setHighlightCondition(e.target.value);
   };
@@ -56,11 +61,22 @@ const TableMenu = ({
     });
   };
 
+  const handleHighlightColumnSelect = (column) => {
+    setHighlightSelectedColumns((prev) => {
+      if (prev.includes(column)) {
+        return prev.filter((col) => col !== column);
+      } else {
+        return [...prev, column];
+      }
+    });
+  };
+
   const toggleColumnDropdown = (event) => {
     event.stopPropagation(); // Stop event propagation
     setColumnDropdownVisible((prevVisible) => {
       if (!prevVisible) {
         updateDropdownPosition(tableButtonRef, setTableDropdownPosition); // Update position when opening
+        setSelectedColumns(columnConfigs.map((column) => column.title)); // Select all columns when opening
       }
       return !prevVisible;
     });
@@ -79,6 +95,30 @@ const TableMenu = ({
     });
   };
 
+  const allColumnsSelected = useMemo(() => {
+    return selectedColumns.length === columnConfigs.length;
+  }, [selectedColumns, columnConfigs]);
+
+  const selectAllColumns = () => {
+    setSelectedColumns(columnConfigs.map((column) => column.title));
+  };
+
+  const handleAddComponent = (type) => {
+    addComponent(type);
+    selectAllColumns();
+  };
+
+  useEffect(() => {
+    if (isHighlightDropdownVisible) {
+      setHighlightSelectedColumns(columnConfigs.map((column) => column.title));
+    }
+  }, [isHighlightDropdownVisible, columnConfigs]);
+
+  const handleSecondaryDropdownToggle = (event) => {
+    event.stopPropagation(); // Stop event propagation
+    setSecondaryDropdownVisible((prev) => !prev);
+  };
+
   return (
     <div className={styles.secondaryMenuBar}>
       <div className={styles.secondaryMenuItem}>
@@ -87,7 +127,7 @@ const TableMenu = ({
           ref={tableButtonRef}
           onClick={toggleColumnDropdown}
         >
-          All columns
+          {allColumnsSelected ? "All columns" : "of selected columns"}
         </button>
         {isColumnDropdownVisible && (
           <div
@@ -97,6 +137,7 @@ const TableMenu = ({
               top: tableDropdownPosition.top + 35,
               left: tableDropdownPosition.left + 10,
             }}
+            onClick={(e) => e.stopPropagation()}
           >
             {columnConfigs.map((column, index) => (
               <div
@@ -131,8 +172,9 @@ const TableMenu = ({
               top: highlightDropdownPosition.top + 35,
               left: highlightDropdownPosition.left + 172,
             }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className={styles.textOption}>
+            <div className={styles.flexContainer}>
               <span>Select</span>
               <select
                 value={highlightOption}
@@ -203,6 +245,15 @@ const TableMenu = ({
                             />
                           )}
                         </>
+                      ) : option === "of all columns" ? (
+                        <>
+                          <span
+                            onClick={handleSecondaryDropdownToggle}
+                            className={styles.secondaryDropdownToggle}
+                          >
+                            of all columns
+                          </span>
+                        </>
                       ) : (
                         <span>{option}</span>
                       )}
@@ -213,11 +264,40 @@ const TableMenu = ({
           </div>
         )}
       </div>
+      {isSecondaryDropdownVisible && (
+        <div
+          ref={secondaryDropdownRef}
+          className={styles.secondaryDropdown}
+          style={{
+            top: highlightDropdownPosition.top + 59,
+            left: highlightDropdownPosition.left + 386, // Move 20px to the right of the primary dropdown
+          }}
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the secondary dropdown
+        >
+          {columnConfigs.map((column, index) => (
+            <div
+              key={index}
+              className={styles.textOption}
+              onClick={() => handleHighlightColumnSelect(column.title)}
+            >
+              <input
+                type="checkbox"
+                checked={highlightSelectedColumns.includes(column.title)}
+                readOnly
+              />
+              {column.title}
+            </div>
+          ))}
+        </div>
+      )}
       <div className={styles.secondaryMenuItem}>
         <button className={styles.button}>Highlight 2</button>
       </div>
       <div className={styles.secondaryMenuItem}>
-        <button className={styles.button} onClick={() => addComponent("table")}>
+        <button
+          className={styles.button}
+          onClick={() => handleAddComponent("table")}
+        >
           Insert
         </button>
       </div>

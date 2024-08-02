@@ -112,3 +112,27 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.flexContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+        
+.secondaryDropdownToggle {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.secondaryDropdown {
+    position: absolute;
+    background-color: white;
+    max-height: 145px;
+    max-width: fit-content;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px;
+    margin-top: 5px;
+    overflow: auto
+}

@@ -40,6 +40,7 @@ const StoryMenu = ({
   const columnDropdownRef = useRef(null);
   const highlightButtonRef = useRef(null);
   const highlightDropdownRef = useRef(null);
+  const secondaryDropdownRef = useRef(null);
 
   const handleMenuClick = (menu) => {
     if (menu === "Chart") {
@@ -205,6 +206,7 @@ const StoryMenu = ({
         highlightValue={highlightValue}
         setHighlightValue={setHighlightValue}
         updateDropdownPosition={updateDropdownPosition}
+        secondaryDropdownRef={secondaryDropdownRef} // Pass this down
       />
     ),
     Function: (
