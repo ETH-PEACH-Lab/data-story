@@ -317,6 +317,7 @@ const TableMenu = ({
                       maxWidth: "245px",
                       zIndex: 2,
                       left: "10px",
+                      padding: "10px",
                       backgroundColor: "white",
                     }}
                   >
