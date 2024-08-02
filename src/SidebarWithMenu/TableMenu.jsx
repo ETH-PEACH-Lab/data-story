@@ -3,35 +3,89 @@ import styles from "./StoryMenu.module.css";
 
 const TableMenu = ({
   columnConfigs,
-  tableButtonRef,
-  columnDropdownRef,
-  isColumnDropdownVisible,
-  tableDropdownPosition,
-  setTableDropdownPosition, // Accept this prop
   selectedColumns,
   setSelectedColumns,
-  setColumnDropdownVisible,
   addComponent,
-  highlightButtonRef,
-  highlightDropdownRef,
-  isHighlightDropdownVisible,
-  highlightDropdownPosition,
-  setHighlightDropdownPosition, // Accept this prop
-  setHighlightDropdownVisible,
-  highlightOption,
-  setHighlightOption,
-  highlightAdditionalOptions,
-  setHighlightAdditionalOptions,
-  highlightCondition,
-  setHighlightCondition,
-  highlightValue,
-  setHighlightValue,
-  updateDropdownPosition,
 }) => {
+  const [isColumnDropdownVisible, setColumnDropdownVisible] = useState(false);
+  const [isHighlightDropdownVisible, setHighlightDropdownVisible] =
+    useState(false);
+  const [tableDropdownPosition, setTableDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [highlightDropdownPosition, setHighlightDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+  });
   const [isSecondaryDropdownVisible, setSecondaryDropdownVisible] =
     useState(false);
   const [highlightSelectedColumns, setHighlightSelectedColumns] = useState([]);
+  const [highlightOption, setHighlightOption] = useState("");
+  const [highlightAdditionalOptions, setHighlightAdditionalOptions] = useState(
+    []
+  );
+  const [highlightCondition, setHighlightCondition] = useState("");
+  const [highlightValue, setHighlightValue] = useState("");
+
+  const tableButtonRef = useRef(null);
+  const columnDropdownRef = useRef(null);
+  const highlightButtonRef = useRef(null);
+  const highlightDropdownRef = useRef(null);
   const secondaryDropdownRef = useRef(null);
+
+  const updateDropdownPosition = (buttonRef, setDropdownPosition) => {
+    if (buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: 35 + window.scrollY,
+        left: 10 + window.scrollX,
+      });
+    }
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      columnDropdownRef.current &&
+      !columnDropdownRef.current.contains(event.target) &&
+      !tableButtonRef.current.contains(event.target)
+    ) {
+      setColumnDropdownVisible(false);
+    }
+    if (
+      highlightDropdownRef.current &&
+      !highlightDropdownRef.current.contains(event.target) &&
+      !highlightButtonRef.current.contains(event.target)
+    ) {
+      setHighlightDropdownVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("resize", () => {
+      if (isColumnDropdownVisible)
+        updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
+      if (isHighlightDropdownVisible)
+        updateDropdownPosition(
+          highlightButtonRef,
+          setHighlightDropdownPosition
+        );
+    });
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("resize", () => {
+        if (isColumnDropdownVisible)
+          updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
+        if (isHighlightDropdownVisible)
+          updateDropdownPosition(
+            highlightButtonRef,
+            setHighlightDropdownPosition
+          );
+      });
+    };
+  }, [isColumnDropdownVisible, isHighlightDropdownVisible]);
 
   const handleHighlightConditionChange = (e) => {
     setHighlightCondition(e.target.value);
@@ -76,7 +130,6 @@ const TableMenu = ({
     setColumnDropdownVisible((prevVisible) => {
       if (!prevVisible) {
         updateDropdownPosition(tableButtonRef, setTableDropdownPosition); // Update position when opening
-        setSelectedColumns(columnConfigs.map((column) => column.title)); // Select all columns when opening
       }
       return !prevVisible;
     });
@@ -134,8 +187,8 @@ const TableMenu = ({
             ref={columnDropdownRef}
             className={styles.dropdown}
             style={{
-              top: tableDropdownPosition.top + 35,
-              left: tableDropdownPosition.left + 10,
+              top: tableDropdownPosition.top,
+              left: tableDropdownPosition.left,
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -169,8 +222,8 @@ const TableMenu = ({
             ref={highlightDropdownRef}
             className={styles.dropdown}
             style={{
-              top: highlightDropdownPosition.top + 35,
-              left: highlightDropdownPosition.left + 172,
+              top: highlightDropdownPosition.top,
+              left: highlightDropdownPosition.left + 134,
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -269,8 +322,8 @@ const TableMenu = ({
           ref={secondaryDropdownRef}
           className={styles.secondaryDropdown}
           style={{
-            top: highlightDropdownPosition.top + 59,
-            left: highlightDropdownPosition.left + 386, // Move 20px to the right of the primary dropdown
+            top: highlightDropdownPosition.top + 25,
+            left: highlightDropdownPosition.left + 348, // Adjust as needed
           }}
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the secondary dropdown
         >
