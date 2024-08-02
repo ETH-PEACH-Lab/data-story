@@ -61,24 +61,6 @@ const StoryMenu = ({
     }
   };
 
-  const handleHighlightConditionChange = (e) => {
-    setHighlightCondition(e.target.value);
-  };
-
-  const handleHighlightValueChange = (e) => {
-    setHighlightValue(e.target.value);
-  };
-
-  const handleHighlightOptionChange = (e) => {
-    const value = e.target.value;
-    setHighlightOption(value);
-    if (value === "Cells") {
-      setHighlightAdditionalOptions(["of all columns", "of all rows", "where"]);
-    } else {
-      setHighlightAdditionalOptions([]);
-    }
-  };
-
   const addComponent = (type, column = "", func = "", result = "") => {
     const addEvent = new CustomEvent("addComponent", {
       detail: { type, column, func, result },
@@ -195,39 +177,6 @@ const StoryMenu = ({
     setSelectedColumns(columnConfigs.map((column) => column.title));
   };
 
-  const handleColumnSelect = (column) => {
-    setSelectedColumns((prev) => {
-      if (prev.includes(column)) {
-        return prev.filter((col) => col !== column);
-      } else {
-        return [...prev, column];
-      }
-    });
-  };
-
-  const toggleColumnDropdown = (event) => {
-    event.stopPropagation(); // Stop event propagation
-    setColumnDropdownVisible((prevVisible) => {
-      if (!prevVisible) {
-        updateDropdownPosition(tableButtonRef, setTableDropdownPosition); // Update position when opening
-      }
-      return !prevVisible;
-    });
-  };
-
-  const toggleHighlightDropdown = (event) => {
-    event.stopPropagation(); // Stop event propagation
-    setHighlightDropdownVisible((prevVisible) => {
-      if (!prevVisible) {
-        updateDropdownPosition(
-          highlightButtonRef,
-          setHighlightDropdownPosition
-        ); // Update position when opening
-      }
-      return !prevVisible;
-    });
-  };
-
   const menuOptions = {
     Table: (
       <TableMenu
@@ -236,22 +185,26 @@ const StoryMenu = ({
         columnDropdownRef={columnDropdownRef}
         isColumnDropdownVisible={isColumnDropdownVisible}
         tableDropdownPosition={tableDropdownPosition}
+        setTableDropdownPosition={setTableDropdownPosition} // Pass this down
         selectedColumns={selectedColumns}
-        toggleColumnDropdown={toggleColumnDropdown}
-        handleColumnSelect={handleColumnSelect}
+        setSelectedColumns={setSelectedColumns}
+        setColumnDropdownVisible={setColumnDropdownVisible}
         addComponent={addComponent}
         highlightButtonRef={highlightButtonRef}
         highlightDropdownRef={highlightDropdownRef}
         isHighlightDropdownVisible={isHighlightDropdownVisible}
         highlightDropdownPosition={highlightDropdownPosition}
-        toggleHighlightDropdown={toggleHighlightDropdown}
+        setHighlightDropdownPosition={setHighlightDropdownPosition} // Pass this down
+        setHighlightDropdownVisible={setHighlightDropdownVisible}
         highlightOption={highlightOption}
-        handleHighlightOptionChange={handleHighlightOptionChange}
+        setHighlightOption={setHighlightOption}
         highlightAdditionalOptions={highlightAdditionalOptions}
+        setHighlightAdditionalOptions={setHighlightAdditionalOptions}
         highlightCondition={highlightCondition}
-        handleHighlightConditionChange={handleHighlightConditionChange}
+        setHighlightCondition={setHighlightCondition}
         highlightValue={highlightValue}
-        handleHighlightValueChange={handleHighlightValueChange}
+        setHighlightValue={setHighlightValue}
+        updateDropdownPosition={updateDropdownPosition}
       />
     ),
     Function: (

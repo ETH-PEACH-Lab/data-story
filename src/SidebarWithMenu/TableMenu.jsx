@@ -7,23 +7,78 @@ const TableMenu = ({
   columnDropdownRef,
   isColumnDropdownVisible,
   tableDropdownPosition,
+  setTableDropdownPosition, // Accept this prop
   selectedColumns,
-  toggleColumnDropdown,
-  handleColumnSelect,
+  setSelectedColumns,
+  setColumnDropdownVisible,
   addComponent,
   highlightButtonRef,
   highlightDropdownRef,
   isHighlightDropdownVisible,
   highlightDropdownPosition,
-  toggleHighlightDropdown,
+  setHighlightDropdownPosition, // Accept this prop
+  setHighlightDropdownVisible,
   highlightOption,
-  handleHighlightOptionChange,
+  setHighlightOption,
   highlightAdditionalOptions,
+  setHighlightAdditionalOptions,
   highlightCondition,
-  handleHighlightConditionChange,
+  setHighlightCondition,
   highlightValue,
-  handleHighlightValueChange,
+  setHighlightValue,
+  updateDropdownPosition,
 }) => {
+  const handleHighlightConditionChange = (e) => {
+    setHighlightCondition(e.target.value);
+  };
+
+  const handleHighlightValueChange = (e) => {
+    setHighlightValue(e.target.value);
+  };
+
+  const handleHighlightOptionChange = (e) => {
+    const value = e.target.value;
+    setHighlightOption(value);
+    if (value === "Cells") {
+      setHighlightAdditionalOptions(["of all columns", "of all rows", "where"]);
+    } else {
+      setHighlightAdditionalOptions([]);
+    }
+  };
+
+  const handleColumnSelect = (column) => {
+    setSelectedColumns((prev) => {
+      if (prev.includes(column)) {
+        return prev.filter((col) => col !== column);
+      } else {
+        return [...prev, column];
+      }
+    });
+  };
+
+  const toggleColumnDropdown = (event) => {
+    event.stopPropagation(); // Stop event propagation
+    setColumnDropdownVisible((prevVisible) => {
+      if (!prevVisible) {
+        updateDropdownPosition(tableButtonRef, setTableDropdownPosition); // Update position when opening
+      }
+      return !prevVisible;
+    });
+  };
+
+  const toggleHighlightDropdown = (event) => {
+    event.stopPropagation(); // Stop event propagation
+    setHighlightDropdownVisible((prevVisible) => {
+      if (!prevVisible) {
+        updateDropdownPosition(
+          highlightButtonRef,
+          setHighlightDropdownPosition
+        ); // Update position when opening
+      }
+      return !prevVisible;
+    });
+  };
+
   return (
     <div className={styles.secondaryMenuBar}>
       <div className={styles.secondaryMenuItem}>
