@@ -8,38 +8,27 @@ const TableMenu = ({
   setSelectedColumns,
   addComponent,
 }) => {
-  const [isColumnDropdownVisible, setColumnDropdownVisible] = useState(false);
-  const [isHighlightDropdownVisible, setHighlightDropdownVisible] =
-    useState(false);
-  const [tableDropdownPosition, setTableDropdownPosition] = useState({
-    top: 0,
-    left: 0,
-  });
-  const [highlightDropdownPosition, setHighlightDropdownPosition] = useState({
-    top: 0,
-    left: 0,
-  });
+  const [visibleDropdown, setVisibleDropdown] = useState(null);
   const [isSecondaryDropdownVisible, setSecondaryDropdownVisible] =
     useState(false);
-  const [highlightSelectedColumns, setHighlightSelectedColumns] = useState([]);
-  const [isHighlightEnabled, setHighlightEnabled] = useState(false);
-  const [highlightCondition, setHighlightCondition] = useState("nothing");
-  const [highlightValue, setHighlightValue] = useState("");
-  const [highlightColumnSelection, setHighlightColumnSelection] =
-    useState("of all columns");
-  const [highlightRowSelection, setHighlightRowSelection] =
-    useState("of all rows");
-  const [isCurrentlySelected, setIsCurrentlySelected] = useState(false);
-  const [highlightColor, setHighlightColor] = useState(
-    tintColor("#0AEFFF", 60)
-  );
-  const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
   const tableButtonRef = useRef(null);
+  const highlightButtonRef1 = useRef(null);
+  const highlightButtonRef2 = useRef(null);
   const columnDropdownRef = useRef(null);
-  const highlightButtonRef = useRef(null);
-  const highlightDropdownRef = useRef(null);
+  const highlightDropdownRef1 = useRef(null);
+  const highlightDropdownRef2 = useRef(null);
   const secondaryDropdownRef = useRef(null);
+
+  const refs = [
+    columnDropdownRef,
+    tableButtonRef,
+    highlightDropdownRef1,
+    highlightButtonRef1,
+    highlightDropdownRef2,
+    highlightButtonRef2,
+    secondaryDropdownRef,
+  ];
 
   const originalColors = [
     "#000000",
@@ -69,35 +58,127 @@ const TableMenu = ({
   }
 
   const tintedColors = originalColors.map((color) => tintColor(color, 60));
-
   const allColors = [...originalColors, ...tintedColors];
 
-  const updateDropdownPosition = (buttonRef, setDropdownPosition) => {
+  const initialHighlightSettings = {
+    selectedColumns: [],
+    isEnabled: false,
+    condition: "nothing",
+    value: "",
+    columnSelection: "of all columns",
+    rowSelection: "of all rows",
+    isCurrentlySelected: false,
+    rowRange: "",
+  };
+
+  const initialHighlightColors = [
+    tintColor("#0AEFFF", 60),
+    tintColor("#FF8700", 60),
+  ];
+
+  const [highlightSettings, setHighlightSettings] = useState([
+    { ...initialHighlightSettings },
+    { ...initialHighlightSettings },
+  ]);
+
+  const [highlightColors, setHighlightColors] = useState(
+    initialHighlightColors
+  );
+  const [colorPickerVisible, setColorPickerVisible] = useState([false, false]);
+
+  const [dropdownPositions, setDropdownPositions] = useState([
+    { top: 0, left: 0 },
+    { top: 0, left: 0 },
+  ]);
+
+  const updateDropdownPosition = (index, buttonRef) => {
     if (buttonRef.current) {
-      const buttonRect = buttonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: 35 + window.scrollY,
-        left: 10 + window.scrollX,
+      const { top, left } = buttonRef.current.getBoundingClientRect();
+      setDropdownPositions((prev) => {
+        const newPositions = [...prev];
+        newPositions[index] = {
+          top: 35 + window.scrollY,
+          left: 10 + window.scrollX,
+        };
+        return newPositions;
       });
     }
   };
 
+  const toggleDropdown = (index, ref) => (event) => {
+    event.stopPropagation();
+    setVisibleDropdown((prevVisible) => {
+      const newVisibleDropdown = prevVisible !== index ? index : null;
+      if (newVisibleDropdown !== null) {
+        updateDropdownPosition(index, ref);
+      }
+      setSecondaryDropdownVisible(false);
+      return newVisibleDropdown;
+    });
+  };
+
+  const handleHighlightCheckboxChange = (index) => (e) => {
+    setHighlightSettings((prev) =>
+      prev.map((settings, i) =>
+        i === index ? { ...settings, isEnabled: e.target.checked } : settings
+      )
+    );
+  };
+
+  const handleHighlightConditionChange = (index) => (e) => {
+    setHighlightSettings((prev) =>
+      prev.map((settings, i) =>
+        i === index ? { ...settings, condition: e.target.value } : settings
+      )
+    );
+  };
+
+  const handleHighlightValueChange = (index) => (e) => {
+    setHighlightSettings((prev) =>
+      prev.map((settings, i) =>
+        i === index ? { ...settings, value: e.target.value } : settings
+      )
+    );
+  };
+
+  const handleRowRangeChange = (index) => (e) => {
+    setHighlightSettings((prev) =>
+      prev.map((settings, i) =>
+        i === index ? { ...settings, rowRange: e.target.value } : settings
+      )
+    );
+  };
+
+  const handleHighlightColumnSelect = (index, column) => {
+    setHighlightSettings((prev) =>
+      prev.map((settings, i) =>
+        i === index
+          ? {
+              ...settings,
+              selectedColumns: settings.selectedColumns.includes(column)
+                ? settings.selectedColumns.filter((col) => col !== column)
+                : [...settings.selectedColumns, column],
+            }
+          : settings
+      )
+    );
+  };
+
+  const handleColorChangeComplete = (index) => (color) => {
+    setHighlightColors((prev) =>
+      prev.map((col, i) => (i === index ? color.hex : col))
+    );
+    setColorPickerVisible((prev) =>
+      prev.map((visible, i) => (i === index ? false : visible))
+    );
+  };
+
   const handleClickOutside = (event) => {
-    if (
-      columnDropdownRef.current &&
-      !columnDropdownRef.current.contains(event.target) &&
-      !tableButtonRef.current.contains(event.target)
-    ) {
-      setColumnDropdownVisible(false);
-    }
-    if (
-      highlightDropdownRef.current &&
-      !highlightDropdownRef.current.contains(event.target) &&
-      !highlightButtonRef.current.contains(event.target) &&
-      (!secondaryDropdownRef.current ||
-        !secondaryDropdownRef.current.contains(event.target))
-    ) {
-      setHighlightDropdownVisible(false);
+    const isClickOutsideDropdowns = !refs.some(
+      (ref) => ref.current && ref.current.contains(event.target)
+    );
+    if (isClickOutsideDropdowns) {
+      setVisibleDropdown(null);
       setSecondaryDropdownVisible(false);
     }
   };
@@ -105,132 +186,283 @@ const TableMenu = ({
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("resize", () => {
-      if (isColumnDropdownVisible)
-        updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
-      if (isHighlightDropdownVisible)
-        updateDropdownPosition(
-          highlightButtonRef,
-          setHighlightDropdownPosition
-        );
+      if (visibleDropdown !== null) {
+        updateDropdownPosition(visibleDropdown, refs[visibleDropdown]);
+      }
     });
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("resize", () => {
-        if (isColumnDropdownVisible)
-          updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
-        if (isHighlightDropdownVisible)
-          updateDropdownPosition(
-            highlightButtonRef,
-            setHighlightDropdownPosition
-          );
+        if (visibleDropdown !== null) {
+          updateDropdownPosition(visibleDropdown, refs[visibleDropdown]);
+        }
       });
     };
-  }, [isColumnDropdownVisible, isHighlightDropdownVisible]);
-
-  const handleHighlightConditionChange = (e) => {
-    setHighlightCondition(e.target.value);
-  };
-
-  const handleHighlightValueChange = (e) => {
-    setHighlightValue(e.target.value);
-  };
+  }, [visibleDropdown]);
 
   const handleColumnSelect = (column) => {
-    setSelectedColumns((prev) => {
-      if (prev.includes(column)) {
-        return prev.filter((col) => col !== column);
-      } else {
-        return [...prev, column];
-      }
-    });
+    setSelectedColumns((prev) =>
+      prev.includes(column)
+        ? prev.filter((col) => col !== column)
+        : [...prev, column]
+    );
   };
 
-  const handleHighlightColumnSelect = (column) => {
-    setHighlightSelectedColumns((prev) => {
-      if (prev.includes(column)) {
-        return prev.filter((col) => col !== column);
-      } else {
-        return [...prev, column];
-      }
-    });
-  };
+  const allColumnsSelected = useMemo(
+    () => selectedColumns.length === columnConfigs.length,
+    [selectedColumns, columnConfigs]
+  );
 
-  const toggleColumnDropdown = (event) => {
-    event.stopPropagation();
-    setColumnDropdownVisible((prevVisible) => {
-      if (!prevVisible) {
-        updateDropdownPosition(tableButtonRef, setTableDropdownPosition);
-      }
-      return !prevVisible;
-    });
-  };
-
-  const toggleHighlightDropdown = (event) => {
-    event.stopPropagation();
-    setHighlightDropdownVisible((prevVisible) => {
-      if (!prevVisible) {
-        updateDropdownPosition(
-          highlightButtonRef,
-          setHighlightDropdownPosition
-        );
-      }
-      return !prevVisible;
-    });
-  };
-
-  const allColumnsSelected = useMemo(() => {
-    return selectedColumns.length === columnConfigs.length;
-  }, [selectedColumns, columnConfigs]);
-
-  const selectAllColumns = () => {
+  const selectAllColumns = () =>
     setSelectedColumns(columnConfigs.map((column) => column.title));
-  };
 
-  const resetHighlightDropdown = () => {
+  const resetHighlightSettings = (
+    setHighlightSettings,
+    setHighlightColor,
+    initialColor
+  ) => {
     setSecondaryDropdownVisible(false);
-    setHighlightSelectedColumns([]);
-    setHighlightEnabled(false);
-    setIsCurrentlySelected(false);
-    setHighlightColumnSelection("of all columns");
-    setHighlightRowSelection("of all rows");
-    setHighlightCondition("nothing");
-    setHighlightValue("");
-    setHighlightColor(tintColor("#0AEFFF", 60));
+    setHighlightSettings({
+      selectedColumns: [],
+      isEnabled: false,
+      condition: "nothing",
+      value: "",
+      columnSelection: "of all columns",
+      rowSelection: "of all rows",
+      isCurrentlySelected: false,
+      rowRange: "",
+    });
+    setHighlightColor(tintColor(initialColor, 60));
   };
 
-  const handleAddComponent = (type) => {
-    addComponent(type);
+  const handleInsertComponent = (componentType) => {
+    addComponent(componentType);
     selectAllColumns();
-    resetHighlightDropdown();
+    resetHighlightSettings(
+      (settings) =>
+        setHighlightSettings((prev) =>
+          prev.map((s, i) => (i === 0 ? settings : s))
+        ),
+      (color) =>
+        setHighlightColors((prev) => prev.map((c, i) => (i === 0 ? color : c))),
+      "#0AEFFF"
+    );
+    resetHighlightSettings(
+      (settings) =>
+        setHighlightSettings((prev) =>
+          prev.map((s, i) => (i === 1 ? settings : s))
+        ),
+      (color) =>
+        setHighlightColors((prev) => prev.map((c, i) => (i === 1 ? color : c))),
+      "#FF8700"
+    );
   };
 
-  const handleSecondaryDropdownToggle = (event) => {
-    event.stopPropagation();
-    setSecondaryDropdownVisible((prev) => !prev);
-  };
-
-  const handlePrimaryDropdownClick = (event) => {
-    event.stopPropagation();
-    setSecondaryDropdownVisible(false);
-  };
-
-  const handleHighlightCheckboxChange = (e) => {
-    setHighlightEnabled(e.target.checked);
-  };
-
-  const handleHighlightRowSelectionChange = (e) => {
-    setHighlightRowSelection(e.target.value);
-  };
-
-  const handleCurrentlySelectedCheckboxChange = (e) => {
-    setIsCurrentlySelected(e.target.checked);
-  };
-
-  const handleColorChangeComplete = (color) => {
-    setHighlightColor(color.hex);
-    setColorPickerVisible(false);
-  };
+  const HighlightDropdownContent = ({
+    index,
+    highlightSettings,
+    setHighlightSettings,
+    highlightColor,
+    setHighlightColor,
+    colorPickerVisible,
+    setColorPickerVisible,
+    allColors,
+  }) => (
+    <>
+      <div className={styles.textOption}>
+        <div className={styles.flexContainer}>
+          <input
+            type="checkbox"
+            checked={highlightSettings.isEnabled}
+            onChange={handleHighlightCheckboxChange(index)}
+          />
+          <span>Enable Highlight</span>
+          <div
+            onClick={() =>
+              setColorPickerVisible((prev) =>
+                prev.map((visible, i) => (i === index ? !visible : visible))
+              )
+            }
+            style={{
+              width: "20px",
+              height: "20px",
+              backgroundColor: highlightColor,
+              marginLeft: "10px",
+              cursor: "pointer",
+              border: "1px solid #000",
+            }}
+          />
+          {colorPickerVisible && (
+            <div
+              style={{
+                display: "flex",
+                position: "absolute",
+                maxWidth: "245px",
+                zIndex: 2,
+                left: "216px",
+                top: "0px",
+                padding: "10px",
+                backgroundColor: "white",
+              }}
+            >
+              <div
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                }}
+                onClick={() =>
+                  setColorPickerVisible((prev) =>
+                    prev.map((visible, i) => (i === index ? false : visible))
+                  )
+                }
+              />
+              <CirclePicker
+                color={highlightColor}
+                colors={allColors}
+                onChangeComplete={handleColorChangeComplete(index)}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      {highlightSettings.isEnabled && (
+        <>
+          <div className={styles.textOption}>
+            <div className={styles.flexContainer}>
+              <select
+                value={highlightSettings.columnSelection}
+                onChange={(e) =>
+                  setHighlightSettings((prev) =>
+                    prev.map((settings, i) =>
+                      i === index
+                        ? { ...settings, columnSelection: e.target.value }
+                        : settings
+                    )
+                  )
+                }
+                className={styles.selectInput}
+              >
+                <option value="of all columns">of all columns</option>
+                <option value="of selected columns">of selected columns</option>
+              </select>
+              {highlightSettings.columnSelection === "of selected columns" && (
+                <button
+                  className={styles.applyButton}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSecondaryDropdownVisible((prev) => !prev);
+                  }}
+                >
+                  Select
+                </button>
+              )}
+            </div>
+          </div>
+          <div className={styles.textOption}>
+            <div className={styles.flexContainer}>
+              <select
+                value={highlightSettings.rowSelection}
+                onChange={(e) =>
+                  setHighlightSettings((prev) =>
+                    prev.map((settings, i) =>
+                      i === index
+                        ? { ...settings, rowSelection: e.target.value }
+                        : settings
+                    )
+                  )
+                }
+                className={styles.selectInput}
+              >
+                <option value="of all rows">of all rows</option>
+                <option value="of range of rows">of range of rows</option>
+              </select>
+              {highlightSettings.rowSelection === "of range of rows" && (
+                <input
+                  type="text"
+                  placeholder="e.g., 1-5"
+                  value={highlightSettings.rowRange}
+                  onChange={handleRowRangeChange(index)}
+                  className={styles.inputField}
+                  style={{ width: "50%" }}
+                />
+              )}
+            </div>
+          </div>
+          <div className={styles.textOption}>
+            <div className={styles.flexContainer}>
+              <input
+                type="checkbox"
+                checked={highlightSettings.isCurrentlySelected}
+                onChange={(e) =>
+                  setHighlightSettings((prev) =>
+                    prev.map((settings, i) =>
+                      i === index
+                        ? { ...settings, isCurrentlySelected: e.target.checked }
+                        : settings
+                    )
+                  )
+                }
+              />
+              <span>if currently selected</span>
+            </div>
+          </div>
+          <div className={styles.textOption}>
+            <div className={styles.flexContainer}>
+              <span>where</span>
+              <select
+                value={highlightSettings.condition}
+                onChange={handleHighlightConditionChange(index)}
+                className={styles.selectInput}
+              >
+                <option value="any value">any value</option>
+                <option value="empty">empty</option>
+                <option value="not empty">not empty</option>
+                <option value="is equal">is equal</option>
+                <option value="is not equal">is not equal</option>
+                <option value="is bigger than">is bigger than</option>
+                <option value="is bigger or equal than">
+                  is bigger or equal than
+                </option>
+                <option value="is less than">is less than</option>
+                <option value="is less or equal than">
+                  is less or equal than
+                </option>
+                <option value="begins with">begins with</option>
+                <option value="ends with">ends with</option>
+                <option value="contains">contains</option>
+                <option value="does not contain">does not contain</option>
+                <option value="currently selected">currently selected</option>
+              </select>
+              {[
+                "is equal",
+                "is not equal",
+                "begins with",
+                "ends with",
+                "contains",
+                "does not contain",
+                "is bigger than",
+                "is bigger or equal than",
+                "is less than",
+                "is less or equal than",
+              ].includes(highlightSettings.condition) && (
+                <input
+                  type="text"
+                  value={highlightSettings.value}
+                  onChange={handleHighlightValueChange(index)}
+                  className={styles.inputField}
+                  style={{ width: "50%" }}
+                />
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
 
   return (
     <div className={styles.secondaryMenuBar}>
@@ -238,17 +470,17 @@ const TableMenu = ({
         <button
           className={styles.button}
           ref={tableButtonRef}
-          onClick={toggleColumnDropdown}
+          onClick={toggleDropdown(0, tableButtonRef)}
         >
           {allColumnsSelected ? "All columns" : "of selected columns"}
         </button>
-        {isColumnDropdownVisible && (
+        {visibleDropdown === 0 && (
           <div
             ref={columnDropdownRef}
             className={styles.dropdown}
             style={{
-              top: tableDropdownPosition.top,
-              left: tableDropdownPosition.left,
+              top: dropdownPositions[0]?.top,
+              left: dropdownPositions[0]?.left,
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -269,196 +501,58 @@ const TableMenu = ({
           </div>
         )}
       </div>
-      <div className={styles.secondaryMenuItem}>
-        <button
-          className={styles.button}
-          ref={highlightButtonRef}
-          onClick={toggleHighlightDropdown}
-        >
-          {allColumnsSelected ? "of all columns" : "of selected columns"}
-        </button>
-        {isHighlightDropdownVisible && (
-          <div
-            ref={highlightDropdownRef}
-            className={`${styles.dropdown} ${styles.highlightDropdown}`}
-            style={{
-              top: highlightDropdownPosition.top,
-              left: highlightDropdownPosition.left + 134,
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handlePrimaryDropdownClick(e);
-            }}
-          >
-            <div className={styles.textOption}>
-              <div className={styles.flexContainer}>
-                <input
-                  type="checkbox"
-                  checked={isHighlightEnabled}
-                  onChange={handleHighlightCheckboxChange}
-                />
-                <span>Enable Highlight</span>
-                <div
-                  onClick={() => setColorPickerVisible(!colorPickerVisible)}
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    backgroundColor: highlightColor,
-                    marginLeft: "10px",
-                    cursor: "pointer",
-                    border: "1px solid #000",
-                  }}
-                />
-                {colorPickerVisible && (
-                  <div
-                    style={{
-                      display: "flex",
-                      position: "absolute",
-                      maxWidth: "245px",
-                      zIndex: 2,
-                      left: "10px",
-                      padding: "10px",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "fixed",
-                        top: 0,
-                        right: 0,
-                        bottom: 0,
-                        left: 0,
-                      }}
-                      onClick={() => setColorPickerVisible(false)}
-                    />
-                    <CirclePicker
-                      color={highlightColor}
-                      colors={allColors}
-                      onChangeComplete={handleColorChangeComplete}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-            {isHighlightEnabled && (
-              <>
-                <div className={styles.textOption}>
-                  <div className={styles.flexContainer}>
-                    <select
-                      value={highlightColumnSelection}
-                      onChange={(e) =>
-                        setHighlightColumnSelection(e.target.value)
-                      }
-                      className={styles.selectInput}
-                    >
-                      <option value="of all columns">of all columns</option>
-                      <option value="of selected columns">
-                        of selected columns
-                      </option>
-                    </select>
-                    {highlightColumnSelection === "of selected columns" && (
-                      <button
-                        className={styles.applyButton}
-                        onClick={handleSecondaryDropdownToggle}
-                      >
-                        Select
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div className={styles.textOption}>
-                  <div className={styles.flexContainer}>
-                    <select
-                      value={highlightRowSelection}
-                      onChange={handleHighlightRowSelectionChange}
-                      className={styles.selectInput}
-                    >
-                      <option value="of all rows">of all rows</option>
-                      <option value="of range of rows">of range of rows</option>
-                    </select>
-                    {highlightRowSelection === "of range of rows" && (
-                      <input
-                        type="text"
-                        placeholder="e.g., 1-5"
-                        className={styles.inputField}
-                        style={{ width: "50%" }}
-                      />
-                    )}
-                  </div>
-                </div>
-                <div className={styles.textOption}>
-                  <div className={styles.flexContainer}>
-                    <input
-                      type="checkbox"
-                      checked={isCurrentlySelected}
-                      onChange={handleCurrentlySelectedCheckboxChange}
-                    />
-                    <span>if currently selected</span>
-                  </div>
-                </div>
-                <div className={styles.textOption}>
-                  <div className={styles.flexContainer}>
-                    <span>where</span>
-                    <select
-                      value={highlightCondition}
-                      onChange={handleHighlightConditionChange}
-                      className={styles.selectInput}
-                    >
-                      <option value="any value">any value</option>
-                      <option value="empty">empty</option>
-                      <option value="not empty">not empty</option>
-                      <option value="is equal">is equal</option>
-                      <option value="is not equal">is not equal</option>
-                      <option value="is bigger than">is bigger than</option>
-                      <option value="is bigger or equal than">
-                        is bigger or equal than
-                      </option>
-                      <option value="is less than">is less than</option>
-                      <option value="is less or equal than">
-                        is less or equal than
-                      </option>
-                      <option value="begins with">begins with</option>
-                      <option value="ends with">ends with</option>
-                      <option value="contains">contains</option>
-                      <option value="does not contain">does not contain</option>
-                      <option value="currently selected">
-                        currently selected
-                      </option>
-                    </select>
-                    {[
-                      "is equal",
-                      "is not equal",
-                      "begins with",
-                      "ends with",
-                      "contains",
-                      "does not contain",
-                      "is bigger than",
-                      "is bigger or equal than",
-                      "is less than",
-                      "is less or equal than",
-                    ].includes(highlightCondition) && (
-                      <input
-                        type="text"
-                        value={highlightValue}
-                        onChange={handleHighlightValueChange}
-                        className={styles.inputField}
-                        style={{ width: "50%" }}
-                      />
-                    )}
-                  </div>
-                </div>
-              </>
+      {[1, 2].map((i) => (
+        <div className={styles.secondaryMenuItem} key={i}>
+          <button
+            className={styles.button}
+            ref={i === 1 ? highlightButtonRef1 : highlightButtonRef2}
+            onClick={toggleDropdown(
+              i,
+              i === 1 ? highlightButtonRef1 : highlightButtonRef2
             )}
-          </div>
-        )}
-      </div>
+          >
+            {`Highlight ${i}`}
+          </button>
+          {visibleDropdown === i && (
+            <div
+              ref={i === 1 ? highlightDropdownRef1 : highlightDropdownRef2}
+              className={`${styles.dropdown} ${styles.highlightDropdown}`}
+              style={{
+                top: dropdownPositions[i]?.top,
+                left: dropdownPositions[i]?.left + (i === 1 ? 162 : 317),
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSecondaryDropdownVisible(false);
+              }}
+            >
+              <HighlightDropdownContent
+                index={i - 1}
+                highlightSettings={highlightSettings[i - 1]}
+                setHighlightSettings={setHighlightSettings}
+                highlightColor={highlightColors[i - 1]}
+                setHighlightColor={setHighlightColors}
+                colorPickerVisible={colorPickerVisible[i - 1]}
+                setColorPickerVisible={setColorPickerVisible}
+                allColors={allColors}
+              />
+            </div>
+          )}
+        </div>
+      ))}
       {isSecondaryDropdownVisible && (
         <div
           ref={secondaryDropdownRef}
           className={styles.secondaryDropdown}
           style={{
-            top: highlightDropdownPosition.top + 25,
-            left: highlightDropdownPosition.left + 380,
+            top:
+              visibleDropdown === 1
+                ? dropdownPositions[1]?.top + 25
+                : dropdownPositions[2]?.top + 25,
+            left:
+              visibleDropdown === 1
+                ? dropdownPositions[1]?.left + 380
+                : dropdownPositions[2]?.left + 380,
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -466,11 +560,21 @@ const TableMenu = ({
             <div
               key={index}
               className={styles.textOption}
-              onClick={() => handleHighlightColumnSelect(column.title)}
+              onClick={() =>
+                handleHighlightColumnSelect(visibleDropdown - 1, column.title)
+              }
             >
               <input
                 type="checkbox"
-                checked={highlightSelectedColumns.includes(column.title)}
+                checked={
+                  visibleDropdown === 1
+                    ? highlightSettings[0].selectedColumns.includes(
+                        column.title
+                      )
+                    : highlightSettings[1].selectedColumns.includes(
+                        column.title
+                      )
+                }
                 readOnly
               />
               {column.title}
@@ -479,12 +583,9 @@ const TableMenu = ({
         </div>
       )}
       <div className={styles.secondaryMenuItem}>
-        <button className={styles.button}>Highlight 2</button>
-      </div>
-      <div className={styles.secondaryMenuItem}>
         <button
           className={styles.button}
-          onClick={() => handleAddComponent("table")}
+          onClick={() => handleInsertComponent("table")}
         >
           Insert
         </button>
