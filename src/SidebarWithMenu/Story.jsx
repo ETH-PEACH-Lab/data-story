@@ -15,14 +15,25 @@ function Story({ components, setComponents, data, columnConfigs }) {
     setComponents(newComponents);
   };
 
-  const handleAddComponent = (type, column = "", func = "", result = "") => {
+  const handleAddComponent = (
+    type,
+    selectedColumns = [],
+    func = "",
+    result = ""
+  ) => {
+    console.log("handleAddComponent called with:", {
+      type,
+      selectedColumns,
+      func,
+      result,
+    });
     const newComponent =
       type === "function"
-        ? { type, column, func, result }
+        ? { type, column: selectedColumns, func, result }
         : type === "chart"
         ? { type }
         : type === "table"
-        ? { type }
+        ? { type, selectedColumns } // Pass selectedColumns here
         : { type, text: "--Text--", fontSize: "16px" };
     setComponents([...components, newComponent]);
   };
@@ -30,8 +41,14 @@ function Story({ components, setComponents, data, columnConfigs }) {
   useEffect(() => {
     const handleAddComponentEvent = (event) => {
       if (event.detail && event.detail.type) {
-        const { type, column, func, result } = event.detail;
-        handleAddComponent(type, column, func, result);
+        const { type, selectedColumns, func, result } = event.detail;
+        console.log("Event detail received in Story:", {
+          type,
+          selectedColumns,
+          func,
+          result,
+        });
+        handleAddComponent(type, selectedColumns, func, result);
       }
     };
 
@@ -110,6 +127,7 @@ function Story({ components, setComponents, data, columnConfigs }) {
                 index={index}
                 data={data} // Pass data
                 columnConfigs={columnConfigs} // Pass columnConfigs
+                selectedColumns={component.selectedColumns} // Pass selectedColumns
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}

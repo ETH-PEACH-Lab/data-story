@@ -39,9 +39,15 @@ const StoryMenu = ({
     }
   };
 
-  const addComponent = (type, column = "", func = "", result = "") => {
+  const addComponent = (type, selectedColumns, func = "", result = "") => {
+    console.log("addComponent called with:", {
+      type,
+      selectedColumns,
+      func,
+      result,
+    });
     const addEvent = new CustomEvent("addComponent", {
-      detail: { type, column, func, result },
+      detail: { type, selectedColumns, func, result },
     });
     document.dispatchEvent(addEvent);
   };

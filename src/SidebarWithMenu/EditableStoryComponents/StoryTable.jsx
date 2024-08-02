@@ -1,6 +1,6 @@
-import "../Story.css";
 import React, { useCallback, useState } from "react";
 import { HotTable } from "@handsontable/react";
+import Handsontable from "handsontable";
 import { textRenderer } from "handsontable/renderers/textRenderer";
 import EditMenu from "./EditMenu";
 
@@ -13,6 +13,7 @@ const StoryTable = ({
   setVisibleMenuIndex,
   data,
   columnConfigs,
+  selectedColumns = [],
 }) => {
   const [isTableExpanded, setIsTableExpanded] = useState(false);
 
@@ -34,6 +35,26 @@ const StoryTable = ({
     },
     []
   );
+
+  // Define columnsConfig correctly
+  const columnsConfig = columnConfigs.map((col) => ({
+    data: col.data,
+    renderer: selectColumnRenderer,
+  }));
+
+  // Get indexes of columns to hide
+  const hiddenColumnsIndexes = columnConfigs
+    .map((column, index) => {
+      if (!selectedColumns.includes(column.title)) {
+        return index;
+      }
+      return null;
+    })
+    .filter((index) => index !== null);
+
+  console.log("selectedColumns in StoryTable:", selectedColumns);
+  console.log("hiddenColumnsIndexes:", hiddenColumnsIndexes);
+  console.log("columnsConfig:", columnsConfig);
 
   return (
     <div className="table-container">
@@ -63,18 +84,32 @@ const StoryTable = ({
           }}
         >
           <HotTable
-            data={data}
+            data={data} // Pass the entire dataset
             colHeaders={columnConfigs.map((column) => column.title)}
-            columns={columnConfigs.map((col) => ({
-              ...col,
-              renderer: selectColumnRenderer,
-            }))}
+            columns={columnsConfig}
             rowHeaders={true}
             width="100%"
             height="100%"
             licenseKey="non-commercial-and-evaluation"
             readOnly={true}
             disableVisualSelection={true}
+            manualColumnResize={true}
+            hiddenColumns={{
+              columns: hiddenColumnsIndexes,
+              indicators: true,
+              copyPasteEnabled: false,
+            }}
+            contextMenu={{
+              items: {
+                hidden_columns_show: {
+                  name: "Show hidden columns",
+                },
+                hidden_columns_hide: {
+                  name: "Hide column",
+                },
+                ...Handsontable.plugins.ContextMenu.DEFAULT_ITEMS,
+              },
+            }}
           />
         </div>
         <button className="expandButton" onClick={toggleFirstTableExpand}>

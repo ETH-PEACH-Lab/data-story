@@ -237,7 +237,8 @@ const TableMenu = ({
   };
 
   const handleInsertComponent = (componentType) => {
-    addComponent(componentType);
+    console.log("selectedColumns before insert:", selectedColumns);
+    addComponent(componentType, selectedColumns); // Pass selectedColumns
     selectAllColumns();
     resetHighlightSettings(
       (settings) =>
