@@ -81,11 +81,17 @@
     overflow: auto;
 }
 
+.highlightDropdown {
+    overflow: visible;
+}
+
 .textOption {
     padding: 5px 10px;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
+    
+    align-items: center;
+    gap: 10px;
 }
 
 .textOption:hover {
