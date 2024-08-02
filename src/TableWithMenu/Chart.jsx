@@ -26,29 +26,36 @@ ChartJS.register(
   Legend
 );
 
-const generateMutedRainbowColors = (numColors) => {
-  const colors = [];
-  for (let i = 0; i < numColors; i++) {
-    const hue = (i * 360) / numColors;
-    const saturation = 50;
-    const lightness = 60;
-    colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
-  }
-  return colors;
-};
+// Color functions and definitions
+const originalColors = [
+  "#000000",
+  "#AB14E2",
+  "#FF0000",
+  "#FF8700",
+  "#FFD300",
+  "#0AEFFF",
+  "#580AFF",
+  "#1C7B53",
+  "#A1FF0A",
+];
 
-const hslToHex = (h, s, l) => {
-  l /= 100;
-  const a = (s * Math.min(l, 1 - l)) / 100;
-  const f = (n) => {
-    const k = (n + h / 30) % 12;
-    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-    return Math.round(255 * color)
-      .toString(16)
-      .padStart(2, "0"); // Convert to Hex and ensure it is 2 digits
-  };
-  return `#${f(0)}${f(8)}${f(4)}`;
-};
+function tintColor(color, percentage) {
+  const decimalPercentage = percentage / 100;
+  const hex = color.replace("#", "");
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  const newR = Math.round(r + (255 - r) * decimalPercentage);
+  const newG = Math.round(g + (255 - g) * decimalPercentage);
+  const newB = Math.round(b + (255 - b) * decimalPercentage);
+
+  return `rgb(${newR}, ${newG}, ${newB})`;
+}
+
+const tintedColors = originalColors.map((color) => tintColor(color, 60));
+const allColors = [...originalColors, ...tintedColors];
 
 const Chart = ({
   type,
@@ -93,10 +100,7 @@ const Chart = ({
   const [yAxisTitle, setYAxisTitle] = useState("");
   const [selectedModification, setSelectedModification] = useState("");
 
-  const customColors = generateMutedRainbowColors(18).map((color) => {
-    const [h, s, l] = color.match(/\d+/g).map(Number);
-    return hslToHex(h, s, l);
-  });
+  const customColors = allColors;
 
   useEffect(() => {
     if (selectedItem !== "") {
