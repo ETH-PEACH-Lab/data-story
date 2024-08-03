@@ -75,37 +75,45 @@ const StoryTable = ({
       console.log("Highlight Settings:", highlightSettings);
       console.log("Highlight Colors:", highlightColors);
 
-      highlightSettings.forEach((setting, index) => {
-        if (setting.isEnabled) {
-          const columnConfig = columnConfigs[col];
-          const rowInRange =
-            setting.rowSelection === "of all rows" ||
-            (setting.rowSelection === "of range of rows" &&
-              row >= parseInt(setting.rowRange.split("-")[0]) - 1 &&
-              row <= parseInt(setting.rowRange.split("-")[1]) - 1);
-          const columnSelected =
-            setting.columnSelection === "of all columns" ||
-            setting.selectedColumns.length === 0 || // Treat no selection as all columns
-            setting.selectedColumns.includes(columnConfig.title);
+      const applyHighlight = (setting, highlightColor) => {
+        const columnConfig = columnConfigs[col];
+        const rowInRange =
+          setting.rowSelection === "of all rows" ||
+          (setting.rowSelection === "of range of rows" &&
+            row >= parseInt(setting.rowRange.split("-")[0]) - 1 &&
+            row <= parseInt(setting.rowRange.split("-")[1]) - 1);
+        const columnSelected =
+          setting.columnSelection === "of all columns" ||
+          setting.selectedColumns.length === 0 || // Treat no selection as all columns
+          setting.selectedColumns.includes(columnConfig.title);
 
-          console.log(
-            `rowInRange: ${rowInRange}, columnSelected: ${columnSelected}`
-          );
+        console.log(
+          `rowInRange: ${rowInRange}, columnSelected: ${columnSelected}`
+        );
 
-          const conditionMet = checkCondition(
-            setting.condition,
-            value,
-            setting.value
-          );
+        const conditionMet = checkCondition(
+          setting.condition,
+          value,
+          setting.value
+        );
 
-          console.log(`conditionMet: ${conditionMet}`);
+        console.log(`conditionMet: ${conditionMet}`);
 
-          if (rowInRange && columnSelected && conditionMet) {
-            console.log(`Applying highlight color: ${highlightColors[index]}`);
-            td.style.backgroundColor = highlightColors[index];
-          }
+        if (rowInRange && columnSelected && conditionMet) {
+          console.log(`Applying highlight color: ${highlightColor}`);
+          td.style.backgroundColor = highlightColor;
         }
-      });
+      };
+
+      // Apply Highlight 1
+      if (highlightSettings[0]?.isEnabled) {
+        applyHighlight(highlightSettings[0], highlightColors[0]);
+      }
+
+      // Apply Highlight 2 on top of Highlight 1
+      if (highlightSettings[1]?.isEnabled) {
+        applyHighlight(highlightSettings[1], highlightColors[1]);
+      }
     },
     [highlightSettings, highlightColors, columnConfigs]
   );
