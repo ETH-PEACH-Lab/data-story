@@ -67,7 +67,6 @@ const TableMenu = ({
     value: "",
     columnSelection: "of all columns",
     rowSelection: "of all rows",
-    isCurrentlySelected: false,
     rowRange: "",
   };
 
@@ -230,7 +229,6 @@ const TableMenu = ({
       value: "",
       columnSelection: "of all columns",
       rowSelection: "of all rows",
-      isCurrentlySelected: false,
       rowRange: "",
     });
     setHighlightColor(tintColor(initialColor, 60));
@@ -399,24 +397,6 @@ const TableMenu = ({
                   style={{ width: "50%" }}
                 />
               )}
-            </div>
-          </div>
-          <div className={styles.textOption}>
-            <div className={styles.flexContainer}>
-              <input
-                type="checkbox"
-                checked={highlightSettings.isCurrentlySelected}
-                onChange={(e) =>
-                  setHighlightSettings((prev) =>
-                    prev.map((settings, i) =>
-                      i === index
-                        ? { ...settings, isCurrentlySelected: e.target.checked }
-                        : settings
-                    )
-                  )
-                }
-              />
-              <span>if currently selected</span>
             </div>
           </div>
           <div className={styles.textOption}>
