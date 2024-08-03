@@ -6,7 +6,6 @@ import StoryTable from "./EditableStoryComponents/StoryTable"; // Import the Sto
 import "./Story.css";
 
 function Story({ components, setComponents, data, columnConfigs }) {
-  // Add data and columnConfigs as props
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
 
   const handleTextChange = (index, newTextObj) => {
@@ -18,37 +17,51 @@ function Story({ components, setComponents, data, columnConfigs }) {
   const handleAddComponent = (
     type,
     selectedColumns = [],
+    highlightSettings = [],
+    highlightColors = [],
     func = "",
     result = ""
   ) => {
     console.log("handleAddComponent called with:", {
       type,
       selectedColumns,
+      highlightSettings,
+      highlightColors,
       func,
       result,
     });
+
     const newComponent =
       type === "function"
         ? { type, column: selectedColumns, func, result }
         : type === "chart"
         ? { type }
         : type === "table"
-        ? { type, selectedColumns } // Pass selectedColumns here
+        ? { type, selectedColumns, highlightSettings, highlightColors }
         : { type, text: "--Text--", fontSize: "16px" };
+
     setComponents([...components, newComponent]);
   };
 
   useEffect(() => {
     const handleAddComponentEvent = (event) => {
       if (event.detail && event.detail.type) {
-        const { type, selectedColumns, func, result } = event.detail;
-        console.log("Event detail received in Story:", {
+        const {
           type,
           selectedColumns,
+          highlightSettings,
+          highlightColors,
           func,
           result,
-        });
-        handleAddComponent(type, selectedColumns, func, result);
+        } = event.detail;
+        handleAddComponent(
+          type,
+          selectedColumns,
+          highlightSettings,
+          highlightColors,
+          func,
+          result
+        );
       }
     };
 
@@ -128,6 +141,8 @@ function Story({ components, setComponents, data, columnConfigs }) {
                 data={data} // Pass data
                 columnConfigs={columnConfigs} // Pass columnConfigs
                 selectedColumns={component.selectedColumns} // Pass selectedColumns
+                highlightSettings={component.highlightSettings} // Pass highlight settings
+                highlightColors={component.highlightColors} // Pass highlight colors
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}

@@ -63,7 +63,7 @@ const TableMenu = ({
   const initialHighlightSettings = {
     selectedColumns: [],
     isEnabled: false,
-    condition: "nothing",
+    condition: "no condition",
     value: "",
     columnSelection: "of all columns",
     rowSelection: "of all rows",
@@ -226,7 +226,7 @@ const TableMenu = ({
     setHighlightSettings({
       selectedColumns: [],
       isEnabled: false,
-      condition: "nothing",
+      condition: "no condition",
       value: "",
       columnSelection: "of all columns",
       rowSelection: "of all rows",
@@ -237,8 +237,16 @@ const TableMenu = ({
   };
 
   const handleInsertComponent = (componentType) => {
-    console.log("selectedColumns before insert:", selectedColumns);
-    addComponent(componentType, selectedColumns); // Pass selectedColumns
+    console.log("highlightSettings before insert:", highlightSettings);
+    console.log("highlightColors before insert:", highlightColors);
+
+    addComponent(
+      componentType,
+      selectedColumns,
+      highlightSettings,
+      highlightColors
+    );
+
     selectAllColumns();
     resetHighlightSettings(
       (settings) =>
@@ -419,24 +427,23 @@ const TableMenu = ({
                 onChange={handleHighlightConditionChange(index)}
                 className={styles.selectInput}
               >
-                <option value="any value">any value</option>
+                <option value="no condition">no condition</option>
                 <option value="empty">empty</option>
                 <option value="not empty">not empty</option>
                 <option value="is equal">is equal</option>
                 <option value="is not equal">is not equal</option>
                 <option value="is bigger than">is bigger than</option>
-                <option value="is bigger or equal than">
-                  is bigger or equal than
+                <option value="is bigger than or equal">
+                  is bigger than or equal
                 </option>
                 <option value="is less than">is less than</option>
-                <option value="is less or equal than">
-                  is less or equal than
+                <option value="is less than or equal">
+                  is less than or equal
                 </option>
                 <option value="begins with">begins with</option>
                 <option value="ends with">ends with</option>
                 <option value="contains">contains</option>
                 <option value="does not contain">does not contain</option>
-                <option value="currently selected">currently selected</option>
               </select>
               {[
                 "is equal",
@@ -446,9 +453,9 @@ const TableMenu = ({
                 "contains",
                 "does not contain",
                 "is bigger than",
-                "is bigger or equal than",
+                "is bigger than or equal",
                 "is less than",
-                "is less or equal than",
+                "is less than or equal",
               ].includes(highlightSettings.condition) && (
                 <input
                   type="text"

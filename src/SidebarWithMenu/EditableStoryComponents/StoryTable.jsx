@@ -14,11 +14,49 @@ const StoryTable = ({
   data,
   columnConfigs,
   selectedColumns = [],
+  highlightSettings = [], // Add default value
+  highlightColors = [], // Add default value
 }) => {
   const [isTableExpanded, setIsTableExpanded] = useState(false);
 
   const toggleFirstTableExpand = () => {
     setIsTableExpanded(!isTableExpanded);
+  };
+
+  const checkCondition = (condition, value, targetValue) => {
+    console.log(
+      `Checking condition: ${condition}, value: ${value}, targetValue: ${targetValue}`
+    );
+    switch (condition) {
+      case "no condition":
+        return true; // Always return true for 'any value' to select all cells
+      case "empty":
+        return value === null || value === undefined || value === "";
+      case "not empty":
+        return value !== null && value !== undefined && value !== "";
+      case "is equal":
+        return value == targetValue; // Loose equality for type conversion
+      case "is not equal":
+        return value != targetValue; // Loose inequality for type conversion
+      case "is bigger than":
+        return parseFloat(value) > parseFloat(targetValue);
+      case "is less than":
+        return parseFloat(value) < parseFloat(targetValue);
+      case "is bigger than or equal":
+        return parseFloat(value) >= parseFloat(targetValue);
+      case "is less than or equal":
+        return parseFloat(value) <= parseFloat(targetValue);
+      case "begins with":
+        return value != null && value.startsWith(targetValue);
+      case "ends with":
+        return value != null && value.endsWith(targetValue);
+      case "contains":
+        return value != null && value.includes(targetValue);
+      case "does not contain":
+        return value != null && !value.includes(targetValue);
+      default:
+        return false;
+    }
   };
 
   const selectColumnRenderer = useCallback(
@@ -32,8 +70,44 @@ const StoryTable = ({
         value,
         cellProperties,
       ]);
+
+      console.log(`Rendering cell: row ${row}, col ${col}, value: ${value}`);
+      console.log("Highlight Settings:", highlightSettings);
+      console.log("Highlight Colors:", highlightColors);
+
+      highlightSettings.forEach((setting, index) => {
+        if (setting.isEnabled) {
+          const columnConfig = columnConfigs[col];
+          const rowInRange =
+            setting.rowSelection === "of all rows" ||
+            (setting.rowSelection === "of range of rows" &&
+              row >= parseInt(setting.rowRange.split("-")[0]) - 1 &&
+              row <= parseInt(setting.rowRange.split("-")[1]) - 1);
+          const columnSelected =
+            setting.columnSelection === "of all columns" ||
+            setting.selectedColumns.length === 0 || // Treat no selection as all columns
+            setting.selectedColumns.includes(columnConfig.title);
+
+          console.log(
+            `rowInRange: ${rowInRange}, columnSelected: ${columnSelected}`
+          );
+
+          const conditionMet = checkCondition(
+            setting.condition,
+            value,
+            setting.value
+          );
+
+          console.log(`conditionMet: ${conditionMet}`);
+
+          if (rowInRange && columnSelected && conditionMet) {
+            console.log(`Applying highlight color: ${highlightColors[index]}`);
+            td.style.backgroundColor = highlightColors[index];
+          }
+        }
+      });
     },
-    []
+    [highlightSettings, highlightColors, columnConfigs]
   );
 
   // Define columnsConfig correctly
@@ -51,10 +125,6 @@ const StoryTable = ({
       return null;
     })
     .filter((index) => index !== null);
-
-  console.log("selectedColumns in StoryTable:", selectedColumns);
-  console.log("hiddenColumnsIndexes:", hiddenColumnsIndexes);
-  console.log("columnsConfig:", columnsConfig);
 
   return (
     <div className="table-container">
