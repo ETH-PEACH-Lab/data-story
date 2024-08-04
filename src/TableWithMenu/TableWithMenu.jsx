@@ -15,18 +15,11 @@ import { handleUndo, handleRedo } from "../utils/undoRedoHandlers";
 import { handleStyleChange, customRenderer } from "../utils/styleHandlers";
 import "../App.css";
 
-const generateMutedRainbowColors = (numColors) => {
-  const colors = [];
-  for (let i = 0; i < numColors; i++) {
-    const hue = (i * 360) / numColors;
-    const saturation = 50;
-    const lightness = 60;
-    colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
-  }
-  return colors;
-};
+// Importing originalColors and tintedColors from Chart.jsx
+import { originalColors, tintedColors } from "./Chart";
 
-const mutedRainbowColors = generateMutedRainbowColors(20);
+// Combine the original and tinted colors
+const colorPool = [...originalColors, ...tintedColors];
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -298,7 +291,7 @@ const TableWithMenu = ({
     seriesLabels
   ) => {
     const numColors = type === "pie" ? data.x.length : data.y.length;
-    const generatedColors = shuffleArray(generateMutedRainbowColors(numColors));
+    const generatedColors = shuffleArray(colorPool.slice(0, numColors)); // Get a slice of colors from the color pool
     const newPageId = pages.length;
     const newChartId = chartConfigs.length;
     setPages([

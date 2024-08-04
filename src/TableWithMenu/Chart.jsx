@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 // Color functions and definitions
-const originalColors = [
+export const originalColors = [
   "#000000",
   "#AB14E2",
   "#FF0000",
@@ -39,7 +39,7 @@ const originalColors = [
   "#A1FF0A",
 ];
 
-function tintColor(color, percentage) {
+export function tintColor(color, percentage) {
   const decimalPercentage = percentage / 100;
   const hex = color.replace("#", "");
 
@@ -54,7 +54,7 @@ function tintColor(color, percentage) {
   return `rgb(${newR}, ${newG}, ${newB})`;
 }
 
-const tintedColors = originalColors.map((color) => tintColor(color, 60));
+export const tintedColors = originalColors.map((color) => tintColor(color, 60));
 const allColors = [...originalColors, ...tintedColors];
 
 const Chart = ({
