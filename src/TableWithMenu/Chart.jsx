@@ -74,8 +74,8 @@ const Chart = ({
   aggregateData,
   colors,
   setColors,
-  updateChartTitle, // Receive the update function
-  updateFooterName, // Receive the update function
+  updateChartTitle,
+  updateFooterName,
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({
@@ -88,8 +88,14 @@ const Chart = ({
     setEditingNote(null);
   };
 
-  // Apply aggregation
+  if (!data || !data.y || !Array.isArray(data.y) || data.y.length === 0) {
+    console.error("Invalid data structure in Chart component", data);
+    return <div>Error: Invalid data structure</div>;
+  }
+
   const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
+
+  console.log("Aggregated Data for Chart:", aggregatedData);
 
   const [selectedItem, setSelectedItem] = useState("");
   const [newLabel, setNewLabel] = useState("");
@@ -111,7 +117,7 @@ const Chart = ({
 
   const handleItemSelect = (e) => {
     setSelectedItem(e.target.value);
-    setCurrentColor(colors[parseInt(e.target.value)]); // Ensure color is updated when item is selected
+    setCurrentColor(colors[parseInt(e.target.value)]);
   };
 
   const handleNewLabelChange = (e) => {
@@ -137,7 +143,7 @@ const Chart = ({
   const handleColorChangeComplete = (color) => {
     console.log("Color selected:", color.hex);
     setCurrentColor(color.hex);
-    setColorPickerVisible(false); // Close the color picker after selecting a color
+    setColorPickerVisible(false);
   };
 
   const handleApplyColor = () => {
@@ -161,7 +167,7 @@ const Chart = ({
       },
     }));
     updateChartTitle(index, titleText.trim());
-    updateFooterName(index, titleText.trim()); // Update footer name as well
+    updateFooterName(index, titleText.trim());
   };
 
   const handleXAxisTitleChange = () => {
@@ -216,17 +222,26 @@ const Chart = ({
           })),
   };
 
+  console.log("chartData:", chartData);
+  if (!Array.isArray(chartData.datasets) || chartData.datasets.length === 0) {
+    console.error(
+      "chartData.datasets is not an array or empty",
+      chartData.datasets
+    );
+    return <div>Error: chartData.datasets is not an array or empty</div>;
+  }
+
   const [chartOptions, setChartOptions] = useState({
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       title: {
         display: true,
-        text: "title",
+        text: `Chart ${index}`,
         font: {
-          size: 24, // Set the font size
+          size: 24,
         },
-        color: "#000", // Set the font color to black
+        color: "#000",
       },
     },
     scales: {
@@ -235,7 +250,7 @@ const Chart = ({
           display: true,
           text: "x-axis",
           font: {
-            size: 16, // Set the font size for x-axis title
+            size: 16,
           },
         },
       },
@@ -244,7 +259,7 @@ const Chart = ({
           display: true,
           text: "y-axis",
           font: {
-            size: 16, // Set the font size for y-axis title
+            size: 16,
           },
         },
       },

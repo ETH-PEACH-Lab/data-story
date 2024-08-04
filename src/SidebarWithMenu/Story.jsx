@@ -8,37 +8,29 @@ import "./Story.css";
 function Story({ components, setComponents, data, columnConfigs }) {
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
 
-  const handleTextChange = (index, newTextObj) => {
-    const newComponents = [...components];
-    newComponents[index] = { ...newComponents[index], ...newTextObj };
-    setComponents(newComponents);
-  };
-
   const handleAddComponent = (
     type,
     selectedColumns = [],
     highlightSettings = [],
     highlightColors = [],
     func = "",
-    result = ""
+    result = "",
+    chartConfig = null
   ) => {
-    console.log("handleAddComponent called with:", {
-      type,
-      selectedColumns,
-      highlightSettings,
-      highlightColors,
-      func,
-      result,
-    });
-
     const newComponent =
-      type === "function"
-        ? { type, column: selectedColumns, func, result }
-        : type === "chart"
-        ? { type }
-        : type === "table"
-        ? { type, selectedColumns, highlightSettings, highlightColors }
+      type === "chart"
+        ? { type, chartConfig }
         : { type, text: "--Text--", fontSize: "16px" };
+
+    if (type === "function") {
+      newComponent.column = selectedColumns;
+      newComponent.func = func;
+      newComponent.result = result;
+    } else if (type === "table") {
+      newComponent.selectedColumns = selectedColumns;
+      newComponent.highlightSettings = highlightSettings;
+      newComponent.highlightColors = highlightColors;
+    }
 
     setComponents([...components, newComponent]);
   };
@@ -53,6 +45,7 @@ function Story({ components, setComponents, data, columnConfigs }) {
           highlightColors,
           func,
           result,
+          chartConfig,
         } = event.detail;
         handleAddComponent(
           type,
@@ -60,7 +53,8 @@ function Story({ components, setComponents, data, columnConfigs }) {
           highlightSettings,
           highlightColors,
           func,
-          result
+          result,
+          chartConfig
         );
       }
     };
@@ -102,6 +96,12 @@ function Story({ components, setComponents, data, columnConfigs }) {
     }
   };
 
+  const handleTextChange = (index, newTextObj) => {
+    const newComponents = [...components];
+    newComponents[index] = { ...newComponents[index], ...newTextObj };
+    setComponents(newComponents);
+  };
+
   return (
     <div className="story-container">
       {components.map((component, index) => {
@@ -126,6 +126,7 @@ function Story({ components, setComponents, data, columnConfigs }) {
               <StoryChart
                 key={index}
                 index={index}
+                chartConfig={component.chartConfig}
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}

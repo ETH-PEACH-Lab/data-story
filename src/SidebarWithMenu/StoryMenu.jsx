@@ -11,7 +11,8 @@ const StoryMenu = ({
   hotRef,
   setShowConfirmation,
   setConfirmationMessage,
-  chartNames = [], // Default to an empty array
+  chartNames,
+  chartConfigs, // Accept chartConfigs as a prop
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
   const [selectedFunction, setSelectedFunction] = useState("");
@@ -36,20 +37,13 @@ const StoryMenu = ({
 
   const addComponent = (
     type,
-    selectedColumns,
-    highlightSettings,
-    highlightColors,
+    selectedColumns = [],
+    highlightSettings = [],
+    highlightColors = [],
     func = "",
-    result = ""
+    result = "",
+    chartConfig = null
   ) => {
-    console.log("addComponent called with:", {
-      type,
-      selectedColumns,
-      highlightSettings,
-      highlightColors,
-      func,
-      result,
-    });
     const addEvent = new CustomEvent("addComponent", {
       detail: {
         type,
@@ -58,6 +52,7 @@ const StoryMenu = ({
         highlightColors,
         func,
         result,
+        chartConfig,
       },
     });
     document.dispatchEvent(addEvent);
@@ -109,7 +104,7 @@ const StoryMenu = ({
   };
 
   const handleAddTable = () => {
-    addComponent("table");
+    addComponent("table", selectedColumns, [], []);
     setSelectedColumns(columnConfigs.map((column) => column.title));
   };
 
@@ -172,7 +167,11 @@ const StoryMenu = ({
         </div>
       </div>
       {activeMenu === "Chart" && (
-        <ChartMenu addComponent={addComponent} chartNames={chartNames} />
+        <ChartMenu
+          addComponent={addComponent}
+          chartNames={chartNames}
+          chartConfigs={chartConfigs}
+        />
       )}
       {activeMenu === "Text" && <TextMenu addComponent={addComponent} />}
       {activeMenu === "Table" && menuOptions.Table}

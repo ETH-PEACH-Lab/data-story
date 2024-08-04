@@ -70,12 +70,13 @@ const TableWithMenu = ({
   setSelectedRange,
   chartNames, // Accept chartNames as a prop
   setChartNames, // Accept setChartNames as a prop
+  chartConfigs, // Accept chartConfigs as a prop
+  setChartConfigs, // Accept setChartConfigs as a prop
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pages, setPages] = useState([
     { id: 0, content: "table", title: "Table" },
   ]);
-  const [chartConfigs, setChartConfigs] = useState([]);
   const [selectedRange, setSelectedRangeState] = useState(null);
   const [chartNotes, setChartNotes] = useState({});
   const [editingNote, setEditingNote] = useState(null);
@@ -115,6 +116,11 @@ const TableWithMenu = ({
 
   const aggregateData = (data, aggregate, aggregateFunction) => {
     if (!aggregate) return data;
+
+    if (!data || !data.y || !Array.isArray(data.y) || data.y.length === 0) {
+      console.error("Invalid data structure in aggregateData", data);
+      return { x: [], y: [[]] };
+    }
 
     const aggregatedData = {
       x: [],
@@ -163,6 +169,8 @@ const TableWithMenu = ({
         aggregatedData.y[seriesIndex].push(aggregatedYValue);
       });
     });
+
+    console.log("Aggregated Data:", aggregatedData);
 
     return aggregatedData;
   };
@@ -256,6 +264,18 @@ const TableWithMenu = ({
         pieLabels,
         colors,
       } = chartConfigs[chartIndex];
+
+      // Log chart data before rendering
+      console.log("Rendering chart with data:", {
+        type,
+        data,
+        aggregate,
+        aggregateFunction,
+        seriesLabels,
+        pieLabels,
+        colors,
+      });
+
       return (
         <Chart
           type={type}
@@ -294,12 +314,13 @@ const TableWithMenu = ({
     const generatedColors = shuffleArray(colorPool.slice(0, numColors)); // Get a slice of colors from the color pool
     const newPageId = pages.length;
     const newChartId = chartConfigs.length;
+    const newTitle = `Chart ${newChartId}`;
     setPages([
       ...pages,
       {
         id: newPageId,
         content: `chart-${newChartId}`,
-        title: `Chart ${newChartId}`,
+        title: newTitle,
       },
     ]);
     setChartConfigs([
@@ -312,6 +333,7 @@ const TableWithMenu = ({
         seriesLabels: type !== "pie" ? seriesLabels : [],
         pieLabels: type === "pie" ? data.x : [],
         colors: generatedColors,
+        title: newTitle,
       },
     ]);
     setChartNotes({

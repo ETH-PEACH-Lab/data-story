@@ -52,6 +52,7 @@ function App() {
   const [initialActionStackLength, setInitialActionStackLength] = useState(0);
   const [initialActionStack, setInitialActionStack] = useState([]);
   const [chartNames, setChartNames] = useState(["Table"]);
+  const [chartConfigs, setChartConfigs] = useState([]); // Initialize chartConfigs state
 
   const handleHistoryClick = (historyEntry, index) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -231,6 +232,8 @@ function App() {
             setSelectedRange={setSelectedRange}
             chartNames={chartNames} // Pass chartNames as a prop
             setChartNames={setChartNames} // Pass setChartNames as a prop
+            chartConfigs={chartConfigs} // Pass chartConfigs as a prop
+            setChartConfigs={setChartConfigs} // Pass setChartConfigs as a prop
           />
           <SidebarWithStoryMenu
             data={data}
@@ -246,6 +249,7 @@ function App() {
             setShowConfirmation={setShowConfirmation}
             setConfirmationMessage={setConfirmationMessage}
             chartNames={chartNames} // Pass chartNames as a prop
+            chartConfigs={chartConfigs} // Pass chartConfigs as a prop
           />
         </div>
         <HistorySidebar
