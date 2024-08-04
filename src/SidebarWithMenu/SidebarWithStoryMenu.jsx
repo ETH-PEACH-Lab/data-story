@@ -17,6 +17,7 @@ const SidebarWithStoryMenu = ({
   tableContainerRef,
   setShowConfirmation,
   setConfirmationMessage,
+  chartNames, // Accept chartNames as a prop
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
   const [components, setComponents] = useState([
@@ -67,6 +68,7 @@ const SidebarWithStoryMenu = ({
             hotRef={hotRef}
             setShowConfirmation={setShowConfirmation}
             setConfirmationMessage={setConfirmationMessage}
+            chartNames={chartNames} // Pass chartNames as a prop
           />
         </div>
         <div className="text-and-menu-container">

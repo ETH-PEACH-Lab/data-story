@@ -75,6 +75,7 @@ const Chart = ({
   colors,
   setColors,
   updateChartTitle, // Receive the update function
+  updateFooterName, // Receive the update function
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({
@@ -160,6 +161,7 @@ const Chart = ({
       },
     }));
     updateChartTitle(index, titleText.trim());
+    updateFooterName(index, titleText.trim()); // Update footer name as well
   };
 
   const handleXAxisTitleChange = () => {

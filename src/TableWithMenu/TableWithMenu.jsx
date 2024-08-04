@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HotTable } from "@handsontable/react";
 import MenuBar from "./MenuBar/MenuBar";
 import Chart from "./Chart";
@@ -75,6 +75,8 @@ const TableWithMenu = ({
   handleStyleChange,
   toggleHistory,
   setSelectedRange,
+  chartNames, // Accept chartNames as a prop
+  setChartNames, // Accept setChartNames as a prop
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pages, setPages] = useState([
@@ -84,6 +86,7 @@ const TableWithMenu = ({
   const [selectedRange, setSelectedRangeState] = useState(null);
   const [chartNotes, setChartNotes] = useState({});
   const [editingNote, setEditingNote] = useState(null);
+  const [footerNames, setFooterNames] = useState(["Table"]); // Initialize with 'Table'
 
   const selectedColumnName =
     selectedColumnIndex !== null
@@ -281,6 +284,7 @@ const TableWithMenu = ({
             setColors(chartIndex, newColors)
           }
           updateChartTitle={updateChartTitle} // Pass the update function
+          updateFooterName={updateFooterName} // Pass the update function
         />
       );
     }
@@ -296,12 +300,13 @@ const TableWithMenu = ({
     const numColors = type === "pie" ? data.x.length : data.y.length;
     const generatedColors = shuffleArray(generateMutedRainbowColors(numColors));
     const newPageId = pages.length;
+    const newChartId = chartConfigs.length;
     setPages([
       ...pages,
       {
         id: newPageId,
-        content: `chart-${chartConfigs.length}`,
-        title: `Chart ${chartConfigs.length}`,
+        content: `chart-${newChartId}`,
+        title: `Chart ${newChartId}`,
       },
     ]);
     setChartConfigs([
@@ -318,9 +323,11 @@ const TableWithMenu = ({
     ]);
     setChartNotes({
       ...chartNotes,
-      [chartConfigs.length]: "Title",
+      [newChartId]: "Title",
     });
+    setFooterNames([...footerNames, `Chart ${newChartId}`]); // Add new chart name to footers
     setCurrentPage(newPageId);
+    setChartNames([...footerNames, `Chart ${newChartId}`]); // Update chartNames
   };
 
   const updateChartTitle = (chartIndex, newTitle) => {
@@ -332,6 +339,19 @@ const TableWithMenu = ({
       )
     );
   };
+
+  const updateFooterName = (index, newName) => {
+    setFooterNames((prevFooterNames) =>
+      prevFooterNames.map((name, i) => (i === index + 1 ? newName : name))
+    );
+    setChartNames((prevFooterNames) =>
+      prevFooterNames.map((name, i) => (i === index + 1 ? newName : name))
+    ); // Update chartNames
+  };
+
+  useEffect(() => {
+    console.log("Updated Chart Names:", footerNames);
+  }, [footerNames]);
 
   return (
     <div className="table-content-area">
@@ -456,14 +476,14 @@ const TableWithMenu = ({
       </div>
       {renderPageContent()}
       <div className="page-footer">
-        {pages.map((page, index) => (
+        {footerNames.map((name, index) => (
           <button
-            key={page.id}
+            key={index}
             className="nav-button"
-            onClick={() => setCurrentPage(page.id)}
-            disabled={currentPage === page.id}
+            onClick={() => setCurrentPage(index)}
+            disabled={currentPage === index}
           >
-            {page.title}
+            {name}
           </button>
         ))}
       </div>

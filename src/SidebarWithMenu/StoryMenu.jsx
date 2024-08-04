@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./StoryMenu.module.css";
 import ChartMenu from "./ChartMenu";
 import TextMenu from "./TextMenu";
@@ -11,6 +11,7 @@ const StoryMenu = ({
   hotRef,
   setShowConfirmation,
   setConfirmationMessage,
+  chartNames = [], // Default to an empty array
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
   const [selectedFunction, setSelectedFunction] = useState("");
@@ -22,13 +23,7 @@ const StoryMenu = ({
   const tableButtonRef = useRef(null);
 
   const handleMenuClick = (menu) => {
-    if (menu === "Chart") {
-      addComponent("chart");
-      setActiveMenu("");
-    } else if (menu === "Text") {
-      addComponent("text");
-      setActiveMenu("");
-    } else if (activeMenu === menu) {
+    if (activeMenu === menu) {
       setActiveMenu("");
     } else {
       setActiveMenu(menu);
@@ -176,7 +171,9 @@ const StoryMenu = ({
           <button className={styles.button}>Text</button>
         </div>
       </div>
-      {activeMenu === "Chart" && <ChartMenu addComponent={addComponent} />}
+      {activeMenu === "Chart" && (
+        <ChartMenu addComponent={addComponent} chartNames={chartNames} />
+      )}
       {activeMenu === "Text" && <TextMenu addComponent={addComponent} />}
       {activeMenu === "Table" && menuOptions.Table}
       {activeMenu === "Function" && menuOptions.Function}

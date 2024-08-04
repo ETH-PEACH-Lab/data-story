@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import "handsontable/dist/handsontable.full.min.css";
 import { registerAllModules } from "handsontable/registry";
@@ -51,6 +51,7 @@ function App() {
   const [onCancelAction, setOnCancelAction] = useState(null);
   const [initialActionStackLength, setInitialActionStackLength] = useState(0);
   const [initialActionStack, setInitialActionStack] = useState([]);
+  const [chartNames, setChartNames] = useState(["Table"]);
 
   const handleHistoryClick = (historyEntry, index) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -115,7 +116,7 @@ function App() {
     }
     setShowConfirmation(false);
     setOnConfirmAction(null);
-    setOnCancelAction(null); // Clear the onCancel action
+    setOnCancelAction(null);
   };
 
   useEffect(() => {
@@ -228,6 +229,8 @@ function App() {
             handleStyleChange={handleStyleChange}
             toggleHistory={() => toggleHistory(setHistoryVisible)}
             setSelectedRange={setSelectedRange}
+            chartNames={chartNames} // Pass chartNames as a prop
+            setChartNames={setChartNames} // Pass setChartNames as a prop
           />
           <SidebarWithStoryMenu
             data={data}
@@ -242,6 +245,7 @@ function App() {
             tableContainerRef={tableContainerRef}
             setShowConfirmation={setShowConfirmation}
             setConfirmationMessage={setConfirmationMessage}
+            chartNames={chartNames} // Pass chartNames as a prop
           />
         </div>
         <HistorySidebar
