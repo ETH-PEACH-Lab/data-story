@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./MenuBar.module.css";
 
 const DataMenu = ({
@@ -23,9 +23,7 @@ const DataMenu = ({
   const [filterSubmenu, setFilterSubmenu] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [filterConditionError, setFilterConditionError] = useState("");
-  const [filterValueError, setFilterValueError] = useState("");
 
-  // Reference Declarations
   const sortButtonRef = useRef(null);
   const filterButtonRef = useRef(null);
   const sortDropdownRef = useRef(null);
@@ -33,7 +31,6 @@ const DataMenu = ({
   const conditionButtonRef = useRef(null);
   const valueButtonRef = useRef(null);
 
-  // Close Dropdown if Click Outside
   const handleClickOutside = (event) => {
     if (
       sortDropdownRef.current &&
@@ -58,7 +55,6 @@ const DataMenu = ({
     }
   };
 
-  // Initialize Event Listeners for 'click outside' detection
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -66,7 +62,6 @@ const DataMenu = ({
     };
   }, []);
 
-  // Fetch Distinct Values for selected column
   const fetchDistinctValues = useCallback(() => {
     if (selectedColumnIndex !== null && hotRef.current) {
       const hotInstance = hotRef.current.hotInstance;
@@ -96,7 +91,6 @@ const DataMenu = ({
     }
   }, [selectedColumnIndex, selectedColumnName, fetchDistinctValues]);
 
-  // Filter list based on text input
   useEffect(() => {
     if (searchValue === "") {
       setFilteredValues(allDistinctValues);
@@ -109,7 +103,6 @@ const DataMenu = ({
     }
   }, [searchValue, allDistinctValues]);
 
-  // Toggle Dropdown visibility
   const handleMenuClick = (item) => {
     if (item === "Sort") {
       setSortDropdownVisible(!isSortDropdownVisible);
@@ -123,19 +116,16 @@ const DataMenu = ({
     }
   };
 
-  // Handle Sorting Order
   const handleSortOrderChange = (event) => {
     setSortOrder(event.target.value);
   };
 
-  // Apply Sorting
   const handleSortClick = () => {
     handleSort(selectedColumnName, sortOrder, columns, hotRef);
     setSortOrder("");
     setSortDropdownVisible(false);
   };
 
-  // Reset Sorting for the selected column
   const handleResetSortClick = () => {
     handleSort(selectedColumnName, "reset", columns, hotRef);
     setSortOrder("");
@@ -146,7 +136,6 @@ const DataMenu = ({
     e.stopPropagation();
   };
 
-  // Calculate position for sub-dropdowns
   const getSubDropdownPosition = (ref) => {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();
@@ -155,28 +144,24 @@ const DataMenu = ({
     return { top: 0, left: 0 };
   };
 
-  // Handle search input value change
   const handleSearchValueChange = (event) => {
     setSearchValue(event.target.value);
   };
 
-  // Handle Filter Condition Change
   const handleFilterConditionChange = (event) => {
     setFilterCondition(event.target.value);
   };
 
-  // Handle Filter Value Change
   const handleFilterValueChange = (event) => {
     setFilterValue(event.target.value);
   };
 
-  // Apply Filter by Condition
   const handleFilterClick = () => {
     if (selectedColumnIndex === null) {
       setFilterConditionError("Please select a column");
       return;
     }
-    setFilterConditionError(""); // Clear error message if a column is selected
+    setFilterConditionError("");
 
     const column = columns[selectedColumnIndex];
     if (!column) return;
@@ -199,6 +184,14 @@ const DataMenu = ({
           return typeof value === "string" && value.includes(filterValue);
         case "not_contains":
           return typeof value === "string" && !value.includes(filterValue);
+        case "lt":
+          return value < filterValue;
+        case "gt":
+          return value > filterValue;
+        case "lte":
+          return value <= filterValue;
+        case "gte":
+          return value >= filterValue;
         default:
           return true;
       }
@@ -224,7 +217,6 @@ const DataMenu = ({
         : [...prevCheckedValues, value];
 
       setTimeout(() => {
-        // Ensure the state update happens outside of the render phase
         handleFilter(
           selectedColumnIndex,
           "by_value",
@@ -245,7 +237,6 @@ const DataMenu = ({
         ...new Set([...prevCheckedValues, ...filteredValues]),
       ];
       setTimeout(() => {
-        // Ensure the state update happens outside of the render phase
         handleFilter(
           selectedColumnIndex,
           "by_value",
@@ -265,7 +256,6 @@ const DataMenu = ({
         (value) => !filteredValues.includes(value)
       );
       setTimeout(() => {
-        // Ensure the state update happens outside of the render phase
         handleFilter(
           selectedColumnIndex,
           "by_value",
@@ -284,7 +274,6 @@ const DataMenu = ({
     setFilterValue("");
     setCheckedValues(allDistinctValues);
     setTimeout(() => {
-      // Ensure the state update happens outside of the render phase
       handleFilter(
         selectedColumnIndex,
         "none",
@@ -408,6 +397,10 @@ const DataMenu = ({
                       <option value="not_empty">Is not empty</option>
                       <option value="eq">Is equal to</option>
                       <option value="neq">Is not equal to</option>
+                      <option value="lt">Less than</option>
+                      <option value="gt">Greater than</option>
+                      <option value="lte">Less than or equal</option>
+                      <option value="gte">Greater than or equal</option>
                       <option value="begins_with">Begins with</option>
                       <option value="ends_with">Ends with</option>
                       <option value="contains">Contains</option>
