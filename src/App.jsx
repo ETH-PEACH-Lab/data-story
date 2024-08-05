@@ -23,6 +23,12 @@ import {
   switchHistoryEntry,
 } from "./utils/historyHandlers";
 import { handleStyleChange } from "./utils/styleHandlers";
+import {
+  getHistoryLocalStorage,
+  setHistoryLocalStorage,
+  setCurrentDataIdLocalStorage,
+  getCurrentDataIdLocalStorage,
+} from "./utils/storageHandlers";
 
 registerAllModules();
 
@@ -52,7 +58,7 @@ function App() {
   const [initialActionStackLength, setInitialActionStackLength] = useState(0);
   const [initialActionStack, setInitialActionStack] = useState([]);
   const [chartNames, setChartNames] = useState(["Table"]);
-  const [chartConfigs, setChartConfigs] = useState([]); // Initialize chartConfigs state
+  const [chartConfigs, setChartConfigs] = useState([]);
 
   const handleHistoryClick = (historyEntry, index) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -74,6 +80,7 @@ function App() {
         setInitialActionStack,
         setInitialActionStackLength
       );
+      setCurrentDataIdLocalStorage(historyEntry.id); // Save the current data ID to localStorage
     };
 
     if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
@@ -121,27 +128,65 @@ function App() {
   };
 
   useEffect(() => {
-    fetchData((newData, fileName) =>
-      handleDataLoaded(
-        newData,
-        fileName,
-        setData,
-        setColumnConfigs,
-        setOriginalFileName,
-        setCurrentDataId,
-        saveDataToHistory,
-        historyIdCounter,
-        setHistoryIdCounter,
-        setUploadHistory,
-        setActions,
-        originalFileName,
-        setTextStyles,
-        setFilteredColumns,
-        hotRef,
-        setInitialActionStack,
-        setInitialActionStackLength
-      )
-    );
+    const savedHistory = getHistoryLocalStorage();
+    const savedCurrentDataId = getCurrentDataIdLocalStorage();
+    console.log("Initial loaded history:", savedHistory);
+    console.log("Initial loaded currentDataId:", savedCurrentDataId);
+
+    if (savedHistory.length > 0) {
+      setUploadHistory(savedHistory);
+      setHistoryIdCounter(savedHistory.length);
+      if (savedCurrentDataId !== null && savedCurrentDataId !== undefined) {
+        setCurrentDataId(savedCurrentDataId);
+        const historyEntry = savedHistory.find(
+          (entry) => entry.id === savedCurrentDataId
+        );
+        if (historyEntry) {
+          switchHistoryEntry(
+            historyEntry,
+            savedHistory.indexOf(historyEntry),
+            setData,
+            setTextStyles,
+            initializeColumns,
+            setColumnConfigs,
+            setFilteredColumns,
+            setClickedIndex,
+            setCurrentDataId,
+            setActions,
+            setOriginalFileName,
+            hotRef,
+            setInitialActionStack,
+            setInitialActionStackLength
+          );
+        }
+      } else {
+        setCurrentDataId(savedHistory[savedHistory.length - 1].id);
+      }
+    } else {
+      // Fetch initial data if no history is found
+      fetchData((newData, fileName) =>
+        handleDataLoaded(
+          newData,
+          fileName,
+          setData,
+          setColumnConfigs,
+          setOriginalFileName,
+          setCurrentDataId,
+          saveDataToHistory,
+          historyIdCounter,
+          setHistoryIdCounter,
+          setUploadHistory,
+          setActions,
+          originalFileName,
+          setTextStyles,
+          setFilteredColumns,
+          hotRef,
+          setInitialActionStack,
+          setInitialActionStackLength,
+          true // Indicate that this is a new table
+        )
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -185,6 +230,7 @@ function App() {
                 setInitialActionStackLength(
                   hotRef.current.hotInstance.undoRedo.doneActions.length
                 );
+                setCurrentDataIdLocalStorage(currentDataId); // Save the current data ID to localStorage
               }}
             >
               Save Current Version
@@ -230,10 +276,10 @@ function App() {
             handleStyleChange={handleStyleChange}
             toggleHistory={() => toggleHistory(setHistoryVisible)}
             setSelectedRange={setSelectedRange}
-            chartNames={chartNames} // Pass chartNames as a prop
-            setChartNames={setChartNames} // Pass setChartNames as a prop
-            chartConfigs={chartConfigs} // Pass chartConfigs as a prop
-            setChartConfigs={setChartConfigs} // Pass setChartConfigs as a prop
+            chartNames={chartNames}
+            setChartNames={setChartNames}
+            chartConfigs={chartConfigs}
+            setChartConfigs={setChartConfigs}
           />
           <SidebarWithStoryMenu
             data={data}
@@ -248,8 +294,8 @@ function App() {
             tableContainerRef={tableContainerRef}
             setShowConfirmation={setShowConfirmation}
             setConfirmationMessage={setConfirmationMessage}
-            chartNames={chartNames} // Pass chartNames as a prop
-            chartConfigs={chartConfigs} // Pass chartConfigs as a prop
+            chartNames={chartNames}
+            chartConfigs={chartConfigs}
           />
         </div>
         <HistorySidebar
@@ -284,7 +330,7 @@ function App() {
           <ConfirmationWindow
             message={confirmationMessage}
             onConfirm={handleConfirm}
-            onCancel={handleCancel} // Pass handleCancel here
+            onCancel={handleCancel}
           />
         )}
       </div>

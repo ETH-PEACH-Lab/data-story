@@ -1,3 +1,5 @@
+import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage } from './storageHandlers';
+
 export const toggleHistory = (setHistoryVisible) => {
   setHistoryVisible(prev => !prev);
 };
@@ -35,23 +37,27 @@ export const handleHistoryDelete = (
     setOnConfirmAction(() => () => {
       if (isDeletingCurrentData) {
         setData([]);
-        initializeColumns([], setColumnConfigs, setFilteredColumns); // Ensure proper arguments
+        initializeColumns([], setColumnConfigs, setFilteredColumns);
         setCurrentDataId(null);
         setActions([]);
         setOriginalFileName('');
       }
       setUploadHistory(newHistory);
+      setHistoryLocalStorage(newHistory);
+      setCurrentDataIdLocalStorage(null);
     });
   } else {
     if (isDeletingCurrentData) {
       const parentEntry = newHistory.find((entry) => entry.id === parentId);
       setData(parentEntry.data);
-      initializeColumns(parentEntry.data, setColumnConfigs, setFilteredColumns); // Ensure proper arguments
+      initializeColumns(parentEntry.data, setColumnConfigs, setFilteredColumns);
       setCurrentDataId(parentEntry.id);
       setActions(parentEntry.actions);
       setOriginalFileName(parentEntry.fileName);
     }
     setUploadHistory(newHistory);
+    setHistoryLocalStorage(newHistory);
+    setCurrentDataIdLocalStorage(currentDataId);
   }
 };
 
@@ -67,23 +73,27 @@ export const saveDataToHistory = (
   originalFileName,
   textStyles,
   initialActionStackLength,
-  hotRef // Accept hotRef as an argument
+  hotRef
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
   const dataCopy = JSON.parse(JSON.stringify(newData));
-  const stylesCopy = JSON.parse(JSON.stringify(textStyles)); // Deep copy of styles
+  const stylesCopy = JSON.parse(JSON.stringify(textStyles));
 
-  // Get the actions performed since the last save
   const currentActionStack = hotRef.current.hotInstance.undoRedo.doneActions;
   const newActions = currentActionStack.slice(initialActionStackLength);
 
   const newHistoryId = historyIdCounter;
   setHistoryIdCounter(prev => prev + 1);
-  setUploadHistory(prevHistory => [
-    ...prevHistory,
-    { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: newActions, styles: stylesCopy }
-  ]);
+  setUploadHistory(prevHistory => {
+    const updatedHistory = [
+      ...prevHistory,
+      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: newActions, styles: stylesCopy }
+    ];
+    setHistoryLocalStorage(updatedHistory);
+    setCurrentDataIdLocalStorage(newHistoryId);
+    return updatedHistory;
+  });
   setCurrentDataId(newHistoryId);
 };
 
@@ -104,7 +114,7 @@ export const switchHistoryEntry = (
   setTextStyles,
   initializeColumns,
   setColumnConfigs,
-  setFilteredColumns, // Add this
+  setFilteredColumns,
   setClickedIndex,
   setCurrentDataId,
   setActions,
@@ -115,7 +125,7 @@ export const switchHistoryEntry = (
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
   setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
-  initializeColumns(historyEntry.data, setColumnConfigs, setFilteredColumns); // Ensure proper arguments
+  initializeColumns(historyEntry.data, setColumnConfigs, setFilteredColumns);
   setClickedIndex(index);
   setCurrentDataId(historyEntry.id);
   setActions(historyEntry.actions);
@@ -125,4 +135,5 @@ export const switchHistoryEntry = (
   setTimeout(() => {
     setClickedIndex(-1);
   }, 500);
+  setCurrentDataIdLocalStorage(historyEntry.id);
 };

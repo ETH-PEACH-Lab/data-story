@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+import { saveDataToHistory } from './historyHandlers';
 
 export const handleDataLoaded = (
   newData,
@@ -31,7 +32,7 @@ export const handleDataLoaded = (
   const initialColumnConfigs = Object.keys(newData[0] || {}).map((key, index) => ({
     data: key,
     title: key,
-    type: 'text', 
+    type: 'text',
   }));
 
   setData(dataWithTypes);
@@ -50,12 +51,11 @@ export const handleDataLoaded = (
     originalFileName,
     {},
     0,
-    hotRef // Pass hotRef
+    hotRef
   );
   setTextStyles({});
   setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
-  // Reset the initial action stack length and state if it's a new table
   if (isNewTable || (hotRef && hotRef.current)) {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
     undoRedo.clear();
@@ -73,7 +73,7 @@ export const fetchData = async (handleDataLoaded) => {
   Papa.parse(csv, {
     header: true,
     complete: (results) => {
-      handleDataLoaded(results.data, 'titanic.csv'); // Ensure correct fileName passed
+      handleDataLoaded(results.data, 'titanic.csv');
     },
   });
 };
@@ -89,6 +89,6 @@ export const initializeColumns = (newData, setColumnConfigs, setFilteredColumns)
     }));
 
     setColumnConfigs(columnConfigs);
-    setFilteredColumns(Array(columnsCount).fill(false)); // Initialize filteredColumns array
+    setFilteredColumns(Array(columnsCount).fill(false));
   }
 };
