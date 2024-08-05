@@ -47,3 +47,10 @@ export const getIdListLocalStorage = () => {
     return [1, 2]; // Default value with length 1
   }
 };
+
+export const clearAllLocalStorage = () => {
+  localStorage.removeItem('uploadHistory');
+  localStorage.removeItem('currentDataId');
+  localStorage.removeItem('idList');
+  console.log('All localStorage data cleared.');
+};

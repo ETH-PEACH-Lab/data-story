@@ -30,8 +30,9 @@ import {
   getCurrentDataIdLocalStorage,
   getIdListLocalStorage,
   setIdListLocalStorage,
+  clearAllLocalStorage,
 } from "./utils/storageHandlers";
-import { handleUndo, handleRedo } from "./utils/undoRedoHandlers"; // Add this import
+import { handleUndo, handleRedo } from "./utils/undoRedoHandlers";
 
 registerAllModules();
 
@@ -128,6 +129,22 @@ function App() {
     setShowConfirmation(false);
     setOnConfirmAction(null);
     setOnCancelAction(null);
+  };
+
+  const handleDeleteAllHistory = () => {
+    setConfirmationMessage("Are you sure you want to delete all history?");
+    setOnConfirmAction(() => () => {
+      setUploadHistory([]);
+      setIdList([]);
+      setCurrentDataId(0);
+      clearAllLocalStorage();
+    });
+    setOnCancelAction(() => () => {
+      setShowConfirmation(false);
+      setOnConfirmAction(null);
+      setOnCancelAction(null);
+    });
+    setShowConfirmation(true);
   };
 
   useEffect(() => {
@@ -232,10 +249,13 @@ function App() {
             <button
               className="banner-button"
               onClick={() => {
+                if (idList.length === 0) {
+                  setIdList([1]);
+                }
                 saveDataToHistory(
                   data,
                   originalFileName,
-                  currentDataId,
+                  idList.length > 0 ? currentDataId : null,
                   setUploadHistory,
                   setCurrentDataId,
                   idList,
@@ -360,6 +380,7 @@ function App() {
           currentDataId={currentDataId}
           idList={idList}
           setIdList={setIdList}
+          handleDeleteAllHistory={handleDeleteAllHistory}
         />
         {showConfirmation && (
           <ConfirmationWindow

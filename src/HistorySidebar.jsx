@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./History.css";
-import { setHistoryLocalStorage } from "./utils/storageHandlers";
+import {
+  setHistoryLocalStorage,
+  clearAllLocalStorage,
+} from "./utils/storageHandlers";
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -27,6 +30,7 @@ const HistorySidebar = ({
   currentDataId,
   idList,
   setIdList,
+  handleDeleteAllHistory,
 }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -68,9 +72,16 @@ const HistorySidebar = ({
 
   return (
     <div className={`history-sidebar ${isHistoryVisible ? "visible" : ""}`}>
-      <button onClick={toggleHistory} className="collapsed-button">
-        {isHistoryVisible ? "Hide History" : "Show History"}
-      </button>
+      <div className="button-container">
+        <button onClick={toggleHistory} className="toggle-button">
+          {isHistoryVisible ? "Hide History" : "Show History"}
+        </button>
+        {isHistoryVisible && (
+          <button onClick={handleDeleteAllHistory} className="delete-button">
+            Delete All
+          </button>
+        )}
+      </div>
       {isHistoryVisible && (
         <>
           <p>History</p>

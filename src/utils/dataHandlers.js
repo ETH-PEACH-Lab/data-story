@@ -1,6 +1,5 @@
 // utils/dataHandlers.js
 import Papa from 'papaparse';
-import { saveDataToHistory } from './historyHandlers';
 
 export const handleDataLoaded = (
   newData,
@@ -39,7 +38,13 @@ export const handleDataLoaded = (
   setData(dataWithTypes);
   setColumnConfigs(initialColumnConfigs);
   setOriginalFileName(fileName);
+
+  // Reset ID list if empty
+  if (idList.length === 0) {
+    setIdList([1, 2]);
+  }
   const historyId = idList.length > 0 ? idList[0] : 1; // Get ID 1 from the list if available
+
   saveDataToHistory(
     dataWithTypes,
     fileName,
