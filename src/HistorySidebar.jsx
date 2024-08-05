@@ -12,10 +12,24 @@ const HistorySidebar = ({
   setIdList,
 }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [newFileName, setNewFileName] = useState("");
 
   useEffect(() => {
     setLastSelectedEntry(currentDataId);
   }, [currentDataId]);
+
+  const handleFilenameChange = (index) => {
+    if (newFileName.trim() !== "") {
+      const updatedHistory = [...uploadHistory];
+      updatedHistory[index].fileName = newFileName;
+      setEditingIndex(null);
+      setNewFileName("");
+      // Save updated history to local storage
+      setUploadHistory(updatedHistory);
+      setHistoryLocalStorage(updatedHistory);
+    }
+  };
 
   return (
     <div className={`history-sidebar ${isHistoryVisible ? "visible" : ""}`}>
@@ -37,7 +51,30 @@ const HistorySidebar = ({
                   setLastSelectedEntry(entry.id);
                 }}
               >
-                <strong>{entry.fileName}</strong> - <em>{entry.timestamp}</em>
+                {editingIndex === index ? (
+                  <input
+                    type="text"
+                    value={newFileName}
+                    onChange={(e) => setNewFileName(e.target.value)}
+                    onBlur={() => handleFilenameChange(index)}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleFilenameChange(index);
+                      }
+                    }}
+                  />
+                ) : (
+                  <strong
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingIndex(index);
+                      setNewFileName(entry.fileName);
+                    }}
+                  >
+                    {entry.fileName}
+                  </strong>
+                )}
+                - <em>{entry.timestamp}</em>
                 <div>
                   ID: {entry.id}, Derived from: {entry.parentId}
                 </div>
