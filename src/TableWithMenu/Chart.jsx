@@ -76,6 +76,11 @@ const Chart = ({
   setColors,
   updateChartTitle,
   updateFooterName,
+  title,
+  xAxisTitle,
+  yAxisTitle,
+  updateXAxisTitle,
+  updateYAxisTitle,
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({
@@ -102,18 +107,18 @@ const Chart = ({
   const [isRenamingVisible, setIsRenamingVisible] = useState(false);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
   const [currentColor, setCurrentColor] = useState("");
-  const [titleText, setTitleText] = useState("");
-  const [xAxisTitle, setXAxisTitle] = useState("");
-  const [yAxisTitle, setYAxisTitle] = useState("");
+  const [titleText, setTitleText] = useState(title);
+  const [newXAxisTitle, setNewXAxisTitle] = useState(xAxisTitle);
+  const [newYAxisTitle, setNewYAxisTitle] = useState(yAxisTitle);
   const [selectedModification, setSelectedModification] = useState("");
 
   const customColors = allColors;
 
   useEffect(() => {
-    if (selectedItem !== "") {
-      setCurrentColor(colors[parseInt(selectedItem)]);
-    }
-  }, [selectedItem, colors]);
+    setTitleText(title);
+    setNewXAxisTitle(xAxisTitle);
+    setNewYAxisTitle(yAxisTitle);
+  }, [title, xAxisTitle, yAxisTitle]);
 
   const handleItemSelect = (e) => {
     setSelectedItem(e.target.value);
@@ -141,7 +146,6 @@ const Chart = ({
   };
 
   const handleColorChangeComplete = (color) => {
-    console.log("Color selected:", color.hex);
     setCurrentColor(color.hex);
     setColorPickerVisible(false);
   };
@@ -149,32 +153,69 @@ const Chart = ({
   const handleApplyColor = () => {
     const newColors = [...colors];
     newColors[parseInt(selectedItem)] = currentColor;
-    console.log("Applying color:", currentColor, "to item:", selectedItem);
-    console.log("New colors array:", newColors);
     setColors(index, newColors);
   };
 
   const handleTitleChange = () => {
     const updatedTitle = titleText.trim() || `Chart ${index}`;
+    updateChartTitle(index, updatedTitle);
+    updateFooterName(index, updatedTitle);
+  };
+
+  const handleXAxisTitleChange = () => {
+    updateXAxisTitle(index, newXAxisTitle);
+  };
+
+  const handleYAxisTitleChange = () => {
+    updateYAxisTitle(index, newYAxisTitle);
+  };
+
+  const [chartOptions, setChartOptions] = useState({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      title: {
+        display: true,
+        text: title,
+        font: {
+          size: 24,
+        },
+        color: "#000",
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: xAxisTitle,
+          font: {
+            size: 16,
+          },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: yAxisTitle,
+          font: {
+            size: 16,
+          },
+        },
+      },
+    },
+  });
+
+  useEffect(() => {
     setChartOptions((prevOptions) => ({
       ...prevOptions,
       plugins: {
         ...prevOptions.plugins,
         title: {
           ...prevOptions.plugins.title,
-          text: updatedTitle,
+          text: title,
         },
       },
-    }));
-    updateChartTitle(index, titleText.trim());
-    updateFooterName(index, titleText.trim());
-  };
-
-  const handleXAxisTitleChange = () => {
-    setChartOptions((prevOptions) => ({
-      ...prevOptions,
       scales: {
-        ...prevOptions.scales,
         x: {
           ...prevOptions.scales.x,
           title: {
@@ -182,15 +223,6 @@ const Chart = ({
             text: xAxisTitle,
           },
         },
-      },
-    }));
-  };
-
-  const handleYAxisTitleChange = () => {
-    setChartOptions((prevOptions) => ({
-      ...prevOptions,
-      scales: {
-        ...prevOptions.scales,
         y: {
           ...prevOptions.scales.y,
           title: {
@@ -200,7 +232,7 @@ const Chart = ({
         },
       },
     }));
-  };
+  }, [title, xAxisTitle, yAxisTitle]);
 
   const chartData = {
     labels: type === "pie" ? pieLabels : aggregatedData.x,
@@ -221,50 +253,6 @@ const Chart = ({
             borderColor: colors[idx],
           })),
   };
-
-  console.log("chartData:", chartData);
-  if (!Array.isArray(chartData.datasets) || chartData.datasets.length === 0) {
-    console.error(
-      "chartData.datasets is not an array or empty",
-      chartData.datasets
-    );
-    return <div>Error: chartData.datasets is not an array or empty</div>;
-  }
-
-  const [chartOptions, setChartOptions] = useState({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: `Chart ${index}`,
-        font: {
-          size: 24,
-        },
-        color: "#000",
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "x-axis",
-          font: {
-            size: 16,
-          },
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "y-axis",
-          font: {
-            size: 16,
-          },
-        },
-      },
-    },
-  });
 
   const ChartComponent = {
     line: Line,
@@ -322,8 +310,8 @@ const Chart = ({
             <div style={{ marginBottom: "10px" }}>
               <input
                 type="text"
-                value={xAxisTitle}
-                onChange={(e) => setXAxisTitle(e.target.value)}
+                value={newXAxisTitle}
+                onChange={(e) => setNewXAxisTitle(e.target.value)}
                 placeholder="New X-Axis Title"
                 style={{ marginLeft: "10px" }}
               />
@@ -337,8 +325,8 @@ const Chart = ({
             <div>
               <input
                 type="text"
-                value={yAxisTitle}
-                onChange={(e) => setYAxisTitle(e.target.value)}
+                value={newYAxisTitle}
+                onChange={(e) => setNewYAxisTitle(e.target.value)}
                 placeholder="New Y-Axis Title"
                 style={{ marginLeft: "10px" }}
               />

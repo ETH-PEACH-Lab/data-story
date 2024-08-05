@@ -114,6 +114,30 @@ const TableWithMenu = ({
     setChartConfigs(newChartConfigs);
   };
 
+  const updateChartTitle = (chartIndex, newTitle) => {
+    setChartConfigs((prevConfigs) =>
+      prevConfigs.map((config, index) =>
+        index === chartIndex ? { ...config, title: newTitle } : config
+      )
+    );
+  };
+
+  const updateXAxisTitle = (chartIndex, newTitle) => {
+    setChartConfigs((prevConfigs) =>
+      prevConfigs.map((config, index) =>
+        index === chartIndex ? { ...config, xAxisTitle: newTitle } : config
+      )
+    );
+  };
+
+  const updateYAxisTitle = (chartIndex, newTitle) => {
+    setChartConfigs((prevConfigs) =>
+      prevConfigs.map((config, index) =>
+        index === chartIndex ? { ...config, yAxisTitle: newTitle } : config
+      )
+    );
+  };
+
   const aggregateData = (data, aggregate, aggregateFunction) => {
     if (!aggregate) return data;
 
@@ -263,6 +287,9 @@ const TableWithMenu = ({
         seriesLabels,
         pieLabels,
         colors,
+        title,
+        xAxisTitle,
+        yAxisTitle,
       } = chartConfigs[chartIndex];
 
       // Log chart data before rendering
@@ -274,6 +301,9 @@ const TableWithMenu = ({
         seriesLabels,
         pieLabels,
         colors,
+        title,
+        xAxisTitle,
+        yAxisTitle,
       });
 
       return (
@@ -298,6 +328,11 @@ const TableWithMenu = ({
           }
           updateChartTitle={updateChartTitle} // Pass the update function
           updateFooterName={updateFooterName} // Pass the update function
+          title={title} // Pass the title
+          xAxisTitle={xAxisTitle} // Pass the xAxisTitle
+          yAxisTitle={yAxisTitle} // Pass the yAxisTitle
+          updateXAxisTitle={updateXAxisTitle} // Pass the update function
+          updateYAxisTitle={updateYAxisTitle} // Pass the update function
         />
       );
     }
@@ -340,6 +375,8 @@ const TableWithMenu = ({
         pieLabels: type === "pie" ? data.x : [],
         colors: generatedColors,
         title: newTitle,
+        xAxisTitle: "x-axis",
+        yAxisTitle: "y-axis",
       },
     ]);
     setChartNotes({
@@ -349,16 +386,6 @@ const TableWithMenu = ({
     setFooterNames([...footerNames, `Chart ${newChartId}`]); // Add new chart name to footers
     setCurrentPage(newPageId);
     setChartNames([...footerNames, `Chart ${newChartId}`]); // Update chartNames
-  };
-
-  const updateChartTitle = (chartIndex, newTitle) => {
-    setPages((prevPages) =>
-      prevPages.map((page) =>
-        page.content === `chart-${chartIndex}`
-          ? { ...page, title: newTitle || `Chart ${chartIndex}` }
-          : page
-      )
-    );
   };
 
   const updateFooterName = (index, newName) => {
