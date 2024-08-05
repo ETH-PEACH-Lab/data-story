@@ -19,7 +19,7 @@ import "../App.css";
 import { originalColors, tintedColors } from "./Chart";
 
 // Combine the original and tinted colors
-const colorPool = [...originalColors, ...tintedColors];
+const allColors = [...originalColors, ...tintedColors];
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -311,7 +311,13 @@ const TableWithMenu = ({
     seriesLabels
   ) => {
     const numColors = type === "pie" ? data.x.length : data.y.length;
-    const generatedColors = shuffleArray(colorPool.slice(0, numColors)); // Get a slice of colors from the color pool
+
+    // Shuffle the allColors array
+    const shuffledColors = shuffleArray([...allColors]);
+
+    // Get the first numColors from the shuffled array
+    const generatedColors = shuffledColors.slice(0, numColors);
+
     const newPageId = pages.length;
     const newChartId = chartConfigs.length;
     const newTitle = `Chart ${newChartId}`;
