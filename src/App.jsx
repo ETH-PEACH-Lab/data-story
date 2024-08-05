@@ -314,6 +314,7 @@ function App() {
         <HistorySidebar
           isHistoryVisible={isHistoryVisible}
           uploadHistory={uploadHistory}
+          setUploadHistory={setUploadHistory}
           clickedIndex={clickedIndex}
           setColumnConfigs={setColumnConfigs}
           initializeColumns={initializeColumns}

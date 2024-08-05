@@ -1,9 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./History.css";
+import { setHistoryLocalStorage } from "./utils/storageHandlers";
+
+const useOutsideClick = (ref, callback) => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref, callback]);
+};
 
 const HistorySidebar = ({
   isHistoryVisible,
   uploadHistory,
+  setUploadHistory,
   onHistoryItemClick,
   onHistoryItemDelete,
   toggleHistory,
@@ -14,21 +31,41 @@ const HistorySidebar = ({
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
   const [editingIndex, setEditingIndex] = useState(null);
   const [newFileName, setNewFileName] = useState("");
+  const inputRef = useRef(null);
 
   useEffect(() => {
     setLastSelectedEntry(currentDataId);
   }, [currentDataId]);
 
-  const handleFilenameChange = (index) => {
-    if (newFileName.trim() !== "") {
-      const updatedHistory = [...uploadHistory];
-      updatedHistory[index].fileName = newFileName;
+  const saveFileName = useCallback(
+    (index) => {
+      console.log("Saving file name:", newFileName, "for index:", index);
+      const trimmedFileName = newFileName.trim();
+      if (
+        trimmedFileName !== "" &&
+        trimmedFileName !== uploadHistory[index].fileName
+      ) {
+        const updatedHistory = [...uploadHistory];
+        updatedHistory[index].fileName = trimmedFileName;
+        setUploadHistory(updatedHistory);
+        setHistoryLocalStorage(updatedHistory);
+      }
       setEditingIndex(null);
       setNewFileName("");
-      // Save updated history to local storage
-      setUploadHistory(updatedHistory);
-      setHistoryLocalStorage(updatedHistory);
+    },
+    [newFileName, uploadHistory, setUploadHistory]
+  );
+
+  useOutsideClick(inputRef, () => {
+    if (editingIndex !== null) {
+      saveFileName(editingIndex);
     }
+  });
+
+  const startEditing = (index, fileName) => {
+    console.log("Starting to edit file name:", fileName, "at index:", index);
+    setEditingIndex(index);
+    setNewFileName(fileName);
   };
 
   return (
@@ -53,28 +90,32 @@ const HistorySidebar = ({
               >
                 {editingIndex === index ? (
                   <input
+                    ref={inputRef}
                     type="text"
                     value={newFileName}
                     onChange={(e) => setNewFileName(e.target.value)}
-                    onBlur={() => handleFilenameChange(index)}
-                    onKeyPress={(e) => {
+                    onBlur={() => {
+                      console.log("Input field lost focus.");
+                      saveFileName(index);
+                    }}
+                    onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        handleFilenameChange(index);
+                        saveFileName(index);
                       }
                     }}
+                    autoFocus
                   />
                 ) : (
                   <strong
                     onClick={(e) => {
                       e.stopPropagation();
-                      setEditingIndex(index);
-                      setNewFileName(entry.fileName);
+                      startEditing(index, entry.fileName);
                     }}
                   >
                     {entry.fileName}
                   </strong>
                 )}
-                - <em>{entry.timestamp}</em>
+                {" - "} <em>{entry.timestamp}</em>
                 <div>
                   ID: {entry.id}, Derived from: {entry.parentId}
                 </div>
