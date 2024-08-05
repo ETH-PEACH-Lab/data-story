@@ -156,7 +156,14 @@ const FunctionMenu = ({
       setConfirmationMessage(warning);
       setShowConfirmation(true);
     } else {
-      addComponent("function", rangeString, selectedFunction, result);
+      addComponent(
+        "function",
+        [rangeString], // Pass selectedColumns as an array
+        [], // Empty highlightSettings
+        [], // Empty highlightColors
+        selectedFunction,
+        result
+      );
     }
   };
 
