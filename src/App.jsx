@@ -28,6 +28,8 @@ import {
   setHistoryLocalStorage,
   setCurrentDataIdLocalStorage,
   getCurrentDataIdLocalStorage,
+  getIdListLocalStorage,
+  setIdListLocalStorage,
 } from "./utils/storageHandlers";
 
 registerAllModules();
@@ -37,7 +39,6 @@ function App() {
   const [columnConfigs, setColumnConfigs] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
   const [uploadHistory, setUploadHistory] = useState([]);
-  const [historyIdCounter, setHistoryIdCounter] = useState(0);
   const [currentDataId, setCurrentDataId] = useState(0);
   const [actions, setActions] = useState([]);
   const [clickedIndex, setClickedIndex] = useState(-1);
@@ -59,6 +60,7 @@ function App() {
   const [initialActionStack, setInitialActionStack] = useState([]);
   const [chartNames, setChartNames] = useState(["Table"]);
   const [chartConfigs, setChartConfigs] = useState([]);
+  const [idList, setIdList] = useState(getIdListLocalStorage());
 
   const handleHistoryClick = (historyEntry, index) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -95,8 +97,8 @@ function App() {
           currentDataId,
           setUploadHistory,
           setCurrentDataId,
-          historyIdCounter,
-          setHistoryIdCounter,
+          idList,
+          setIdList,
           actions,
           originalFileName,
           textStyles,
@@ -130,12 +132,13 @@ function App() {
   useEffect(() => {
     const savedHistory = getHistoryLocalStorage();
     const savedCurrentDataId = getCurrentDataIdLocalStorage();
+    const savedIdList = getIdListLocalStorage();
+    setIdList(savedIdList);
     console.log("Initial loaded history:", savedHistory);
     console.log("Initial loaded currentDataId:", savedCurrentDataId);
 
     if (savedHistory.length > 0) {
       setUploadHistory(savedHistory);
-      setHistoryIdCounter(savedHistory.length);
       if (savedCurrentDataId !== null && savedCurrentDataId !== undefined) {
         setCurrentDataId(savedCurrentDataId);
         const historyEntry = savedHistory.find(
@@ -164,7 +167,7 @@ function App() {
       }
     } else {
       // Fetch initial data if no history is found
-      fetchData((newData, fileName) =>
+      fetchData((newData, fileName) => {
         handleDataLoaded(
           newData,
           fileName,
@@ -173,8 +176,8 @@ function App() {
           setOriginalFileName,
           setCurrentDataId,
           saveDataToHistory,
-          historyIdCounter,
-          setHistoryIdCounter,
+          idList,
+          setIdList,
           setUploadHistory,
           setActions,
           originalFileName,
@@ -184,8 +187,14 @@ function App() {
           setInitialActionStack,
           setInitialActionStackLength,
           true // Indicate that this is a new table
-        )
-      );
+        );
+        // Remove ID 1 from the list and update it
+        setIdList((prevIdList) => {
+          const newIdList = prevIdList.slice(1);
+          setIdListLocalStorage(newIdList);
+          return newIdList;
+        });
+      });
     }
   }, []);
 
@@ -200,6 +209,10 @@ function App() {
       console.log("Handsontable instance:", hotRef.current.hotInstance);
     }
   }, [hotRef.current]);
+
+  useEffect(() => {
+    setIdListLocalStorage(idList);
+  }, [idList]);
 
   return (
     <ErrorBoundary>
@@ -216,8 +229,8 @@ function App() {
                   currentDataId,
                   setUploadHistory,
                   setCurrentDataId,
-                  historyIdCounter,
-                  setHistoryIdCounter,
+                  idList,
+                  setIdList,
                   actions,
                   originalFileName,
                   textStyles,
@@ -260,8 +273,6 @@ function App() {
             currentDataId={currentDataId}
             setCurrentDataId={setCurrentDataId}
             setUploadHistory={setUploadHistory}
-            historyIdCounter={historyIdCounter}
-            setHistoryIdCounter={setHistoryIdCounter}
             actions={actions}
             setActions={setActions}
             setInitialActionStack={setInitialActionStack}
@@ -280,6 +291,8 @@ function App() {
             setChartNames={setChartNames}
             chartConfigs={chartConfigs}
             setChartConfigs={setChartConfigs}
+            idList={idList}
+            setIdList={setIdList}
           />
           <SidebarWithStoryMenu
             data={data}
@@ -320,11 +333,15 @@ function App() {
               setConfirmationMessage,
               setOnConfirmAction,
               setColumnConfigs,
-              setFilteredColumns
+              setFilteredColumns,
+              idList,
+              setIdList
             )
           }
           toggleHistory={() => toggleHistory(setHistoryVisible)}
           currentDataId={currentDataId}
+          idList={idList}
+          setIdList={setIdList}
         />
         {showConfirmation && (
           <ConfirmationWindow

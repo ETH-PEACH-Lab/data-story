@@ -1,4 +1,5 @@
 // utils/storageHandlers.js
+
 export const setHistoryLocalStorage = (history) => {
   console.log('Saving history to localStorage:', history);
   try {
@@ -42,4 +43,22 @@ export const getCurrentDataIdLocalStorage = () => {
 export const deleteHistoryLocalStorage = () => {
   localStorage.removeItem('uploadHistory');
   localStorage.removeItem('currentDataId');
+};
+
+export const setIdListLocalStorage = (idList) => {
+  try {
+    localStorage.setItem('idList', JSON.stringify(idList));
+  } catch (error) {
+    console.error('Failed to save idList to localStorage:', error);
+  }
+};
+
+export const getIdListLocalStorage = () => {
+  try {
+    const idList = localStorage.getItem('idList');
+    return idList ? JSON.parse(idList) : [1]; // Initial list with length 1
+  } catch (error) {
+    console.error('Failed to load idList from localStorage:', error);
+    return [1, 2]; // Default value with length 1
+  }
 };

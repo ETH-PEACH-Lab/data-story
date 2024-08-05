@@ -1,3 +1,4 @@
+// utils/dataHandlers.js
 import Papa from 'papaparse';
 import { saveDataToHistory } from './historyHandlers';
 
@@ -9,8 +10,8 @@ export const handleDataLoaded = (
   setOriginalFileName,
   setCurrentDataId,
   saveDataToHistory,
-  historyIdCounter,
-  setHistoryIdCounter,
+  idList,
+  setIdList,
   setUploadHistory,
   setActions,
   originalFileName,
@@ -38,15 +39,15 @@ export const handleDataLoaded = (
   setData(dataWithTypes);
   setColumnConfigs(initialColumnConfigs);
   setOriginalFileName(fileName);
-  setCurrentDataId(historyIdCounter);
+  const historyId = idList.length > 0 ? idList[0] : 1; // Get ID 1 from the list if available
   saveDataToHistory(
     dataWithTypes,
     fileName,
     null,
     setUploadHistory,
     setCurrentDataId,
-    historyIdCounter,
-    setHistoryIdCounter,
+    idList,
+    setIdList,
     [],
     originalFileName,
     {},
@@ -63,6 +64,7 @@ export const handleDataLoaded = (
     setInitialActionStack([]);
   }
 };
+
 
 export const fetchData = async (handleDataLoaded) => {
   const response = await fetch('https://eth-peach-lab.github.io/data-story/titanic.csv');

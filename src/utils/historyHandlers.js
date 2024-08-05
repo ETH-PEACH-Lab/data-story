@@ -1,4 +1,5 @@
-import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage } from './storageHandlers';
+// utils/historyHandlers.js
+import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage, setIdListLocalStorage } from './storageHandlers';
 
 export const toggleHistory = (setHistoryVisible) => {
   setHistoryVisible(prev => !prev);
@@ -22,7 +23,9 @@ export const handleHistoryDelete = (
   setConfirmationMessage,
   setOnConfirmAction,
   setColumnConfigs,
-  setFilteredColumns
+  setFilteredColumns,
+  idList,
+  setIdList
 ) => {
   const historyEntryToDelete = uploadHistory[index];
   const isDeletingCurrentData = historyEntryToDelete.id === currentDataId;
@@ -45,6 +48,16 @@ export const handleHistoryDelete = (
       setUploadHistory(newHistory);
       setHistoryLocalStorage(newHistory);
       setCurrentDataIdLocalStorage(null);
+      // Add the deleted ID back to the list
+      setIdList(prevList => [historyEntryToDelete.id, ...prevList]);
+      setIdListLocalStorage([historyEntryToDelete.id, ...idList]);
+
+      // Reset ID list if history is empty
+      if (newHistory.length === 0) {
+        const resetIdList = [1, 2];
+        setIdList(resetIdList);
+        setIdListLocalStorage(resetIdList);
+      }
     });
   } else {
     if (isDeletingCurrentData) {
@@ -58,6 +71,16 @@ export const handleHistoryDelete = (
     setUploadHistory(newHistory);
     setHistoryLocalStorage(newHistory);
     setCurrentDataIdLocalStorage(currentDataId);
+    // Add the deleted ID back to the list
+    setIdList(prevList => [historyEntryToDelete.id, ...prevList]);
+    setIdListLocalStorage([historyEntryToDelete.id, ...idList]);
+
+    // Reset ID list if history is empty
+    if (newHistory.length === 0) {
+      const resetIdList = [1, 2];
+      setIdList(resetIdList);
+      setIdListLocalStorage(resetIdList);
+    }
   }
 };
 
@@ -67,8 +90,8 @@ export const saveDataToHistory = (
   parentId,
   setUploadHistory,
   setCurrentDataId,
-  historyIdCounter,
-  setHistoryIdCounter,
+  idList,
+  setIdList,
   actions,
   originalFileName,
   textStyles,
@@ -83,8 +106,17 @@ export const saveDataToHistory = (
   const currentActionStack = hotRef.current.hotInstance.undoRedo.doneActions;
   const newActions = currentActionStack.slice(initialActionStackLength);
 
-  const newHistoryId = historyIdCounter;
-  setHistoryIdCounter(prev => prev + 1);
+  // Pick ID from the list
+  const newHistoryId = idList.shift();
+  setIdList(prevList => {
+    const newList = [...prevList];
+    if (newList.length < 3) {
+      newList.push(newList[newList.length - 1] + 1);
+    }
+    return newList;
+  });
+  setIdListLocalStorage(idList);
+
   setUploadHistory(prevHistory => {
     const updatedHistory = [
       ...prevHistory,
