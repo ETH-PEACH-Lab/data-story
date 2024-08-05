@@ -192,7 +192,6 @@ const TableWithMenu = ({
               columnSorting
               filters
               manualColumnResize
-              autoColumnSize
               afterSelectionEnd={(r1, c1, r2, c2) =>
                 handleSelectionEnd(
                   r1,
@@ -216,12 +215,24 @@ const TableWithMenu = ({
                 if (headerLevel === -1 && filteredColumns[col])
                   TH.classList.add("green-header");
               }}
+              beforeColumnResize={(newSize, column, isDoubleClick) => {
+                if (newSize > 300) {
+                  return 300;
+                }
+              }}
               outsideClickDeselects={false}
               fillHandle
               comments
               licenseKey="non-commercial-and-evaluation"
               undoRedo
               settings={{ textStyles }}
+              autoColumnSize={{ syncLimit: 300 }}
+              modifyColWidth={(width, col) => {
+                if (width > 300) {
+                  return 300;
+                }
+                return width;
+              }}
             />
           </div>
         </div>

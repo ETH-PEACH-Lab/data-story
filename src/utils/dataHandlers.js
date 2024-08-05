@@ -85,7 +85,11 @@ export const fetchData = async (handleDataLoaded) => {
   });
 };
 
-export const initializeColumns = (newData, setColumnConfigs, setFilteredColumns) => {
+export const initializeColumns = (
+  newData,
+  setColumnConfigs,
+  setFilteredColumns
+) => {
   if (newData.length > 0) {
     const columnNames = Object.keys(newData[0]);
     const columnsCount = columnNames.length;
