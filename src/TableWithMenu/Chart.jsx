@@ -26,7 +26,6 @@ ChartJS.register(
   Legend
 );
 
-// Color functions and definitions
 export const originalColors = [
   "#000000",
   "#AB14E2",
@@ -83,10 +82,7 @@ const Chart = ({
   updateYAxisTitle,
 }) => {
   const handleNoteChange = (e) => {
-    setChartNotes({
-      ...chartNotes,
-      [index]: e.target.value,
-    });
+    setChartNotes({ ...chartNotes, [index]: e.target.value });
   };
 
   const handleNoteBlur = () => {
@@ -99,8 +95,6 @@ const Chart = ({
   }
 
   const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
-
-  console.log("Aggregated Data for Chart:", aggregatedData);
 
   const [selectedItem, setSelectedItem] = useState("");
   const [newLabel, setNewLabel] = useState("");
@@ -130,17 +124,12 @@ const Chart = ({
   };
 
   const handleRenameItem = () => {
-    if (type === "pie") {
-      const newLabels = pieLabels.map((label, idx) =>
+    const updateLabels = (labels) =>
+      labels.map((label, idx) =>
         idx === parseInt(selectedItem) ? newLabel : label
       );
-      setPieLabels(index, newLabels);
-    } else {
-      const newLabels = seriesLabels.map((label, idx) =>
-        idx === parseInt(selectedItem) ? newLabel : label
-      );
-      setSeriesLabels(index, newLabels);
-    }
+    if (type === "pie") setPieLabels(index, updateLabels(pieLabels));
+    else setSeriesLabels(index, updateLabels(seriesLabels));
     setSelectedItem("");
     setNewLabel("");
   };
@@ -177,31 +166,13 @@ const Chart = ({
       title: {
         display: true,
         text: title,
-        font: {
-          size: 24,
-        },
+        font: { size: 24 },
         color: "#000",
       },
     },
     scales: {
-      x: {
-        title: {
-          display: true,
-          text: xAxisTitle,
-          font: {
-            size: 16,
-          },
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: yAxisTitle,
-          font: {
-            size: 16,
-          },
-        },
-      },
+      x: { title: { display: true, text: xAxisTitle, font: { size: 16 } } },
+      y: { title: { display: true, text: yAxisTitle, font: { size: 16 } } },
     },
   });
 
@@ -210,25 +181,16 @@ const Chart = ({
       ...prevOptions,
       plugins: {
         ...prevOptions.plugins,
-        title: {
-          ...prevOptions.plugins.title,
-          text: title,
-        },
+        title: { ...prevOptions.plugins.title, text: title },
       },
       scales: {
         x: {
           ...prevOptions.scales.x,
-          title: {
-            ...prevOptions.scales.x.title,
-            text: xAxisTitle,
-          },
+          title: { ...prevOptions.scales.x.title, text: xAxisTitle },
         },
         y: {
           ...prevOptions.scales.y,
-          title: {
-            ...prevOptions.scales.y.title,
-            text: yAxisTitle,
-          },
+          title: { ...prevOptions.scales.y.title, text: yAxisTitle },
         },
       },
     }));
@@ -254,12 +216,9 @@ const Chart = ({
           })),
   };
 
-  const ChartComponent = {
-    line: Line,
-    bar: Bar,
-    pie: Pie,
-    scatter: Scatter,
-  }[type];
+  const ChartComponent = { line: Line, bar: Bar, pie: Pie, scatter: Scatter }[
+    type
+  ];
 
   return ChartComponent ? (
     <div className="handsontable-container">

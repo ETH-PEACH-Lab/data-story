@@ -14,11 +14,8 @@ import { handleFindReplace } from "../utils/findReplaceHandlers";
 import { handleUndo, handleRedo } from "../utils/undoRedoHandlers";
 import { handleStyleChange, customRenderer } from "../utils/styleHandlers";
 import "../App.css";
-
-// Importing originalColors and tintedColors from Chart.jsx
 import { originalColors, tintedColors } from "./Chart";
 
-// Combine the original and tinted colors
 const allColors = [...originalColors, ...tintedColors];
 
 const shuffleArray = (array) => {
@@ -68,10 +65,10 @@ const TableWithMenu = ({
   handleStyleChange,
   toggleHistory,
   setSelectedRange,
-  chartNames, // Accept chartNames as a prop
-  setChartNames, // Accept setChartNames as a prop
-  chartConfigs, // Accept chartConfigs as a prop
-  setChartConfigs, // Accept setChartConfigs as a prop
+  chartNames,
+  setChartNames,
+  chartConfigs,
+  setChartConfigs,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pages, setPages] = useState([
@@ -80,67 +77,36 @@ const TableWithMenu = ({
   const [selectedRange, setSelectedRangeState] = useState(null);
   const [chartNotes, setChartNotes] = useState({});
   const [editingNote, setEditingNote] = useState(null);
-  const [footerNames, setFooterNames] = useState(["Table"]); // Initialize with 'Table'
+  const [footerNames, setFooterNames] = useState(["Table"]);
 
   const selectedColumnName =
     selectedColumnIndex !== null
       ? columnConfigs[selectedColumnIndex]?.title
       : "";
 
-  const setSeriesLabels = (chartIndex, newLabels) => {
-    const newChartConfigs = [...chartConfigs];
-    newChartConfigs[chartIndex] = {
-      ...newChartConfigs[chartIndex],
-      seriesLabels: newLabels,
-    };
-    setChartConfigs(newChartConfigs);
-  };
-
-  const setPieLabels = (chartIndex, newLabels) => {
-    const newChartConfigs = [...chartConfigs];
-    newChartConfigs[chartIndex] = {
-      ...newChartConfigs[chartIndex],
-      pieLabels: newLabels,
-    };
-    setChartConfigs(newChartConfigs);
-  };
-
-  const setColors = (chartIndex, newColors) => {
-    const newChartConfigs = [...chartConfigs];
-    newChartConfigs[chartIndex] = {
-      ...newChartConfigs[chartIndex],
-      colors: newColors,
-    };
-    setChartConfigs(newChartConfigs);
-  };
-
-  const updateChartTitle = (chartIndex, newTitle) => {
+  const updateChartConfigs = (index, updates) => {
     setChartConfigs((prevConfigs) =>
-      prevConfigs.map((config, index) =>
-        index === chartIndex ? { ...config, title: newTitle } : config
+      prevConfigs.map((config, idx) =>
+        idx === index ? { ...config, ...updates } : config
       )
     );
   };
 
-  const updateXAxisTitle = (chartIndex, newTitle) => {
-    setChartConfigs((prevConfigs) =>
-      prevConfigs.map((config, index) =>
-        index === chartIndex ? { ...config, xAxisTitle: newTitle } : config
-      )
-    );
-  };
-
-  const updateYAxisTitle = (chartIndex, newTitle) => {
-    setChartConfigs((prevConfigs) =>
-      prevConfigs.map((config, index) =>
-        index === chartIndex ? { ...config, yAxisTitle: newTitle } : config
-      )
-    );
-  };
+  const setSeriesLabels = (chartIndex, newLabels) =>
+    updateChartConfigs(chartIndex, { seriesLabels: newLabels });
+  const setPieLabels = (chartIndex, newLabels) =>
+    updateChartConfigs(chartIndex, { pieLabels: newLabels });
+  const setColors = (chartIndex, newColors) =>
+    updateChartConfigs(chartIndex, { colors: newColors });
+  const updateChartTitle = (chartIndex, newTitle) =>
+    updateChartConfigs(chartIndex, { title: newTitle });
+  const updateXAxisTitle = (chartIndex, newTitle) =>
+    updateChartConfigs(chartIndex, { xAxisTitle: newTitle });
+  const updateYAxisTitle = (chartIndex, newTitle) =>
+    updateChartConfigs(chartIndex, { yAxisTitle: newTitle });
 
   const aggregateData = (data, aggregate, aggregateFunction) => {
     if (!aggregate) return data;
-
     if (!data || !data.y || !Array.isArray(data.y) || data.y.length === 0) {
       console.error("Invalid data structure in aggregateData", data);
       return { x: [], y: [[]] };
@@ -152,49 +118,34 @@ const TableWithMenu = ({
         .fill(null)
         .map(() => []),
     };
-
     const groupedData = {};
+
     data.x.forEach((xValue, index) => {
-      if (!groupedData[xValue]) {
+      if (!groupedData[xValue])
         groupedData[xValue] = Array(data.y.length)
           .fill(null)
           .map(() => []);
-      }
-      data.y.forEach((series, seriesIndex) => {
-        groupedData[xValue][seriesIndex].push(Number(series[index]));
-      });
+      data.y.forEach((series, seriesIndex) =>
+        groupedData[xValue][seriesIndex].push(Number(series[index]))
+      );
     });
 
     Object.keys(groupedData).forEach((xValue) => {
       aggregatedData.x.push(parseFloat(xValue));
       groupedData[xValue].forEach((yValues, seriesIndex) => {
-        let aggregatedYValue;
-        switch (aggregateFunction) {
-          case "SUM":
-            aggregatedYValue = yValues.reduce((acc, curr) => acc + curr, 0);
-            break;
-          case "AVERAGE":
-            aggregatedYValue =
-              yValues.reduce((acc, curr) => acc + curr, 0) / yValues.length;
-            break;
-          case "COUNT":
-            aggregatedYValue = yValues.length;
-            break;
-          case "MAX":
-            aggregatedYValue = Math.max(...yValues);
-            break;
-          case "MIN":
-            aggregatedYValue = Math.min(...yValues);
-            break;
-          default:
-            aggregatedYValue = yValues[0];
-            break;
-        }
-        aggregatedData.y[seriesIndex].push(aggregatedYValue);
+        const aggregateFunctions = {
+          SUM: (values) => values.reduce((acc, curr) => acc + curr, 0),
+          AVERAGE: (values) =>
+            values.reduce((acc, curr) => acc + curr, 0) / values.length,
+          COUNT: (values) => values.length,
+          MAX: (values) => Math.max(...values),
+          MIN: (values) => Math.min(...values),
+        };
+        aggregatedData.y[seriesIndex].push(
+          aggregateFunctions[aggregateFunction](yValues)
+        );
       });
     });
-
-    console.log("Aggregated Data:", aggregatedData);
 
     return aggregatedData;
   };
@@ -263,9 +214,8 @@ const TableWithMenu = ({
                     TH.parentNode.parentNode.childNodes,
                     TH.parentNode
                   );
-                if (headerLevel === -1 && filteredColumns[col]) {
+                if (headerLevel === -1 && filteredColumns[col])
                   TH.classList.add("green-header");
-                }
               }}
               outsideClickDeselects={false}
               fillHandle
@@ -292,20 +242,6 @@ const TableWithMenu = ({
         yAxisTitle,
       } = chartConfigs[chartIndex];
 
-      // Log chart data before rendering
-      console.log("Rendering chart with data:", {
-        type,
-        data,
-        aggregate,
-        aggregateFunction,
-        seriesLabels,
-        pieLabels,
-        colors,
-        title,
-        xAxisTitle,
-        yAxisTitle,
-      });
-
       return (
         <Chart
           type={type}
@@ -323,16 +259,14 @@ const TableWithMenu = ({
           setPieLabels={setPieLabels}
           aggregateData={aggregateData}
           colors={colors}
-          setColors={(chartIndex, newColors) =>
-            setColors(chartIndex, newColors)
-          }
-          updateChartTitle={updateChartTitle} // Pass the update function
-          updateFooterName={updateFooterName} // Pass the update function
-          title={title} // Pass the title
-          xAxisTitle={xAxisTitle} // Pass the xAxisTitle
-          yAxisTitle={yAxisTitle} // Pass the yAxisTitle
-          updateXAxisTitle={updateXAxisTitle} // Pass the update function
-          updateYAxisTitle={updateYAxisTitle} // Pass the update function
+          setColors={setColors}
+          updateChartTitle={updateChartTitle}
+          updateFooterName={updateFooterName}
+          title={title}
+          xAxisTitle={xAxisTitle}
+          yAxisTitle={yAxisTitle}
+          updateXAxisTitle={updateXAxisTitle}
+          updateYAxisTitle={updateYAxisTitle}
         />
       );
     }
@@ -346,11 +280,7 @@ const TableWithMenu = ({
     seriesLabels
   ) => {
     const numColors = type === "pie" ? data.x.length : data.y.length;
-
-    // Shuffle the allColors array
     const shuffledColors = shuffleArray([...allColors]);
-
-    // Get the first numColors from the shuffled array
     const generatedColors = shuffledColors.slice(0, numColors);
 
     const newPageId = pages.length;
@@ -358,11 +288,7 @@ const TableWithMenu = ({
     const newTitle = `Chart ${newChartId}`;
     setPages([
       ...pages,
-      {
-        id: newPageId,
-        content: `chart-${newChartId}`,
-        title: newTitle,
-      },
+      { id: newPageId, content: `chart-${newChartId}`, title: newTitle },
     ]);
     setChartConfigs([
       ...chartConfigs,
@@ -379,13 +305,10 @@ const TableWithMenu = ({
         yAxisTitle: "y-axis",
       },
     ]);
-    setChartNotes({
-      ...chartNotes,
-      [newChartId]: "Title",
-    });
-    setFooterNames([...footerNames, `Chart ${newChartId}`]); // Add new chart name to footers
+    setChartNotes({ ...chartNotes, [newChartId]: "Title" });
+    setFooterNames([...footerNames, `Chart ${newChartId}`]);
     setCurrentPage(newPageId);
-    setChartNames([...footerNames, `Chart ${newChartId}`]); // Update chartNames
+    setChartNames([...footerNames, `Chart ${newChartId}`]);
   };
 
   const updateFooterName = (index, newName) => {
@@ -394,12 +317,8 @@ const TableWithMenu = ({
     );
     setChartNames((prevFooterNames) =>
       prevFooterNames.map((name, i) => (i === index + 1 ? newName : name))
-    ); // Update chartNames
+    );
   };
-
-  useEffect(() => {
-    console.log("Updated Chart Names:", footerNames);
-  }, [footerNames]);
 
   return (
     <div className="table-content-area">
