@@ -2,7 +2,7 @@
   cursor: pointer;
   width: 100%;
   position: relative;
-  overflow-x: auto; 
+  overflow-x: auto;
   height: calc(100% - 100px);
 }
 
@@ -69,7 +69,7 @@
   gap: 0px;
   margin-left: 0px;
   overflow: visible;
-  background-color: #E3E1D9;
+  background-color: #e3e1d9;
   z-index: 15;
 }
 
@@ -86,7 +86,7 @@
   border-radius: 0;
   justify-content: center;
   align-items: center;
-  background-color: #E3E1D9;
+  background-color: #e3e1d9;
   clip-path: polygon(15% 15%, 85% 15%, 85% 85%, 15% 85%);
 }
 
@@ -132,7 +132,7 @@
   font-size: 2rem;
 }
 
-.chart-container{
+.chart-container {
   display: flex;
   align-items: flex-start;
   right: 6px;
@@ -141,10 +141,12 @@
   margin-bottom: 0px;
 }
 
-.chart{
+.chart {
   flex-grow: 1;
   position: relative;
-  right: 4px; 
+  height: 300px;
+  width: calc(100% - 8px);
+  right: 4px;
 }
 
 .table-container {

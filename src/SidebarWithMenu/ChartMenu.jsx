@@ -32,10 +32,46 @@ const ChartMenu = ({ addComponent, chartNames = [], chartConfigs = [] }) => {
             })),
     };
 
-    return {
+    const transformedConfig = {
       ...chartConfig,
       data: transformedData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: title || `Chart ${chartConfig.index}`,
+            font: {
+              size: 24,
+            },
+            color: "#000",
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: chartConfig.xAxisTitle || "x-axis",
+              font: {
+                size: 16,
+              },
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: chartConfig.yAxisTitle || "y-axis",
+              font: {
+                size: 16,
+              },
+            },
+          },
+        },
+      },
     };
+
+    return transformedConfig;
   };
 
   const handleInsertClick = () => {
