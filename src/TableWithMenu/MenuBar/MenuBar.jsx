@@ -69,6 +69,8 @@ const MenuBar = ({
         handleFindReplace={handleFindReplace}
         handleUndo={handleUndo}
         handleRedo={handleRedo}
+        setColumns={setColumns}
+        hotRef={hotRef}
       />
     ),
     Format: (

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./MenuBar.module.css";
 import Text from "./FormatMenu/Text";
 import Cell from "./FormatMenu/Cell";
-import Headers from "./FormatMenu/Headers";
 
 const FormatMenu = ({
   onStyleChange,
@@ -17,7 +16,6 @@ const FormatMenu = ({
     isTextDropdownVisible: false,
     isCellDropdownVisible: false,
     isColorDropdownVisible: false,
-    isHeadersDropdownVisible: false,
     dropdownPosition: { top: 0, left: 0 },
     colorDropdownPosition: { top: 0, left: 0 },
     colorContext: "",
@@ -25,12 +23,10 @@ const FormatMenu = ({
 
   const textButtonRef = useRef(null);
   const cellButtonRef = useRef(null);
-  const headersButtonRef = useRef(null);
 
   const menuItems = [
     "Text",
     "Cell",
-    "Headers",
     "Conditional Formatting",
     "Clear Formatting",
   ];
@@ -52,7 +48,6 @@ const FormatMenu = ({
             isTextDropdownVisible: !dropdownState.isTextDropdownVisible,
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
-            isHeadersDropdownVisible: false,
             dropdownPosition: position,
           });
           break;
@@ -61,16 +56,6 @@ const FormatMenu = ({
             isTextDropdownVisible: false,
             isCellDropdownVisible: !dropdownState.isCellDropdownVisible,
             isColorDropdownVisible: false,
-            isHeadersDropdownVisible: false,
-            dropdownPosition: position,
-          });
-          break;
-        case "Headers":
-          updateDropdownState({
-            isTextDropdownVisible: false,
-            isCellDropdownVisible: false,
-            isColorDropdownVisible: false,
-            isHeadersDropdownVisible: !dropdownState.isHeadersDropdownVisible,
             dropdownPosition: position,
           });
           break;
@@ -100,7 +85,6 @@ const FormatMenu = ({
             isTextDropdownVisible: false,
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
-            isHeadersDropdownVisible: false,
           });
       }
     }
@@ -112,7 +96,6 @@ const FormatMenu = ({
         isTextDropdownVisible: false,
         isCellDropdownVisible: false,
         isColorDropdownVisible: false,
-        isHeadersDropdownVisible: false,
       });
     }
   };
@@ -131,7 +114,6 @@ const FormatMenu = ({
       isTextDropdownVisible: false,
       isCellDropdownVisible: false,
       isColorDropdownVisible: false,
-      isHeadersDropdownVisible: false,
     });
   };
 
@@ -143,16 +125,13 @@ const FormatMenu = ({
     if (
       !dropdownState.isTextDropdownVisible &&
       !dropdownState.isCellDropdownVisible &&
-      !dropdownState.isColorDropdownVisible &&
-      !dropdownState.isHeadersDropdownVisible
+      !dropdownState.isColorDropdownVisible
     )
       return;
 
     if (
       (textButtonRef.current && textButtonRef.current.contains(event.target)) ||
       (cellButtonRef.current && cellButtonRef.current.contains(event.target)) ||
-      (headersButtonRef.current &&
-        headersButtonRef.current.contains(event.target)) ||
       (tableContainerRef.current &&
         tableContainerRef.current.contains(event.target))
     )
@@ -162,7 +141,6 @@ const FormatMenu = ({
       isTextDropdownVisible: false,
       isCellDropdownVisible: false,
       isColorDropdownVisible: false,
-      isHeadersDropdownVisible: false,
     });
   };
 
@@ -181,8 +159,6 @@ const FormatMenu = ({
             ? textButtonRef
             : item === "Cell"
             ? cellButtonRef
-            : item === "Headers"
-            ? headersButtonRef
             : null;
         return (
           <div
@@ -213,16 +189,6 @@ const FormatMenu = ({
                 isColorDropdownVisible={dropdownState.isColorDropdownVisible}
                 colorDropdownPosition={dropdownState.colorDropdownPosition}
                 colorContext={dropdownState.colorContext}
-              />
-            )}
-            {item === "Headers" && dropdownState.isHeadersDropdownVisible && (
-              <Headers
-                position={dropdownState.dropdownPosition}
-                stopPropagation={stopPropagation}
-                selectedColumnIndex={selectedColumnIndex}
-                selectedColumnName={selectedColumnName}
-                setColumns={setColumns}
-                hotRef={hotRef}
               />
             )}
           </div>
