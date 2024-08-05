@@ -8,8 +8,6 @@ const EditMenu = ({
   selectedColumnIndex,
   selectedColumnName,
   handleFindReplace,
-  handleUndo,
-  handleRedo,
   setColumns,
   hotRef,
 }) => {
@@ -45,10 +43,6 @@ const EditMenu = ({
       setHeadersDropdownVisible(!isHeadersDropdownVisible);
       setRemoveDuplicatesDropdownVisible(false);
       setFindReplaceDropdownVisible(false);
-    } else if (item === "Undo") {
-      handleUndo();
-    } else if (item === "Redo") {
-      handleRedo();
     } else {
       console.log(`${item} clicked`);
     }
@@ -98,7 +92,7 @@ const EditMenu = ({
 
   return (
     <>
-      {["Undo", "Redo", "Find and Replace", "Remove Duplicates", "Headers"].map(
+      {["Find and Replace", "Remove Duplicates", "Headers"].map(
         (item, index) => (
           <div
             key={index}

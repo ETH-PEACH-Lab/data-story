@@ -43,14 +43,22 @@ body {
   color: black;
 }
 
-.save-button-container {
+.banner-button-container {
   position: absolute;
   right: 20px;
-  bottom: 10px;
+  top: 10px;
 }
 
-.save-button {
-  padding: 10px 20px;
+.banner-undo-redo-container {
+  display: flex;
+  position: absolute;
+  right: 0px;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+  margin-top: 10px; /* Adjust the top margin to create space between buttons */
+}
+
+.banner-button {
+  padding: 6px 20px;
   background-color: rgb(213, 210, 191);
   color: rgb(0, 0, 0);
   border: none;
@@ -59,7 +67,7 @@ body {
   font-size: 18px;
 }
 
-.save-button:hover {
+.banner-button:hover {
   background-color: #c6c3b8;
 }
 

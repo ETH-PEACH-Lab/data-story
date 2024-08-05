@@ -11,7 +11,6 @@ import {
 import { handleSort, handleFilter } from "../utils/filterSortHandlers";
 import { countAndRemoveDuplicates } from "../utils/duplicateHandlers";
 import { handleFindReplace } from "../utils/findReplaceHandlers";
-import { handleUndo, handleRedo } from "../utils/undoRedoHandlers";
 import { handleStyleChange, customRenderer } from "../utils/styleHandlers";
 import "../App.css";
 import { originalColors, tintedColors } from "./Chart";
@@ -421,8 +420,6 @@ const TableWithMenu = ({
               hotRef
             )
           }
-          handleUndo={() => handleUndo(hotRef)}
-          handleRedo={() => handleRedo(hotRef)}
           hotRef={hotRef}
           filteredColumns={filteredColumns}
           setFilteredColumns={setFilteredColumns}

@@ -31,6 +31,7 @@ import {
   getIdListLocalStorage,
   setIdListLocalStorage,
 } from "./utils/storageHandlers";
+import { handleUndo, handleRedo } from "./utils/undoRedoHandlers"; // Add this import
 
 registerAllModules();
 
@@ -214,14 +215,22 @@ function App() {
     setIdListLocalStorage(idList);
   }, [idList]);
 
+  const handleUndoAction = () => {
+    handleUndo(hotRef);
+  };
+
+  const handleRedoAction = () => {
+    handleRedo(hotRef);
+  };
+
   return (
     <ErrorBoundary>
       <div className="container">
         <div className="top-banner">
           <h1>Data-Story</h1>
-          <div className="save-button-container">
+          <div className="banner-button-container">
             <button
-              className="save-button"
+              className="banner-button"
               onClick={() => {
                 saveDataToHistory(
                   data,
@@ -248,6 +257,14 @@ function App() {
             >
               Save Current Version
             </button>
+            <div className="banner-undo-redo-container">
+              <button className="banner-button" onClick={handleUndoAction}>
+                Undo
+              </button>
+              <button className="banner-button" onClick={handleRedoAction}>
+                Redo
+              </button>
+            </div>
           </div>
         </div>
         <div className="content-area">
