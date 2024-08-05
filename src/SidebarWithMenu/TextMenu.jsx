@@ -4,9 +4,11 @@ import styles from "./StoryMenu.module.css";
 const TextMenu = ({ addComponent }) => {
   return (
     <div className={styles.secondaryMenuBar}>
-      <button className={styles.button} onClick={() => addComponent("text")}>
-        Add Text
-      </button>
+      <div className={styles.secondaryMenuItem}>
+        <button className={styles.button} onClick={() => addComponent("text")}>
+          Insert
+        </button>
+      </div>
     </div>
   );
 };
