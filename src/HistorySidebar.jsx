@@ -39,7 +39,6 @@ const HistorySidebar = ({
 
   const saveFileName = useCallback(
     (index) => {
-      console.log("Saving file name:", newFileName, "for index:", index);
       const trimmedFileName = newFileName.trim();
       if (
         trimmedFileName !== "" &&
@@ -63,7 +62,6 @@ const HistorySidebar = ({
   });
 
   const startEditing = (index, fileName) => {
-    console.log("Starting to edit file name:", fileName, "at index:", index);
     setEditingIndex(index);
     setNewFileName(fileName);
   };
@@ -95,7 +93,6 @@ const HistorySidebar = ({
                     value={newFileName}
                     onChange={(e) => setNewFileName(e.target.value)}
                     onBlur={() => {
-                      console.log("Input field lost focus.");
                       saveFileName(index);
                     }}
                     onKeyDown={(e) => {

@@ -3,7 +3,6 @@ import styles from "./MenuBar.module.css";
 import Text from "./FormatMenu/Text";
 import Cell from "./FormatMenu/Cell";
 import Headers from "./FormatMenu/Headers";
-import Type from "./FormatMenu/Type";
 
 const FormatMenu = ({
   onStyleChange,
@@ -19,7 +18,6 @@ const FormatMenu = ({
     isCellDropdownVisible: false,
     isColorDropdownVisible: false,
     isHeadersDropdownVisible: false,
-    isTypeDropdownVisible: false,
     dropdownPosition: { top: 0, left: 0 },
     colorDropdownPosition: { top: 0, left: 0 },
     colorContext: "",
@@ -28,30 +26,14 @@ const FormatMenu = ({
   const textButtonRef = useRef(null);
   const cellButtonRef = useRef(null);
   const headersButtonRef = useRef(null);
-  const typeButtonRef = useRef(null);
 
   const menuItems = [
     "Text",
     "Cell",
-    "Type",
     "Headers",
     "Conditional Formatting",
     "Clear Formatting",
   ];
-
-  const typeMapping = {
-    text: "Text",
-    numeric: "Number",
-    date: "Date",
-    time: "Time",
-  };
-
-  const reverseTypeMapping = {
-    Text: "text",
-    Number: "numeric",
-    Date: "date",
-    Time: "time",
-  };
 
   const handleMenuClick = (item, buttonRef) => {
     const updateDropdownState = (updates) =>
@@ -70,7 +52,6 @@ const FormatMenu = ({
             isTextDropdownVisible: !dropdownState.isTextDropdownVisible,
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
-            isTypeDropdownVisible: false,
             isHeadersDropdownVisible: false,
             dropdownPosition: position,
           });
@@ -80,7 +61,6 @@ const FormatMenu = ({
             isTextDropdownVisible: false,
             isCellDropdownVisible: !dropdownState.isCellDropdownVisible,
             isColorDropdownVisible: false,
-            isTypeDropdownVisible: false,
             isHeadersDropdownVisible: false,
             dropdownPosition: position,
           });
@@ -90,18 +70,7 @@ const FormatMenu = ({
             isTextDropdownVisible: false,
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
-            isTypeDropdownVisible: false,
             isHeadersDropdownVisible: !dropdownState.isHeadersDropdownVisible,
-            dropdownPosition: position,
-          });
-          break;
-        case "Type":
-          updateDropdownState({
-            isTextDropdownVisible: false,
-            isCellDropdownVisible: false,
-            isColorDropdownVisible: false,
-            isTypeDropdownVisible: !dropdownState.isTypeDropdownVisible,
-            isHeadersDropdownVisible: false,
             dropdownPosition: position,
           });
           break;
@@ -132,7 +101,6 @@ const FormatMenu = ({
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
             isHeadersDropdownVisible: false,
-            isTypeDropdownVisible: false,
           });
       }
     }
@@ -145,7 +113,6 @@ const FormatMenu = ({
         isCellDropdownVisible: false,
         isColorDropdownVisible: false,
         isHeadersDropdownVisible: false,
-        isTypeDropdownVisible: false,
       });
     }
   };
@@ -165,7 +132,6 @@ const FormatMenu = ({
       isCellDropdownVisible: false,
       isColorDropdownVisible: false,
       isHeadersDropdownVisible: false,
-      isTypeDropdownVisible: false,
     });
   };
 
@@ -178,8 +144,7 @@ const FormatMenu = ({
       !dropdownState.isTextDropdownVisible &&
       !dropdownState.isCellDropdownVisible &&
       !dropdownState.isColorDropdownVisible &&
-      !dropdownState.isHeadersDropdownVisible &&
-      !dropdownState.isTypeDropdownVisible
+      !dropdownState.isHeadersDropdownVisible
     )
       return;
 
@@ -188,7 +153,6 @@ const FormatMenu = ({
       (cellButtonRef.current && cellButtonRef.current.contains(event.target)) ||
       (headersButtonRef.current &&
         headersButtonRef.current.contains(event.target)) ||
-      (typeButtonRef.current && typeButtonRef.current.contains(event.target)) ||
       (tableContainerRef.current &&
         tableContainerRef.current.contains(event.target))
     )
@@ -199,7 +163,6 @@ const FormatMenu = ({
       isCellDropdownVisible: false,
       isColorDropdownVisible: false,
       isHeadersDropdownVisible: false,
-      isTypeDropdownVisible: false,
     });
   };
 
@@ -220,8 +183,6 @@ const FormatMenu = ({
             ? cellButtonRef
             : item === "Headers"
             ? headersButtonRef
-            : item === "Type"
-            ? typeButtonRef
             : null;
         return (
           <div
@@ -261,19 +222,6 @@ const FormatMenu = ({
                 selectedColumnIndex={selectedColumnIndex}
                 selectedColumnName={selectedColumnName}
                 setColumns={setColumns}
-                hotRef={hotRef}
-              />
-            )}
-            {item === "Type" && dropdownState.isTypeDropdownVisible && (
-              <Type
-                position={dropdownState.dropdownPosition}
-                stopPropagation={stopPropagation}
-                selectedColumnIndex={selectedColumnIndex}
-                columns={columns}
-                setColumns={setColumns}
-                typeMapping={typeMapping}
-                reverseTypeMapping={reverseTypeMapping}
-                selectedColumnName={selectedColumnName}
                 hotRef={hotRef}
               />
             )}
