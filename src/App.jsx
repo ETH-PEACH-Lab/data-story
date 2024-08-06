@@ -93,11 +93,12 @@ function App() {
         hotRef,
         setInitialActionStack,
         setInitialActionStackLength,
-        setChartConfigs, // Ensure setChartConfigs is passed
-        setPages, // Ensure setPages is passed
-        setFooterNames, // Ensure setFooterNames is passed
-        setCurrentPage, // Ensure setCurrentPage is passed
-        currentPage // Pass currentPage
+        setChartConfigs,
+        setPages,
+        setFooterNames,
+        setCurrentPage,
+        setChartNames, // Add setChartNames
+        currentPage
       );
       setCurrentDataIdLocalStorage(historyEntry.id); // Save the current data ID to localStorage
     };
@@ -202,6 +203,7 @@ function App() {
             setPages, // Ensure setPages is passed
             setFooterNames, // Ensure setFooterNames is passed
             setCurrentPage, // Ensure setCurrentPage is passed
+            setChartNames, // Add setChartNames
             currentPage // Pass currentPage
           );
         }

@@ -161,6 +161,7 @@ export const switchHistoryEntry = (
   setPages, // Ensure setPages is passed
   setFooterNames, // Ensure setFooterNames is passed
   setCurrentPage, // Ensure setCurrentPage is passed
+  setChartNames, // Add setChartNames
   currentPage // Add currentPage as a parameter
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
@@ -190,6 +191,7 @@ export const switchHistoryEntry = (
   });
   setPages(pages);
   setFooterNames(footers);
+  setChartNames(footers); // Update chart names
 
   // Ensure the current page is valid
   if (currentPage >= pages.length) {
