@@ -277,6 +277,7 @@ const TableWithMenu = ({
           yAxisTitle={yAxisTitle}
           updateXAxisTitle={updateXAxisTitle}
           updateYAxisTitle={updateYAxisTitle}
+          onDeleteChart={() => handleDeleteChart(chartIndex)}
         />
       );
     }
@@ -319,6 +320,30 @@ const TableWithMenu = ({
     setFooterNames([...footerNames, `Chart ${newChartId}`]);
     setCurrentPage(newPageId);
     setChartNames([...footerNames, `Chart ${newChartId}`]);
+  };
+
+  const handleDeleteChart = (chartIndex) => {
+    setPages((prevPages) =>
+      prevPages.filter((page) => page.id !== chartIndex + 1)
+    );
+    setChartConfigs((prevConfigs) =>
+      prevConfigs.filter((_, index) => index !== chartIndex)
+    );
+    setFooterNames((prevFooterNames) =>
+      prevFooterNames.filter((_, index) => index !== chartIndex + 1)
+    );
+    setChartNames((prevChartNames) =>
+      prevChartNames.filter((_, index) => index !== chartIndex + 1)
+    );
+    setChartNotes((prevChartNotes) => {
+      const { [chartIndex]: _, ...remainingNotes } = prevChartNotes;
+      return remainingNotes;
+    });
+
+    // Update currentPage to the first page (table) if the deleted chart was the current page
+    if (currentPage === chartIndex + 1) {
+      setCurrentPage(0);
+    }
   };
 
   const updateFooterName = (index, newName) => {

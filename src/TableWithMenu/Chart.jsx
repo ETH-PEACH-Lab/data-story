@@ -80,6 +80,7 @@ const Chart = ({
   yAxisTitle,
   updateXAxisTitle,
   updateYAxisTitle,
+  onDeleteChart,
 }) => {
   const handleNoteChange = (e) => {
     setChartNotes({ ...chartNotes, [index]: e.target.value });
@@ -230,7 +231,15 @@ const Chart = ({
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <button onClick={() => setIsRenamingVisible(!isRenamingVisible)}>
+          <button
+            onClick={() => setIsRenamingVisible(!isRenamingVisible)}
+            style={{
+              height: "25px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             {isRenamingVisible ? "Hide" : "Edit"}
           </button>
           {isRenamingVisible && (
@@ -245,12 +254,25 @@ const Chart = ({
                 <option value="color">Color</option>
                 <option value="name">Name</option>
               </select>
+              <button
+                onClick={() => onDeleteChart(index)}
+                style={{
+                  display: "flex",
+                  backgroundColor: "#dc3546b8",
+                  color: "white",
+                  height: "25px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Delete
+              </button>
             </div>
           )}
         </div>
 
         {isRenamingVisible && selectedModification === "title" && (
-          <div style={{ marginTop: "10px" }}>
+          <div style={{ marginTop: "10px", display: "flex" }}>
             <input
               type="text"
               value={titleText}
@@ -258,15 +280,24 @@ const Chart = ({
               placeholder="New Title"
               style={{ marginLeft: "10px" }}
             />
-            <button onClick={handleTitleChange} style={{ marginLeft: "10px" }}>
-              Change Text
+            <button
+              onClick={handleTitleChange}
+              style={{
+                marginLeft: "10px",
+                height: "25px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Change Title
             </button>
           </div>
         )}
 
         {isRenamingVisible && selectedModification === "axis-titles" && (
           <div style={{ marginTop: "10px" }}>
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "10px", display: "flex" }}>
               <input
                 type="text"
                 value={newXAxisTitle}
@@ -276,12 +307,18 @@ const Chart = ({
               />
               <button
                 onClick={handleXAxisTitleChange}
-                style={{ marginLeft: "10px" }}
+                style={{
+                  marginLeft: "10px",
+                  height: "25px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
                 Change X-Axis
               </button>
             </div>
-            <div>
+            <div style={{ display: "flex" }}>
               <input
                 type="text"
                 value={newYAxisTitle}
@@ -291,7 +328,13 @@ const Chart = ({
               />
               <button
                 onClick={handleYAxisTitleChange}
-                style={{ marginLeft: "10px" }}
+                style={{
+                  marginLeft: "10px",
+                  height: "25px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
                 Change Y-Axis
               </button>
@@ -325,7 +368,16 @@ const Chart = ({
                   border: "1px solid #000",
                 }}
               />
-              <button onClick={handleApplyColor} style={{ marginLeft: "10px" }}>
+              <button
+                onClick={handleApplyColor}
+                style={{
+                  marginLeft: "10px",
+                  height: "25px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 Apply Color
               </button>
               {colorPickerVisible && (
@@ -379,7 +431,16 @@ const Chart = ({
                 placeholder={`New ${type === "pie" ? "Slice" : "Series"} Label`}
                 style={{ marginLeft: "10px" }}
               />
-              <button onClick={handleRenameItem} style={{ marginLeft: "10px" }}>
+              <button
+                onClick={handleRenameItem}
+                style={{
+                  marginLeft: "10px",
+                  height: "25px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 Rename
               </button>
             </div>
