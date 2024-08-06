@@ -1,4 +1,3 @@
-// utils/historyHandlers.js
 import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage, setIdListLocalStorage } from './storageHandlers';
 
 export const toggleHistory = (setHistoryVisible) => {
@@ -96,14 +95,18 @@ export const saveDataToHistory = (
   originalFileName,
   textStyles,
   initialActionStackLength,
-  hotRef
+  hotRef,
+  chartConfigs, // Add chartConfigs as a parameter
+  footerNames // Add footerNames as a parameter
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
   const dataCopy = JSON.parse(JSON.stringify(newData));
   const stylesCopy = JSON.parse(JSON.stringify(textStyles));
+  const chartsCopy = JSON.parse(JSON.stringify(chartConfigs)); // Deep copy of chart configs
+  const footersCopy = JSON.parse(JSON.stringify(footerNames)); // Deep copy of footer names
 
-  const currentActionStack = hotRef.current.hotInstance.undoRedo.doneActions;
+  const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
   const newActions = currentActionStack.slice(initialActionStackLength);
 
   // Pick ID from the list
@@ -120,7 +123,7 @@ export const saveDataToHistory = (
   setUploadHistory(prevHistory => {
     const updatedHistory = [
       ...prevHistory,
-      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: newActions, styles: stylesCopy }
+      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: newActions, styles: stylesCopy, charts: chartsCopy, footers: footersCopy } // Include charts and footers in the history entry
     ];
     setHistoryLocalStorage(updatedHistory);
     setCurrentDataIdLocalStorage(newHistoryId);
@@ -153,7 +156,12 @@ export const switchHistoryEntry = (
   setOriginalFileName,
   hotRef,
   setInitialActionStack,
-  setInitialActionStackLength
+  setInitialActionStackLength,
+  setChartConfigs, // Ensure setChartConfigs is passed
+  setPages, // Ensure setPages is passed
+  setFooterNames, // Ensure setFooterNames is passed
+  setCurrentPage, // Ensure setCurrentPage is passed
+  currentPage // Add currentPage as a parameter
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
   setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
@@ -162,8 +170,32 @@ export const switchHistoryEntry = (
   setCurrentDataId(historyEntry.id);
   setActions(historyEntry.actions);
   setOriginalFileName(historyEntry.fileName);
-  setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-  setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
+  setInitialActionStack([...hotRef.current?.hotInstance?.undoRedo?.doneActions || []]);
+  setInitialActionStackLength(hotRef.current?.hotInstance?.undoRedo?.doneActions?.length || 0);
+
+  const chartConfigs = historyEntry.charts ? JSON.parse(JSON.stringify(historyEntry.charts)) : []; // Ensure chart configs are set to an empty array if undefined
+  setChartConfigs(chartConfigs);
+
+  // Update pages and footers based on chartConfigs
+  const footers = ["Table"];
+  const pages = [{ id: 0, content: "table", title: "Table" }];
+  chartConfigs.forEach((chartConfig, idx) => {
+    const title = chartConfig.title || `Chart ${idx + 1}`;
+    footers.push(title);
+    pages.push({
+      id: idx + 1,
+      content: `chart-${idx}`,
+      title: title
+    });
+  });
+  setPages(pages);
+  setFooterNames(footers);
+
+  // Ensure the current page is valid
+  if (currentPage >= pages.length) {
+    setCurrentPage(0);
+  }
+
   setTimeout(() => {
     setClickedIndex(-1);
   }, 500);

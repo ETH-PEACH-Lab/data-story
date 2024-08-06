@@ -63,11 +63,21 @@ function App() {
   const [chartNames, setChartNames] = useState(["Table"]);
   const [chartConfigs, setChartConfigs] = useState([]);
   const [idList, setIdList] = useState(getIdListLocalStorage());
+  const [pages, setPages] = useState([
+    { id: 0, content: "table", title: "Table" },
+  ]);
+  const [footerNames, setFooterNames] = useState(["Table"]);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleHistoryClick = (historyEntry, index) => {
-    const undoRedo = hotRef.current.hotInstance.undoRedo;
+    const undoRedo = hotRef.current?.hotInstance?.undoRedo;
 
     const performSwitch = () => {
+      // Check if the current page is valid before switching history
+      if (currentPage > 0 && !historyEntry.charts?.[currentPage - 1]) {
+        setCurrentPage(0);
+      }
+
       switchHistoryEntry(
         historyEntry,
         index,
@@ -82,12 +92,20 @@ function App() {
         setOriginalFileName,
         hotRef,
         setInitialActionStack,
-        setInitialActionStackLength
+        setInitialActionStackLength,
+        setChartConfigs, // Ensure setChartConfigs is passed
+        setPages, // Ensure setPages is passed
+        setFooterNames, // Ensure setFooterNames is passed
+        setCurrentPage, // Ensure setCurrentPage is passed
+        currentPage // Pass currentPage
       );
       setCurrentDataIdLocalStorage(historyEntry.id); // Save the current data ID to localStorage
     };
 
-    if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
+    if (
+      undoRedo &&
+      !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)
+    ) {
       setConfirmationMessage(
         "You have unsaved changes. Do you want to save them?"
       );
@@ -105,7 +123,9 @@ function App() {
           originalFileName,
           textStyles,
           initialActionStack,
-          hotRef
+          hotRef,
+          chartConfigs, // Ensure chartConfigs is passed
+          footerNames // Ensure footerNames is passed
         );
         performSwitch();
       });
@@ -177,7 +197,12 @@ function App() {
             setOriginalFileName,
             hotRef,
             setInitialActionStack,
-            setInitialActionStackLength
+            setInitialActionStackLength,
+            setChartConfigs, // Ensure setChartConfigs is passed
+            setPages, // Ensure setPages is passed
+            setFooterNames, // Ensure setFooterNames is passed
+            setCurrentPage, // Ensure setCurrentPage is passed
+            currentPage // Pass currentPage
           );
         }
       } else {
@@ -208,9 +233,9 @@ function App() {
         );
         // Remove ID 1 from the list and update it
         setIdList((prevIdList) => {
-          const newIdList = prevIdList.slice(1);
-          setIdListLocalStorage(newIdList);
-          return newIdList;
+          const newList = prevIdList.slice(1);
+          setIdListLocalStorage(newList);
+          return newList;
         });
       });
     }
@@ -264,14 +289,18 @@ function App() {
                   originalFileName,
                   textStyles,
                   initialActionStackLength,
-                  hotRef
+                  hotRef,
+                  chartConfigs, // Pass chartConfigs
+                  footerNames // Pass footerNames
                 );
-                setInitialActionStack([
-                  ...hotRef.current.hotInstance.undoRedo.doneActions,
-                ]);
-                setInitialActionStackLength(
-                  hotRef.current.hotInstance.undoRedo.doneActions.length
-                );
+                if (hotRef.current) {
+                  setInitialActionStack([
+                    ...hotRef.current.hotInstance.undoRedo.doneActions,
+                  ]);
+                  setInitialActionStackLength(
+                    hotRef.current.hotInstance.undoRedo.doneActions.length
+                  );
+                }
                 setCurrentDataIdLocalStorage(currentDataId); // Save the current data ID to localStorage
               }}
             >
@@ -330,6 +359,12 @@ function App() {
             setChartConfigs={setChartConfigs}
             idList={idList}
             setIdList={setIdList}
+            pages={pages} // Pass pages
+            setPages={setPages} // Pass setPages
+            footerNames={footerNames} // Pass footerNames
+            setFooterNames={setFooterNames} // Pass setFooterNames
+            currentPage={currentPage} // Pass currentPage
+            setCurrentPage={setCurrentPage} // Pass setCurrentPage
           />
           <SidebarWithStoryMenu
             data={data}

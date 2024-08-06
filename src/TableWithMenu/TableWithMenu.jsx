@@ -68,15 +68,16 @@ const TableWithMenu = ({
   setChartConfigs,
   idList,
   setIdList,
+  pages, // Add pages prop
+  setPages, // Add setPages prop
+  footerNames, // Add footerNames prop
+  setFooterNames, // Add setFooterNames prop
+  currentPage, // Add currentPage prop
+  setCurrentPage, // Add setCurrentPage prop
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pages, setPages] = useState([
-    { id: 0, content: "table", title: "Table" },
-  ]);
   const [selectedRange, setSelectedRangeState] = useState(null);
   const [chartNotes, setChartNotes] = useState({});
   const [editingNote, setEditingNote] = useState(null);
-  const [footerNames, setFooterNames] = useState(["Table"]);
 
   const selectedColumnName =
     selectedColumnIndex !== null
@@ -373,7 +374,9 @@ const TableWithMenu = ({
               originalFileName,
               textStyles,
               initialActionStackLength,
-              hotRef
+              hotRef,
+              chartConfigs, // Pass chartConfigs
+              footerNames // Pass footerNames
             );
             setInitialActionStack([
               ...hotRef.current.hotInstance.undoRedo.doneActions,

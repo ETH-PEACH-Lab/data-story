@@ -1,4 +1,3 @@
-// utils/dataHandlers.js
 import Papa from 'papaparse';
 
 export const handleDataLoaded = (
@@ -57,7 +56,8 @@ export const handleDataLoaded = (
     originalFileName,
     {},
     0,
-    hotRef
+    hotRef,
+    [] // Initialize chartConfigs as an empty array
   );
   setTextStyles({});
   setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
