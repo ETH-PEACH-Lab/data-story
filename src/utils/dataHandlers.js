@@ -72,7 +72,7 @@ export const handleDataLoaded = (
 
 
 export const fetchData = async (handleDataLoaded) => {
-  const response = await fetch('https://eth-peach-lab.github.io/data-story/disney_plus_shows.csv');
+  const response = await fetch('https://eth-peach-lab.github.io/data-story/euro2024_players.csv');
   const reader = response.body.getReader();
   const result = await reader.read();
   const decoder = new TextDecoder('utf-8');
@@ -80,7 +80,7 @@ export const fetchData = async (handleDataLoaded) => {
   Papa.parse(csv, {
     header: true,
     complete: (results) => {
-      handleDataLoaded(results.data, 'disney_plus_shows.csv');
+      handleDataLoaded(results.data, 'euro2024_players.csv');
     },
   });
 };
