@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import "./History.css";
+import "./styles/History.css";
 import {
   setHistoryLocalStorage,
   clearAllLocalStorage,
@@ -72,24 +72,28 @@ const HistorySidebar = ({
 
   return (
     <div className={`history-sidebar ${isHistoryVisible ? "visible" : ""}`}>
-      <div className="button-container">
-        <button onClick={toggleHistory} className="toggle-button">
+      <div className="button-container d-flex justify-content-between align-items-center p-2">
+        <button
+          onClick={toggleHistory}
+          className={`btn btn-light ${
+            isHistoryVisible ? "history-visible" : "history-collapsed"
+          }`}
+        >
           {isHistoryVisible ? "Hide History" : "Show History"}
         </button>
         {isHistoryVisible && (
-          <button onClick={handleDeleteAllHistory} className="delete-button">
+          <button onClick={handleDeleteAllHistory} className="btn btn-danger">
             Delete All
           </button>
         )}
       </div>
       {isHistoryVisible && (
         <>
-          <p>History</p>
-          <ul>
+          <ul className="list-group w-100">
             {uploadHistory.map((entry, index) => (
               <li
                 key={index}
-                className={`history-entry ${
+                className={`history-entry list-group-item ${
                   entry.id === lastSelectedEntry ? "active" : ""
                 }`}
                 onClick={() => {
@@ -101,6 +105,7 @@ const HistorySidebar = ({
                   <input
                     ref={inputRef}
                     type="text"
+                    className="form-control"
                     value={newFileName}
                     onChange={(e) => setNewFileName(e.target.value)}
                     onBlur={() => {
@@ -130,7 +135,7 @@ const HistorySidebar = ({
                 {entry.actions && entry.actions.length > 0 && (
                   <details>
                     <summary>Actions since last save</summary>
-                    <ul style={{ color: "gray" }}>
+                    <ul className="list-unstyled text-muted">
                       {entry.actions.map((action, actionIndex) => (
                         <li key={actionIndex}>
                           <details>
@@ -147,7 +152,7 @@ const HistorySidebar = ({
                     event.stopPropagation();
                     onHistoryItemDelete(index);
                   }}
-                  className="button"
+                  className="btn btn-danger mt-2"
                 >
                   Delete
                 </button>

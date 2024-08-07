@@ -13,7 +13,11 @@
   },
   "homepage": "https://eth-peach-lab.github.io/data-story/",
   "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@handsontable/react": "^14.3.0",
+    "@mui/material": "^5.16.6",
+    "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
     "handsontable": "^14.3.0",
     "js-cookie": "^3.0.5",
@@ -25,7 +29,8 @@
     "react-color": "^2.19.3",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "sass": "^1.77.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

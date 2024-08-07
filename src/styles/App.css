@@ -1,7 +1,30 @@
+:root {
+  --primary: #5b4435;
+  --primary-light: #a1887f;
+  --primary-dark: #4e342e;
+  --secondary: #656d4a;
+  --secondary-light: #909a6e;
+  --secondary-dark: #404a29;
+  --body-bg: #eae7dc;
+  --body-color: #2e2e2e;
+  --light: #f7f6f2;
+  --dark: #4a4a4a;
+  --text-muted: #8d6e63;
+  --text-disabled: #a1887f;
+  --info: #467791;
+  --success: #5a7a5a;
+  --warning: #cc8a00;
+  --danger: #a53939;
+  --border-color: #d7ccc8;
+  --active-bg: #4e342e; /* New variable for active background color */
+  --active-color: #ffffff; /* New variable for active text color */
+}
+
 #root {
   width: 100%;
   height: 100%;
   max-width: none;
+  background-color: white;
 }
 
 html,
@@ -13,6 +36,13 @@ body {
   font-family: "Inter", sans-serif;
   background-color: white;
   color: black;
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 20px;
 }
 
 .container {
@@ -36,39 +66,28 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  left: 10px;
   padding: 10px;
-  margin-right: 75px;
-  background-color: #e3e1d9;
+  margin-right: 95px;
+  background-color: var(--body-bg);
   position: relative;
-  color: black;
+  color: var(--body-color);
 }
 
-.banner-button-container {
-  position: absolute;
-  right: 20px;
-  top: 10px;
-}
-
-.banner-undo-redo-container {
+.save-button-container {
   display: flex;
+  align-items: center;
+  right: 10px;
+  position: relative;
+}
+
+.undo-redo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   position: absolute;
-  right: 0px;
-  gap: 10px; /* Adjust the gap between buttons as needed */
-  margin-top: 10px; /* Adjust the top margin to create space between buttons */
-}
-
-.banner-button {
-  padding: 6px 20px;
-  background-color: rgb(213, 210, 191);
-  color: rgb(0, 0, 0);
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 18px;
-}
-
-.banner-button:hover {
-  background-color: #c6c3b8;
+  left: 50%;
+  transform: translateX(calc(-50% - 118px));
 }
 
 .menu-bar-container {
@@ -85,7 +104,7 @@ body {
   top: 0;
   background: #d9d9d9;
   min-height: 70px;
-  margin-right: 95px;
+  margin-right: 115px;
   position: relative;
   overflow-x: auto;
   overflow: visible;
@@ -96,17 +115,18 @@ body {
   width: 45%;
   background: #d9d9d9;
   min-height: 70px;
-  right: 75px;
+  right: 95px;
   position: relative;
   overflow-x: auto;
 }
 
 .content-area {
   display: flex;
+  flex: 1;
   flex-direction: row;
   position: relative;
-  right: 75px;
-  left: 0px;
+  right: 95px;
+  left: 10px;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -130,7 +150,7 @@ body {
   flex: 1;
   width: 45%;
   height: 100%;
-  right: 75px;
+  right: 95px;
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
@@ -139,7 +159,9 @@ body {
 
 .handsontable-container {
   flex: 1;
-  margin-right: 95px;
+  margin-right: 65px !important;
+  left: -38px;
+  width: calc(50vw - 100px) !important;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -224,7 +246,7 @@ body {
   width: 20px;
   height: 70px; /* Make it as tall as the menu bar */
   background-color: white;
-  right: 75px;
+  right: 95px;
   position: absolute; /* Position it absolutely within the container */
   z-index: 999; /* Ensure it appears above other elements */
 }
@@ -232,30 +254,37 @@ body {
 .page-footer {
   display: flex;
   height: 41px;
-  width: calc(50vw - 115px);
+  width: calc(50vw - 127px);
   align-items: center;
   padding: 0px;
   background-color: #e3e1d9;
   overflow-x: auto;
   overflow-y: hidden;
+  white-space: nowrap;
 }
 
-.nav-button {
+.page-footer .nav-button {
   margin: 0px;
   padding: 10px 20px;
-  background-color: rgb(213, 210, 191);
-  color: rgb(0, 0, 0);
+  background-color: var(--light);
+  border-color: var(--dark);
+  color: var(--dark);
   border: none;
   cursor: pointer;
   border-radius: 0px;
   font-size: 18px;
 }
 
-.nav-button:disabled {
-  background-color: #c6c3b8;
-  cursor: not-allowed;
+.page-footer .nav-button.active {
+  background-color: var(--active-bg);
+  color: var(--active-color);
+  border-color: var(--active-bg);
 }
 
+.page-footer .nav-button:disabled {
+  background-color: var(--primary-dark);
+  cursor: not-allowed;
+}
 .empty-page {
   display: flex;
   justify-content: center;

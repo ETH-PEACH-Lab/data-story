@@ -1,0 +1,87 @@
+.history-sidebar {
+  width: 150px; /* Default width for collapsed state */
+  background-color: var(--body-bg);
+  height: calc(100%);
+  position: fixed;
+  top: 0;
+  right: 0;
+  max-width: 350px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 60px;
+  transform: translateX(75px); /* Adjusted to only partially hide the sidebar */
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  z-index: 300;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.visible {
+  transform: translateX(0);
+  width: 30%; /* Width for expanded state */
+}
+
+.history-entry input {
+  width: 90%;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  padding: 3px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
+
+.history-entry:hover {
+  background-color: var(--light);
+}
+
+.history-entry em {
+  font-style: normal;
+  color: var(--secondary-light);
+  margin-bottom: 5px;
+}
+
+.history-entry ul {
+  list-style-type: disc;
+  margin-top: 0;
+  padding-left: 20px;
+}
+
+.history-entry li {
+  margin-bottom: 2px;
+}
+
+.history-entry details {
+  margin-top: 10px;
+}
+
+.history-entry summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -45px;
+  margin-left: -7px;
+  margin-bottom: 10px;
+  gap: 20px;
+}
+
+.history-sidebar .history-collapsed {
+  position: absolute;
+  display: flex;
+  width: 60px;
+  left: 8px;
+  top: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.history-sidebar .history-visible {
+  width: auto;
+}

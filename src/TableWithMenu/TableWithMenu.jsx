@@ -12,7 +12,7 @@ import { handleSort, handleFilter } from "../utils/filterSortHandlers";
 import { countAndRemoveDuplicates } from "../utils/duplicateHandlers";
 import { handleFindReplace } from "../utils/findReplaceHandlers";
 import { handleStyleChange, customRenderer } from "../utils/styleHandlers";
-import "../App.css";
+import "../styles/App.css";
 import { originalColors, tintedColors } from "./Chart";
 
 const allColors = [...originalColors, ...tintedColors];
@@ -161,7 +161,10 @@ const TableWithMenu = ({
     )?.content;
     if (currentPageContent === "table") {
       return (
-        <div className="handsontable-container" ref={tableContainerRef}>
+        <div
+          className="handsontable-container container-fluid"
+          ref={tableContainerRef}
+        >
           <div className="hot-table-wrapper">
             <HotTable
               ref={hotRef}
@@ -483,13 +486,16 @@ const TableWithMenu = ({
         />
       </div>
       {renderPageContent()}
-      <div className="page-footer">
+      <div className="page-footer btn-group" role="group">
         {footerNames.map((name, index) => (
           <button
             key={index}
-            className="nav-button"
+            className={`nav-button btn btn-outline-primary ${
+              currentPage === index ? "active" : ""
+            }`}
             onClick={() => setCurrentPage(index)}
             disabled={currentPage === index}
+            style={{ width: "auto" }} // Ensures button width is auto
           >
             {name}
           </button>

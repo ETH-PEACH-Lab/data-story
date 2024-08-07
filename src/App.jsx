@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./App.css";
+import "./styles/App.css";
 import "handsontable/dist/handsontable.full.min.css";
 import { registerAllModules } from "handsontable/registry";
 import TableWithMenu from "./TableWithMenu/TableWithMenu";
@@ -274,12 +274,20 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <div className="container">
+      <div className="container-fluid">
         <div className="top-banner">
           <h1>Data-Story</h1>
-          <div className="banner-button-container">
+          <div className="undo-redo-container">
+            <button className="btn btn-primary" onClick={handleUndoAction}>
+              Undo
+            </button>
+            <button className="btn btn-primary" onClick={handleRedoAction}>
+              Redo
+            </button>
+          </div>
+          <div className="save-button-container">
             <button
-              className="banner-button"
+              className="btn btn-secondary"
               onClick={() => {
                 if (idList.length === 0) {
                   setIdList([1]);
@@ -289,14 +297,6 @@ function App() {
             >
               Save Current Version
             </button>
-            <div className="banner-undo-redo-container">
-              <button className="banner-button" onClick={handleUndoAction}>
-                Undo
-              </button>
-              <button className="banner-button" onClick={handleRedoAction}>
-                Redo
-              </button>
-            </div>
           </div>
         </div>
         <div className="content-area">

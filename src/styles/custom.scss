@@ -1,0 +1,44 @@
+// Override Bootstrap variables with custom theme colors
+$primary: #7b5f4d; // Main primary color
+$primary-light: #b5a29b; // Light variant of the primary color
+$primary-dark: #674a43; // Dark variant of the primary color
+
+$secondary: #656D4A; // Main secondary color
+$secondary-light: #909a6e; // Light variant of the secondary color
+$secondary-dark: #404a29; // Dark variant of the secondary color
+
+$body-bg: #eae7dc; // Background default color
+$body-color: #2e2e2e; // Primary text color
+$light: #f7f6f2; // Background paper color
+$dark: #4a4a4a; // Secondary text color
+
+$text-muted: #8d6e63; // Text hint color
+$text-disabled: #a1887f; // Disabled text color
+
+$info: #467791; // Info color
+$success: #5a7a5a; // Success color
+$warning: #cc8a00; // Warning color
+$danger: #a53939; // Error color
+
+$border-color: #d7ccc8; // Divider color
+
+$link-color: $primary;
+$link-hover-color: darken($primary, 10%);
+
+$btn-primary-bg: $primary;
+$btn-primary-border: $primary;
+$btn-secondary-bg: $secondary;
+$btn-secondary-border: $secondary;
+$btn-info-bg: $info;
+$btn-info-border: $info;
+$btn-success-bg: $success;
+$btn-success-border: $success;
+$btn-warning-bg: $warning;
+$btn-warning-border: $warning;
+$btn-danger-bg: $danger;
+$btn-danger-border: $danger;
+
+$input-border-color: $border-color;
+
+// Import Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";
