@@ -112,6 +112,11 @@ const TableWithMenu = ({
       return { x: [], y: [[]] };
     }
 
+    if (isNaN(data.x[0])) {
+      // Non-numeric x-axis, return data as is
+      return data;
+    }
+
     const aggregatedData = {
       x: [],
       y: Array(data.y.length)
@@ -131,7 +136,7 @@ const TableWithMenu = ({
     });
 
     Object.keys(groupedData).forEach((xValue) => {
-      aggregatedData.x.push(parseFloat(xValue));
+      aggregatedData.x.push(xValue);
       groupedData[xValue].forEach((yValues, seriesIndex) => {
         const aggregateFunctions = {
           SUM: (values) => values.reduce((acc, curr) => acc + curr, 0),

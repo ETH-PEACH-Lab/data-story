@@ -90,11 +90,6 @@ const Chart = ({
     setEditingNote(null);
   };
 
-  if (!data || !data.y || !Array.isArray(data.y) || data.y.length === 0) {
-    console.error("Invalid data structure in Chart component", data);
-    return <div>Error: Invalid data structure</div>;
-  }
-
   const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
 
   const [selectedItem, setSelectedItem] = useState("");
@@ -217,9 +212,12 @@ const Chart = ({
           })),
   };
 
-  const ChartComponent = { line: Line, bar: Bar, pie: Pie, scatter: Scatter }[
-    type
-  ];
+  const ChartComponent = {
+    line: Line,
+    bar: Bar,
+    pie: Pie,
+    scatter: Scatter,
+  }[type];
 
   return ChartComponent ? (
     <div className="handsontable-container">
