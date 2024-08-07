@@ -139,11 +139,11 @@ function Story({ components, setComponents, data, columnConfigs }) {
               <StoryTable
                 key={index}
                 index={index}
-                data={data} // Pass data
-                columnConfigs={columnConfigs} // Pass columnConfigs
-                selectedColumns={component.selectedColumns} // Pass selectedColumns
-                highlightSettings={component.highlightSettings} // Pass highlight settings
-                highlightColors={component.highlightColors} // Pass highlight colors
+                data={data}
+                columnConfigs={columnConfigs}
+                selectedColumns={component.selectedColumns}
+                highlightSettings={component.highlightSettings}
+                highlightColors={component.highlightColors}
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}

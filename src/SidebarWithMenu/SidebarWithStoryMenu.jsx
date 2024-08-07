@@ -19,11 +19,10 @@ const SidebarWithStoryMenu = ({
   setConfirmationMessage,
   chartNames,
   chartConfigs,
+  components, // Use components from props
+  setComponents, // Use setComponents from props
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
-  const [components, setComponents] = useState([
-    { type: "text", text: "--Text--", fontSize: "16px" },
-  ]);
 
   const handleMenuClick = (menu) => {
     setActiveMenu(activeMenu === menu ? "" : menu);
@@ -79,8 +78,8 @@ const SidebarWithStoryMenu = ({
               menuOptions[activeMenu]
             ) : (
               <Story
-                components={components}
-                setComponents={setComponents}
+                components={components} // Pass components from props
+                setComponents={setComponents} // Pass setComponents from props
                 data={data}
                 columnConfigs={columnConfigs}
                 chartConfigs={chartConfigs} // Pass chartConfigs as a prop

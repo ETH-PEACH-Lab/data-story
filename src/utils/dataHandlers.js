@@ -18,6 +18,7 @@ export const handleDataLoaded = (
   hotRef,
   setInitialActionStack,
   setInitialActionStackLength,
+  storyComponents = [], // Add storyComponents parameter with default empty array
   isNewTable = false
 ) => {
   const dataWithTypes = newData.map((row) => {
@@ -57,7 +58,9 @@ export const handleDataLoaded = (
     {},
     0,
     hotRef,
-    [] // Initialize chartConfigs as an empty array
+    [], // Initialize chartConfigs as an empty array
+    ["Table"], // Initialize footerNames with default value
+    storyComponents // Pass storyComponents
   );
   setTextStyles({});
   setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
@@ -70,8 +73,24 @@ export const handleDataLoaded = (
   }
 };
 
-
-export const fetchData = async (handleDataLoaded) => {
+export const fetchData = async (
+  setData,
+  setColumnConfigs,
+  setOriginalFileName,
+  setCurrentDataId,
+  saveDataToHistory,
+  idList,
+  setIdList,
+  setUploadHistory,
+  setActions,
+  originalFileName,
+  setTextStyles,
+  setFilteredColumns,
+  hotRef,
+  setInitialActionStack,
+  setInitialActionStackLength,
+  storyComponents = [] // Add storyComponents parameter with default empty array
+) => {
   const response = await fetch('https://eth-peach-lab.github.io/data-story/euro2024_players.csv');
   const reader = response.body.getReader();
   const result = await reader.read();
@@ -80,7 +99,27 @@ export const fetchData = async (handleDataLoaded) => {
   Papa.parse(csv, {
     header: true,
     complete: (results) => {
-      handleDataLoaded(results.data, 'euro2024_players.csv');
+      handleDataLoaded(
+        results.data,
+        'euro2024_players.csv',
+        setData,
+        setColumnConfigs,
+        setOriginalFileName,
+        setCurrentDataId,
+        saveDataToHistory,
+        idList,
+        setIdList,
+        setUploadHistory,
+        setActions,
+        originalFileName,
+        setTextStyles,
+        setFilteredColumns,
+        hotRef,
+        setInitialActionStack,
+        setInitialActionStackLength,
+        storyComponents, // Pass storyComponents
+        true // Indicate that this is a new table
+      );
     },
   });
 };

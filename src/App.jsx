@@ -68,12 +68,41 @@ function App() {
   ]);
   const [footerNames, setFooterNames] = useState(["Table"]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [storyComponents, setStoryComponents] = useState([]); // Add storyComponents state
+
+  const handleSaveCurrentVersion = () => {
+    saveDataToHistory(
+      data,
+      originalFileName,
+      currentDataId,
+      setUploadHistory,
+      setCurrentDataId,
+      idList,
+      setIdList,
+      actions,
+      originalFileName,
+      textStyles,
+      initialActionStackLength,
+      hotRef,
+      chartConfigs,
+      footerNames,
+      storyComponents // Pass storyComponents here
+    );
+    if (hotRef.current) {
+      setInitialActionStack([
+        ...hotRef.current.hotInstance.undoRedo.doneActions,
+      ]);
+      setInitialActionStackLength(
+        hotRef.current.hotInstance.undoRedo.doneActions.length
+      );
+    }
+    setCurrentDataIdLocalStorage(currentDataId); // Save the current data ID to localStorage
+  };
 
   const handleHistoryClick = (historyEntry, index) => {
     const undoRedo = hotRef.current?.hotInstance?.undoRedo;
 
     const performSwitch = () => {
-      // Check if the current page is valid before switching history
       if (currentPage > 0 && !historyEntry.charts?.[currentPage - 1]) {
         setCurrentPage(0);
       }
@@ -97,10 +126,11 @@ function App() {
         setPages,
         setFooterNames,
         setCurrentPage,
-        setChartNames, // Add setChartNames
-        currentPage
+        setChartNames,
+        currentPage,
+        setStoryComponents
       );
-      setCurrentDataIdLocalStorage(historyEntry.id); // Save the current data ID to localStorage
+      setCurrentDataIdLocalStorage(historyEntry.id);
     };
 
     if (
@@ -112,22 +142,7 @@ function App() {
       );
       setShowConfirmation(true);
       setOnConfirmAction(() => () => {
-        saveDataToHistory(
-          data,
-          originalFileName,
-          currentDataId,
-          setUploadHistory,
-          setCurrentDataId,
-          idList,
-          setIdList,
-          actions,
-          originalFileName,
-          textStyles,
-          initialActionStack,
-          hotRef,
-          chartConfigs, // Ensure chartConfigs is passed
-          footerNames // Ensure footerNames is passed
-        );
+        handleSaveCurrentVersion(); // Use the new function
         performSwitch();
       });
       setOnCancelAction(() => performSwitch);
@@ -199,47 +214,37 @@ function App() {
             hotRef,
             setInitialActionStack,
             setInitialActionStackLength,
-            setChartConfigs, // Ensure setChartConfigs is passed
-            setPages, // Ensure setPages is passed
-            setFooterNames, // Ensure setFooterNames is passed
-            setCurrentPage, // Ensure setCurrentPage is passed
-            setChartNames, // Add setChartNames
-            currentPage // Pass currentPage
+            setChartConfigs,
+            setPages,
+            setFooterNames,
+            setCurrentPage,
+            setChartNames,
+            currentPage,
+            setStoryComponents
           );
         }
       } else {
         setCurrentDataId(savedHistory[savedHistory.length - 1].id);
       }
     } else {
-      // Fetch initial data if no history is found
-      fetchData((newData, fileName) => {
-        handleDataLoaded(
-          newData,
-          fileName,
-          setData,
-          setColumnConfigs,
-          setOriginalFileName,
-          setCurrentDataId,
-          saveDataToHistory,
-          idList,
-          setIdList,
-          setUploadHistory,
-          setActions,
-          originalFileName,
-          setTextStyles,
-          setFilteredColumns,
-          hotRef,
-          setInitialActionStack,
-          setInitialActionStackLength,
-          true // Indicate that this is a new table
-        );
-        // Remove ID 1 from the list and update it
-        setIdList((prevIdList) => {
-          const newList = prevIdList.slice(1);
-          setIdListLocalStorage(newList);
-          return newList;
-        });
-      });
+      fetchData(
+        setData,
+        setColumnConfigs,
+        setOriginalFileName,
+        setCurrentDataId,
+        saveDataToHistory,
+        idList,
+        setIdList,
+        setUploadHistory,
+        setActions,
+        originalFileName,
+        setTextStyles,
+        setFilteredColumns,
+        hotRef,
+        setInitialActionStack,
+        setInitialActionStackLength,
+        storyComponents // Pass storyComponents
+      );
     }
   }, []);
 
@@ -279,31 +284,7 @@ function App() {
                 if (idList.length === 0) {
                   setIdList([1]);
                 }
-                saveDataToHistory(
-                  data,
-                  originalFileName,
-                  idList.length > 0 ? currentDataId : null,
-                  setUploadHistory,
-                  setCurrentDataId,
-                  idList,
-                  setIdList,
-                  actions,
-                  originalFileName,
-                  textStyles,
-                  initialActionStackLength,
-                  hotRef,
-                  chartConfigs, // Pass chartConfigs
-                  footerNames // Pass footerNames
-                );
-                if (hotRef.current) {
-                  setInitialActionStack([
-                    ...hotRef.current.hotInstance.undoRedo.doneActions,
-                  ]);
-                  setInitialActionStackLength(
-                    hotRef.current.hotInstance.undoRedo.doneActions.length
-                  );
-                }
-                setCurrentDataIdLocalStorage(currentDataId); // Save the current data ID to localStorage
+                handleSaveCurrentVersion(); // Use the new function
               }}
             >
               Save Current Version
@@ -383,6 +364,8 @@ function App() {
             setConfirmationMessage={setConfirmationMessage}
             chartNames={chartNames}
             chartConfigs={chartConfigs}
+            components={storyComponents} // Pass storyComponents
+            setComponents={setStoryComponents} // Pass setStoryComponents
           />
         </div>
         <HistorySidebar

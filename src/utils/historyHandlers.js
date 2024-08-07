@@ -96,20 +96,21 @@ export const saveDataToHistory = (
   textStyles,
   initialActionStackLength,
   hotRef,
-  chartConfigs, // Add chartConfigs as a parameter
-  footerNames // Add footerNames as a parameter
+  chartConfigs = [],
+  footerNames = ["Table"],
+  storyComponents = [] // Include storyComponents
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
   const dataCopy = JSON.parse(JSON.stringify(newData));
   const stylesCopy = JSON.parse(JSON.stringify(textStyles));
-  const chartsCopy = JSON.parse(JSON.stringify(chartConfigs)); // Deep copy of chart configs
-  const footersCopy = JSON.parse(JSON.stringify(footerNames)); // Deep copy of footer names
+  const chartsCopy = JSON.parse(JSON.stringify(chartConfigs));
+  const footersCopy = JSON.parse(JSON.stringify(footerNames));
+  const storyComponentsCopy = JSON.parse(JSON.stringify(storyComponents)); // Deep copy of story components
 
   const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
   const newActions = currentActionStack.slice(initialActionStackLength);
 
-  // Pick ID from the list
   const newHistoryId = idList.shift();
   setIdList(prevList => {
     const newList = [...prevList];
@@ -123,7 +124,18 @@ export const saveDataToHistory = (
   setUploadHistory(prevHistory => {
     const updatedHistory = [
       ...prevHistory,
-      { id: newHistoryId, parentId: parentId, data: dataCopy, fileName: fileNameToUse, timestamp: timestamp, actions: newActions, styles: stylesCopy, charts: chartsCopy, footers: footersCopy } // Include charts and footers in the history entry
+      {
+        id: newHistoryId,
+        parentId: parentId,
+        data: dataCopy,
+        fileName: fileNameToUse,
+        timestamp: timestamp,
+        actions: newActions,
+        styles: stylesCopy,
+        charts: chartsCopy,
+        footers: footersCopy,
+        storyComponents: storyComponentsCopy // Include story components in the history entry
+      }
     ];
     setHistoryLocalStorage(updatedHistory);
     setCurrentDataIdLocalStorage(newHistoryId);
@@ -157,12 +169,13 @@ export const switchHistoryEntry = (
   hotRef,
   setInitialActionStack,
   setInitialActionStackLength,
-  setChartConfigs, // Ensure setChartConfigs is passed
-  setPages, // Ensure setPages is passed
-  setFooterNames, // Ensure setFooterNames is passed
-  setCurrentPage, // Ensure setCurrentPage is passed
-  setChartNames, // Add setChartNames
-  currentPage // Add currentPage as a parameter
+  setChartConfigs,
+  setPages,
+  setFooterNames,
+  setCurrentPage,
+  setChartNames,
+  currentPage,
+  setStoryComponents // Ensure setStoryComponents is passed
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
   setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
@@ -174,10 +187,9 @@ export const switchHistoryEntry = (
   setInitialActionStack([...hotRef.current?.hotInstance?.undoRedo?.doneActions || []]);
   setInitialActionStackLength(hotRef.current?.hotInstance?.undoRedo?.doneActions?.length || 0);
 
-  const chartConfigs = historyEntry.charts ? JSON.parse(JSON.stringify(historyEntry.charts)) : []; // Ensure chart configs are set to an empty array if undefined
+  const chartConfigs = historyEntry.charts ? JSON.parse(JSON.stringify(historyEntry.charts)) : [];
   setChartConfigs(chartConfigs);
 
-  // Update pages and footers based on chartConfigs
   const footers = ["Table"];
   const pages = [{ id: 0, content: "table", title: "Table" }];
   chartConfigs.forEach((chartConfig, idx) => {
@@ -191,12 +203,14 @@ export const switchHistoryEntry = (
   });
   setPages(pages);
   setFooterNames(footers);
-  setChartNames(footers); // Update chart names
+  setChartNames(footers);
 
-  // Ensure the current page is valid
   if (currentPage >= pages.length) {
     setCurrentPage(0);
   }
+
+  const storyComponents = historyEntry.storyComponents ? JSON.parse(JSON.stringify(historyEntry.storyComponents)) : [];
+  setStoryComponents(storyComponents); // Restore story components
 
   setTimeout(() => {
     setClickedIndex(-1);
