@@ -15,18 +15,29 @@ const FunctionMenu = ({
 
     const convertedData = data.map((row) =>
       row.map((cell) =>
-        typeof cell === "string" ? cell.replace(",", ".") : cell
+        cell !== null && cell !== undefined && typeof cell === "string"
+          ? cell.replace(",", ".")
+          : cell
       )
     );
 
     const numbers = convertedData.map((row) =>
-      row.map((cell) => parseFloat(cell)).filter((val) => !isNaN(val))
+      row
+        .map((cell) =>
+          cell !== null && cell !== undefined ? parseFloat(cell) : NaN
+        )
+        .filter((val) => !isNaN(val))
     );
     const flatNumbers = [].concat(...numbers);
 
     const hasNonNumericValues = data
       .flat()
-      .some((cell) => isNaN(parseFloat(cell.toString().replace(",", "."))));
+      .some(
+        (cell) =>
+          cell !== null &&
+          cell !== undefined &&
+          isNaN(parseFloat(cell.toString().replace(",", ".")))
+      );
 
     let result;
     let warning = "";
@@ -78,7 +89,11 @@ const FunctionMenu = ({
         break;
       case "COUNT EMPTY":
         result = data.reduce(
-          (acc, row) => acc + row.filter((cell) => cell === "").length,
+          (acc, row) =>
+            acc +
+            row.filter(
+              (cell) => cell === "" || cell === null || cell === undefined
+            ).length,
           0
         );
         break;
