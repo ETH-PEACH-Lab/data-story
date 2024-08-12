@@ -405,6 +405,7 @@ const DataMenu = ({
                   value={filterCondition}
                   onChange={handleFilterConditionChange}
                   className="form-control"
+                  style={{ width: "130px" }}
                 >
                   <option value="none">None</option>
                   <option value="empty">Is empty</option>
@@ -429,6 +430,7 @@ const DataMenu = ({
                       onChange={handleFilterValueChange}
                       className="form-control ms-2"
                       placeholder="Value"
+                      style={{ width: "70px" }}
                     />
                   )}
                 <button
@@ -444,7 +446,10 @@ const DataMenu = ({
           {filterSubmenu === "value" && (
             <div
               className="dropdown-menu show"
-              style={{ ...getSubDropdownPosition(valueButtonRef) }}
+              style={{
+                ...getSubDropdownPosition(valueButtonRef),
+                width: "200px",
+              }}
               onClick={stopPropagation}
             >
               <div className="d-flex justify-content-between">
