@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./MenuBar.module.css";
 import FileMenu from "./FileMenu";
 import EditMenu from "./EditMenu";
 import FormatMenu from "./FormatMenu";
@@ -114,22 +113,30 @@ const MenuBar = ({
   };
 
   return (
-    <div className={styles.menuBarContainer}>
-      <div className={styles.menuBar}>
-        {Object.keys(menuOptions).map((menu, index) => (
-          <div
-            key={index}
-            className={`${styles.menuItem} ${
-              activeMenu === menu ? styles.activeMenuItem : ""
-            }`}
-            onClick={() => handleMenuClick(menu)}
-          >
-            <button className={styles.button}>{menu}</button>
-          </div>
-        ))}
+    <div className="container-fluid p-0">
+      <div className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="navbar-nav">
+          {Object.keys(menuOptions).map((menu, index) => (
+            <div
+              key={index}
+              className={`nav-item ${activeMenu === menu ? "active" : ""}`}
+            >
+              <button
+                className={`btn ${
+                  activeMenu === menu ? "btn-primary" : "btn-light"
+                } mx-2`}
+                onClick={() => handleMenuClick(menu)}
+              >
+                {menu}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
       {activeMenu && (
-        <div className={styles.secondaryMenuBar}>{menuOptions[activeMenu]}</div>
+        <div className="secondaryMenuBar bg-light p-2">
+          {menuOptions[activeMenu]}
+        </div>
       )}
     </div>
   );

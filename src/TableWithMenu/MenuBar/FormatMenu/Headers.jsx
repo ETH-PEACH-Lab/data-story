@@ -38,29 +38,33 @@ const Headers = React.forwardRef(
 
     return (
       <div
-        className={styles.Dropdown}
-        style={{ top: position.top, left: position.left }}
+        className="dropdown-menu show"
+        style={{
+          top: position.top - 68,
+          left: position.left - 23,
+          position: "absolute",
+        }}
         onClick={stopPropagation}
         ref={ref}
       >
-        <div className={styles.textOption}>
+        <div className="dropdown-item">
           <div>
-            {`selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
+            {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
               "No column selected"}
           </div>
         </div>
-        <div className={styles.textOption}>
+        <div className="dropdown-item">
           <div>Current Name: {selectedColumnName}</div>
         </div>
-        <div className={`${styles.textOption} ${styles.inputContainer}`}>
+        <div className="dropdown-item d-flex">
           <input
             type="text"
             value={newColumnName}
             onChange={(e) => setNewColumnName(e.target.value)}
             placeholder="New column name"
-            className={styles.input}
+            className="form-control"
           />
-          <button onClick={handleRenameColumn} className={styles.applyButton}>
+          <button onClick={handleRenameColumn} className="btn btn-primary ms-2">
             Rename
           </button>
         </div>

@@ -48,7 +48,7 @@ const FormatMenu = ({
             isTextDropdownVisible: !dropdownState.isTextDropdownVisible,
             isCellDropdownVisible: false,
             isColorDropdownVisible: false,
-            dropdownPosition: position,
+            dropdownPosition: { top: position.top - 30, left: position.left },
           });
           break;
         case "Cell":
@@ -56,28 +56,37 @@ const FormatMenu = ({
             isTextDropdownVisible: false,
             isCellDropdownVisible: !dropdownState.isCellDropdownVisible,
             isColorDropdownVisible: false,
-            dropdownPosition: position,
+            dropdownPosition: { top: position.top - 30, left: position.left },
           });
           break;
         case "Color":
           updateDropdownState({
             isColorDropdownVisible: !dropdownState.isColorDropdownVisible,
             colorContext: "text",
-            colorDropdownPosition: position,
+            colorDropdownPosition: {
+              top: position.top - 30,
+              left: position.left,
+            },
           });
           break;
         case "Fill":
           updateDropdownState({
             isColorDropdownVisible: !dropdownState.isColorDropdownVisible,
             colorContext: "fill",
-            colorDropdownPosition: position,
+            colorDropdownPosition: {
+              top: position.top - 30,
+              left: position.left,
+            },
           });
           break;
         case "Border":
           updateDropdownState({
             isColorDropdownVisible: !dropdownState.isColorDropdownVisible,
             colorContext: "border",
-            colorDropdownPosition: position,
+            colorDropdownPosition: {
+              top: position.top - 30,
+              left: position.left,
+            },
           });
           break;
         default:
@@ -152,7 +161,7 @@ const FormatMenu = ({
   }, [dropdownState]);
 
   return (
-    <>
+    <div className="d-flex gap-2">
       {menuItems.map((item, index) => {
         const buttonRef =
           item === "Text"
@@ -161,40 +170,41 @@ const FormatMenu = ({
             ? cellButtonRef
             : null;
         return (
-          <div
+          <button
             key={index}
-            className={styles.secondaryMenuItem}
+            className="btn btn-outline-secondary"
             onClick={() => handleMenuClick(item, buttonRef)}
+            ref={buttonRef}
           >
-            <div ref={buttonRef} className={styles.button}>
-              {item}
-            </div>
-            {item === "Text" && dropdownState.isTextDropdownVisible && (
-              <Text
-                position={dropdownState.dropdownPosition}
-                onStyleChange={onStyleChange}
-                stopPropagation={stopPropagation}
-                handleMenuClick={handleMenuClick}
-                handleColorClick={handleColorClick}
-                isColorDropdownVisible={dropdownState.isColorDropdownVisible}
-                colorDropdownPosition={dropdownState.colorDropdownPosition}
-              />
-            )}
-            {item === "Cell" && dropdownState.isCellDropdownVisible && (
-              <Cell
-                position={dropdownState.dropdownPosition}
-                stopPropagation={stopPropagation}
-                handleMenuClick={handleMenuClick}
-                handleColorClick={handleColorClick}
-                isColorDropdownVisible={dropdownState.isColorDropdownVisible}
-                colorDropdownPosition={dropdownState.colorDropdownPosition}
-                colorContext={dropdownState.colorContext}
-              />
-            )}
-          </div>
+            {item}
+          </button>
         );
       })}
-    </>
+
+      {dropdownState.isTextDropdownVisible && (
+        <Text
+          position={dropdownState.dropdownPosition}
+          onStyleChange={onStyleChange}
+          stopPropagation={stopPropagation}
+          handleMenuClick={handleMenuClick}
+          handleColorClick={handleColorClick}
+          isColorDropdownVisible={dropdownState.isColorDropdownVisible}
+          colorDropdownPosition={dropdownState.colorDropdownPosition}
+        />
+      )}
+
+      {dropdownState.isCellDropdownVisible && (
+        <Cell
+          position={dropdownState.dropdownPosition}
+          stopPropagation={stopPropagation}
+          handleMenuClick={handleMenuClick}
+          handleColorClick={handleColorClick}
+          isColorDropdownVisible={dropdownState.isColorDropdownVisible}
+          colorDropdownPosition={dropdownState.colorDropdownPosition}
+          colorContext={dropdownState.colorContext}
+        />
+      )}
+    </div>
   );
 };
 

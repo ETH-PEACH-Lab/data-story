@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
-import styles from './MenuBar.module.css';
-import Papa from 'papaparse';
+import React, { useRef } from "react";
+import Papa from "papaparse";
 
 const FileMenu = ({
   onSaveCurrent,
@@ -13,9 +12,9 @@ const FileMenu = ({
   setOnConfirmAction,
   setOnCancelAction,
   initialActionStack,
-  setInitialActionStack, 
+  setInitialActionStack,
   initialActionStackLength,
-  setInitialActionStackLength 
+  setInitialActionStackLength,
 }) => {
   const fileInputRef = useRef(null);
 
@@ -40,42 +39,44 @@ const FileMenu = ({
   const handleMenuClick = (item) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
 
-    if (item === 'History') {
+    if (item === "History") {
       toggleHistory();
       return;
     }
 
     if (!areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
-      setConfirmationMessage('You have unsaved changes. Do you want to save them?');
+      setConfirmationMessage(
+        "You have unsaved changes. Do you want to save them?"
+      );
       setShowConfirmation(true);
       setOnConfirmAction(() => () => {
         onSaveCurrent();
-        if (item === 'New') {
+        if (item === "New") {
           const { data } = generateEmptyDataset();
           onDataLoaded(data, `New Table ${Date.now()}`);
           resetFiltersAndSorting();
-        } else if (item === 'Open') {
+        } else if (item === "Open") {
           fileInputRef.current.click();
         }
       });
       setOnCancelAction(() => () => {
-        if (item === 'New') {
+        if (item === "New") {
           const { data } = generateEmptyDataset();
           onDataLoaded(data, `New Table ${Date.now()}`);
           resetFiltersAndSorting();
-        } else if (item === 'Open') {
+        } else if (item === "Open") {
           fileInputRef.current.click();
         }
       });
     } else {
-      if (item === 'New') {
+      if (item === "New") {
         const { data } = generateEmptyDataset();
         onDataLoaded(data, `New Table ${Date.now()}`);
         resetFiltersAndSorting();
-      } else if (item === 'Open') {
+      } else if (item === "Open") {
         fileInputRef.current.click();
         resetFiltersAndSorting();
-      } else if (item === 'Save') {
+      } else if (item === "Save") {
         onSaveCurrent();
       }
     }
@@ -97,27 +98,31 @@ const FileMenu = ({
 
   const resetFiltersAndSorting = () => {
     const hotInstance = hotRef.current.hotInstance;
-    hotInstance.getPlugin('filters').clearConditions();
-    hotInstance.getPlugin('filters').filter();
-    hotInstance.getPlugin('columnSorting').clearSort();
+    hotInstance.getPlugin("filters").clearConditions();
+    hotInstance.getPlugin("filters").filter();
+    hotInstance.getPlugin("columnSorting").clearSort();
     hotInstance.undoRedo.clear();
     setInitialActionStack([]);
     setInitialActionStackLength(0);
   };
 
-  // TODO: save button for save on machine
-
   return (
     <>
-      {['New', 'Open', 'History'].map((item, index) => (
-        <div key={index} className={styles.secondaryMenuItem} onClick={() => handleMenuClick(item)}>
-          <button className={styles.button}>{item}</button>
-        </div>
-      ))}
+      <div className="d-flex gap-2">
+        {["New", "Open", "History"].map((item, index) => (
+          <button
+            key={index}
+            className="btn btn-outline-secondary"
+            onClick={() => handleMenuClick(item)}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
       <input
         type="file"
         ref={fileInputRef}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         onChange={handleFileInputChange}
       />
     </>

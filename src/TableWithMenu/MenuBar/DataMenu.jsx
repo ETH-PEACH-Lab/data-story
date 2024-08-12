@@ -139,7 +139,7 @@ const DataMenu = ({
   const getSubDropdownPosition = (ref) => {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();
-      return { top: rect.top - 36, left: rect.right - 93 };
+      return { top: rect.top - 180, left: rect.right - 94 };
     }
     return { top: 0, left: 0 };
   };
@@ -286,189 +286,201 @@ const DataMenu = ({
   };
 
   return (
-    <>
+    <div className="d-flex gap-2">
       {["Sort", "Filter"].map((item, index) => (
-        <div
+        <button
           key={index}
-          className={styles.secondaryMenuItem}
+          className="btn btn-outline-secondary"
           onClick={() => handleMenuClick(item)}
+          ref={
+            item === "Sort"
+              ? sortButtonRef
+              : item === "Filter"
+              ? filterButtonRef
+              : null
+          }
         >
-          <button
-            ref={
-              item === "Sort"
-                ? sortButtonRef
-                : item === "Filter"
-                ? filterButtonRef
-                : null
-            }
-            className={styles.button}
-          >
-            {item}
-          </button>
-          {item === "Sort" && isSortDropdownVisible && (
-            <div
-              className={styles.Dropdown}
-              style={{
-                top: sortButtonRef.current?.getBoundingClientRect().bottom,
-                left: sortButtonRef.current?.getBoundingClientRect().left,
-              }}
-              onClick={stopPropagation}
-              ref={sortDropdownRef}
+          {item}
+        </button>
+      ))}
+
+      {isSortDropdownVisible && (
+        <div
+          className="dropdown-menu show"
+          style={{
+            top: `${
+              sortButtonRef.current?.getBoundingClientRect().bottom +
+              window.scrollY -
+              68
+            }px`,
+            left: `${
+              sortButtonRef.current?.getBoundingClientRect().left +
+              window.scrollX -
+              23
+            }px`,
+            position: "absolute",
+          }}
+          onClick={stopPropagation}
+          ref={sortDropdownRef}
+        >
+          <div className="dropdown-item">
+            <div>
+              {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
+                "No column selected"}
+            </div>
+          </div>
+          <div className="dropdown-item d-flex">
+            <select
+              value={sortOrder}
+              onChange={handleSortOrderChange}
+              className="form-control"
             >
-              <div className={styles.textOption}>
-                <div>
-                  {`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` ||
-                    "No column selected"}
-                </div>
-              </div>
-              <div className={`${styles.textOption} ${styles.inputContainer}`}>
+              <option value="" disabled>
+                Select order
+              </option>
+              <option value="Ascending">Ascending</option>
+              <option value="Descending">Descending</option>
+            </select>
+            <button onClick={handleSortClick} className="btn btn-primary ms-2">
+              Apply
+            </button>
+          </div>
+          <div className="dropdown-item" onClick={handleResetSortClick}>
+            Reset all sorting
+          </div>
+        </div>
+      )}
+
+      {isFilterDropdownVisible && (
+        <div
+          className="dropdown-menu show"
+          style={{
+            top: `${
+              filterButtonRef.current?.getBoundingClientRect().bottom +
+              window.scrollY -
+              68
+            }px`,
+            left: `${
+              filterButtonRef.current?.getBoundingClientRect().left +
+              window.scrollX -
+              23
+            }px`,
+            position: "absolute",
+          }}
+          onClick={stopPropagation}
+          ref={filterDropdownRef}
+        >
+          <div className="dropdown-item">
+            <div>
+              {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
+                "No column selected"}
+            </div>
+          </div>
+          <div
+            className="dropdown-item"
+            onClick={() => setFilterSubmenu("condition")}
+            ref={conditionButtonRef}
+          >
+            Filter by condition
+          </div>
+          <div
+            className="dropdown-item"
+            onClick={() => setFilterSubmenu("value")}
+            ref={valueButtonRef}
+          >
+            Filter by value
+          </div>
+          <div className="dropdown-item" onClick={resetFilter}>
+            Reset filter for this column
+          </div>
+
+          {filterSubmenu === "condition" && (
+            <div
+              className="dropdown-menu show"
+              style={{ ...getSubDropdownPosition(conditionButtonRef) }}
+              onClick={stopPropagation}
+            >
+              <div className="dropdown-item d-flex">
                 <select
-                  value={sortOrder}
-                  onChange={handleSortOrderChange}
-                  className={styles.input}
+                  value={filterCondition}
+                  onChange={handleFilterConditionChange}
+                  className="form-control"
                 >
-                  <option value="" disabled>
-                    Select order
-                  </option>
-                  <option value="Ascending">Ascending</option>
-                  <option value="Descending">Descending</option>
+                  <option value="none">None</option>
+                  <option value="empty">Is empty</option>
+                  <option value="not_empty">Is not empty</option>
+                  <option value="eq">Is equal to</option>
+                  <option value="neq">Is not equal to</option>
+                  <option value="lt">Less than</option>
+                  <option value="gt">Greater than</option>
+                  <option value="lte">Less than or equal</option>
+                  <option value="gte">Greater than or equal</option>
+                  <option value="begins_with">Begins with</option>
+                  <option value="ends_with">Ends with</option>
+                  <option value="contains">Contains</option>
+                  <option value="not_contains">Does not contain</option>
                 </select>
+                {filterCondition !== "none" &&
+                  filterCondition !== "empty" &&
+                  filterCondition !== "not_empty" && (
+                    <input
+                      type="text"
+                      value={filterValue}
+                      onChange={handleFilterValueChange}
+                      className="form-control ms-2"
+                      placeholder="Value"
+                    />
+                  )}
                 <button
-                  onClick={handleSortClick}
-                  className={styles.applyButton}
+                  onClick={handleFilterClick}
+                  className="btn btn-primary ms-2"
                 >
                   Apply
                 </button>
               </div>
-              <div className={styles.textOption} onClick={handleResetSortClick}>
-                Reset all sorting
-              </div>
             </div>
           )}
-          {item === "Filter" && isFilterDropdownVisible && (
+
+          {filterSubmenu === "value" && (
             <div
-              className={styles.Dropdown}
-              style={{
-                top: filterButtonRef.current?.getBoundingClientRect().bottom,
-                left: filterButtonRef.current?.getBoundingClientRect().left,
-              }}
+              className="dropdown-menu show"
+              style={{ ...getSubDropdownPosition(valueButtonRef) }}
               onClick={stopPropagation}
-              ref={filterDropdownRef}
             >
-              <div className={styles.textOption}>
-                <div>
-                  {`selected column: column ${selectedColumnIndex}, ${selectedColumnName}` ||
-                    "No column selected"}
-                </div>
+              <div className="d-flex justify-content-between">
+                <button onClick={selectAll} className="btn btn-secondary">
+                  Check All
+                </button>
+                <button onClick={clearAll} className="btn btn-secondary ms-2">
+                  Uncheck All
+                </button>
               </div>
-              <div
-                className={styles.textOption}
-                onClick={() => setFilterSubmenu("condition")}
-                ref={conditionButtonRef}
-              >
-                Filter by condition
+              <input
+                type="text"
+                value={searchValue}
+                onChange={handleSearchValueChange}
+                className="form-control my-2"
+                placeholder="Search values"
+              />
+              <div style={{ maxHeight: "165px", overflowY: "auto" }}>
+                <ul className="list-unstyled">
+                  {filteredValues.map((value, index) => (
+                    <li key={index}>
+                      <input
+                        type="checkbox"
+                        checked={checkedValues.includes(value)}
+                        onChange={() => handleCheckboxChange(value)}
+                      />{" "}
+                      {value}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div
-                className={styles.textOption}
-                onClick={() => setFilterSubmenu("value")}
-                ref={valueButtonRef}
-              >
-                Filter by value
-              </div>
-              <div className={styles.textOption} onClick={resetFilter}>
-                Reset filter for this column
-              </div>
-              {filterSubmenu === "condition" && (
-                <div
-                  className={styles.Dropdown}
-                  style={{ ...getSubDropdownPosition(conditionButtonRef) }}
-                  onClick={stopPropagation}
-                >
-                  <div
-                    className={`${styles.textOption} ${styles.inputContainer}`}
-                  >
-                    <select
-                      value={filterCondition}
-                      onChange={handleFilterConditionChange}
-                      className={styles.input}
-                    >
-                      <option value="none">None</option>
-                      <option value="empty">Is empty</option>
-                      <option value="not_empty">Is not empty</option>
-                      <option value="eq">Is equal to</option>
-                      <option value="neq">Is not equal to</option>
-                      <option value="lt">Less than</option>
-                      <option value="gt">Greater than</option>
-                      <option value="lte">Less than or equal</option>
-                      <option value="gte">Greater than or equal</option>
-                      <option value="begins_with">Begins with</option>
-                      <option value="ends_with">Ends with</option>
-                      <option value="contains">Contains</option>
-                      <option value="not_contains">Does not contain</option>
-                    </select>
-                    {filterCondition !== "none" &&
-                      filterCondition !== "empty" &&
-                      filterCondition !== "not_empty" && (
-                        <input
-                          type="text"
-                          value={filterValue}
-                          onChange={handleFilterValueChange}
-                          className={styles.input}
-                          placeholder="Value"
-                        />
-                      )}
-                    <button
-                      onClick={handleFilterClick}
-                      className={styles.applyButton}
-                    >
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              )}
-              {filterSubmenu === "value" && (
-                <div
-                  className={styles.Dropdown}
-                  style={{ ...getSubDropdownPosition(valueButtonRef) }}
-                  onClick={stopPropagation}
-                >
-                  <div className={styles.selectClearAll}>
-                    <button onClick={selectAll} className={styles.applyButton}>
-                      Check All
-                    </button>
-                    <button onClick={clearAll} className={styles.applyButton}>
-                      Uncheck All
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    value={searchValue}
-                    onChange={handleSearchValueChange}
-                    className={styles.input}
-                    placeholder="Search values"
-                    style={{ marginBottom: "10px", width: "100%" }}
-                  />
-                  <div className={styles.distinctValuesList}>
-                    <ul>
-                      {filteredValues.map((value, index) => (
-                        <li key={index}>
-                          <input
-                            type="checkbox"
-                            checked={checkedValues.includes(value)}
-                            onChange={() => handleCheckboxChange(value)}
-                          />
-                          {value}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </div>
-      ))}
-    </>
+      )}
+    </div>
   );
 };
 

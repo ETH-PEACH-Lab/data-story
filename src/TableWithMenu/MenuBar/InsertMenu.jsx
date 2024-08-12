@@ -52,9 +52,9 @@ const InsertMenu = ({
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -91,7 +91,6 @@ const InsertMenu = ({
       )
       .flat();
 
-    // Always use the column header for the series label
     const header = hotInstance.getColHeader(selectedRange.minCol);
 
     if (axis === "x") {
@@ -115,7 +114,6 @@ const InsertMenu = ({
         return { ...prevState, y: newY };
       });
 
-      // Set the series label based on the header
       setSeriesLabels((prevLabels) => {
         const newLabels = [...prevLabels];
         newLabels[index] = header;
@@ -206,7 +204,6 @@ const InsertMenu = ({
       ...prevRange,
       y: [...prevRange.y, null],
     }));
-    // Default to an empty string, will be set upon data application
     setSeriesLabels((prevLabels) => [...prevLabels, ""]);
   };
 
@@ -236,10 +233,19 @@ const InsertMenu = ({
 
   const renderChartDropdown = () => (
     <div
-      className={styles.Dropdown}
+      className="dropdown-menu show"
       style={{
-        top: chartButtonRef.current?.getBoundingClientRect().bottom,
-        left: chartButtonRef.current?.getBoundingClientRect().left,
+        top: `${
+          chartButtonRef.current?.getBoundingClientRect().bottom +
+          window.scrollY -
+          68
+        }px`,
+        left: `${
+          chartButtonRef.current?.getBoundingClientRect().left +
+          window.scrollX -
+          23
+        }px`,
+        position: "absolute",
       }}
       onClick={(e) => e.stopPropagation()}
       ref={chartDropdownRef}
@@ -249,7 +255,7 @@ const InsertMenu = ({
           id="chartType"
           value={selectedChartType}
           onChange={handleChartTypeChange}
-          className={styles.input}
+          className="form-control"
         >
           <option value="">Select chart type</option>
           <option value="line">Line</option>
@@ -274,7 +280,7 @@ const InsertMenu = ({
             <select
               value={selectedAggregateFunction}
               onChange={(e) => setSelectedAggregateFunction(e.target.value)}
-              className={styles.input}
+              className="form-control"
             >
               <option value="SUM">SUM</option>
               <option value="AVERAGE">AVERAGE</option>
@@ -315,14 +321,14 @@ const InsertMenu = ({
             />
           ))}
           <div className={styles.textOption}>
-            <button onClick={handleAddSeries} className={styles.applyButton}>
+            <button onClick={handleAddSeries} className="btn btn-secondary">
               Add Series
             </button>
           </div>
           <div className={styles.textOption}>
             <button
               onClick={handleAddChart}
-              className={styles.applyButton}
+              className="btn btn-primary"
               disabled={isAddChartDisabled}
             >
               Add Chart
@@ -357,7 +363,7 @@ const InsertMenu = ({
           <div className={styles.textOption}>
             <button
               onClick={handleAddChart}
-              className={styles.applyButton}
+              className="btn btn-primary"
               disabled={isAddChartDisabled}
             >
               Add Chart
@@ -369,23 +375,19 @@ const InsertMenu = ({
   );
 
   return (
-    <>
-      {["Column", "Row", "Chart", "Functions"].map((item, index) => (
-        <div
+    <div className="d-flex gap-2">
+      {["Column", "Row", "Chart"].map((item, index) => (
+        <button
           key={index}
-          className={styles.secondaryMenuItem}
+          className="btn btn-outline-secondary"
           onClick={() => handleMenuClick(item)}
+          ref={item === "Chart" ? chartButtonRef : null}
         >
-          <button
-            ref={item === "Chart" ? chartButtonRef : null}
-            className={styles.button}
-          >
-            {item}
-          </button>
+          {item}
           {item === "Chart" && isChartDropdownVisible && renderChartDropdown()}
-        </div>
+        </button>
       ))}
-    </>
+    </div>
   );
 };
 
@@ -417,7 +419,7 @@ const AxisSelection = ({
     </label>
     <button
       onClick={isLocked ? handleReset : handleApply}
-      className={styles.applyButton}
+      className="btn btn-secondary"
       disabled={isInvalidRange && !isLocked}
     >
       {isLocked ? "Reset" : "Apply"}
@@ -425,7 +427,7 @@ const AxisSelection = ({
     {axis === "y" && (
       <button
         onClick={handleRemoveSeries}
-        className={styles.applyButton}
+        className="btn btn-danger ms-2"
         disabled={seriesCount === 1}
       >
         Remove

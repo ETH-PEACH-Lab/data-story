@@ -20,8 +20,8 @@ const Text = ({
 
   return (
     <div
-      className={styles.Dropdown}
-      style={{ top: position.top, left: position.left }}
+      className="dropdown-menu show"
+      style={{ top: position.top - 30, left: position.left }}
       onClick={stopPropagation}
     >
       {["Bold", "Italic", "Strike-through", "Color"].map((textOption, idx) => {
@@ -29,18 +29,16 @@ const Text = ({
         return (
           <div
             key={idx}
-            className={styles.textOption}
+            className="dropdown-item"
             onClick={(e) => {
               e.stopPropagation();
               handleMenuClick(textOption, ref);
             }}
           >
-            <div ref={ref} className={styles.dropdownItem}>
-              {textOption}
-            </div>
+            <div ref={ref}>{textOption}</div>
             {textOption === "Color" && isColorDropdownVisible && (
               <div
-                className={styles.colorDropdown}
+                className="dropdown-menu show"
                 style={{
                   top: colorDropdownPosition.top - 196,
                   left: colorDropdownPosition.left + 95,

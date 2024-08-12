@@ -21,8 +21,8 @@ const Cell = ({
 
   return (
     <div
-      className={styles.Dropdown}
-      style={{ top: position.top, left: position.left }}
+      className="dropdown-menu show"
+      style={{ top: position.top - 30, left: position.left }}
       onClick={stopPropagation}
     >
       {["Fill", "Border"].map((cellOption, idx) => {
@@ -30,19 +30,17 @@ const Cell = ({
         return (
           <div
             key={idx}
-            className={styles.textOption}
+            className="dropdown-item"
             onClick={(e) => {
               e.stopPropagation();
               handleMenuClick(cellOption, ref);
             }}
           >
-            <div ref={ref} className={styles.dropdownItem}>
-              {cellOption}
-            </div>
+            <div ref={ref}>{cellOption}</div>
             {isColorDropdownVisible &&
               colorContext === cellOption.toLowerCase() && (
                 <div
-                  className={styles.colorDropdown}
+                  className="dropdown-menu show"
                   style={{
                     top: colorDropdownPosition.top - 196,
                     left: colorDropdownPosition.left - 55,
