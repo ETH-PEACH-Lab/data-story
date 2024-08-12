@@ -52,9 +52,9 @@ const InsertMenu = ({
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -91,6 +91,7 @@ const InsertMenu = ({
       )
       .flat();
 
+    // Always use the column header for the series label
     const header = hotInstance.getColHeader(selectedRange.minCol);
 
     if (axis === "x") {
@@ -114,6 +115,7 @@ const InsertMenu = ({
         return { ...prevState, y: newY };
       });
 
+      // Set the series label based on the header
       setSeriesLabels((prevLabels) => {
         const newLabels = [...prevLabels];
         newLabels[index] = header;
@@ -204,6 +206,7 @@ const InsertMenu = ({
       ...prevRange,
       y: [...prevRange.y, null],
     }));
+    // Default to an empty string, will be set upon data application
     setSeriesLabels((prevLabels) => [...prevLabels, ""]);
   };
 
@@ -250,12 +253,12 @@ const InsertMenu = ({
       onClick={(e) => e.stopPropagation()}
       ref={chartDropdownRef}
     >
-      <div className={`${styles.textOption} ${styles.inputContainer}`}>
+      <div className="d-flex gap-2">
         <select
           id="chartType"
           value={selectedChartType}
           onChange={handleChartTypeChange}
-          className="form-control"
+          className="form-select"
         >
           <option value="">Select chart type</option>
           <option value="line">Line</option>
@@ -265,7 +268,7 @@ const InsertMenu = ({
         </select>
       </div>
       {selectedChartType && (
-        <div className={styles.textOption}>
+        <div className="dropdown-item">
           <label>
             <input
               type="checkbox"
@@ -280,7 +283,7 @@ const InsertMenu = ({
             <select
               value={selectedAggregateFunction}
               onChange={(e) => setSelectedAggregateFunction(e.target.value)}
-              className="form-control"
+              className="form-select"
             >
               <option value="SUM">SUM</option>
               <option value="AVERAGE">AVERAGE</option>
@@ -320,12 +323,12 @@ const InsertMenu = ({
               seriesCount={seriesCount}
             />
           ))}
-          <div className={styles.textOption}>
+          <div className="dropdown-item">
             <button onClick={handleAddSeries} className="btn btn-secondary">
               Add Series
             </button>
           </div>
-          <div className={styles.textOption}>
+          <div className="dropdown-item">
             <button
               onClick={handleAddChart}
               className="btn btn-primary"
@@ -360,7 +363,7 @@ const InsertMenu = ({
             handleReset={() => handleResetChartData("y", 0)}
             seriesCount={seriesCount}
           />
-          <div className={styles.textOption}>
+          <div className="dropdown-item">
             <button
               onClick={handleAddChart}
               className="btn btn-primary"
@@ -376,7 +379,7 @@ const InsertMenu = ({
 
   return (
     <div className="d-flex gap-2">
-      {["Column", "Row", "Chart"].map((item, index) => (
+      {["Column", "Row", "Chart", "Functions"].map((item, index) => (
         <button
           key={index}
           className="btn btn-outline-secondary"
@@ -384,9 +387,9 @@ const InsertMenu = ({
           ref={item === "Chart" ? chartButtonRef : null}
         >
           {item}
-          {item === "Chart" && isChartDropdownVisible && renderChartDropdown()}
         </button>
       ))}
+      {isChartDropdownVisible && renderChartDropdown()}
     </div>
   );
 };
@@ -402,37 +405,36 @@ const AxisSelection = ({
   handleRemoveSeries,
   seriesCount,
 }) => (
-  <div
-    className={styles.textOption}
-    style={{ backgroundColor: isLocked ? "#e0e0e0" : "transparent" }}
-  >
+  <div className="dropdown-item">
     <label>
       {axis === "x"
         ? `Selected X-axis: ${rangeString}`
         : `Selected Series ${index + 1}: ${rangeString}`}
       {isInvalidRange && !isLocked && (
-        <strong style={{ color: "red" }}>
+        <strong className="text-danger">
           {" "}
           Please select data of a single row/column
         </strong>
       )}
     </label>
-    <button
-      onClick={isLocked ? handleReset : handleApply}
-      className="btn btn-secondary"
-      disabled={isInvalidRange && !isLocked}
-    >
-      {isLocked ? "Reset" : "Apply"}
-    </button>
-    {axis === "y" && (
+    <div className="d-flex gap-2">
       <button
-        onClick={handleRemoveSeries}
-        className="btn btn-danger ms-2"
-        disabled={seriesCount === 1}
+        onClick={isLocked ? handleReset : handleApply}
+        className="btn btn-secondary"
+        disabled={isInvalidRange && !isLocked}
       >
-        Remove
+        {isLocked ? "Reset" : "Apply"}
       </button>
-    )}
+      {axis === "y" && (
+        <button
+          onClick={handleRemoveSeries}
+          className="btn btn-danger"
+          disabled={seriesCount === 1}
+        >
+          Remove
+        </button>
+      )}
+    </div>
   </div>
 );
 

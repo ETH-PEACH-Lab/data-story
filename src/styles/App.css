@@ -162,6 +162,7 @@ body {
   margin-right: 65px !important;
   left: -38px;
   width: calc(50vw - 100px) !important;
+  height: calc(100vh - 41);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -244,7 +245,7 @@ body {
 
 .rectangle {
   width: 20px;
-  height: 70px; /* Make it as tall as the menu bar */
+  height: 170px; /* Make it as tall as the menu bar */
   background-color: white;
   right: 95px;
   position: absolute; /* Position it absolutely within the container */

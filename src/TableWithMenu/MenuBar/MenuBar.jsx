@@ -4,6 +4,7 @@ import EditMenu from "./EditMenu";
 import FormatMenu from "./FormatMenu";
 import InsertMenu from "./InsertMenu";
 import DataMenu from "./DataMenu";
+import styles from "./MenuBar.module.css";
 
 const MenuBar = ({
   onSaveCurrent,
@@ -113,31 +114,33 @@ const MenuBar = ({
   };
 
   return (
-    <div className="container-fluid p-0">
-      <div className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="navbar-nav">
-          {Object.keys(menuOptions).map((menu, index) => (
-            <div
-              key={index}
-              className={`nav-item ${activeMenu === menu ? "active" : ""}`}
-            >
-              <button
-                className={`btn ${
-                  activeMenu === menu ? "btn-primary" : "btn-light"
-                } mx-2`}
-                onClick={() => handleMenuClick(menu)}
+    <div className={styles.menuBarContainer}>
+      <div className="container-fluid p-0">
+        <div className="navbar navbar-expand-lg navbar-light bg-light">
+          <div className="navbar-nav">
+            {Object.keys(menuOptions).map((menu, index) => (
+              <div
+                key={index}
+                className={`nav-item ${activeMenu === menu ? "active" : ""}`}
               >
-                {menu}
-              </button>
-            </div>
-          ))}
+                <button
+                  className={`btn ${
+                    activeMenu === menu ? "btn-primary" : "btn-light"
+                  } mx-2`}
+                  onClick={() => handleMenuClick(menu)}
+                >
+                  {menu}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
+        {activeMenu && (
+          <div className="secondaryMenuBar bg-light p-2">
+            {menuOptions[activeMenu]}
+          </div>
+        )}
       </div>
-      {activeMenu && (
-        <div className="secondaryMenuBar bg-light p-2">
-          {menuOptions[activeMenu]}
-        </div>
-      )}
     </div>
   );
 };

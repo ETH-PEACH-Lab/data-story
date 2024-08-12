@@ -13,6 +13,7 @@ import {
   Legend,
 } from "chart.js";
 import { CirclePicker } from "react-color";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 ChartJS.register(
   CategoryScale,
@@ -219,30 +220,24 @@ const Chart = ({
     scatter: Scatter,
   }[type];
 
+  const chartContainerStyle = {
+    marginLeft: type ? "38px" : "0px",
+  };
+
   return ChartComponent ? (
-    <div className="handsontable-container">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center" }}>
+    <div className="handsontable-container" style={chartContainerStyle}>
+      <div className="d-flex flex-column align-items-start">
+        <div className="d-flex align-items-center">
           <button
+            className="btn btn-outline-secondary"
             onClick={() => setIsRenamingVisible(!isRenamingVisible)}
-            style={{
-              height: "25px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
           >
             {isRenamingVisible ? "Hide" : "Edit"}
           </button>
           {isRenamingVisible && (
-            <div style={{ display: "flex", marginLeft: "10px" }}>
+            <div className="d-flex ms-2">
               <select
+                className="form-select"
                 onChange={(e) => setSelectedModification(e.target.value)}
                 value={selectedModification}
               >
@@ -253,15 +248,8 @@ const Chart = ({
                 <option value="name">Name</option>
               </select>
               <button
+                className="btn btn-danger ms-2"
                 onClick={() => onDeleteChart(index)}
-                style={{
-                  display: "flex",
-                  backgroundColor: "#dc3546b8",
-                  color: "white",
-                  height: "25px",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
               >
                 Delete
               </button>
@@ -270,23 +258,22 @@ const Chart = ({
         </div>
 
         {isRenamingVisible && selectedModification === "title" && (
-          <div style={{ marginTop: "10px", display: "flex" }}>
+          <div className="d-flex mt-2">
             <input
               type="text"
+              className="form-control ms-2"
               value={titleText}
               onChange={(e) => setTitleText(e.target.value)}
               placeholder="New Title"
-              style={{ marginLeft: "10px" }}
             />
             <button
-              onClick={handleTitleChange}
+              className="btn btn-primary ms-2"
               style={{
-                marginLeft: "10px",
-                height: "25px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                fontSize: "14px",
+                padding: "5px 10px",
+                whiteSpace: "nowrap",
               }}
+              onClick={handleTitleChange}
             >
               Change Title
             </button>
@@ -294,45 +281,43 @@ const Chart = ({
         )}
 
         {isRenamingVisible && selectedModification === "axis-titles" && (
-          <div style={{ marginTop: "10px" }}>
-            <div style={{ marginBottom: "10px", display: "flex" }}>
+          <div className="mt-2">
+            <div className="d-flex mb-2">
               <input
                 type="text"
+                className="form-control ms-2"
                 value={newXAxisTitle}
                 onChange={(e) => setNewXAxisTitle(e.target.value)}
                 placeholder="New X-Axis Title"
-                style={{ marginLeft: "10px" }}
               />
               <button
-                onClick={handleXAxisTitleChange}
+                className="btn btn-primary ms-2"
                 style={{
-                  marginLeft: "10px",
-                  height: "25px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  fontSize: "14px",
+                  padding: "5px 10px",
+                  whiteSpace: "nowrap",
                 }}
+                onClick={handleXAxisTitleChange}
               >
                 Change X-Axis
               </button>
             </div>
-            <div style={{ display: "flex" }}>
+            <div className="d-flex">
               <input
                 type="text"
+                className="form-control ms-2"
                 value={newYAxisTitle}
                 onChange={(e) => setNewYAxisTitle(e.target.value)}
                 placeholder="New Y-Axis Title"
-                style={{ marginLeft: "10px" }}
               />
               <button
-                onClick={handleYAxisTitleChange}
+                className="btn btn-primary ms-2"
                 style={{
-                  marginLeft: "10px",
-                  height: "25px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  fontSize: "14px",
+                  padding: "5px 10px",
+                  whiteSpace: "nowrap",
                 }}
+                onClick={handleYAxisTitleChange}
               >
                 Change Y-Axis
               </button>
@@ -341,9 +326,13 @@ const Chart = ({
         )}
 
         {isRenamingVisible && selectedModification === "color" && (
-          <div style={{ marginTop: "10px" }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <select onChange={handleItemSelect} value={selectedItem}>
+          <div className="mt-2">
+            <div className="d-flex align-items-center">
+              <select
+                className="form-select"
+                onChange={handleItemSelect}
+                value={selectedItem}
+              >
                 <option value="">
                   Select {type === "pie" ? "Slice" : "Series"}
                 </option>
@@ -357,45 +346,36 @@ const Chart = ({
               </select>
               <div
                 onClick={() => setColorPickerVisible(!colorPickerVisible)}
+                className="ms-2"
                 style={{
                   width: "36px",
-                  height: "14px",
+                  height: "36px",
                   backgroundColor: currentColor,
-                  marginLeft: "10px",
                   cursor: "pointer",
                   border: "1px solid #000",
                 }}
               />
               <button
-                onClick={handleApplyColor}
+                className="btn btn-primary ms-2"
                 style={{
-                  marginLeft: "10px",
-                  height: "25px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  fontSize: "14px",
+                  padding: "5px 10px",
+                  whiteSpace: "nowrap",
                 }}
+                onClick={handleApplyColor}
               >
                 Apply Color
               </button>
               {colorPickerVisible && (
                 <div
+                  className="dropdown-menu show"
                   style={{
                     position: "absolute",
                     zIndex: 2,
+                    marginTop: "30px",
                     backgroundColor: "white",
                   }}
                 >
-                  <div
-                    style={{
-                      position: "fixed",
-                      top: 0,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                    }}
-                    onClick={() => setColorPickerVisible(false)}
-                  />
                   <CirclePicker
                     color={currentColor}
                     colors={customColors}
@@ -408,9 +388,13 @@ const Chart = ({
         )}
 
         {isRenamingVisible && selectedModification === "name" && (
-          <div style={{ marginTop: "10px" }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <select onChange={handleItemSelect} value={selectedItem}>
+          <div className="mt-2">
+            <div className="d-flex align-items-center">
+              <select
+                className="form-select"
+                onChange={handleItemSelect}
+                value={selectedItem}
+              >
                 <option value="">
                   Select {type === "pie" ? "Slice" : "Series"}
                 </option>
@@ -424,20 +408,14 @@ const Chart = ({
               </select>
               <input
                 type="text"
+                className="form-control ms-2"
                 value={newLabel}
                 onChange={handleNewLabelChange}
                 placeholder={`New ${type === "pie" ? "Slice" : "Series"} Label`}
-                style={{ marginLeft: "10px" }}
               />
               <button
+                className="btn btn-primary ms-2"
                 onClick={handleRenameItem}
-                style={{
-                  marginLeft: "10px",
-                  height: "25px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
               >
                 Rename
               </button>
@@ -445,7 +423,7 @@ const Chart = ({
           </div>
         )}
       </div>
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div className="flex-grow-1 d-flex flex-column">
         <ChartComponent key={index} data={chartData} options={chartOptions} />
       </div>
     </div>
