@@ -3,7 +3,7 @@ import EditableText from "./EditableStoryComponents/EditableText";
 import Function from "./EditableStoryComponents/Function";
 import StoryChart from "./EditableStoryComponents/StoryChart";
 import StoryTable from "./EditableStoryComponents/StoryTable";
-import StoryMenu from "./StoryMenu";
+import StoryMenu from "./StoryMenu/StoryMenu";
 import "./Story.css";
 import { Card, Form } from "react-bootstrap";
 

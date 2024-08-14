@@ -1,9 +1,9 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { HotTable } from '@handsontable/react';
-import { textRenderer } from 'handsontable/renderers/textRenderer';
-import FilterConditionComponent from './FilterConditionComponent';
-import FilterValueComponent from './FilterValueComponent';
-import styles from './Tutorial.module.css';
+import React, { useCallback, useState, useEffect } from "react";
+import { HotTable } from "@handsontable/react";
+import { textRenderer } from "handsontable/renderers/textRenderer";
+import FilterConditionComponent from "./FilterConditionComponent";
+import FilterValueComponent from "./FilterValueComponent";
+import styles from "./Tutorial.module.css";
 
 function FilterTutorial({
   data,
@@ -17,17 +17,17 @@ function FilterTutorial({
 }) {
   const [isFirstTableExpanded, setIsFirstTableExpanded] = useState(false);
   const [isSecondTableExpanded, setIsSecondTableExpanded] = useState(false);
-  const [filterCondition, setFilterCondition] = useState('none');
-  const [filterValue, setFilterValue] = useState('');
+  const [filterCondition, setFilterCondition] = useState("none");
+  const [filterValue, setFilterValue] = useState("");
   const [allDistinctValues, setAllDistinctValues] = useState([]);
   const [filteredValues, setFilteredValues] = useState([]);
   const [checkedValues, setCheckedValues] = useState([]);
   const [confirmedCheckedValues, setConfirmedCheckedValues] = useState([]);
   const [confirmedSelectedColumn, setConfirmedSelectedColumn] = useState(null);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [showNotes, setShowNotes] = useState(true);
-  const [filterConditionError, setFilterConditionError] = useState('');
-  const [filterValueError, setFilterValueError] = useState('');
+  const [filterConditionError, setFilterConditionError] = useState("");
+  const [filterValueError, setFilterValueError] = useState("");
 
   const selectColumnRenderer = useCallback(
     (instance, td, row, col, prop, value, cellProperties) => {
@@ -41,7 +41,7 @@ function FilterTutorial({
         cellProperties,
       ]);
       if (col === selectedColumnIndex) {
-        td.style.backgroundColor = 'lightsteelblue';
+        td.style.backgroundColor = "lightsteelblue";
       }
     },
     [selectedColumnIndex]
@@ -61,16 +61,16 @@ function FilterTutorial({
       const cellValue = instance.getDataAtCell(row, confirmedSelectedColumn);
       if (confirmedSelectedColumn != null) {
         if (col === confirmedSelectedColumn) {
-          td.style.backgroundColor = 'lightsteelblue';
+          td.style.backgroundColor = "lightsteelblue";
         }
         if (!confirmedCheckedValues.includes(cellValue)) {
-          td.style.backgroundColor = 'mistyrose';
+          td.style.backgroundColor = "mistyrose";
         }
         if (
           col === confirmedSelectedColumn &&
           !confirmedCheckedValues.includes(cellValue)
         ) {
-          td.style.backgroundColor = 'palevioletred';
+          td.style.backgroundColor = "palevioletred";
         }
       }
     },
@@ -83,7 +83,9 @@ function FilterTutorial({
       const columnData = hotInstance.getSourceDataAtCol(selectedColumnIndex);
       const uniqueValues = [
         ...new Set(
-          columnData.map((value) => (value !== null && value !== undefined ? value : ''))
+          columnData.map((value) =>
+            value !== null && value !== undefined ? value : ""
+          )
         ),
       ];
 
@@ -108,10 +110,10 @@ function FilterTutorial({
 
   const handleFilterByConditionClick = () => {
     if (selectedColumnIndex === null) {
-      setFilterConditionError('Please select a column');
+      setFilterConditionError("Please select a column");
       return;
     }
-    setFilterConditionError(''); // Clear error message if a column is selected
+    setFilterConditionError(""); // Clear error message if a column is selected
 
     const column = columnConfigs[selectedColumnIndex]?.data;
     if (!column) return;
@@ -120,22 +122,30 @@ function FilterTutorial({
       .filter((row) => {
         const cellValue = row[column];
         switch (filterCondition) {
-          case 'empty':
-            return cellValue === '';
-          case 'not_empty':
-            return cellValue !== '';
-          case 'eq':
+          case "empty":
+            return cellValue === "";
+          case "not_empty":
+            return cellValue !== "";
+          case "eq":
             return cellValue === filterValue;
-          case 'neq':
+          case "neq":
             return cellValue !== filterValue;
-          case 'begins_with':
-            return typeof cellValue === 'string' && cellValue.startsWith(filterValue);
-          case 'ends_with':
-            return typeof cellValue === 'string' && cellValue.endsWith(filterValue);
-          case 'contains':
-            return typeof cellValue === 'string' && cellValue.includes(filterValue);
-          case 'not_contains':
-            return typeof cellValue === 'string' && !cellValue.includes(filterValue);
+          case "begins_with":
+            return (
+              typeof cellValue === "string" && cellValue.startsWith(filterValue)
+            );
+          case "ends_with":
+            return (
+              typeof cellValue === "string" && cellValue.endsWith(filterValue)
+            );
+          case "contains":
+            return (
+              typeof cellValue === "string" && cellValue.includes(filterValue)
+            );
+          case "not_contains":
+            return (
+              typeof cellValue === "string" && !cellValue.includes(filterValue)
+            );
           default:
             return true;
         }
@@ -159,10 +169,10 @@ function FilterTutorial({
 
   const handleCheckboxChange = (value) => {
     if (selectedColumnIndex === null) {
-      setFilterValueError('Please select a column');
+      setFilterValueError("Please select a column");
       return;
     }
-    setFilterValueError(''); // Clear error message if a column is selected
+    setFilterValueError(""); // Clear error message if a column is selected
     setCheckedValues((prevCheckedValues) => {
       const newCheckedValues = prevCheckedValues.includes(value)
         ? prevCheckedValues.filter((v) => v !== value)
@@ -172,8 +182,8 @@ function FilterTutorial({
       setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
       handleFilter(
         selectedColumnIndex,
-        'by_value',
-        '',
+        "by_value",
+        "",
         hotRef,
         newCheckedValues,
         filteredColumns,
@@ -186,10 +196,10 @@ function FilterTutorial({
 
   const selectAll = () => {
     if (selectedColumnIndex === null) {
-      setFilterValueError('Please select a column');
+      setFilterValueError("Please select a column");
       return;
     }
-    setFilterValueError(''); // Clear error message if a column is selected
+    setFilterValueError(""); // Clear error message if a column is selected
     setCheckedValues((prevCheckedValues) => {
       const newCheckedValues = [
         ...prevCheckedValues,
@@ -199,8 +209,8 @@ function FilterTutorial({
       setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
       handleFilter(
         selectedColumnIndex,
-        'by_value',
-        '',
+        "by_value",
+        "",
         hotRef,
         newCheckedValues,
         filteredColumns,
@@ -213,10 +223,10 @@ function FilterTutorial({
 
   const clearAll = () => {
     if (selectedColumnIndex === null) {
-      setFilterValueError('Please select a column');
+      setFilterValueError("Please select a column");
       return;
     }
-    setFilterValueError(''); // Clear error message if a column is selected
+    setFilterValueError(""); // Clear error message if a column is selected
     setCheckedValues((prevCheckedValues) => {
       const newCheckedValues = prevCheckedValues.filter(
         (value) => !filteredValues.includes(value)
@@ -225,8 +235,8 @@ function FilterTutorial({
       setConfirmedCheckedValues(newCheckedValues); // Update confirmed checked values
       handleFilter(
         selectedColumnIndex,
-        'by_value',
-        '',
+        "by_value",
+        "",
         hotRef,
         newCheckedValues,
         filteredColumns,
@@ -243,15 +253,23 @@ function FilterTutorial({
 
   const handleClearAllFilters = () => {
     columnConfigs.forEach((col, index) => {
-      handleFilter(index, 'none', '', hotRef, [], filteredColumns, setFilteredColumns);
+      handleFilter(
+        index,
+        "none",
+        "",
+        hotRef,
+        [],
+        filteredColumns,
+        setFilteredColumns
+      );
     });
 
-    setFilterCondition('none');
-    setFilterValue('');
+    setFilterCondition("none");
+    setFilterValue("");
     setCheckedValues(allDistinctValues);
     setConfirmedSelectedColumn(null);
-    setFilterConditionError(''); // Clear error message when filters are reset
-    setFilterValueError(''); // Clear error message when filters are reset
+    setFilterConditionError(""); // Clear error message when filters are reset
+    setFilterValueError(""); // Clear error message when filters are reset
   };
 
   const toggleNotes = () => {
@@ -288,17 +306,36 @@ function FilterTutorial({
     <div>
       <h2>Filtering</h2>
       <p>
-        Filtering is a crucial process in data science that involves selecting a subset of data based on specific criteria. This helps in focusing on relevant data, improving analysis accuracy, and enhancing insights. Filters can be applied based on various conditions.
+        Filtering is a crucial process in data science that involves selecting a
+        subset of data based on specific criteria. This helps in focusing on
+        relevant data, improving analysis accuracy, and enhancing insights.
+        Filters can be applied based on various conditions.
       </p>
       <h3>Select column</h3>
       <p>
-        You must first select a column to which the filter is applied. You can select a column in the main table on the left by clicking its head or selecting any cell within that column.
+        You must first select a column to which the filter is applied. You can
+        select a column in the main table on the left by clicking its head or
+        selecting any cell within that column.
       </p>
       <p>
-        <strong>Selected column:</strong> {selectedColumnIndex !== null ? `column ${selectedColumnIndex}, ${selectedColumnName}` : <span style={{ fontWeight: 'bold', color: 'red' }}>Please select a column</span>}
+        <strong>Selected column:</strong>{" "}
+        {selectedColumnIndex !== null ? (
+          `column ${selectedColumnIndex}, ${selectedColumnName}`
+        ) : (
+          <span style={{ fontWeight: "bold", color: "red" }}>
+            Please select a column
+          </span>
+        )}
       </p>
       <div className={styles.tableWrapper}>
-        <div className="small-table-wrapper" style={{ width: '100%', height: isFirstTableExpanded ? 400 : 180, overflow: 'auto' }}>
+        <div
+          className="small-table-wrapper"
+          style={{
+            width: "100%",
+            height: isFirstTableExpanded ? 400 : 180,
+            overflow: "auto",
+          }}
+        >
           <HotTable
             data={data}
             colHeaders={columnConfigs.map((column) => column.title)}
@@ -314,23 +351,26 @@ function FilterTutorial({
             disableVisualSelection={true}
           />
         </div>
-        <button className={styles.expandButton} onClick={toggleFirstTableExpand}>
-          {isFirstTableExpanded ? 'Collapse Table' : 'Expand Table'}
+        <button
+          className={styles.expandButton}
+          onClick={toggleFirstTableExpand}
+        >
+          {isFirstTableExpanded ? "Collapse Table" : "Expand Table"}
         </button>
       </div>
       <h3>Filter Conditions</h3>
+      <p>When choosing how to filter your data, you have two options.</p>
       <p>
-        When choosing how to filter your data, you have two options.
-      </p>
-      <p>
-        <strong>- </strong>You can filter data by applying conditions such as equals, does not equal, contains, does not contain, etc.
+        <strong>- </strong>You can filter data by applying conditions such as
+        equals, does not equal, contains, does not contain, etc.
       </p>
       <p>
         <strong>- </strong>You can manually select which data to filter out.
       </p>
       <div className={styles.separator}></div> {/* Add separator */}
       <p>
-        <strong>Option 1: </strong>Select what condition the data in that column should fulfill to be visible:
+        <strong>Option 1: </strong>Select what condition the data in that column
+        should fulfill to be visible:
       </p>
       <FilterConditionComponent
         filterCondition={filterCondition}
@@ -340,22 +380,31 @@ function FilterTutorial({
         handleFilterByConditionClick={handleFilterByConditionClick}
       />
       {filterConditionError && (
-        <p style={{ color: 'red', fontWeight: 'bold' }}>{filterConditionError}</p>
+        <p style={{ color: "red", fontWeight: "bold" }}>
+          {filterConditionError}
+        </p>
       )}
       <div className={styles.separator}></div> {/* Add separator */}
-      <strong>Option 2: </strong>You can select manually what data from the selected column you want to hide:<br />
-      <span style={{ fontSize: 14, color: 'grey' }}>
-        <span onClick={toggleNotes} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
-          {showNotes ? 'Hide Notes' : 'Show Notes'}
+      <strong>Option 2: </strong>You can select manually what data from the
+      selected column you want to hide:
+      <br />
+      <span style={{ fontSize: 14, color: "grey" }}>
+        <span
+          onClick={toggleNotes}
+          style={{ cursor: "pointer", textDecoration: "underline" }}
+        >
+          {showNotes ? "Hide Notes" : "Show Notes"}
         </span>
       </span>
       {showNotes && (
-        <div style={{ fontSize: 14, color: 'grey' }}>
+        <div style={{ fontSize: 14, color: "grey" }}>
           <p>- A checked box indicates that the value is displayed</p>
-          <p>- The "Clear All" and "Select All" buttons only affect the values currently being searched for.</p>
+          <p>
+            - The "Clear All" and "Select All" buttons only affect the values
+            currently being searched for.
+          </p>
         </div>
       )}
-
       <FilterValueComponent
         filteredValues={filteredValues}
         checkedValues={checkedValues}
@@ -366,12 +415,14 @@ function FilterTutorial({
         clearAll={clearAll}
       />
       {filterValueError && (
-        <p style={{ color: 'red', fontWeight: 'bold' }}>{filterValueError}</p>
+        <p style={{ color: "red", fontWeight: "bold" }}>{filterValueError}</p>
       )}
       <div className={styles.separator}></div> {/* Add separator */}
       <p>
-        You can apply different filters to different columns simultaneously. <br />
-        Any columns that currently have a filter applied to them have a green header. <br />
+        You can apply different filters to different columns simultaneously.{" "}
+        <br />
+        Any columns that currently have a filter applied to them have a green
+        header. <br />
         Here you can reset them all.
       </p>
       <div className="clear-all-filters">
@@ -381,10 +432,18 @@ function FilterTutorial({
       </div>
       <div className={styles.separator}></div> {/* Add separator */}
       <p>
-        Rows that are filtered out and no longer appear in the main table are tinted pink.
+        Rows that are filtered out and no longer appear in the main table are
+        tinted pink.
       </p>
       <div className={styles.tableWrapper}>
-        <div className="small-table-wrapper" style={{ width: '100%', height: isSecondTableExpanded ? 400 : 180, overflow: 'auto' }}>
+        <div
+          className="small-table-wrapper"
+          style={{
+            width: "100%",
+            height: isSecondTableExpanded ? 400 : 180,
+            overflow: "auto",
+          }}
+        >
           <HotTable
             data={data}
             colHeaders={columnConfigs.map((column) => column.title)}
@@ -400,12 +459,16 @@ function FilterTutorial({
             disableVisualSelection={true}
           />
         </div>
-        <button className={styles.expandButton} onClick={toggleSecondTableExpand}>
-          {isSecondTableExpanded ? 'Collapse Table' : 'Expand Table'}
+        <button
+          className={styles.expandButton}
+          onClick={toggleSecondTableExpand}
+        >
+          {isSecondTableExpanded ? "Collapse Table" : "Expand Table"}
         </button>
       </div>
       <p>
-        You can filter or reset filters in your table at any time in the 'Data' menu.
+        You can filter or reset filters in your table at any time in the 'Data'
+        menu.
       </p>
     </div>
   );
