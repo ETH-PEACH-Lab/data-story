@@ -5,7 +5,7 @@ const TextMenu = ({ addComponent }) => {
   return (
     <Card className="mb-3">
       <Card.Body>
-        <Button onClick={() => addComponent("text")} variant="primary">
+        <Button onClick={() => addComponent("text")} variant="secondary">
           Insert
         </Button>
       </Card.Body>

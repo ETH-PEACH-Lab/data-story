@@ -109,7 +109,7 @@ const ChartMenu = ({ addComponent, chartNames = [], chartConfigs = [] }) => {
         </Form.Group>
         <Button
           onClick={handleInsertClick}
-          variant="primary"
+          variant="secondary"
           disabled={!selectedChartName}
         >
           Insert

@@ -378,7 +378,7 @@ const TableMenu = ({
         <div className="mt-3">
           <Button
             onClick={() => handleInsertComponent("table")}
-            variant="primary"
+            variant="secondary"
           >
             Insert
           </Button>

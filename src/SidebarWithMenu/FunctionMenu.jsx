@@ -219,7 +219,7 @@ const FunctionMenu = ({
 
         <Button
           onClick={handleFunctionApply}
-          variant="primary"
+          variant="secondary"
           disabled={!selectedRangeState || !localSelectedFunction}
         >
           Insert
