@@ -3,7 +3,7 @@ import EditableText from "./EditableStoryComponents/EditableText";
 import Function from "./EditableStoryComponents/Function";
 import StoryChart from "./EditableStoryComponents/StoryChart";
 import StoryTable from "./EditableStoryComponents/StoryTable";
-import StoryMenu from "./StoryMenu"; // Import the StoryMenu component
+import StoryMenu from "./StoryMenu";
 import "./Story.css";
 import { Card, Form } from "react-bootstrap";
 
@@ -21,11 +21,10 @@ function Story({
   hotRef,
 }) {
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
-  const [showCard, setShowCard] = useState(false); // State to manage the visibility of the card
-  const [selectedOption, setSelectedOption] = useState(""); // Set initial value to an empty string
-  const [selectedRangeState, setSelectedRangeState] = useState(null); // New state for selected range
-
-  const cardRef = useRef(null); // Ref to keep track of the card element
+  const [showCard, setShowCard] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedRangeState, setSelectedRangeState] = useState(null);
+  const cardRef = useRef(null);
 
   // Hook to update the selected range state based on user selection in the table
   useEffect(() => {
@@ -189,6 +188,19 @@ function Story({
     setComponents(newComponents);
   };
 
+  const handleShowCard = () => {
+    setShowCard((prevShowCard) => !prevShowCard);
+    if (!showCard && selectedOption === "") {
+      setSelectedOption("text");
+    }
+  };
+
+  useEffect(() => {
+    if (showCard && selectedOption === "") {
+      setSelectedOption("text");
+    }
+  }, [showCard, selectedOption]);
+
   return (
     <div className="story-container" style={{ position: "relative" }}>
       {components.map((component, index) => {
@@ -258,7 +270,7 @@ function Story({
       <div className="d-flex justify-content-start mt-3">
         <button
           className="btn btn-secondary btn-circle"
-          onClick={() => setShowCard(!showCard)}
+          onClick={handleShowCard}
         >
           +
         </button>

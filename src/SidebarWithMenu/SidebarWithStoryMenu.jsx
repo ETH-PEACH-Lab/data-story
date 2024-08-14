@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import FilterTutorial from "./FilterTutorial";
-import TutorialMenu from "./TutorialMenu";
+//import TutorialMenu from "./TutorialMenu";
 import Story from "./Story";
 import StoryMenu from "./StoryMenu";
 
@@ -65,7 +65,7 @@ const SidebarWithStoryMenu = ({
             columnConfigs={columnConfigs}
             selectedRange={selectedRange}
             tableContainerRef={tableContainerRef}
-            hotRef={hotRef} // Pass hotRef here
+            hotRef={hotRef}
             setShowConfirmation={setShowConfirmation}
             setConfirmationMessage={setConfirmationMessage}
             chartNames={chartNames}
@@ -88,7 +88,7 @@ const SidebarWithStoryMenu = ({
                 setConfirmationMessage={setConfirmationMessage}
                 selectedRange={selectedRange}
                 tableContainerRef={tableContainerRef}
-                hotRef={hotRef} // Pass hotRef here
+                hotRef={hotRef}
               />
             )}
           </div>

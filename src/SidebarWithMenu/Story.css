@@ -6,21 +6,6 @@
   height: calc(100% - 30px);
 }
 
-.story-textarea {
-  width: 100%;
-  height: auto;
-  min-height: 95px; /* Ensure a reasonable minimum height */
-  font-size: 16px; /* Match the font size */
-  background-color: transparent; /* Match the background color */
-  outline: 1px dashed black; /* Remove the outline on focus */
-  padding: 10px; /* Add some padding for better appearance */
-  resize: none; /* Allow vertical resizing */
-  border: none;
-  box-sizing: border-box; /* Include padding in width and height calculations */
-  line-height: 1.5;
-  color: black;
-}
-
 .story-text {
   white-space: pre-wrap; /* Preserve line breaks */
   font-size: 16px; /* Match the font size */
@@ -200,7 +185,7 @@
 .story-card {
   z-index: 1000;
   position: absolute;
-  bottom: 270px;
+  bottom: 80px;
   left: 40px;
   width: 400px;
   background-color: #f0f8ff;
