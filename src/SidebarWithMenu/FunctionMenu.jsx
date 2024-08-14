@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./StoryMenu.module.css";
+import React, { useState } from "react";
+import { Button, Form, Card } from "react-bootstrap"; // Imported Bootstrap components
 
 const FunctionMenu = ({
   selectedRangeState,
@@ -10,6 +10,9 @@ const FunctionMenu = ({
   setConfirmationMessage,
   addComponent,
 }) => {
+  const [localSelectedFunction, setLocalSelectedFunction] =
+    useState(selectedFunction);
+
   const calculateFunctionResult = (func, data) => {
     if (!data || data.length === 0) return { result: "No data", warning: "" };
 
@@ -163,7 +166,7 @@ const FunctionMenu = ({
     const rangeString = generateRangeString();
     const selectedData = getSelectedCellsData();
     const { result, warning } = calculateFunctionResult(
-      selectedFunction,
+      localSelectedFunction,
       selectedData
     );
 
@@ -176,51 +179,53 @@ const FunctionMenu = ({
         [rangeString], // Pass selectedColumns as an array
         [], // Empty highlightSettings
         [], // Empty highlightColors
-        selectedFunction,
+        localSelectedFunction,
         result
       );
     }
   };
 
   return (
-    <div className={styles.secondaryMenuBar}>
-      <div className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}>
-        {generateRangeString()}
-      </div>
-      <div className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}>
-        <select
-          value={selectedFunction}
-          onChange={(e) => setSelectedFunction(e.target.value)}
-          className={styles.selectInput}
-        >
-          <option value="" disabled>
-            Select a function
-          </option>
-          {[
-            "AVERAGE",
-            "SUM",
-            "MAX",
-            "MIN",
-            "COUNT",
-            "COUNT EMPTY",
-            "COUNT UNIQUE",
-          ].map((func, index) => (
-            <option key={index} value={func}>
-              {func}
+    <Card className="mb-3">
+      <Card.Body>
+        <Card.Text className="mb-2">
+          <strong>Selected Range:</strong> {generateRangeString()}
+        </Card.Text>
+
+        <Form.Group controlId="functionSelect" className="mb-3">
+          <Form.Control
+            as="select"
+            value={localSelectedFunction}
+            onChange={(e) => setLocalSelectedFunction(e.target.value)}
+          >
+            <option value="" disabled>
+              Select a function
             </option>
-          ))}
-        </select>
-      </div>
-      <div className={styles.secondaryMenuItem}>
-        <button
-          className={styles.button}
+            {[
+              "AVERAGE",
+              "SUM",
+              "MAX",
+              "MIN",
+              "COUNT",
+              "COUNT EMPTY",
+              "COUNT UNIQUE",
+            ].map((func, index) => (
+              <option key={index} value={func}>
+                {func}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+
+        <Button
           onClick={handleFunctionApply}
-          disabled={!selectedRangeState || !selectedFunction}
+          variant="primary"
+          disabled={!selectedRangeState || !localSelectedFunction}
         >
           Insert
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 

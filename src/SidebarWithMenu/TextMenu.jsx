@@ -1,15 +1,15 @@
 import React from "react";
-import styles from "./StoryMenu.module.css";
+import { Button, Card } from "react-bootstrap";
 
 const TextMenu = ({ addComponent }) => {
   return (
-    <div className={styles.secondaryMenuBar}>
-      <div className={styles.secondaryMenuItem}>
-        <button className={styles.button} onClick={() => addComponent("text")}>
+    <Card className="mb-3">
+      <Card.Body>
+        <Button onClick={() => addComponent("text")} variant="primary">
           Insert
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 

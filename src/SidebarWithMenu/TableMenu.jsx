@@ -1,6 +1,7 @@
-import React, { useMemo, useState, useRef, useEffect } from "react";
-import styles from "./StoryMenu.module.css";
+import React, { useMemo, useState, useEffect } from "react";
+import { Button, Form, Card, Accordion } from "react-bootstrap";
 import { CirclePicker } from "react-color";
+import styles from "./StoryMenu.module.css";
 
 const TableMenu = ({
   columnConfigs,
@@ -8,27 +9,11 @@ const TableMenu = ({
   setSelectedColumns,
   addComponent,
 }) => {
-  const [visibleDropdown, setVisibleDropdown] = useState(null);
-  const [isSecondaryDropdownVisible, setSecondaryDropdownVisible] =
-    useState(false);
-
-  const tableButtonRef = useRef(null);
-  const highlightButtonRef1 = useRef(null);
-  const highlightButtonRef2 = useRef(null);
-  const columnDropdownRef = useRef(null);
-  const highlightDropdownRef1 = useRef(null);
-  const highlightDropdownRef2 = useRef(null);
-  const secondaryDropdownRef = useRef(null);
-
-  const refs = [
-    columnDropdownRef,
-    tableButtonRef,
-    highlightDropdownRef1,
-    highlightButtonRef1,
-    highlightDropdownRef2,
-    highlightButtonRef2,
-    secondaryDropdownRef,
-  ];
+  const [highlightColors, setHighlightColors] = useState([
+    "#0AEFFF",
+    "#FF8700",
+  ]);
+  const [colorPickerVisible, setColorPickerVisible] = useState([false, false]);
 
   const originalColors = [
     "#000000",
@@ -70,51 +55,10 @@ const TableMenu = ({
     rowRange: "",
   };
 
-  const initialHighlightColors = [
-    tintColor("#0AEFFF", 60),
-    tintColor("#FF8700", 60),
-  ];
-
   const [highlightSettings, setHighlightSettings] = useState([
     { ...initialHighlightSettings },
     { ...initialHighlightSettings },
   ]);
-
-  const [highlightColors, setHighlightColors] = useState(
-    initialHighlightColors
-  );
-  const [colorPickerVisible, setColorPickerVisible] = useState([false, false]);
-
-  const [dropdownPositions, setDropdownPositions] = useState([
-    { top: 0, left: 0 },
-    { top: 0, left: 0 },
-  ]);
-
-  const updateDropdownPosition = (index, buttonRef) => {
-    if (buttonRef.current) {
-      const { top, left } = buttonRef.current.getBoundingClientRect();
-      setDropdownPositions((prev) => {
-        const newPositions = [...prev];
-        newPositions[index] = {
-          top: 35 + window.scrollY,
-          left: 10 + window.scrollX,
-        };
-        return newPositions;
-      });
-    }
-  };
-
-  const toggleDropdown = (index, ref) => (event) => {
-    event.stopPropagation();
-    setVisibleDropdown((prevVisible) => {
-      const newVisibleDropdown = prevVisible !== index ? index : null;
-      if (newVisibleDropdown !== null) {
-        updateDropdownPosition(index, ref);
-      }
-      setSecondaryDropdownVisible(false);
-      return newVisibleDropdown;
-    });
-  };
 
   const handleHighlightCheckboxChange = (index) => (e) => {
     setHighlightSettings((prev) =>
@@ -172,34 +116,6 @@ const TableMenu = ({
     );
   };
 
-  const handleClickOutside = (event) => {
-    const isClickOutsideDropdowns = !refs.some(
-      (ref) => ref.current && ref.current.contains(event.target)
-    );
-    if (isClickOutsideDropdowns) {
-      setVisibleDropdown(null);
-      setSecondaryDropdownVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("resize", () => {
-      if (visibleDropdown !== null) {
-        updateDropdownPosition(visibleDropdown, refs[visibleDropdown]);
-      }
-    });
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("resize", () => {
-        if (visibleDropdown !== null) {
-          updateDropdownPosition(visibleDropdown, refs[visibleDropdown]);
-        }
-      });
-    };
-  }, [visibleDropdown]);
-
   const handleColumnSelect = (column) => {
     setSelectedColumns((prev) =>
       prev.includes(column)
@@ -221,7 +137,6 @@ const TableMenu = ({
     setHighlightColor,
     initialColor
   ) => {
-    setSecondaryDropdownVisible(false);
     setHighlightSettings({
       selectedColumns: [],
       isEnabled: false,
@@ -235,9 +150,6 @@ const TableMenu = ({
   };
 
   const handleInsertComponent = (componentType) => {
-    console.log("highlightSettings before insert:", highlightSettings);
-    console.log("highlightColors before insert:", highlightColors);
-
     addComponent(
       componentType,
       selectedColumns,
@@ -245,6 +157,7 @@ const TableMenu = ({
       highlightColors
     );
 
+    // Reset selection to all columns after insertion
     selectAllColumns();
     resetHighlightSettings(
       (settings) =>
@@ -266,7 +179,7 @@ const TableMenu = ({
     );
   };
 
-  const HighlightDropdownContent = ({
+  const HighlightAccordionContent = ({
     index,
     highlightSettings,
     setHighlightSettings,
@@ -276,71 +189,45 @@ const TableMenu = ({
     setColorPickerVisible,
     allColors,
   }) => (
-    <>
-      <div className={styles.textOption}>
-        <div className={styles.flexContainer}>
-          <input
-            type="checkbox"
-            checked={highlightSettings.isEnabled}
-            onChange={handleHighlightCheckboxChange(index)}
-          />
-          <span>Enable Highlight</span>
-          <div
-            onClick={() =>
-              setColorPickerVisible((prev) =>
-                prev.map((visible, i) => (i === index ? !visible : visible))
-              )
-            }
-            style={{
-              width: "20px",
-              height: "20px",
-              backgroundColor: highlightColor,
-              marginLeft: "10px",
-              cursor: "pointer",
-              border: "1px solid #000",
-            }}
-          />
-          {colorPickerVisible && (
-            <div
-              style={{
-                display: "flex",
-                position: "absolute",
-                maxWidth: "245px",
-                zIndex: 2,
-                left: "216px",
-                top: "0px",
-                padding: "10px",
-                backgroundColor: "white",
-              }}
-            >
-              <div
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  right: 0,
-                  bottom: 0,
-                  left: 0,
-                }}
-                onClick={() =>
-                  setColorPickerVisible((prev) =>
-                    prev.map((visible, i) => (i === index ? false : visible))
-                  )
-                }
-              />
-              <CirclePicker
-                color={highlightColor}
-                colors={allColors}
-                onChangeComplete={handleColorChangeComplete(index)}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      {highlightSettings.isEnabled && (
-        <>
-          <div className={styles.textOption}>
-            <div className={styles.flexContainer}>
-              <select
+    <Accordion.Item eventKey={`highlight-${index}`}>
+      <Accordion.Header>{`Highlight ${index + 1}`}</Accordion.Header>
+      <Accordion.Body>
+        <Form.Check
+          type="checkbox"
+          checked={highlightSettings.isEnabled}
+          onChange={handleHighlightCheckboxChange(index)}
+          label="Enable Highlight"
+        />
+        <div
+          onClick={() =>
+            setColorPickerVisible((prev) =>
+              prev.map((visible, i) => (i === index ? !visible : visible))
+            )
+          }
+          style={{
+            width: "20px",
+            height: "20px",
+            backgroundColor: highlightColor,
+            marginLeft: "10px",
+            cursor: "pointer",
+            border: "1px solid #000",
+          }}
+        />
+        {colorPickerVisible[index] && (
+          <div style={{ position: "relative", zIndex: 2 }}>
+            <CirclePicker
+              color={highlightColor}
+              colors={allColors}
+              onChangeComplete={handleColorChangeComplete(index)}
+            />
+          </div>
+        )}
+        {highlightSettings.isEnabled && (
+          <>
+            <Form.Group controlId="columnSelection">
+              <Form.Label>Column Selection</Form.Label>
+              <Form.Control
+                as="select"
                 value={highlightSettings.columnSelection}
                 onChange={(e) =>
                   setHighlightSettings((prev) =>
@@ -351,27 +238,33 @@ const TableMenu = ({
                     )
                   )
                 }
-                className={styles.selectInput}
               >
                 <option value="of all columns">of all columns</option>
                 <option value="of selected columns">of selected columns</option>
-              </select>
+              </Form.Control>
               {highlightSettings.columnSelection === "of selected columns" && (
-                <button
-                  className={styles.applyButton}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSecondaryDropdownVisible((prev) => !prev);
-                  }}
-                >
-                  Select
-                </button>
+                <>
+                  <Form.Label>Select Columns</Form.Label>
+                  {columnConfigs.map((column, i) => (
+                    <Form.Check
+                      key={i}
+                      type="checkbox"
+                      checked={highlightSettings.selectedColumns.includes(
+                        column.title
+                      )}
+                      onChange={() =>
+                        handleHighlightColumnSelect(index, column.title)
+                      }
+                      label={column.title}
+                    />
+                  ))}
+                </>
               )}
-            </div>
-          </div>
-          <div className={styles.textOption}>
-            <div className={styles.flexContainer}>
-              <select
+            </Form.Group>
+            <Form.Group controlId="rowSelection">
+              <Form.Label>Row Selection</Form.Label>
+              <Form.Control
+                as="select"
                 value={highlightSettings.rowSelection}
                 onChange={(e) =>
                   setHighlightSettings((prev) =>
@@ -382,30 +275,26 @@ const TableMenu = ({
                     )
                   )
                 }
-                className={styles.selectInput}
               >
                 <option value="of all rows">of all rows</option>
                 <option value="of range of rows">of range of rows</option>
-              </select>
+              </Form.Control>
               {highlightSettings.rowSelection === "of range of rows" && (
-                <input
+                <Form.Control
                   type="text"
                   placeholder="e.g., 1-5"
                   value={highlightSettings.rowRange}
                   onChange={handleRowRangeChange(index)}
                   className={styles.inputField}
-                  style={{ width: "50%" }}
                 />
               )}
-            </div>
-          </div>
-          <div className={styles.textOption}>
-            <div className={styles.flexContainer}>
-              <span>where</span>
-              <select
+            </Form.Group>
+            <Form.Group controlId="condition">
+              <Form.Label>Condition</Form.Label>
+              <Form.Control
+                as="select"
                 value={highlightSettings.condition}
                 onChange={handleHighlightConditionChange(index)}
-                className={styles.selectInput}
               >
                 <option value="no condition">no condition</option>
                 <option value="empty">empty</option>
@@ -424,7 +313,7 @@ const TableMenu = ({
                 <option value="ends with">ends with</option>
                 <option value="contains">contains</option>
                 <option value="does not contain">does not contain</option>
-              </select>
+              </Form.Control>
               {[
                 "is equal",
                 "is not equal",
@@ -437,148 +326,65 @@ const TableMenu = ({
                 "is less than",
                 "is less than or equal",
               ].includes(highlightSettings.condition) && (
-                <input
+                <Form.Control
                   type="text"
                   value={highlightSettings.value}
                   onChange={handleHighlightValueChange(index)}
                   className={styles.inputField}
-                  style={{ width: "50%" }}
                 />
               )}
-            </div>
-          </div>
-        </>
-      )}
-    </>
+            </Form.Group>
+          </>
+        )}
+      </Accordion.Body>
+    </Accordion.Item>
   );
 
   return (
-    <div className={styles.secondaryMenuBar}>
-      <div className={styles.secondaryMenuItem}>
-        <button
-          className={styles.button}
-          ref={tableButtonRef}
-          onClick={toggleDropdown(0, tableButtonRef)}
-        >
-          {allColumnsSelected ? "All columns" : "of selected columns"}
-        </button>
-        {visibleDropdown === 0 && (
-          <div
-            ref={columnDropdownRef}
-            className={styles.dropdown}
-            style={{
-              top: dropdownPositions[0]?.top,
-              left: dropdownPositions[0]?.left,
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {columnConfigs.map((column, index) => (
-              <div
-                key={index}
-                className={styles.textOption}
-                onClick={() => handleColumnSelect(column.title)}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedColumns.includes(column.title)}
-                  readOnly
-                />
-                {column.title}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      {[1, 2].map((i) => (
-        <div className={styles.secondaryMenuItem} key={i}>
-          <button
-            className={styles.button}
-            ref={i === 1 ? highlightButtonRef1 : highlightButtonRef2}
-            onClick={toggleDropdown(
-              i,
-              i === 1 ? highlightButtonRef1 : highlightButtonRef2
-            )}
-          >
-            {`Highlight ${i}`}
-          </button>
-          {visibleDropdown === i && (
-            <div
-              ref={i === 1 ? highlightDropdownRef1 : highlightDropdownRef2}
-              className={`${styles.dropdown} ${styles.highlightDropdown}`}
-              style={{
-                top: dropdownPositions[i]?.top,
-                left: dropdownPositions[i]?.left + (i === 1 ? 162 : 317),
-              }}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSecondaryDropdownVisible(false);
-              }}
-            >
-              <HighlightDropdownContent
-                index={i - 1}
-                highlightSettings={highlightSettings[i - 1]}
-                setHighlightSettings={setHighlightSettings}
-                highlightColor={highlightColors[i - 1]}
-                setHighlightColor={setHighlightColors}
-                colorPickerVisible={colorPickerVisible[i - 1]}
-                setColorPickerVisible={setColorPickerVisible}
-                allColors={allColors}
-              />
-            </div>
-          )}
-        </div>
-      ))}
-      {isSecondaryDropdownVisible && (
-        <div
-          ref={secondaryDropdownRef}
-          className={styles.secondaryDropdown}
-          style={{
-            top:
-              visibleDropdown === 1
-                ? dropdownPositions[1]?.top + 25
-                : dropdownPositions[2]?.top + 25,
-            left:
-              visibleDropdown === 1
-                ? dropdownPositions[1]?.left + 380
-                : dropdownPositions[2]?.left + 380,
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {columnConfigs.map((column, index) => (
-            <div
-              key={index}
-              className={styles.textOption}
-              onClick={() =>
-                handleHighlightColumnSelect(visibleDropdown - 1, column.title)
-              }
-            >
-              <input
-                type="checkbox"
-                checked={
-                  visibleDropdown === 1
-                    ? highlightSettings[0].selectedColumns.includes(
-                        column.title
-                      )
-                    : highlightSettings[1].selectedColumns.includes(
-                        column.title
-                      )
-                }
-                readOnly
-              />
-              {column.title}
-            </div>
+    <Card className="mb-3">
+      <Card.Body>
+        <Accordion>
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>
+              {allColumnsSelected ? "All columns" : "Selected Columns"}
+            </Accordion.Header>
+            <Accordion.Body>
+              {columnConfigs.map((column, index) => (
+                <div key={index} className={styles.textOption}>
+                  <Form.Check
+                    type="checkbox"
+                    checked={selectedColumns.includes(column.title)}
+                    onChange={() => handleColumnSelect(column.title)}
+                    label={column.title}
+                  />
+                </div>
+              ))}
+            </Accordion.Body>
+          </Accordion.Item>
+          {[0, 1].map((i) => (
+            <HighlightAccordionContent
+              key={i}
+              index={i}
+              highlightSettings={highlightSettings[i]}
+              setHighlightSettings={setHighlightSettings}
+              highlightColor={highlightColors[i]}
+              setHighlightColor={setHighlightColors}
+              colorPickerVisible={colorPickerVisible}
+              setColorPickerVisible={setColorPickerVisible}
+              allColors={allColors}
+            />
           ))}
+        </Accordion>
+        <div className="mt-3">
+          <Button
+            onClick={() => handleInsertComponent("table")}
+            variant="primary"
+          >
+            Insert
+          </Button>
         </div>
-      )}
-      <div className={styles.secondaryMenuItem}>
-        <button
-          className={styles.button}
-          onClick={() => handleInsertComponent("table")}
-        >
-          Insert
-        </button>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 };
 

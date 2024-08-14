@@ -47,8 +47,6 @@ const StoryChart = ({
     return <div>Error: Chart configuration is missing.</div>;
   }
 
-  console.log("ChartConfig passed to StoryChart:", chartConfig);
-
   const ChartToRender = ChartComponent[chartConfig.type];
 
   if (!ChartToRender) {

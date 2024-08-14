@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./StoryMenu.module.css";
+import { Button, Form, Card } from "react-bootstrap";
 
 const ChartMenu = ({ addComponent, chartNames = [], chartConfigs = [] }) => {
   const [selectedChartName, setSelectedChartName] = useState("");
@@ -75,14 +75,11 @@ const ChartMenu = ({ addComponent, chartNames = [], chartConfigs = [] }) => {
   };
 
   const handleInsertClick = () => {
-    console.log("Selected Chart Name:", selectedChartName);
-    console.log("Chart Configs:", chartConfigs);
     const selectedChartConfig = chartConfigs.find(
       (chartConfig) => chartConfig.title === selectedChartName
     );
     if (selectedChartConfig) {
       const transformedConfig = transformChartConfig(selectedChartConfig);
-      console.log("Transformed Chart Config:", transformedConfig);
       addComponent("chart", [], [], [], "", "", transformedConfig);
     } else {
       console.error("Selected chart configuration not found");
@@ -92,29 +89,33 @@ const ChartMenu = ({ addComponent, chartNames = [], chartConfigs = [] }) => {
   const filteredChartNames = chartNames.filter((name) => name !== "Table");
 
   return (
-    <div className={styles.secondaryMenuBar}>
-      <div className={`${styles.secondaryMenuItem} ${styles.paddingContainer}`}>
-        <select
-          value={selectedChartName}
-          onChange={(e) => setSelectedChartName(e.target.value)}
-          className={styles.selectInput}
-        >
-          <option value="" disabled>
-            Select Chart Name
-          </option>
-          {filteredChartNames.map((chartName, index) => (
-            <option key={index} value={chartName}>
-              {chartName}
+    <Card className="mb-3">
+      <Card.Body>
+        <Form.Group controlId="chartSelect" className="mb-3">
+          <Form.Control
+            as="select"
+            value={selectedChartName}
+            onChange={(e) => setSelectedChartName(e.target.value)}
+          >
+            <option value="" disabled>
+              Select Chart Name
             </option>
-          ))}
-        </select>
-      </div>
-      <div className={styles.secondaryMenuItem}>
-        <button className={styles.button} onClick={handleInsertClick}>
+            {filteredChartNames.map((chartName, index) => (
+              <option key={index} value={chartName}>
+                {chartName}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+        <Button
+          onClick={handleInsertClick}
+          variant="primary"
+          disabled={!selectedChartName}
+        >
           Insert
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 

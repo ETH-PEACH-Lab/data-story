@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import FilterTutorial from "./FilterTutorial";
 import TutorialMenu from "./TutorialMenu";
 import Story from "./Story";
@@ -19,8 +19,8 @@ const SidebarWithStoryMenu = ({
   setConfirmationMessage,
   chartNames,
   chartConfigs,
-  components, // Use components from props
-  setComponents, // Use setComponents from props
+  components,
+  setComponents,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
 
@@ -65,11 +65,11 @@ const SidebarWithStoryMenu = ({
             columnConfigs={columnConfigs}
             selectedRange={selectedRange}
             tableContainerRef={tableContainerRef}
-            hotRef={hotRef}
+            hotRef={hotRef} // Pass hotRef here
             setShowConfirmation={setShowConfirmation}
             setConfirmationMessage={setConfirmationMessage}
             chartNames={chartNames}
-            chartConfigs={chartConfigs} // Pass chartConfigs as a prop
+            chartConfigs={chartConfigs}
           />
         </div>
         <div className="text-and-menu-container">
@@ -78,19 +78,25 @@ const SidebarWithStoryMenu = ({
               menuOptions[activeMenu]
             ) : (
               <Story
-                components={components} // Pass components from props
-                setComponents={setComponents} // Pass setComponents from props
+                components={components}
+                setComponents={setComponents}
                 data={data}
                 columnConfigs={columnConfigs}
-                chartConfigs={chartConfigs} // Pass chartConfigs as a prop
+                chartNames={chartNames}
+                chartConfigs={chartConfigs}
+                setShowConfirmation={setShowConfirmation}
+                setConfirmationMessage={setConfirmationMessage}
+                selectedRange={selectedRange}
+                tableContainerRef={tableContainerRef}
+                hotRef={hotRef} // Pass hotRef here
               />
             )}
           </div>
-          <TutorialMenu
+          {/* <TutorialMenu
             buttons={["Filtering", "Option 2", "Option 3"]}
             activeMenu={activeMenu}
             onMenuClick={handleMenuClick}
-          />
+          /> */}
         </div>
       </div>
     </div>

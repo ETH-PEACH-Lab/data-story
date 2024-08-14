@@ -24,9 +24,6 @@ const StoryTable = ({
   };
 
   const checkCondition = (condition, value, targetValue) => {
-    console.log(
-      `Checking condition: ${condition}, value: ${value}, targetValue: ${targetValue}`
-    );
     switch (condition) {
       case "no condition":
         return true; // Always return true for 'any value' to select all cells
@@ -71,10 +68,6 @@ const StoryTable = ({
         cellProperties,
       ]);
 
-      console.log(`Rendering cell: row ${row}, col ${col}, value: ${value}`);
-      console.log("Highlight Settings:", highlightSettings);
-      console.log("Highlight Colors:", highlightColors);
-
       const applyHighlight = (setting, highlightColor) => {
         const columnConfig = columnConfigs[col];
         const rowInRange =
@@ -87,20 +80,13 @@ const StoryTable = ({
           setting.selectedColumns.length === 0 || // Treat no selection as all columns
           setting.selectedColumns.includes(columnConfig.title);
 
-        console.log(
-          `rowInRange: ${rowInRange}, columnSelected: ${columnSelected}`
-        );
-
         const conditionMet = checkCondition(
           setting.condition,
           value,
           setting.value
         );
 
-        console.log(`conditionMet: ${conditionMet}`);
-
         if (rowInRange && columnSelected && conditionMet) {
-          console.log(`Applying highlight color: ${highlightColor}`);
           td.style.backgroundColor = highlightColor;
         }
       };

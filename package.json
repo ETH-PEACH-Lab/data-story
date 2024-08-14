@@ -25,6 +25,7 @@
     "quill": "^2.0.2",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
+    "react-bootstrap": "^2.10.4",
     "react-chartjs-2": "^5.2.0",
     "react-color": "^2.19.3",
     "react-dnd": "^16.0.1",
