@@ -1,7 +1,7 @@
 :root {
-  --primary: #5b4435;
+  --primary: #7b5f4d;
   --primary-light: #a1887f;
-  --primary-dark: #4e342e;
+  --primary-dark: #563d38;
   --secondary: #656d4a;
   --secondary-light: #909a6e;
   --secondary-dark: #404a29;
@@ -154,7 +154,7 @@ body {
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
-  z-index: 55;
+  z-index: 75;
 }
 
 .handsontable-container {
@@ -190,7 +190,7 @@ body {
   height: 100%;
   box-sizing: border-box;
   position: relative;
-  z-index: 55;
+  z-index: 75;
   font-family: "Inter", sans-serif;
   overflow-y: auto;
 }
@@ -245,7 +245,7 @@ body {
 
 .rectangle {
   width: 20px;
-  height: 170px; /* Make it as tall as the menu bar */
+  height: 370px; /* Make it as tall as the menu bar */
   background-color: white;
   right: 95px;
   position: absolute; /* Position it absolutely within the container */
@@ -258,7 +258,7 @@ body {
   width: calc(50vw - 127px);
   align-items: center;
   padding: 0px;
-  background-color: #e3e1d9;
+  background-color: var(--primary);
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -276,16 +276,19 @@ body {
   font-size: 18px;
 }
 
+.page-footer .nav-button:hover {
+  background-color: var(--primary-light);
+}
+
 .page-footer .nav-button.active {
-  background-color: var(--active-bg);
-  color: var(--active-color);
-  border-color: var(--active-bg);
+  background-color: var(--primary);
+  color: var(--light);
 }
 
 .page-footer .nav-button:disabled {
-  background-color: var(--primary-dark);
   cursor: not-allowed;
 }
+
 .empty-page {
   display: flex;
   justify-content: center;

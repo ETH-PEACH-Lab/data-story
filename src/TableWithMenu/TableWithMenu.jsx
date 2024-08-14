@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { HotTable } from "@handsontable/react";
 import MenuBar from "./MenuBar/MenuBar";
 import Chart from "./Chart";
+import "handsontable/dist/handsontable.full.min.css";
 import {
   handleSelectionEnd,
   addRow,
@@ -68,12 +69,12 @@ const TableWithMenu = ({
   setChartConfigs,
   idList,
   setIdList,
-  pages, // Add pages prop
-  setPages, // Add setPages prop
-  footerNames, // Add footerNames prop
-  setFooterNames, // Add setFooterNames prop
-  currentPage, // Add currentPage prop
-  setCurrentPage, // Add setCurrentPage prop
+  pages,
+  setPages,
+  footerNames,
+  setFooterNames,
+  currentPage,
+  setCurrentPage,
 }) => {
   const [selectedRange, setSelectedRangeState] = useState(null);
   const [chartNotes, setChartNotes] = useState({});
@@ -383,8 +384,8 @@ const TableWithMenu = ({
               textStyles,
               initialActionStackLength,
               hotRef,
-              chartConfigs, // Pass chartConfigs
-              footerNames // Pass footerNames
+              chartConfigs,
+              footerNames
             );
             setInitialActionStack([
               ...hotRef.current.hotInstance.undoRedo.doneActions,
@@ -495,7 +496,7 @@ const TableWithMenu = ({
             }`}
             onClick={() => setCurrentPage(index)}
             disabled={currentPage === index}
-            style={{ width: "auto" }} // Ensures button width is auto
+            style={{ width: "auto" }}
           >
             {name}
           </button>

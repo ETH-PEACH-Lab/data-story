@@ -4,7 +4,6 @@ import EditMenu from "./EditMenu";
 import FormatMenu from "./FormatMenu";
 import InsertMenu from "./InsertMenu";
 import DataMenu from "./DataMenu";
-import styles from "./MenuBar.module.css";
 
 const MenuBar = ({
   onSaveCurrent,
@@ -41,6 +40,7 @@ const MenuBar = ({
   aggregateData,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
+  const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const menuOptions = {
     File: (
@@ -113,33 +113,119 @@ const MenuBar = ({
     setActiveMenu(activeMenu === menu ? "" : menu);
   };
 
+  const handleMouseEnter = (menu) => {
+    setHoveredMenu(menu);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredMenu(null);
+  };
+
+  const accordionContainerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    background: "var(--body-bg)",
+    zIndex: 60,
+  };
+
+  const accordionItemStyle = {
+    textAlign: "left",
+    border: "none",
+    flex: "0 0 auto",
+  };
+
+  const accordionHeaderStyle = {
+    padding: 0,
+    background: "transparent",
+  };
+
+  const getButtonStyle = (menu, isActive) => ({
+    borderRadius: "5px 5px 0 0",
+    backgroundColor:
+      menu === hoveredMenu
+        ? "var(--primary-light)"
+        : isActive
+        ? "var(--primary)"
+        : "var(--light)",
+    color:
+      menu === hoveredMenu
+        ? "var(--light)"
+        : isActive
+        ? "var(--light)"
+        : "var(--dark)",
+    border: "1px solid var(--dark)",
+    outline: "none",
+    flexShrink: 0,
+    width: "auto",
+    height: "40px",
+    textAlign: "left",
+    cursor: "pointer",
+  });
+
+  const accordionCollapseStyle = {
+    width: "100%",
+  };
+
+  const accordionBodyStyle = {
+    border: "1px solid var(--border-color)",
+    borderTop: "none",
+    background: "var(--light)",
+    zIndex: 1000,
+  };
+
+  const headerContainerStyle = {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    gap: "0px",
+    flexWrap: "nowrap",
+    flexGrow: 0,
+  };
+
   return (
-    <div className={styles.menuBarContainer}>
-      <div className="container-fluid p-0">
-        <div className="navbar navbar-expand-lg navbar-light bg-light">
-          <div className="navbar-nav">
-            {Object.keys(menuOptions).map((menu, index) => (
-              <div
-                key={index}
-                className={`nav-item ${activeMenu === menu ? "active" : ""}`}
-              >
+    <div style={accordionContainerStyle}>
+      <div className="accordion" id="menuAccordion">
+        <div style={headerContainerStyle}>
+          {Object.keys(menuOptions).map((menu, index) => (
+            <div
+              key={index}
+              style={accordionItemStyle}
+              className="accordion-item"
+            >
+              <h2 style={accordionHeaderStyle} className="accordion-header">
                 <button
-                  className={`btn ${
-                    activeMenu === menu ? "btn-primary" : "btn-light"
-                  } mx-2`}
+                  style={getButtonStyle(menu, activeMenu === menu)}
+                  className={`accordion-button ${
+                    activeMenu === menu ? "" : "collapsed"
+                  }`}
+                  type="button"
                   onClick={() => handleMenuClick(menu)}
+                  onMouseEnter={() => handleMouseEnter(menu)}
+                  onMouseLeave={handleMouseLeave}
                 >
                   {menu}
                 </button>
-              </div>
-            ))}
-          </div>
+              </h2>
+            </div>
+          ))}
         </div>
-        {activeMenu && (
-          <div className="secondaryMenuBar bg-light p-2">
-            {menuOptions[activeMenu]}
+        {Object.keys(menuOptions).map((menu, index) => (
+          <div
+            key={index}
+            id={`collapse${index}`}
+            className={`accordion-collapse collapse ${
+              activeMenu === menu ? "show" : ""
+            }`}
+            aria-labelledby={`heading${index}`}
+            data-bs-parent="#menuAccordion"
+            style={accordionCollapseStyle}
+          >
+            <div className="accordion-body p-2" style={accordionBodyStyle}>
+              {menuOptions[menu]}
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
