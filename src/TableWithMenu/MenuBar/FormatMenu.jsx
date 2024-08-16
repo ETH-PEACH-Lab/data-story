@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import styles from "./MenuBar.module.css";
 import Text from "./FormatMenu/Text";
 import Cell from "./FormatMenu/Cell";
 
@@ -13,11 +12,8 @@ const FormatMenu = ({
   hotRef,
 }) => {
   const [dropdownState, setDropdownState] = useState({
-    isTextDropdownVisible: false,
-    isCellDropdownVisible: false,
+    activeItem: "",
     isColorDropdownVisible: false,
-    dropdownPosition: { top: 0, left: 0 },
-    colorDropdownPosition: { top: 0, left: 0 },
     colorContext: "",
   });
 
@@ -35,77 +31,33 @@ const FormatMenu = ({
     const updateDropdownState = (updates) =>
       setDropdownState((prev) => ({ ...prev, ...updates }));
 
-    if (buttonRef && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      const position = {
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-      };
-
-      switch (item) {
-        case "Text":
-          updateDropdownState({
-            isTextDropdownVisible: !dropdownState.isTextDropdownVisible,
-            isCellDropdownVisible: false,
-            isColorDropdownVisible: false,
-            dropdownPosition: { top: position.top - 30, left: position.left },
-          });
-          break;
-        case "Cell":
-          updateDropdownState({
-            isTextDropdownVisible: false,
-            isCellDropdownVisible: !dropdownState.isCellDropdownVisible,
-            isColorDropdownVisible: false,
-            dropdownPosition: { top: position.top - 30, left: position.left },
-          });
-          break;
-        case "Color":
-          updateDropdownState({
-            isColorDropdownVisible: !dropdownState.isColorDropdownVisible,
-            colorContext: "text",
-            colorDropdownPosition: {
-              top: position.top - 30,
-              left: position.left,
-            },
-          });
-          break;
-        case "Fill":
-          updateDropdownState({
-            isColorDropdownVisible: !dropdownState.isColorDropdownVisible,
-            colorContext: "fill",
-            colorDropdownPosition: {
-              top: position.top - 30,
-              left: position.left,
-            },
-          });
-          break;
-        case "Border":
-          updateDropdownState({
-            isColorDropdownVisible: !dropdownState.isColorDropdownVisible,
-            colorContext: "border",
-            colorDropdownPosition: {
-              top: position.top - 30,
-              left: position.left,
-            },
-          });
-          break;
-        default:
-          setDropdownState({
-            isTextDropdownVisible: false,
-            isCellDropdownVisible: false,
-            isColorDropdownVisible: false,
-          });
-      }
+    if (item === "Color") {
+      setDropdownState((prev) => ({
+        ...prev,
+        isColorDropdownVisible: !prev.isColorDropdownVisible,
+        colorContext: "text", // Ensure colorContext is set to "text" when the Color button is clicked
+      }));
+    } else if (["Fill", "Border"].includes(item)) {
+      // Handle Fill or Border separately to not close the "Cell" collapse
+      setDropdownState((prev) => ({
+        ...prev,
+        isColorDropdownVisible: !prev.isColorDropdownVisible,
+        colorContext: item.toLowerCase(),
+      }));
+    } else {
+      setDropdownState((prev) => ({
+        ...prev,
+        activeItem: prev.activeItem === item ? "" : item,
+        isColorDropdownVisible: false, // Close color picker when other items are clicked
+        colorContext: "", // Reset colorContext when another item is clicked
+      }));
     }
+
     if (
       ["Bold", "Italic", "Strike-through", "Clear Formatting"].includes(item)
     ) {
       onStyleChange(item.toLowerCase().replace("-", ""), null);
-      updateDropdownState({
-        isTextDropdownVisible: false,
-        isCellDropdownVisible: false,
-        isColorDropdownVisible: false,
-      });
+      setDropdownState({ activeItem: "", isColorDropdownVisible: false });
     }
   };
 
@@ -120,8 +72,6 @@ const FormatMenu = ({
       color
     );
     setDropdownState({
-      isTextDropdownVisible: false,
-      isCellDropdownVisible: false,
       isColorDropdownVisible: false,
     });
   };
@@ -131,11 +81,7 @@ const FormatMenu = ({
   };
 
   const handleClickOutside = (event) => {
-    if (
-      !dropdownState.isTextDropdownVisible &&
-      !dropdownState.isCellDropdownVisible &&
-      !dropdownState.isColorDropdownVisible
-    )
+    if (!dropdownState.activeItem && !dropdownState.isColorDropdownVisible)
       return;
 
     if (
@@ -146,11 +92,7 @@ const FormatMenu = ({
     )
       return;
 
-    setDropdownState({
-      isTextDropdownVisible: false,
-      isCellDropdownVisible: false,
-      isColorDropdownVisible: false,
-    });
+    setDropdownState({ activeItem: "", isColorDropdownVisible: false });
   };
 
   useEffect(() => {
@@ -160,50 +102,72 @@ const FormatMenu = ({
     };
   }, [dropdownState]);
 
+  const activeButtonColor = {
+    backgroundColor: "var(--secondary)",
+    color: "white",
+  };
+
   return (
-    <div className="d-flex gap-2">
-      {menuItems.map((item, index) => {
-        const buttonRef =
-          item === "Text"
-            ? textButtonRef
-            : item === "Cell"
-            ? cellButtonRef
-            : null;
-        return (
-          <button
-            key={index}
-            className="btn btn-outline-secondary"
-            onClick={() => handleMenuClick(item, buttonRef)}
-            ref={buttonRef}
+    <div className="d-flex flex-column gap-2">
+      <div className="d-flex gap-2">
+        {menuItems.map((item, index) => {
+          const buttonRef =
+            item === "Text"
+              ? textButtonRef
+              : item === "Cell"
+              ? cellButtonRef
+              : null;
+          return (
+            <button
+              key={index}
+              className="btn btn-outline-secondary"
+              onClick={() => handleMenuClick(item, buttonRef)}
+              ref={buttonRef}
+              style={dropdownState.activeItem === item ? activeButtonColor : {}}
+            >
+              {item}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="w-100">
+        <div
+          className={`collapse ${
+            dropdownState.activeItem === "Text" ? "show" : ""
+          }`}
+        >
+          <div
+            className="card card-body"
+            style={{ width: "400px", marginTop: "8px" }}
           >
-            {item}
-          </button>
-        );
-      })}
+            <Text
+              onStyleChange={onStyleChange}
+              stopPropagation={stopPropagation}
+              handleMenuClick={handleMenuClick}
+              handleColorClick={handleColorClick}
+              isColorDropdownVisible={dropdownState.isColorDropdownVisible}
+            />
+          </div>
+        </div>
 
-      {dropdownState.isTextDropdownVisible && (
-        <Text
-          position={dropdownState.dropdownPosition}
-          onStyleChange={onStyleChange}
-          stopPropagation={stopPropagation}
-          handleMenuClick={handleMenuClick}
-          handleColorClick={handleColorClick}
-          isColorDropdownVisible={dropdownState.isColorDropdownVisible}
-          colorDropdownPosition={dropdownState.colorDropdownPosition}
-        />
-      )}
-
-      {dropdownState.isCellDropdownVisible && (
-        <Cell
-          position={dropdownState.dropdownPosition}
-          stopPropagation={stopPropagation}
-          handleMenuClick={handleMenuClick}
-          handleColorClick={handleColorClick}
-          isColorDropdownVisible={dropdownState.isColorDropdownVisible}
-          colorDropdownPosition={dropdownState.colorDropdownPosition}
-          colorContext={dropdownState.colorContext}
-        />
-      )}
+        <div
+          className={`collapse ${
+            dropdownState.activeItem === "Cell" ? "show" : ""
+          }`}
+        >
+          <div className="card card-body" style={{ marginTop: "8px" }}>
+            <Cell
+              position={{}}
+              stopPropagation={stopPropagation}
+              handleMenuClick={handleMenuClick}
+              handleColorClick={handleColorClick}
+              isColorDropdownVisible={dropdownState.isColorDropdownVisible}
+              colorContext={dropdownState.colorContext}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

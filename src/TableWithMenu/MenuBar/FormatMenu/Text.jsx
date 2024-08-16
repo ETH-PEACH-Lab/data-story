@@ -1,15 +1,12 @@
 import React, { useRef } from "react";
-import styles from "../MenuBar.module.css";
 import CustomColorPicker from "./CustomColorPicker";
 
 const Text = ({
-  position,
   onStyleChange,
   stopPropagation,
   handleMenuClick,
   handleColorClick,
   isColorDropdownVisible,
-  colorDropdownPosition,
 }) => {
   const colorButtonRef = useRef(null);
 
@@ -18,41 +15,60 @@ const Text = ({
     handleColorClick(appliedColor);
   };
 
+  const handleColorButtonClick = (e) => {
+    e.stopPropagation();
+    handleMenuClick("Color", colorButtonRef);
+  };
+
+  const activeButtonStyle = isColorDropdownVisible
+    ? { backgroundColor: "var(--secondary)", color: "white" }
+    : {};
+
   return (
-    <div
-      className="dropdown-menu show"
-      style={{ top: position.top - 30, left: position.left }}
-      onClick={stopPropagation}
-    >
-      {["Bold", "Italic", "Strike-through", "Color"].map((textOption, idx) => {
-        const ref = textOption === "Color" ? colorButtonRef : null;
-        return (
-          <div
+    <div onClick={stopPropagation}>
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Text formatting options"
+      >
+        {["Bold", "Italic", "Strike-through"].map((textOption, idx) => (
+          <button
             key={idx}
-            className="dropdown-item"
+            className="btn btn-outline-secondary"
             onClick={(e) => {
               e.stopPropagation();
-              handleMenuClick(textOption, ref);
+              handleMenuClick(textOption, null);
             }}
           >
-            <div ref={ref}>{textOption}</div>
-            {textOption === "Color" && isColorDropdownVisible && (
-              <div
-                className="dropdown-menu show"
-                style={{
-                  top: colorDropdownPosition.top - 196,
-                  left: colorDropdownPosition.left + 95,
-                }}
-              >
-                <CustomColorPicker
-                  color={null}
-                  onChangeComplete={handleColorChange}
-                />
-              </div>
-            )}
-          </div>
-        );
-      })}
+            {textOption}
+          </button>
+        ))}
+
+        <button
+          ref={colorButtonRef}
+          className="btn btn-outline-secondary"
+          onClick={handleColorButtonClick}
+          style={activeButtonStyle} // Apply the active style if color picker is visible
+        >
+          Color
+        </button>
+      </div>
+
+      {/* Nested Collapse for Color Picker */}
+      <div
+        className={`collapse ${isColorDropdownVisible ? "show" : ""}`}
+        style={{ marginTop: "8px" }}
+      >
+        <div
+          className="card card-body"
+          style={{ backgroundColor: "white", padding: "10px", width: "262px" }}
+        >
+          <CustomColorPicker
+            color={null}
+            onChangeComplete={handleColorChange}
+          />
+        </div>
+      </div>
     </div>
   );
 };

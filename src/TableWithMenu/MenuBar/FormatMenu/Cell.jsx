@@ -1,14 +1,11 @@
 import React, { useRef } from "react";
-import styles from "../MenuBar.module.css";
 import CustomColorPicker from "./CustomColorPicker";
 
 const Cell = ({
-  position,
   stopPropagation,
   handleMenuClick,
   handleColorClick,
   isColorDropdownVisible,
-  colorDropdownPosition,
   colorContext,
 }) => {
   const fillButtonRef = useRef(null);
@@ -19,40 +16,63 @@ const Cell = ({
     handleColorClick(appliedColor);
   };
 
+  // Define the active button color style for Fill and Border
+  const getActiveButtonStyle = (option) =>
+    isColorDropdownVisible && colorContext === option.toLowerCase()
+      ? { backgroundColor: "var(--secondary)", color: "white" }
+      : {};
+
   return (
-    <div
-      className="dropdown-menu show"
-      style={{ top: position.top - 30, left: position.left }}
-      onClick={stopPropagation}
-    >
+    <div onClick={stopPropagation}>
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Cell formatting options"
+      >
+        {["Fill", "Border"].map((cellOption, idx) => {
+          const ref = cellOption === "Fill" ? fillButtonRef : borderButtonRef;
+          return (
+            <button
+              key={idx}
+              ref={ref}
+              className="btn btn-outline-secondary"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleMenuClick(cellOption, ref);
+              }}
+              style={getActiveButtonStyle(cellOption)} // Apply the active style if the color picker is visible for this option
+            >
+              {cellOption}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Nested Collapse for Color Picker */}
       {["Fill", "Border"].map((cellOption, idx) => {
-        const ref = cellOption === "Fill" ? fillButtonRef : borderButtonRef;
         return (
-          <div
-            key={idx}
-            className="dropdown-item"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleMenuClick(cellOption, ref);
-            }}
-          >
-            <div ref={ref}>{cellOption}</div>
-            {isColorDropdownVisible &&
-              colorContext === cellOption.toLowerCase() && (
-                <div
-                  className="dropdown-menu show"
-                  style={{
-                    top: colorDropdownPosition.top - 196,
-                    left: colorDropdownPosition.left - 55,
-                  }}
-                >
-                  <CustomColorPicker
-                    color={null}
-                    onChangeComplete={handleColorChange}
-                  />
-                </div>
-              )}
-          </div>
+          isColorDropdownVisible &&
+          colorContext === cellOption.toLowerCase() && (
+            <div
+              key={idx}
+              className="collapse show"
+              style={{ marginTop: "8px" }}
+            >
+              <div
+                className="card card-body"
+                style={{
+                  backgroundColor: "white",
+                  padding: "10px",
+                  width: "262px",
+                }}
+              >
+                <CustomColorPicker
+                  color={null}
+                  onChangeComplete={handleColorChange}
+                />
+              </div>
+            </div>
+          )
         );
       })}
     </div>
