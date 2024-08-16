@@ -35,10 +35,9 @@ const FormatMenu = ({
       setDropdownState((prev) => ({
         ...prev,
         isColorDropdownVisible: !prev.isColorDropdownVisible,
-        colorContext: "text", // Ensure colorContext is set to "text" when the Color button is clicked
+        colorContext: "text",
       }));
     } else if (["Fill", "Border"].includes(item)) {
-      // Handle Fill or Border separately to not close the "Cell" collapse
       setDropdownState((prev) => ({
         ...prev,
         isColorDropdownVisible: !prev.isColorDropdownVisible,
@@ -48,8 +47,8 @@ const FormatMenu = ({
       setDropdownState((prev) => ({
         ...prev,
         activeItem: prev.activeItem === item ? "" : item,
-        isColorDropdownVisible: false, // Close color picker when other items are clicked
-        colorContext: "", // Reset colorContext when another item is clicked
+        isColorDropdownVisible: false,
+        colorContext: "",
       }));
     }
 
@@ -109,7 +108,7 @@ const FormatMenu = ({
 
   return (
     <div className="d-flex flex-column gap-2">
-      <div className="d-flex gap-2">
+      <div className="d-flex gap-2" style={{ marginBottom: "-8px" }}>
         {menuItems.map((item, index) => {
           const buttonRef =
             item === "Text"
@@ -156,7 +155,10 @@ const FormatMenu = ({
             dropdownState.activeItem === "Cell" ? "show" : ""
           }`}
         >
-          <div className="card card-body" style={{ marginTop: "8px" }}>
+          <div
+            className="card card-body"
+            style={{ width: "400px", marginTop: "8px" }}
+          >
             <Cell
               position={{}}
               stopPropagation={stopPropagation}

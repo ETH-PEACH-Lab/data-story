@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import styles from "./MenuBar.module.css";
 
 const DataMenu = ({
   columns,

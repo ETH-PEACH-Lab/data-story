@@ -40,7 +40,7 @@ const Cell = ({
                 e.stopPropagation();
                 handleMenuClick(cellOption, ref);
               }}
-              style={getActiveButtonStyle(cellOption)} // Apply the active style if the color picker is visible for this option
+              style={getActiveButtonStyle(cellOption)}
             >
               {cellOption}
             </button>
@@ -48,7 +48,6 @@ const Cell = ({
         })}
       </div>
 
-      {/* Nested Collapse for Color Picker */}
       {["Fill", "Border"].map((cellOption, idx) => {
         return (
           isColorDropdownVisible &&

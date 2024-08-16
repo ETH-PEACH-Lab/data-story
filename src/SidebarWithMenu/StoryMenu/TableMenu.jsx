@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Button, Form, Card, Accordion } from "react-bootstrap";
 import { CirclePicker } from "react-color";
-import styles from "./StoryMenu.module.css";
 
 const TableMenu = ({
   columnConfigs,
@@ -350,7 +349,7 @@ const TableMenu = ({
             </Accordion.Header>
             <Accordion.Body>
               {columnConfigs.map((column, index) => (
-                <div key={index} className={styles.textOption}>
+                <div key={index}>
                   <Form.Check
                     type="checkbox"
                     checked={selectedColumns.includes(column.title)}

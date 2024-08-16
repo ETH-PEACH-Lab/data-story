@@ -243,7 +243,7 @@ const InsertMenu = ({
               </select>
             </div>
             {selectedChartType && (
-              <div className="dropdown-item d-flex gap-2 align-items-center">
+              <div>
                 <label className="d-flex align-items-center">
                   <input
                     type="checkbox"
@@ -377,7 +377,7 @@ const AxisSelection = ({
   handleRemoveSeries,
   seriesCount,
 }) => (
-  <div className="dropdown-item">
+  <div>
     <label>
       {axis === "x"
         ? `Selected X-axis: ${rangeString}`
