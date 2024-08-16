@@ -273,7 +273,10 @@ const DataMenu = ({
 
   return (
     <div>
-      <div className="d-flex gap-2">
+      <div
+        className="d-flex gap-2"
+        style={{ width: "400px", marginBottom: "-8px" }}
+      >
         {["Sort", "Filter"].map((item, index) => (
           <button
             key={index}
@@ -297,7 +300,7 @@ const DataMenu = ({
         <div className={`collapse ${activeItem === "Sort" ? "show" : ""}`}>
           <div
             className="card card-body"
-            style={{ width: "400px", marginTop: "8px" }}
+            style={{ width: "400px", marginTop: "16px" }}
           >
             <div className="mb-2">
               {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
@@ -335,7 +338,7 @@ const DataMenu = ({
         >
           <div
             className="card card-body"
-            style={{ width: "400px", marginTop: "8px" }}
+            style={{ width: "400px", marginTop: "16px" }}
           >
             <div className="mb-2">
               {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
