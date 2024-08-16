@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import styles from "./MenuBar.module.css";
 
 const InsertMenu = ({
   addRow,
@@ -9,7 +8,7 @@ const InsertMenu = ({
   selectedRange,
   aggregateData,
 }) => {
-  const [isChartDropdownVisible, setChartDropdownVisible] = useState(false);
+  const [activeItem, setActiveItem] = useState("");
   const [selectedChartType, setSelectedChartType] = useState("");
   const [chartData, setChartData] = useState({ x: [], y: [] });
   const [isXAxisLocked, setXAxisLocked] = useState(false);
@@ -20,49 +19,16 @@ const InsertMenu = ({
   const [selectedAggregateFunction, setSelectedAggregateFunction] =
     useState("AVERAGE");
   const [seriesLabels, setSeriesLabels] = useState([]);
-  const chartDropdownRef = useRef(null);
-  const chartButtonRef = useRef(null);
 
   const handleMenuClick = (item) => {
-    switch (item) {
-      case "Row":
-        addRow();
-        break;
-      case "Column":
-        addColumn();
-        break;
-      case "Chart":
-        setChartDropdownVisible(!isChartDropdownVisible);
-        break;
-      default:
-        break;
+    if (item === "Chart") {
+      setActiveItem(activeItem === item ? "" : item);
+    } else if (item === "Row") {
+      addRow();
+    } else if (item === "Column") {
+      addColumn();
     }
   };
-
-  const handleClickOutside = (event) => {
-    if (
-      chartDropdownRef.current &&
-      !chartDropdownRef.current.contains(event.target) &&
-      chartButtonRef.current &&
-      !chartButtonRef.current.contains(event.target) &&
-      !hotRef.current.hotInstance.rootElement.contains(event.target)
-    ) {
-      setChartDropdownVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (selectedRange) {
-      // Handle selected range if needed
-    }
-  }, [selectedRange]);
 
   const handleChartTypeChange = (event) => {
     setSelectedChartType(event.target.value);
@@ -163,6 +129,30 @@ const InsertMenu = ({
     setSeriesLabels((prevLabels) => prevLabels.filter((_, i) => i !== index));
   };
 
+  const handleAddChart = () => {
+    if (!isAddChartDisabled) {
+      let chartDataToUse = chartData;
+
+      if (aggregate) {
+        chartDataToUse = aggregateData(
+          chartData,
+          aggregate,
+          selectedAggregateFunction
+        );
+      }
+
+      addChartPage(
+        selectedChartType,
+        chartDataToUse,
+        aggregate,
+        selectedAggregateFunction,
+        seriesLabels
+      );
+      resetChartData();
+      setActiveItem("");
+    }
+  };
+
   const generateRangeString = (range) => {
     if (!range) return "";
     const singleCol = range.maxCol === range.minCol;
@@ -193,7 +183,7 @@ const InsertMenu = ({
     if (!range) return false;
     const rowCount = range.maxRow - range.minRow + 1;
     const colCount = range.maxCol - range.minCol + 1;
-    return rowCount > 1 && colCount > 1;
+    return rowCount > 1 && colCount > 1; // Invalid if more than one row and one column are selected
   };
 
   const isAddChartDisabled =
@@ -206,190 +196,172 @@ const InsertMenu = ({
       ...prevRange,
       y: [...prevRange.y, null],
     }));
-    // Default to an empty string, will be set upon data application
     setSeriesLabels((prevLabels) => [...prevLabels, ""]);
   };
 
-  const handleAddChart = () => {
-    if (!isAddChartDisabled) {
-      let chartDataToUse = chartData;
-
-      if (aggregate) {
-        chartDataToUse = aggregateData(
-          chartData,
-          aggregate,
-          selectedAggregateFunction
-        );
-      }
-
-      addChartPage(
-        selectedChartType,
-        chartDataToUse,
-        aggregate,
-        selectedAggregateFunction,
-        seriesLabels
-      );
-      resetChartData();
-      setChartDropdownVisible(false);
-    }
+  const activeButtonColor = {
+    backgroundColor: "var(--secondary)", // Define your active color here
+    color: "white",
   };
 
-  const renderChartDropdown = () => (
-    <div
-      className="dropdown-menu show"
-      style={{
-        top: `${
-          chartButtonRef.current?.getBoundingClientRect().bottom +
-          window.scrollY -
-          68
-        }px`,
-        left: `${
-          chartButtonRef.current?.getBoundingClientRect().left +
-          window.scrollX -
-          23
-        }px`,
-        position: "absolute",
-      }}
-      onClick={(e) => e.stopPropagation()}
-      ref={chartDropdownRef}
-    >
-      <div className="d-flex gap-2">
-        <select
-          id="chartType"
-          value={selectedChartType}
-          onChange={handleChartTypeChange}
-          className="form-select"
-        >
-          <option value="">Select chart type</option>
-          <option value="line">Line</option>
-          <option value="bar">Bar</option>
-          <option value="pie">Pie</option>
-          <option value="scatter">Scatter</option>
-        </select>
-      </div>
-      {selectedChartType && (
-        <div className="dropdown-item">
-          <label>
-            <input
-              type="checkbox"
-              checked={aggregate}
-              onChange={(e) => setAggregate(e.target.checked)}
-            />
-            {selectedChartType === "pie"
-              ? "Aggregate Labels"
-              : "Aggregate X-axis"}
-          </label>
-          {aggregate && (
-            <select
-              value={selectedAggregateFunction}
-              onChange={(e) => setSelectedAggregateFunction(e.target.value)}
-              className="form-select"
-            >
-              <option value="SUM">SUM</option>
-              <option value="AVERAGE">AVERAGE</option>
-              <option value="MAX">MAX</option>
-              <option value="MIN">MIN</option>
-            </select>
-          )}
-        </div>
-      )}
-      {(selectedChartType === "line" ||
-        selectedChartType === "scatter" ||
-        selectedChartType === "bar") && (
-        <>
-          <AxisSelection
-            axis="x"
-            isLocked={isXAxisLocked}
-            rangeString={generateRangeString(
-              isXAxisLocked ? lockedRange.x : selectedRange
-            )}
-            isInvalidRange={isInvalidRange(selectedRange)}
-            handleApply={() => handleApplyChartData("x")}
-            handleReset={() => handleResetChartData("x")}
-          />
-          {Array.from({ length: seriesCount }).map((_, index) => (
-            <AxisSelection
-              key={index}
-              axis="y"
-              index={index}
-              isLocked={isYAxisLocked[index]}
-              rangeString={generateRangeString(
-                isYAxisLocked[index] ? lockedRange.y[index] : selectedRange
-              )}
-              isInvalidRange={isInvalidRange(selectedRange)}
-              handleApply={() => handleApplyChartData("y", index)}
-              handleReset={() => handleResetChartData("y", index)}
-              handleRemoveSeries={() => handleRemoveSeries(index)}
-              seriesCount={seriesCount}
-            />
-          ))}
-          <div className="dropdown-item">
-            <button onClick={handleAddSeries} className="btn btn-secondary">
-              Add Series
-            </button>
-          </div>
-          <div className="dropdown-item">
-            <button
-              onClick={handleAddChart}
-              className="btn btn-primary"
-              disabled={isAddChartDisabled}
-            >
-              Add Chart
-            </button>
-          </div>
-        </>
-      )}
-      {selectedChartType === "pie" && (
-        <>
-          <AxisSelection
-            axis="x"
-            isLocked={isXAxisLocked}
-            rangeString={generateRangeString(
-              isXAxisLocked ? lockedRange.x : selectedRange
-            )}
-            isInvalidRange={isInvalidRange(selectedRange)}
-            handleApply={() => handleApplyChartData("x")}
-            handleReset={() => handleResetChartData("x")}
-          />
-          <AxisSelection
-            axis="y"
-            index={0}
-            isLocked={isYAxisLocked[0]}
-            rangeString={generateRangeString(
-              isYAxisLocked[0] ? lockedRange.y[0] : selectedRange
-            )}
-            isInvalidRange={isInvalidRange(selectedRange)}
-            handleApply={() => handleApplyChartData("y", 0)}
-            handleReset={() => handleResetChartData("y", 0)}
-            seriesCount={seriesCount}
-          />
-          <div className="dropdown-item">
-            <button
-              onClick={handleAddChart}
-              className="btn btn-primary"
-              disabled={isAddChartDisabled}
-            >
-              Add Chart
-            </button>
-          </div>
-        </>
-      )}
-    </div>
-  );
-
   return (
-    <div className="d-flex gap-2">
-      {["Column", "Row", "Chart", "Functions"].map((item, index) => (
-        <button
-          key={index}
-          className="btn btn-outline-secondary"
-          onClick={() => handleMenuClick(item)}
-          ref={item === "Chart" ? chartButtonRef : null}
-        >
-          {item}
-        </button>
-      ))}
-      {isChartDropdownVisible && renderChartDropdown()}
+    <div>
+      <div className="d-flex gap-2">
+        {["Column", "Row", "Chart", "Functions"].map((item, index) => (
+          <button
+            key={index}
+            className="btn btn-outline-secondary"
+            onClick={() => handleMenuClick(item)}
+            style={activeItem === item ? activeButtonColor : {}}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
+      <div>
+        <div className={`collapse ${activeItem === "Chart" ? "show" : ""}`}>
+          <div
+            className="card card-body"
+            style={{
+              width: "400px",
+              marginTop: "8px",
+            }}
+          >
+            <div className="d-flex gap-2">
+              <select
+                id="chartType"
+                value={selectedChartType}
+                onChange={handleChartTypeChange}
+                className="form-select"
+              >
+                <option value="">Select chart type</option>
+                <option value="line">Line</option>
+                <option value="bar">Bar</option>
+                <option value="pie">Pie</option>
+                <option value="scatter">Scatter</option>
+              </select>
+            </div>
+            {selectedChartType && (
+              <div className="dropdown-item d-flex gap-2 align-items-center">
+                <label className="d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    checked={aggregate}
+                    onChange={(e) => setAggregate(e.target.checked)}
+                    className="me-2"
+                  />
+                  {selectedChartType === "pie"
+                    ? "Aggregate Labels"
+                    : "Aggregate X-axis"}
+                </label>
+                {aggregate && (
+                  <select
+                    value={selectedAggregateFunction}
+                    onChange={(e) =>
+                      setSelectedAggregateFunction(e.target.value)
+                    }
+                    className="form-select"
+                    style={{ width: "auto" }} // Adjust width as needed
+                  >
+                    <option value="SUM">SUM</option>
+                    <option value="AVERAGE">AVERAGE</option>
+                    <option value="MAX">MAX</option>
+                    <option value="MIN">MIN</option>
+                  </select>
+                )}
+              </div>
+            )}
+            {(selectedChartType === "line" ||
+              selectedChartType === "scatter" ||
+              selectedChartType === "bar") && (
+              <>
+                <AxisSelection
+                  axis="x"
+                  isLocked={isXAxisLocked}
+                  rangeString={generateRangeString(
+                    isXAxisLocked ? lockedRange.x : selectedRange
+                  )}
+                  isInvalidRange={isInvalidRange(selectedRange)}
+                  handleApply={() => handleApplyChartData("x")}
+                  handleReset={() => handleResetChartData("x")}
+                />
+                {Array.from({ length: seriesCount }).map((_, index) => (
+                  <AxisSelection
+                    key={index}
+                    axis="y"
+                    index={index}
+                    isLocked={isYAxisLocked[index]}
+                    rangeString={generateRangeString(
+                      isYAxisLocked[index]
+                        ? lockedRange.y[index]
+                        : selectedRange
+                    )}
+                    isInvalidRange={isInvalidRange(selectedRange)}
+                    handleApply={() => handleApplyChartData("y", index)}
+                    handleReset={() => handleResetChartData("y", index)}
+                    handleRemoveSeries={() => handleRemoveSeries(index)}
+                    seriesCount={seriesCount}
+                  />
+                ))}
+                <div className="d-flex gap-2">
+                  <button
+                    onClick={handleAddSeries}
+                    className="btn btn-secondary"
+                    style={{ marginTop: "8px" }}
+                  >
+                    Add Series
+                  </button>
+                  <button
+                    onClick={handleAddChart}
+                    className="btn btn-primary"
+                    disabled={isAddChartDisabled}
+                    style={{ marginTop: "8px" }}
+                  >
+                    Add Chart
+                  </button>
+                </div>
+              </>
+            )}
+            {selectedChartType === "pie" && (
+              <>
+                <AxisSelection
+                  axis="x"
+                  isLocked={isXAxisLocked}
+                  rangeString={generateRangeString(
+                    isXAxisLocked ? lockedRange.x : selectedRange
+                  )}
+                  isInvalidRange={isInvalidRange(selectedRange)}
+                  handleApply={() => handleApplyChartData("x")}
+                  handleReset={() => handleResetChartData("x")}
+                />
+                <AxisSelection
+                  axis="y"
+                  index={0}
+                  isLocked={isYAxisLocked[0]}
+                  rangeString={generateRangeString(
+                    isYAxisLocked[0] ? lockedRange.y[0] : selectedRange
+                  )}
+                  isInvalidRange={isInvalidRange(selectedRange)}
+                  handleApply={() => handleApplyChartData("y", 0)}
+                  handleReset={() => handleResetChartData("y", 0)}
+                  seriesCount={seriesCount}
+                />
+                <div className="d-flex gap-2">
+                  <button
+                    onClick={handleAddChart}
+                    className="btn btn-primary"
+                    disabled={isAddChartDisabled}
+                    style={{ marginTop: "8px" }}
+                  >
+                    Add Chart
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

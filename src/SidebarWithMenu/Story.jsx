@@ -191,13 +191,13 @@ function Story({
   const handleShowCard = () => {
     setShowCard((prevShowCard) => !prevShowCard);
     if (!showCard && selectedOption === "") {
-      setSelectedOption("text");
+      //setSelectedOption("text");
     }
   };
 
   useEffect(() => {
     if (showCard && selectedOption === "") {
-      setSelectedOption("text");
+      //setSelectedOption("text");
     }
   }, [showCard, selectedOption]);
 
@@ -281,19 +281,18 @@ function Story({
           <Card.Body>
             <Form>
               <Form.Group controlId="componentSelect">
-                <Form.Control
-                  as="select"
+                <select
+                  id="chartType"
                   value={selectedOption}
                   onChange={handleOptionChange}
+                  className="form-select"
                 >
-                  <option value="" disabled>
-                    Select element
-                  </option>
+                  <option value="">Select chart type</option>
                   <option value="text">Text</option>
                   <option value="function">Function</option>
                   <option value="chart">Chart</option>
                   <option value="table">Table</option>
-                </Form.Control>
+                </select>
               </Form.Group>
             </Form>
 

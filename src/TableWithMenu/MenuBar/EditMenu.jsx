@@ -1,6 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import styles from "./MenuBar.module.css";
-import Headers from "./FormatMenu/Headers";
+import React, { useState } from "react";
 
 const EditMenu = ({
   countAndRemoveDuplicates,
@@ -11,208 +9,165 @@ const EditMenu = ({
   setColumns,
   hotRef,
 }) => {
-  const [
-    isRemoveDuplicatesDropdownVisible,
-    setRemoveDuplicatesDropdownVisible,
-  ] = useState(false);
-  const [isFindReplaceDropdownVisible, setFindReplaceDropdownVisible] =
-    useState(false);
-  const [isHeadersDropdownVisible, setHeadersDropdownVisible] = useState(false);
+  const [activeItem, setActiveItem] = useState("");
   const [duplicateCount, setDuplicateCount] = useState(0);
   const [findText, setFindText] = useState("");
   const [replaceText, setReplaceText] = useState("");
-  const removeDuplicatesButtonRef = useRef(null);
-  const removeDuplicatesDropdownRef = useRef(null);
-  const findReplaceButtonRef = useRef(null);
-  const findReplaceDropdownRef = useRef(null);
-  const headersButtonRef = useRef(null);
-  const headersDropdownRef = useRef(null);
+  const [newColumnName, setNewColumnName] = useState("");
 
   const handleMenuClick = (item) => {
+    setActiveItem(activeItem === item ? "" : item);
     if (item === "Remove Duplicates") {
-      const duplicates = countAndRemoveDuplicates();
+      const duplicates = countAndRemoveDuplicates(false); // Assuming this function returns the count of duplicates without removing them
       setDuplicateCount(duplicates);
-      setRemoveDuplicatesDropdownVisible(!isRemoveDuplicatesDropdownVisible);
-      setFindReplaceDropdownVisible(false);
-      setHeadersDropdownVisible(false);
-    } else if (item === "Find and Replace") {
-      setFindReplaceDropdownVisible(!isFindReplaceDropdownVisible);
-      setRemoveDuplicatesDropdownVisible(false);
-      setHeadersDropdownVisible(false);
-    } else if (item === "Headers") {
-      setHeadersDropdownVisible(!isHeadersDropdownVisible);
-      setRemoveDuplicatesDropdownVisible(false);
-      setFindReplaceDropdownVisible(false);
-    } else {
-      console.log(`${item} clicked`);
     }
   };
-
-  const handleClickOutside = (event) => {
-    if (
-      !(
-        (removeDuplicatesDropdownRef.current &&
-          removeDuplicatesDropdownRef.current.contains(event.target)) ||
-        (removeDuplicatesButtonRef.current &&
-          removeDuplicatesButtonRef.current.contains(event.target)) ||
-        (findReplaceDropdownRef.current &&
-          findReplaceDropdownRef.current.contains(event.target)) ||
-        (findReplaceButtonRef.current &&
-          findReplaceButtonRef.current.contains(event.target)) ||
-        (headersDropdownRef.current &&
-          headersDropdownRef.current.contains(event.target)) ||
-        (headersButtonRef.current &&
-          headersButtonRef.current.contains(event.target)) ||
-        (tableContainerRef.current &&
-          tableContainerRef.current.contains(event.target))
-      )
-    ) {
-      setRemoveDuplicatesDropdownVisible(false);
-      setFindReplaceDropdownVisible(false);
-      setHeadersDropdownVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const handleFindReplaceClick = () => {
     handleFindReplace(findText, replaceText);
-    setFindReplaceDropdownVisible(false);
+    setActiveItem("");
   };
 
   const handleRemoveDuplicates = () => {
     countAndRemoveDuplicates(true);
-    setRemoveDuplicatesDropdownVisible(false);
+    setActiveItem("");
+  };
+
+  const handleRenameColumn = () => {
+    setColumns((prevColumns) => {
+      const newColumns = [...prevColumns];
+      const oldHeader = newColumns[selectedColumnIndex].title;
+      const newHeader = newColumnName;
+
+      newColumns[selectedColumnIndex] = {
+        ...newColumns[selectedColumnIndex],
+        title: newColumnName,
+      };
+
+      const wrappedAction = new HeaderAction(
+        selectedColumnIndex,
+        oldHeader,
+        newHeader
+      );
+      hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+
+      return newColumns;
+    });
+    setNewColumnName("");
+    setActiveItem("");
+  };
+
+  // Define your active button color
+  const activeButtonColor = {
+    backgroundColor: "var(--secondary)", // Define your active color here
+    color: "white",
   };
 
   return (
-    <div className="d-flex gap-2">
-      {["Find and Replace", "Remove Duplicates", "Headers"].map(
-        (item, index) => (
-          <button
-            key={index}
-            className="btn btn-outline-secondary"
-            onClick={() => handleMenuClick(item)}
-            ref={
-              item === "Remove Duplicates"
-                ? removeDuplicatesButtonRef
-                : item === "Find and Replace"
-                ? findReplaceButtonRef
-                : item === "Headers"
-                ? headersButtonRef
-                : null
-            }
-          >
-            {item}
-          </button>
-        )
-      )}
+    <div>
+      <div className="d-flex gap-2">
+        {["Find and Replace", "Remove Duplicates", "Headers"].map(
+          (item, index) => (
+            <button
+              key={index}
+              className="btn btn-outline-secondary"
+              onClick={() => handleMenuClick(item)}
+              style={activeItem === item ? activeButtonColor : {}}
+            >
+              {item}
+            </button>
+          )
+        )}
+      </div>
 
-      {isRemoveDuplicatesDropdownVisible && (
+      <div>
         <div
-          className="dropdown-menu show"
-          style={{
-            top: `${
-              removeDuplicatesButtonRef.current?.getBoundingClientRect()
-                .bottom +
-              window.scrollY -
-              68
-            }px`,
-            left: `${
-              removeDuplicatesButtonRef.current?.getBoundingClientRect().left +
-              window.scrollX -
-              23
-            }px`,
-          }}
-          onClick={(e) => e.stopPropagation()}
-          ref={removeDuplicatesDropdownRef}
+          className={`collapse ${
+            activeItem === "Find and Replace" ? "show" : ""
+          }`}
         >
-          <div className="dropdown-item">
-            Number of duplicate rows: {duplicateCount}
+          <div
+            className="card card-body"
+            style={{ width: "400px", marginTop: "8px" }}
+          >
+            <div>
+              {`Selected column: ${selectedColumnName}` || "No column selected"}
+            </div>
+            <div>
+              <input
+                type="text"
+                value={findText}
+                onChange={(e) => setFindText(e.target.value)}
+                placeholder="Find"
+                className="form-control"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                value={replaceText}
+                onChange={(e) => setReplaceText(e.target.value)}
+                placeholder="Replace with"
+                className="form-control"
+              />
+            </div>
+            <div>
+              <button
+                onClick={handleFindReplaceClick}
+                className="btn btn-secondary mt-2"
+              >
+                Apply
+              </button>
+            </div>
           </div>
-          <div className="dropdown-item">
+        </div>
+
+        <div
+          className={`collapse ${
+            activeItem === "Remove Duplicates" ? "show" : ""
+          }`}
+        >
+          <div
+            className="card card-body"
+            style={{ width: "400px", marginTop: "8px" }}
+          >
+            <div>Number of duplicate rows: {duplicateCount}</div>
             <button
               onClick={handleRemoveDuplicates}
-              className="btn btn-primary"
+              className="btn btn-secondary mt-2"
+              style={{ width: "86px" }}
             >
               Remove
             </button>
           </div>
         </div>
-      )}
 
-      {isFindReplaceDropdownVisible && (
-        <div
-          className="dropdown-menu show"
-          style={{
-            top: `${
-              findReplaceButtonRef.current?.getBoundingClientRect().bottom +
-              window.scrollY -
-              68
-            }px`,
-            left: `${
-              findReplaceButtonRef.current?.getBoundingClientRect().left +
-              window.scrollX -
-              23
-            }px`,
-            position: "absolute",
-          }}
-          ref={findReplaceDropdownRef}
-        >
-          <div className="dropdown-item">
+        <div className={`collapse ${activeItem === "Headers" ? "show" : ""}`}>
+          <div
+            className="card card-body"
+            style={{ width: "400px", marginTop: "8px" }}
+          >
             <div>
-              {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
-                "No column selected"}
+              {`Selected column: ${selectedColumnName}` || "No column selected"}
+            </div>
+            <div className="d-flex">
+              <input
+                type="text"
+                value={newColumnName}
+                onChange={(e) => setNewColumnName(e.target.value)}
+                placeholder="New column name"
+                className="form-control"
+              />
+              <button
+                onClick={handleRenameColumn}
+                className="btn btn-secondary ms-2"
+              >
+                Rename
+              </button>
             </div>
           </div>
-          <div className="dropdown-item">
-            <label>Find:</label>
-            <input
-              type="text"
-              value={findText}
-              onChange={(e) => setFindText(e.target.value)}
-              className="form-control"
-            />
-          </div>
-          <div className="dropdown-item">
-            <label>Replace with:</label>
-            <input
-              type="text"
-              value={replaceText}
-              onChange={(e) => setReplaceText(e.target.value)}
-              className="form-control"
-            />
-          </div>
-          <div className="dropdown-item">
-            <button
-              onClick={handleFindReplaceClick}
-              className="btn btn-primary"
-            >
-              Apply
-            </button>
-          </div>
         </div>
-      )}
-
-      {isHeadersDropdownVisible && (
-        <Headers
-          position={{
-            top: headersButtonRef.current?.getBoundingClientRect().bottom,
-            left: headersButtonRef.current?.getBoundingClientRect().left,
-          }}
-          stopPropagation={(e) => e.stopPropagation()}
-          selectedColumnIndex={selectedColumnIndex}
-          selectedColumnName={selectedColumnName}
-          setColumns={setColumns}
-          hotRef={hotRef}
-          ref={headersDropdownRef}
-        />
-      )}
+      </div>
     </div>
   );
 };

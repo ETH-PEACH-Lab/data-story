@@ -12,46 +12,34 @@ const DataMenu = ({
   filteredColumns,
   setFilteredColumns,
 }) => {
-  const [isSortDropdownVisible, setSortDropdownVisible] = useState(false);
+  const [activeItem, setActiveItem] = useState("");
   const [sortOrder, setSortOrder] = useState("");
-  const [isFilterDropdownVisible, setFilterDropdownVisible] = useState(false);
   const [filterCondition, setFilterCondition] = useState("none");
   const [filterValue, setFilterValue] = useState("");
   const [allDistinctValues, setAllDistinctValues] = useState([]);
   const [filteredValues, setFilteredValues] = useState([]);
   const [checkedValues, setCheckedValues] = useState([]);
-  const [filterSubmenu, setFilterSubmenu] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [filterConditionError, setFilterConditionError] = useState("");
+  const [accordionState, setAccordionState] = useState({
+    condition: false,
+    value: false,
+  });
 
   const sortButtonRef = useRef(null);
   const filterButtonRef = useRef(null);
-  const sortDropdownRef = useRef(null);
-  const filterDropdownRef = useRef(null);
-  const conditionButtonRef = useRef(null);
-  const valueButtonRef = useRef(null);
+  const accordionRef = useRef(null);
 
   const handleClickOutside = (event) => {
     if (
-      sortDropdownRef.current &&
-      !sortDropdownRef.current.contains(event.target) &&
-      sortButtonRef.current &&
+      activeItem !== "" &&
+      accordionRef.current &&
+      !accordionRef.current.contains(event.target) &&
       !sortButtonRef.current.contains(event.target) &&
-      (!tableContainerRef.current ||
-        !tableContainerRef.current.contains(event.target))
-    ) {
-      setSortDropdownVisible(false);
-    }
-    if (
-      filterDropdownRef.current &&
-      !filterDropdownRef.current.contains(event.target) &&
-      filterButtonRef.current &&
       !filterButtonRef.current.contains(event.target) &&
-      (!tableContainerRef.current ||
-        !tableContainerRef.current.contains(event.target))
+      !tableContainerRef.current.contains(event.target)
     ) {
-      setFilterDropdownVisible(false);
-      setFilterSubmenu("");
+      setActiveItem("");
     }
   };
 
@@ -60,7 +48,7 @@ const DataMenu = ({
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [activeItem]);
 
   const fetchDistinctValues = useCallback(() => {
     if (selectedColumnIndex !== null && hotRef.current) {
@@ -104,13 +92,11 @@ const DataMenu = ({
   }, [searchValue, allDistinctValues]);
 
   const handleMenuClick = (item) => {
-    if (item === "Sort") {
-      setSortDropdownVisible(!isSortDropdownVisible);
-      setFilterDropdownVisible(false);
-    } else if (item === "Filter") {
-      setFilterDropdownVisible(!isFilterDropdownVisible);
-      setSortDropdownVisible(false);
-      if (!isFilterDropdownVisible) {
+    if (item === activeItem) {
+      setActiveItem("");
+    } else {
+      setActiveItem(item);
+      if (item === "Filter") {
         fetchDistinctValues();
       }
     }
@@ -123,25 +109,13 @@ const DataMenu = ({
   const handleSortClick = () => {
     handleSort(selectedColumnName, sortOrder, columns, hotRef);
     setSortOrder("");
-    setSortDropdownVisible(false);
+    setActiveItem("");
   };
 
   const handleResetSortClick = () => {
     handleSort(selectedColumnName, "reset", columns, hotRef);
     setSortOrder("");
-    setSortDropdownVisible(false);
-  };
-
-  const stopPropagation = (e) => {
-    e.stopPropagation();
-  };
-
-  const getSubDropdownPosition = (ref) => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      return { top: rect.top - 180, left: rect.right - 94 };
-    }
-    return { top: 0, left: 0 };
+    setActiveItem("");
   };
 
   const handleSearchValueChange = (event) => {
@@ -206,8 +180,7 @@ const DataMenu = ({
       filteredColumns,
       setFilteredColumns
     );
-    setFilterDropdownVisible(false);
-    setFilterSubmenu("");
+    setActiveItem("");
   };
 
   const handleCheckboxChange = (value) => {
@@ -283,208 +256,224 @@ const DataMenu = ({
         setFilteredColumns
       );
     }, 0);
+    setActiveItem("");
+  };
+
+  const toggleAccordion = (section) => {
+    setAccordionState((prevState) => ({
+      condition: section === "condition" ? !prevState.condition : false,
+      value: section === "value" ? !prevState.value : false,
+    }));
+  };
+
+  const activeButtonColor = {
+    backgroundColor: "var(--secondary)",
+    color: "white",
   };
 
   return (
-    <div className="d-flex gap-2">
-      {["Sort", "Filter"].map((item, index) => (
-        <button
-          key={index}
-          className="btn btn-outline-secondary"
-          onClick={() => handleMenuClick(item)}
-          ref={
-            item === "Sort"
-              ? sortButtonRef
-              : item === "Filter"
-              ? filterButtonRef
-              : null
-          }
-        >
-          {item}
-        </button>
-      ))}
+    <div>
+      <div className="d-flex gap-2">
+        {["Sort", "Filter"].map((item, index) => (
+          <button
+            key={index}
+            className="btn btn-outline-secondary"
+            onClick={() => handleMenuClick(item)}
+            style={activeItem === item ? activeButtonColor : {}}
+            ref={
+              item === "Sort"
+                ? sortButtonRef
+                : item === "Filter"
+                ? filterButtonRef
+                : null
+            }
+          >
+            {item}
+          </button>
+        ))}
+      </div>
 
-      {isSortDropdownVisible && (
-        <div
-          className="dropdown-menu show"
-          style={{
-            top: `${
-              sortButtonRef.current?.getBoundingClientRect().bottom +
-              window.scrollY -
-              68
-            }px`,
-            left: `${
-              sortButtonRef.current?.getBoundingClientRect().left +
-              window.scrollX -
-              23
-            }px`,
-            position: "absolute",
-          }}
-          onClick={stopPropagation}
-          ref={sortDropdownRef}
-        >
-          <div className="dropdown-item">
-            <div>
+      <div className="mt-2">
+        <div className={`collapse ${activeItem === "Sort" ? "show" : ""}`}>
+          <div
+            className="card card-body"
+            style={{ width: "400px", marginTop: "8px" }}
+          >
+            <div className="mb-2">
               {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
                 "No column selected"}
             </div>
-          </div>
-          <div className="dropdown-item d-flex">
-            <select
-              value={sortOrder}
-              onChange={handleSortOrderChange}
-              className="form-control"
+            <div className="d-flex gap-2">
+              <select
+                value={sortOrder}
+                onChange={handleSortOrderChange}
+                className="form-control"
+              >
+                <option value="" disabled>
+                  Select order
+                </option>
+                <option value="Ascending">Ascending</option>
+                <option value="Descending">Descending</option>
+              </select>
+              <button onClick={handleSortClick} className="btn btn-secondary">
+                Apply
+              </button>
+            </div>
+            <button
+              onClick={handleResetSortClick}
+              className="btn btn-secondary mt-2"
+              style={{ width: "145px" }}
             >
-              <option value="" disabled>
-                Select order
-              </option>
-              <option value="Ascending">Ascending</option>
-              <option value="Descending">Descending</option>
-            </select>
-            <button onClick={handleSortClick} className="btn btn-primary ms-2">
-              Apply
+              Reset all sorting
             </button>
           </div>
-          <div className="dropdown-item" onClick={handleResetSortClick}>
-            Reset all sorting
-          </div>
         </div>
-      )}
 
-      {isFilterDropdownVisible && (
         <div
-          className="dropdown-menu show"
-          style={{
-            top: `${
-              filterButtonRef.current?.getBoundingClientRect().bottom +
-              window.scrollY -
-              68
-            }px`,
-            left: `${
-              filterButtonRef.current?.getBoundingClientRect().left +
-              window.scrollX -
-              23
-            }px`,
-            position: "absolute",
-          }}
-          onClick={stopPropagation}
-          ref={filterDropdownRef}
+          className={`collapse ${activeItem === "Filter" ? "show" : ""}`}
+          ref={accordionRef}
         >
-          <div className="dropdown-item">
-            <div>
+          <div
+            className="card card-body"
+            style={{ width: "400px", marginTop: "8px" }}
+          >
+            <div className="mb-2">
               {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
                 "No column selected"}
             </div>
-          </div>
-          <div
-            className="dropdown-item"
-            onClick={() => setFilterSubmenu("condition")}
-            ref={conditionButtonRef}
-          >
-            Filter by condition
-          </div>
-          <div
-            className="dropdown-item"
-            onClick={() => setFilterSubmenu("value")}
-            ref={valueButtonRef}
-          >
-            Filter by value
-          </div>
-          <div className="dropdown-item" onClick={resetFilter}>
-            Reset filter for this column
-          </div>
-
-          {filterSubmenu === "condition" && (
-            <div
-              className="dropdown-menu show"
-              style={{ ...getSubDropdownPosition(conditionButtonRef) }}
-              onClick={stopPropagation}
-            >
-              <div className="dropdown-item d-flex">
-                <select
-                  value={filterCondition}
-                  onChange={handleFilterConditionChange}
-                  className="form-control"
-                  style={{ width: "130px" }}
+            <div className="accordion" id="filterAccordion">
+              <div className="accordion-item">
+                <h2 className="accordion-header" id="headingCondition">
+                  <button
+                    className={`accordion-button ${
+                      accordionState.condition ? "" : "collapsed"
+                    }`}
+                    type="button"
+                    onClick={() => toggleAccordion("condition")}
+                    aria-expanded={accordionState.condition}
+                    aria-controls="collapseCondition"
+                  >
+                    Filter by Condition
+                  </button>
+                </h2>
+                <div
+                  id="collapseCondition"
+                  className={`accordion-collapse collapse ${
+                    accordionState.condition ? "show" : ""
+                  }`}
+                  aria-labelledby="headingCondition"
+                  data-bs-parent="#filterAccordion"
                 >
-                  <option value="none">None</option>
-                  <option value="empty">Is empty</option>
-                  <option value="not_empty">Is not empty</option>
-                  <option value="eq">Is equal to</option>
-                  <option value="neq">Is not equal to</option>
-                  <option value="lt">Less than</option>
-                  <option value="gt">Greater than</option>
-                  <option value="lte">Less than or equal</option>
-                  <option value="gte">Greater than or equal</option>
-                  <option value="begins_with">Begins with</option>
-                  <option value="ends_with">Ends with</option>
-                  <option value="contains">Contains</option>
-                  <option value="not_contains">Does not contain</option>
-                </select>
-                {filterCondition !== "none" &&
-                  filterCondition !== "empty" &&
-                  filterCondition !== "not_empty" && (
+                  <div className="accordion-body">
+                    <div className="d-flex gap-2">
+                      <select
+                        value={filterCondition}
+                        onChange={handleFilterConditionChange}
+                        className="form-control"
+                      >
+                        <option value="none">None</option>
+                        <option value="empty">Is empty</option>
+                        <option value="not_empty">Is not empty</option>
+                        <option value="eq">Is equal to</option>
+                        <option value="neq">Is not equal to</option>
+                        <option value="lt">Less than</option>
+                        <option value="gt">Greater than</option>
+                        <option value="lte">Less than or equal</option>
+                        <option value="gte">Greater than or equal</option>
+                        <option value="begins_with">Begins with</option>
+                        <option value="ends_with">Ends with</option>
+                        <option value="contains">Contains</option>
+                        <option value="not_contains">Does not contain</option>
+                      </select>
+                      {filterCondition !== "none" &&
+                        filterCondition !== "empty" &&
+                        filterCondition !== "not_empty" && (
+                          <input
+                            type="text"
+                            value={filterValue}
+                            onChange={handleFilterValueChange}
+                            className="form-control"
+                            placeholder="Value"
+                            style={{ width: "100px" }}
+                          />
+                        )}
+                      <button
+                        onClick={handleFilterClick}
+                        className="btn btn-secondary"
+                        style={{ width: "80px" }}
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="accordion-item">
+                <h2 className="accordion-header" id="headingValue">
+                  <button
+                    className={`accordion-button ${
+                      accordionState.value ? "" : "collapsed"
+                    }`}
+                    type="button"
+                    onClick={() => toggleAccordion("value")}
+                    aria-expanded={accordionState.value}
+                    aria-controls="collapseValue"
+                  >
+                    Filter by Value
+                  </button>
+                </h2>
+                <div
+                  id="collapseValue"
+                  className={`accordion-collapse collapse ${
+                    accordionState.value ? "show" : ""
+                  }`}
+                  aria-labelledby="headingValue"
+                  data-bs-parent="#filterAccordion"
+                >
+                  <div className="accordion-body">
+                    <div className="d-flex justify-content-between">
+                      <button onClick={selectAll} className="btn btn-secondary">
+                        Check All
+                      </button>
+                      <button onClick={clearAll} className="btn btn-secondary">
+                        Uncheck All
+                      </button>
+                    </div>
                     <input
                       type="text"
-                      value={filterValue}
-                      onChange={handleFilterValueChange}
-                      className="form-control ms-2"
-                      placeholder="Value"
-                      style={{ width: "70px" }}
+                      value={searchValue}
+                      onChange={handleSearchValueChange}
+                      className="form-control my-2"
+                      placeholder="Search values"
                     />
-                  )}
-                <button
-                  onClick={handleFilterClick}
-                  className="btn btn-primary ms-2"
-                >
-                  Apply
-                </button>
+                    <div style={{ maxHeight: "165px", overflowY: "auto" }}>
+                      <ul className="list-unstyled">
+                        {filteredValues.map((value, index) => (
+                          <li key={index}>
+                            <input
+                              type="checkbox"
+                              checked={checkedValues.includes(value)}
+                              onChange={() => handleCheckboxChange(value)}
+                            />{" "}
+                            {value}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          )}
-
-          {filterSubmenu === "value" && (
-            <div
-              className="dropdown-menu show"
-              style={{
-                ...getSubDropdownPosition(valueButtonRef),
-                width: "200px",
-              }}
-              onClick={stopPropagation}
+            <button
+              onClick={resetFilter}
+              className="btn btn-secondary mt-2"
+              style={{ width: "220px" }}
             >
-              <div className="d-flex justify-content-between">
-                <button onClick={selectAll} className="btn btn-secondary">
-                  Check All
-                </button>
-                <button onClick={clearAll} className="btn btn-secondary ms-2">
-                  Uncheck All
-                </button>
-              </div>
-              <input
-                type="text"
-                value={searchValue}
-                onChange={handleSearchValueChange}
-                className="form-control my-2"
-                placeholder="Search values"
-              />
-              <div style={{ maxHeight: "165px", overflowY: "auto" }}>
-                <ul className="list-unstyled">
-                  {filteredValues.map((value, index) => (
-                    <li key={index}>
-                      <input
-                        type="checkbox"
-                        checked={checkedValues.includes(value)}
-                        onChange={() => handleCheckboxChange(value)}
-                      />{" "}
-                      {value}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
+              Reset filter for this column
+            </button>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

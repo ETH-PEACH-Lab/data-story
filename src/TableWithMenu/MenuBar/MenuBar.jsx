@@ -125,7 +125,7 @@ const MenuBar = ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    background: "var(--body-bg)",
+    background: "#e3e1d9",
     zIndex: 60,
   };
 

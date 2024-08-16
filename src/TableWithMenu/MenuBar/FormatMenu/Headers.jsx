@@ -1,3 +1,4 @@
+//Currently not used
 import React, { useState } from "react";
 import styles from "../MenuBar.module.css";
 import { HeaderAction } from "../../../CustomUndoRedo";
