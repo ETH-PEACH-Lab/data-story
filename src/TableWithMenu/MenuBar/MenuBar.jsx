@@ -208,7 +208,7 @@ const MenuBar = ({
                   onMouseEnter={() => handleMouseEnter(menu)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  {menu}
+                  {menu + "\u00A0" + "\u00A0"}
                 </button>
               </h2>
             </div>
