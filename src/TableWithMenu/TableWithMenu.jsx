@@ -113,11 +113,7 @@ const TableWithMenu = ({
       return { x: [], y: [[]] };
     }
 
-    if (isNaN(data.x[0])) {
-      // Non-numeric x-axis, return data as is
-      return data;
-    }
-
+    // Group data by non-numerical x-axis values
     const aggregatedData = {
       x: [],
       y: Array(data.y.length)
@@ -127,13 +123,15 @@ const TableWithMenu = ({
     const groupedData = {};
 
     data.x.forEach((xValue, index) => {
+      // Use the xValue directly as the key for grouping, even if it's non-numerical
       if (!groupedData[xValue])
         groupedData[xValue] = Array(data.y.length)
           .fill(null)
           .map(() => []);
-      data.y.forEach((series, seriesIndex) =>
-        groupedData[xValue][seriesIndex].push(Number(series[index]))
-      );
+
+      data.y.forEach((series, seriesIndex) => {
+        groupedData[xValue][seriesIndex].push(Number(series[index]));
+      });
     });
 
     Object.keys(groupedData).forEach((xValue) => {

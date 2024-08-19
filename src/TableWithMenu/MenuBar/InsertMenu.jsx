@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import ConfirmationWindow from "../../ConfirmationWindow";
 
 const InsertMenu = ({
   addRow,
@@ -7,6 +8,10 @@ const InsertMenu = ({
   addChartPage,
   selectedRange,
   aggregateData,
+  setShowConfirmation,
+  setConfirmationMessage,
+  setOnConfirmAction,
+  setOnCancelAction,
 }) => {
   const [activeItem, setActiveItem] = useState("");
   const [selectedChartType, setSelectedChartType] = useState("");
@@ -35,13 +40,16 @@ const InsertMenu = ({
     resetChartData();
   };
 
+  useEffect(() => {
+    resetChartData();
+  }, [selectedChartType]);
+
   const resetChartData = () => {
     setChartData({ x: [], y: [] });
     setXAxisLocked(false);
-    setYAxisLocked([]);
-    setLockedRange({ x: null, y: [] });
-    setSeriesCount(1);
-    setSeriesLabels([]);
+    setYAxisLocked(new Array(seriesCount).fill(false));
+    setLockedRange({ x: null, y: new Array(seriesCount).fill(null) });
+    setSeriesLabels(new Array(seriesCount).fill(""));
   };
 
   const handleApplyChartData = (axis, index = 0) => {
@@ -57,36 +65,53 @@ const InsertMenu = ({
       )
       .flat();
 
-    // Always use the column header for the series label
-    const header = hotInstance.getColHeader(selectedRange.minCol);
+    // Check if the data contains non-numerical values
+    const containsNonNumerical = selectedData.some((value) => isNaN(value));
 
     if (axis === "x") {
-      setChartData((prevState) => ({ ...prevState, x: selectedData }));
-      setXAxisLocked(true);
-      setLockedRange((prevState) => ({ ...prevState, x: selectedRange }));
+      if (containsNonNumerical && selectedChartType === "scatter") {
+        // Set the message and callback for the popup in the App component
+        setConfirmationMessage(
+          "Non-numerical values cannot be used for the x-axis of a scatter plot."
+        );
+        setOnConfirmAction(() => null); // No action needed, just dismiss the popup
+        setShowConfirmation(true);
+      } else {
+        setChartData((prevState) => ({ ...prevState, x: selectedData }));
+        setXAxisLocked(true);
+        setLockedRange((prevState) => ({ ...prevState, x: selectedRange }));
+      }
     } else if (axis === "y") {
-      setChartData((prevState) => {
-        const newY = [...prevState.y];
-        newY[index] = selectedData;
-        return { ...prevState, y: newY };
-      });
-      setYAxisLocked((prevState) => {
-        const newLocked = [...prevState];
-        newLocked[index] = true;
-        return newLocked;
-      });
-      setLockedRange((prevState) => {
-        const newY = [...prevState.y];
-        newY[index] = selectedRange;
-        return { ...prevState, y: newY };
-      });
-
-      // Set the series label based on the header
-      setSeriesLabels((prevLabels) => {
-        const newLabels = [...prevLabels];
-        newLabels[index] = header;
-        return newLabels;
-      });
+      if (containsNonNumerical) {
+        // Set the message and callback for the popup in the App component
+        setConfirmationMessage(
+          "Non-numerical values cannot be used for series."
+        );
+        setOnConfirmAction(() => null); // No action needed, just dismiss the popup
+        setShowConfirmation(true);
+      } else {
+        // If data is numerical, proceed without confirmation
+        setChartData((prevState) => {
+          const newY = [...prevState.y];
+          newY[index] = selectedData;
+          return { ...prevState, y: newY };
+        });
+        setYAxisLocked((prevState) => {
+          const newLocked = [...prevState];
+          newLocked[index] = true;
+          return newLocked;
+        });
+        setLockedRange((prevState) => {
+          const newY = [...prevState.y];
+          newY[index] = selectedRange;
+          return { ...prevState, y: newY };
+        });
+        setSeriesLabels((prevLabels) => {
+          const newLabels = [...prevLabels];
+          newLabels[index] = hotInstance.getColHeader(selectedRange.minCol);
+          return newLabels;
+        });
+      }
     }
   };
 
@@ -186,8 +211,13 @@ const InsertMenu = ({
     return rowCount > 1 && colCount > 1; // Invalid if more than one row and one column are selected
   };
 
-  const isAddChartDisabled =
-    !isXAxisLocked || !isYAxisLocked.every((locked) => locked);
+  const isAddChartDisabled = () => {
+    if (selectedChartType === "pie") {
+      return !isXAxisLocked || !isYAxisLocked[0];
+    } else {
+      return !isXAxisLocked || !isYAxisLocked.every((locked) => locked);
+    }
+  };
 
   const handleAddSeries = () => {
     setSeriesCount((prevCount) => prevCount + 1);
@@ -315,7 +345,7 @@ const InsertMenu = ({
                   <button
                     onClick={handleAddChart}
                     className="btn btn-primary"
-                    disabled={isAddChartDisabled}
+                    disabled={isAddChartDisabled()}
                     style={{ marginTop: "8px" }}
                   >
                     Add Chart
@@ -351,7 +381,7 @@ const InsertMenu = ({
                   <button
                     onClick={handleAddChart}
                     className="btn btn-primary"
-                    disabled={isAddChartDisabled}
+                    disabled={isAddChartDisabled()}
                     style={{ marginTop: "8px" }}
                   >
                     Add Chart

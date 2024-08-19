@@ -92,6 +92,10 @@ const MenuBar = ({
         addChartPage={addChartPage}
         selectedRange={selectedRange}
         aggregateData={aggregateData}
+        setShowConfirmation={setShowConfirmation}
+        setConfirmationMessage={setConfirmationMessage}
+        setOnConfirmAction={setOnConfirmAction}
+        setOnCancelAction={setOnCancelAction}
       />
     ),
     Data: (
