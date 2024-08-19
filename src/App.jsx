@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import "./styles/App.css";
 import "handsontable/dist/handsontable.full.min.css";
 import { registerAllModules } from "handsontable/registry";
@@ -73,13 +73,13 @@ function App() {
   const [isUndoDisabled, setUndoDisabled] = useState(true);
   const [isRedoDisabled, setRedoDisabled] = useState(true);
 
-  const updateUndoRedoState = () => {
+  const updateUndoRedoState = useCallback(() => {
     if (hotRef.current) {
       const undoRedo = hotRef.current.hotInstance.undoRedo;
       setUndoDisabled(!undoRedo.isUndoAvailable());
       setRedoDisabled(!undoRedo.isRedoAvailable());
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (hotRef.current) {
@@ -90,9 +90,9 @@ function App() {
       hotInstance.addHook("afterUndoStackChange", updateUndoRedoState);
       hotInstance.addHook("afterRedoStackChange", updateUndoRedoState);
     }
-  }, [hotRef.current]);
+  }, [hotRef.current, updateUndoRedoState]);
 
-  const handleSaveCurrentVersion = () => {
+  const handleSaveCurrentVersion = useCallback(() => {
     saveDataToHistory(
       data,
       originalFileName,
@@ -119,77 +119,101 @@ function App() {
       );
     }
     setCurrentDataIdLocalStorage(currentDataId);
-  };
+  }, [
+    actions,
+    chartConfigs,
+    currentDataId,
+    data,
+    footerNames,
+    idList,
+    initialActionStackLength,
+    originalFileName,
+    storyComponents,
+    textStyles,
+  ]);
 
-  const handleHistoryClick = (historyEntry, index) => {
-    const undoRedo = hotRef.current?.hotInstance?.undoRedo;
+  const handleHistoryClick = useCallback(
+    (historyEntry, index) => {
+      const undoRedo = hotRef.current?.hotInstance?.undoRedo;
 
-    const performSwitch = () => {
-      if (currentPage > 0 && !historyEntry.charts?.[currentPage - 1]) {
-        setCurrentPage(0);
-      }
+      const performSwitch = () => {
+        if (currentPage > 0 && !historyEntry.charts?.[currentPage - 1]) {
+          setCurrentPage(0);
+        }
 
-      switchHistoryEntry(
-        historyEntry,
-        index,
-        setData,
-        setTextStyles,
-        initializeColumns,
-        setColumnConfigs,
-        setFilteredColumns,
-        setClickedIndex,
-        setCurrentDataId,
-        setActions,
-        setOriginalFileName,
-        hotRef,
-        setInitialActionStack,
-        setInitialActionStackLength,
-        setChartConfigs,
-        setPages,
-        setFooterNames,
-        setCurrentPage,
-        setChartNames,
-        currentPage,
-        setStoryComponents
-      );
-      setCurrentDataIdLocalStorage(historyEntry.id);
-    };
+        switchHistoryEntry(
+          historyEntry,
+          index,
+          setData,
+          setTextStyles,
+          initializeColumns,
+          setColumnConfigs,
+          setFilteredColumns,
+          setClickedIndex,
+          setCurrentDataId,
+          setActions,
+          setOriginalFileName,
+          hotRef,
+          setInitialActionStack,
+          setInitialActionStackLength,
+          setChartConfigs,
+          setPages,
+          setFooterNames,
+          setCurrentPage,
+          setChartNames,
+          currentPage,
+          setStoryComponents
+        );
+        setCurrentDataIdLocalStorage(historyEntry.id);
+      };
 
-    if (
-      undoRedo &&
-      !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)
-    ) {
-      setConfirmationMessage(
-        "You have unsaved changes. Do you want to save them?"
-      );
-      setShowConfirmation(true);
-      setOnConfirmAction(() => () => {
-        handleSaveCurrentVersion();
+      if (
+        undoRedo &&
+        !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)
+      ) {
+        setConfirmationMessage(
+          "You have unsaved changes. Do you want to save them?"
+        );
+        setShowConfirmation(true);
+        setOnConfirmAction(() => () => {
+          handleSaveCurrentVersion();
+          performSwitch();
+        });
+        setOnCancelAction(() => performSwitch);
+      } else {
         performSwitch();
-      });
-      setOnCancelAction(() => performSwitch);
-    } else {
-      performSwitch();
-    }
-  };
+      }
+    },
+    [
+      currentPage,
+      handleSaveCurrentVersion,
+      hotRef,
+      initialActionStack,
+      setConfirmationMessage,
+      setData,
+      setShowConfirmation,
+    ]
+  );
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(async () => {
     if (onConfirmAction) {
-      onConfirmAction();
+      await onConfirmAction(); // Handle async confirm actions
     }
     setShowConfirmation(false);
-  };
+    setOnConfirmAction(null);
+    setOnCancelAction(null);
+  }, [onConfirmAction]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     if (onCancelAction) {
       onCancelAction();
     }
     setShowConfirmation(false);
     setOnConfirmAction(null);
     setOnCancelAction(null);
-  };
+  }, [onCancelAction]);
 
-  const handleDeleteAllHistory = () => {
+  const handleDeleteAllHistory = useCallback(() => {
     setConfirmationMessage("Are you sure you want to delete all history?");
     setOnConfirmAction(() => () => {
       setUploadHistory([]);
@@ -203,7 +227,7 @@ function App() {
       setOnCancelAction(null);
     });
     setShowConfirmation(true);
-  };
+  }, []);
 
   useEffect(() => {
     const savedHistory = getHistoryLocalStorage();
@@ -286,15 +310,15 @@ function App() {
     setIdListLocalStorage(idList);
   }, [idList]);
 
-  const handleUndoAction = () => {
+  const handleUndoAction = useCallback(() => {
     handleUndo(hotRef);
     updateUndoRedoState();
-  };
+  }, [updateUndoRedoState]);
 
-  const handleRedoAction = () => {
+  const handleRedoAction = useCallback(() => {
     handleRedo(hotRef);
     updateUndoRedoState();
-  };
+  }, [updateUndoRedoState]);
 
   return (
     <ErrorBoundary>
@@ -394,6 +418,8 @@ function App() {
             tableContainerRef={tableContainerRef}
             setShowConfirmation={setShowConfirmation}
             setConfirmationMessage={setConfirmationMessage}
+            setOnConfirmAction={setOnConfirmAction}
+            setOnCancelAction={setOnCancelAction}
             chartNames={chartNames}
             chartConfigs={chartConfigs}
             components={storyComponents}
@@ -438,7 +464,7 @@ function App() {
           <ConfirmationWindow
             message={confirmationMessage}
             onConfirm={handleConfirm}
-            onCancel={handleCancel}
+            onCancel={onCancelAction ? handleCancel : undefined}
           />
         )}
       </div>

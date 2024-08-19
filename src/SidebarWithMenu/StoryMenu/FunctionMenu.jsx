@@ -8,6 +8,8 @@ const FunctionMenu = ({
   selectedFunction,
   setShowConfirmation,
   setConfirmationMessage,
+  setOnConfirmAction,
+  setOnCancelAction,
   addComponent,
 }) => {
   const [localSelectedFunction, setLocalSelectedFunction] =
@@ -172,13 +174,15 @@ const FunctionMenu = ({
 
     if (warning) {
       setConfirmationMessage(warning);
+      setOnConfirmAction(() => () => {}); // No-op function
+      setOnCancelAction(() => undefined); // Use a function that returns undefined
       setShowConfirmation(true);
     } else {
       addComponent(
         "function",
-        [rangeString], // Pass selectedColumns as an array
-        [], // Empty highlightSettings
-        [], // Empty highlightColors
+        [rangeString],
+        [],
+        [],
         localSelectedFunction,
         result
       );

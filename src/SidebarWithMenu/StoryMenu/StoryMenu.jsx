@@ -12,6 +12,8 @@ const StoryMenu = ({
   hotRef,
   setShowConfirmation,
   setConfirmationMessage,
+  setOnConfirmAction,
+  setOnCancelAction,
   chartNames,
   chartConfigs,
   selectedRangeState,
@@ -60,6 +62,8 @@ const StoryMenu = ({
           selectedFunction={""}
           setShowConfirmation={setShowConfirmation}
           setConfirmationMessage={setConfirmationMessage}
+          setOnConfirmAction={setOnConfirmAction}
+          setOnCancelAction={setOnCancelAction}
           addComponent={handleAddComponent}
         />
       );

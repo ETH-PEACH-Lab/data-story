@@ -16,6 +16,8 @@ const SidebarWithStoryMenu = ({
   tableContainerRef,
   setShowConfirmation,
   setConfirmationMessage,
+  setOnConfirmAction,
+  setOnCancelAction,
   chartNames,
   chartConfigs,
   components,
@@ -73,6 +75,8 @@ const SidebarWithStoryMenu = ({
                 chartConfigs={chartConfigs}
                 setShowConfirmation={setShowConfirmation}
                 setConfirmationMessage={setConfirmationMessage}
+                setOnConfirmAction={setOnConfirmAction}
+                setOnCancelAction={setOnCancelAction}
                 selectedRange={selectedRange}
                 tableContainerRef={tableContainerRef}
                 hotRef={hotRef}

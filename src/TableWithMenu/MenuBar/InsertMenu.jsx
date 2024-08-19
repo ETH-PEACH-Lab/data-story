@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import ConfirmationWindow from "../../ConfirmationWindow";
 
 const InsertMenu = ({
   addRow,

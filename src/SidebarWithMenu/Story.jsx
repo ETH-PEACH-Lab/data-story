@@ -16,6 +16,8 @@ function Story({
   chartConfigs,
   setShowConfirmation,
   setConfirmationMessage,
+  setOnConfirmAction,
+  setOnCancelAction,
   selectedRange,
   tableContainerRef,
   hotRef,
@@ -305,6 +307,8 @@ function Story({
               hotRef={hotRef}
               setShowConfirmation={setShowConfirmation}
               setConfirmationMessage={setConfirmationMessage}
+              setOnConfirmAction={setOnConfirmAction}
+              setOnCancelAction={setOnCancelAction}
               chartNames={chartNames}
               chartConfigs={chartConfigs}
             />

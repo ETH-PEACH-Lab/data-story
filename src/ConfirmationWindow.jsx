@@ -1,5 +1,7 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 import "./ConfirmationWindow.css";
+import "./styles/App.css";
 
 const ConfirmationWindow = ({ message, onConfirm, onCancel }) => {
   return (
@@ -7,13 +9,18 @@ const ConfirmationWindow = ({ message, onConfirm, onCancel }) => {
       <div className="window-content">
         <p>{message}</p>
         <div className="window-buttons">
-          <button className="button yes-button" onClick={onConfirm}>
-            Yes
-          </button>
+          <Button
+            variant="success"
+            onClick={() => {
+              if (onConfirm) onConfirm();
+            }}
+          >
+            {onCancel ? "Yes" : "Ok"}
+          </Button>
           {onCancel && (
-            <button className="button no-button" onClick={onCancel}>
+            <Button variant="danger" onClick={onCancel}>
               No
-            </button>
+            </Button>
           )}
         </div>
       </div>
