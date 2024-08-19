@@ -219,6 +219,16 @@ const TableMenu = ({
               color={highlightColor}
               colors={allColors}
               onChangeComplete={handleColorChangeComplete(index)}
+              styles={{
+                default: {
+                  card: {
+                    backgroundColor: "#ffffff", // Set white background
+                    paddingTop: "10px",
+                    paddingLeft: "10px",
+                    width: "388px",
+                  },
+                },
+              }}
             />
           </div>
         )}
