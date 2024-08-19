@@ -3,6 +3,7 @@ import { HotTable } from "@handsontable/react";
 import MenuBar from "./MenuBar/MenuBar";
 import Chart from "./Chart";
 import "handsontable/dist/handsontable.full.min.css";
+import scatterIcon from "../assets/scatter.svg";
 import {
   handleSelectionEnd,
   addRow,
@@ -105,6 +106,41 @@ const TableWithMenu = ({
     updateChartConfigs(chartIndex, { xAxisTitle: newTitle });
   const updateYAxisTitle = (chartIndex, newTitle) =>
     updateChartConfigs(chartIndex, { yAxisTitle: newTitle });
+
+  const getIconForFooter = (index) => {
+    if (index === 0) {
+      return <i className="bi bi-table" style={{ marginRight: "5px" }}></i>;
+    }
+
+    const chartConfig = chartConfigs[index - 1]; // Offset by 1 because the first is "Table"
+    switch (chartConfig.type) {
+      case "pie":
+        return (
+          <i className="bi bi-pie-chart" style={{ marginRight: "5px" }}></i>
+        );
+      case "line":
+        return (
+          <i className="bi bi-graph-up" style={{ marginRight: "5px" }}></i>
+        );
+      case "bar":
+        return (
+          <i
+            className="bi bi-bar-chart-line"
+            style={{ marginRight: "5px" }}
+          ></i>
+        );
+      case "scatter":
+        return (
+          <img
+            src={scatterIcon}
+            alt="Scatter Icon"
+            style={{ width: "16px", height: "16px", marginRight: "5px" }}
+          />
+        );
+      default:
+        return null; // No icon for other types
+    }
+  };
 
   const aggregateData = (data, aggregate, aggregateFunction) => {
     if (!aggregate) return data;
@@ -387,78 +423,6 @@ const TableWithMenu = ({
     );
   };
 
-  const handleApplyChartData = (axis, index = 0) => {
-    if (!selectedRange || isInvalidRange(selectedRange)) {
-      console.log("Invalid range selected:", selectedRange);
-      return;
-    }
-
-    const hotInstance = hotRef.current.hotInstance;
-    const selectedData = hotInstance
-      .getData(
-        selectedRange.minRow,
-        selectedRange.minCol,
-        selectedRange.maxRow,
-        selectedRange.maxCol
-      )
-      .flat();
-
-    // Check if the data contains non-numerical values
-    const containsNonNumerical = selectedData.some((value) => isNaN(value));
-
-    console.log(`handleApplyChartData for ${axis} axis`, {
-      selectedData,
-      containsNonNumerical,
-    });
-
-    if (axis === "x") {
-      if (containsNonNumerical && selectedChartType === "scatter") {
-        setConfirmationMessage(
-          "Non-numerical values cannot be used for the x-axis of a scatter plot."
-        );
-        setOnConfirmAction(() => null); // No action needed, just dismiss the popup
-        setShowConfirmation(true);
-      } else {
-        setChartData((prevState) => ({ ...prevState, x: selectedData }));
-        setXAxisLocked(true);
-        setLockedRange((prevState) => ({ ...prevState, x: selectedRange }));
-      }
-    } else if (axis === "y") {
-      if (containsNonNumerical) {
-        setConfirmationMessage(
-          "Non-numerical values cannot be used for series."
-        );
-        setOnConfirmAction(() => null); // No action needed, just dismiss the popup
-        setShowConfirmation(true);
-      } else {
-        setChartData((prevState) => {
-          const newY = [...prevState.y];
-          newY[index] = selectedData;
-          return { ...prevState, y: newY };
-        });
-        setYAxisLocked((prevState) => {
-          const newLocked = [...prevState];
-          newLocked[index] = true;
-          return newLocked;
-        });
-        setLockedRange((prevState) => {
-          const newY = [...prevState.y];
-          newY[index] = selectedRange;
-          return { ...prevState, y: newY };
-        });
-        setSeriesLabels((prevLabels) => {
-          const newLabels = [...prevLabels];
-          newLabels[index] = hotInstance.getColHeader(selectedRange.minCol);
-          return newLabels;
-        });
-      }
-    }
-
-    console.log("Updated chartData:", chartData);
-    console.log("Updated lockedRange:", lockedRange);
-    console.log("Updated seriesLabels:", seriesLabels);
-  };
-
   return (
     <div className="table-content-area">
       <div className="rectangle"></div>
@@ -592,7 +556,7 @@ const TableWithMenu = ({
             disabled={currentPage === index}
             style={{ width: "auto" }}
           >
-            {name}
+            {getIconForFooter(index)} {name}
           </button>
         ))}
       </div>

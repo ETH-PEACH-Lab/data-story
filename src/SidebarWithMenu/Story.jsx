@@ -273,8 +273,9 @@ function Story({
         <button
           className="btn btn-secondary btn-circle"
           onClick={handleShowCard}
+          style={{ paddingBottom: "4px", paddingLeft: "11px" }}
         >
-          +
+          <i class="bi bi-plus-lg"></i>
         </button>
       </div>
 

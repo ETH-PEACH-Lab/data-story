@@ -7,6 +7,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
     <App />
   </React.StrictMode>
 );

@@ -42,6 +42,18 @@ const Cell = ({
               }}
               style={getActiveButtonStyle(cellOption)}
             >
+              {cellOption === "Fill" && (
+                <i
+                  className="bi bi-paint-bucket"
+                  style={{ marginRight: "5px" }}
+                ></i>
+              )}
+              {cellOption === "Border" && (
+                <i
+                  className="bi bi-border-outer"
+                  style={{ marginRight: "5px" }}
+                ></i>
+              )}
               {cellOption}
             </button>
           );

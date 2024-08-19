@@ -126,7 +126,7 @@ const StoryTable = ({
         <button
           onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
         >
-          ⋮
+          <i class="bi bi-three-dots-vertical"></i>
         </button>
       </div>
       {isMenuVisible && (
@@ -177,7 +177,11 @@ const StoryTable = ({
           />
         </div>
         <button className="expandButton" onClick={toggleFirstTableExpand}>
-          {isTableExpanded ? "Collapse Table" : "Expand Table"}
+          {isTableExpanded ? (
+            <i class="bi bi-arrows-collapse"></i>
+          ) : (
+            <i class="bi bi-arrows-expand"></i>
+          )}
         </button>
       </div>
     </div>

@@ -244,6 +244,24 @@ const InsertMenu = ({
             onClick={() => handleMenuClick(item)}
             style={activeItem === item ? activeButtonColor : {}}
           >
+            {item === "Column" && (
+              <i
+                className="bi bi-layout-three-columns"
+                style={{ marginRight: "5px" }}
+              ></i>
+            )}
+            {item === "Row" && (
+              <i className="bi bi-list" style={{ marginRight: "5px" }}></i>
+            )}
+            {item === "Chart" && (
+              <i className="bi bi-graph-up" style={{ marginRight: "5px" }}></i>
+            )}
+            {item === "Functions" && (
+              <i
+                className="bi bi-calculator"
+                style={{ marginRight: "5px" }}
+              ></i>
+            )}
             {item}
           </button>
         ))}

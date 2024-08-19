@@ -67,15 +67,13 @@ const StoryChart = ({
     return <div>Error: Invalid chart data structure</div>;
   }
 
-  //TODO: add title and axis titles
-
   return (
     <div className="chart-container">
       <div className="edit-menu-toggle">
         <button
           onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
         >
-          ⋮
+          <i class="bi bi-three-dots-vertical"></i>
         </button>
       </div>
       {isMenuVisible && (

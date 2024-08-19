@@ -331,14 +331,14 @@ function App() {
               onClick={handleUndoAction}
               disabled={isUndoDisabled}
             >
-              Undo
+              <i class="bi bi-arrow-counterclockwise"></i> {"Undo"}
             </button>
             <button
               className={`btn btn-primary ${isRedoDisabled ? "disabled" : ""}`}
               onClick={handleRedoAction}
               disabled={isRedoDisabled}
             >
-              Redo
+              <i class="bi bi-arrow-clockwise"></i> {"Redo"}
             </button>
           </div>
           <div className="save-button-container">
@@ -351,7 +351,7 @@ function App() {
                 handleSaveCurrentVersion();
               }}
             >
-              Save Current Version
+              <i class="bi bi-save"></i> {"Save Current Version"}
             </button>
           </div>
         </div>

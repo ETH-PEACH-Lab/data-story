@@ -74,6 +74,18 @@ const EditMenu = ({
               onClick={() => handleMenuClick(item)}
               style={activeItem === item ? activeButtonColor : {}}
             >
+              {item === "Find and Replace" && (
+                <i className="bi bi-search" style={{ marginRight: "5px" }}></i>
+              )}
+              {item === "Remove Duplicates" && (
+                <i className="bi bi-eraser" style={{ marginRight: "5px" }}></i>
+              )}
+              {item === "Headers" && (
+                <i
+                  className="bi bi-card-heading"
+                  style={{ marginRight: "5px" }}
+                ></i>
+              )}
               {item}
             </button>
           )

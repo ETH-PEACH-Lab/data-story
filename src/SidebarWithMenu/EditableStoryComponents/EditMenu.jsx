@@ -1,7 +1,13 @@
-import React, { useEffect, useRef } from 'react';
-import '../Story.css';
+import React, { useEffect, useRef } from "react";
+import "../Story.css";
 
-const EditMenu = ({ index, onMoveUp, onMoveDown, onDelete, setVisibleMenuIndex }) => {
+const EditMenu = ({
+  index,
+  onMoveUp,
+  onMoveDown,
+  onDelete,
+  setVisibleMenuIndex,
+}) => {
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -11,10 +17,10 @@ const EditMenu = ({ index, onMoveUp, onMoveDown, onDelete, setVisibleMenuIndex }
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setVisibleMenuIndex]);
 
@@ -26,7 +32,7 @@ const EditMenu = ({ index, onMoveUp, onMoveDown, onDelete, setVisibleMenuIndex }
           setVisibleMenuIndex(index - 1);
         }}
       >
-        ↑
+        <i class="bi bi-arrow-up"></i>
       </button>
       <button
         onClick={() => {
@@ -34,9 +40,11 @@ const EditMenu = ({ index, onMoveUp, onMoveDown, onDelete, setVisibleMenuIndex }
           setVisibleMenuIndex(index + 1);
         }}
       >
-        ↓
+        <i class="bi bi-arrow-down"></i>
       </button>
-      <button onClick={() => onDelete(index)}>✖</button>
+      <button onClick={() => onDelete(index)}>
+        <i className="bi bi-trash3"></i>
+      </button>
     </div>
   );
 };

@@ -29,7 +29,7 @@
 .editable-text {
   flex-grow: 1;
   position: relative;
-  right: 4px;
+  right: 8px;
 }
 
 .edit-menu-toggle {
@@ -77,6 +77,7 @@
 }
 
 .function {
+  position: relative;
   padding: 6px;
   border: 2px solid #ccc;
   width: calc(100% + 24px);
@@ -85,6 +86,7 @@
   font-size: 16px;
   border-radius: 2px;
   color: black;
+  right: 8px;
 }
 
 .function-container {
@@ -132,13 +134,13 @@
   position: relative;
   height: 400px;
   width: calc(100% - 8px);
-  right: 4px;
+  right: 8px;
 }
 
 .table-container {
   display: flex;
   align-items: flex-start;
-  right: 5px;
+  right: 6px;
   width: calc(100% - 24px);
   position: relative;
   margin-bottom: 0px;
@@ -146,6 +148,8 @@
 
 .table-wrapper {
   width: 100%;
+  position: relative;
+  right: 8px;
 }
 
 .small-table-wrapper {

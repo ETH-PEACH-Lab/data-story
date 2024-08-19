@@ -23,7 +23,7 @@ const FormatMenu = ({
   const menuItems = [
     "Text",
     "Cell",
-    "Conditional Formatting",
+    //"Conditional Formatting",
     "Clear Formatting",
   ];
 
@@ -124,6 +124,21 @@ const FormatMenu = ({
               ref={buttonRef}
               style={dropdownState.activeItem === item ? activeButtonColor : {}}
             >
+              {item === "Text" && (
+                <i className="bi bi-pen" style={{ marginRight: "5px" }}></i>
+              )}
+              {item === "Cell" && (
+                <i
+                  className="bi bi-grid-3x3"
+                  style={{ marginRight: "5px" }}
+                ></i>
+              )}
+              {item === "Clear Formatting" && (
+                <i
+                  className="bi bi-x-circle"
+                  style={{ marginRight: "5px" }}
+                ></i>
+              )}
               {item}
             </button>
           );
@@ -138,7 +153,7 @@ const FormatMenu = ({
         >
           <div
             className="card card-body"
-            style={{ width: "400px", marginTop: "8px" }}
+            style={{ width: "431px", marginTop: "8px" }}
           >
             <Text
               onStyleChange={onStyleChange}

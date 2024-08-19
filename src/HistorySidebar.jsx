@@ -83,7 +83,7 @@ const HistorySidebar = ({
         </button>
         {isHistoryVisible && (
           <button onClick={handleDeleteAllHistory} className="btn btn-danger">
-            Delete All
+            <i className="bi bi-trash3"></i> Delete All
           </button>
         )}
       </div>
@@ -154,7 +154,7 @@ const HistorySidebar = ({
                   }}
                   className="btn btn-danger mt-2"
                 >
-                  Delete
+                  <i className="bi bi-trash3"></i>
                 </button>
               </li>
             ))}

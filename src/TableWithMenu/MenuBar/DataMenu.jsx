@@ -290,6 +290,15 @@ const DataMenu = ({
                 : null
             }
           >
+            {item === "Sort" && (
+              <i
+                className="bi bi-arrow-down-up"
+                style={{ marginRight: "5px" }}
+              ></i>
+            )}
+            {item === "Filter" && (
+              <i className="bi bi-funnel" style={{ marginRight: "5px" }}></i>
+            )}
             {item}
           </button>
         ))}

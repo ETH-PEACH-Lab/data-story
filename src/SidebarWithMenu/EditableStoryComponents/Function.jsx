@@ -19,7 +19,7 @@ const Function = ({
         <button
           onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
         >
-          ⋮
+          <i class="bi bi-three-dots-vertical"></i>
         </button>
       </div>
       {isMenuVisible && (

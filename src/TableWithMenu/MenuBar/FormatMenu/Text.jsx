@@ -40,6 +40,21 @@ const Text = ({
               handleMenuClick(textOption, null);
             }}
           >
+            {textOption === "Bold" && (
+              <i className="bi bi-type-bold" style={{ marginRight: "5px" }}></i>
+            )}
+            {textOption === "Italic" && (
+              <i
+                className="bi bi-type-italic"
+                style={{ marginRight: "5px" }}
+              ></i>
+            )}
+            {textOption === "Strike-through" && (
+              <i
+                className="bi bi-type-strikethrough"
+                style={{ marginRight: "5px" }}
+              ></i>
+            )}
             {textOption}
           </button>
         ))}
@@ -50,11 +65,11 @@ const Text = ({
           onClick={handleColorButtonClick}
           style={activeButtonStyle} // Apply the active style if color picker is visible
         >
+          <i className="bi bi-palette" style={{ marginRight: "5px" }}></i>
           Color
         </button>
       </div>
 
-      {/* Nested Collapse for Color Picker */}
       <div
         className={`collapse ${isColorDropdownVisible ? "show" : ""}`}
         style={{ marginTop: "8px" }}

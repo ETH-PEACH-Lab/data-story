@@ -273,7 +273,7 @@ const Chart = ({
                 className="btn btn-danger ms-2"
                 onClick={() => onDeleteChart(index)}
               >
-                Delete
+                <i className="bi bi-trash3"></i>
               </button>
             </div>
           )}
