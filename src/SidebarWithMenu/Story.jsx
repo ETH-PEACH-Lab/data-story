@@ -287,7 +287,7 @@ function Story({
                   onChange={handleOptionChange}
                   className="form-select"
                 >
-                  <option value="">Select chart type</option>
+                  <option value="">Select element type</option>
                   <option value="text">Text</option>
                   <option value="function">Function</option>
                   <option value="chart">Chart</option>

@@ -68,7 +68,29 @@ function App() {
   ]);
   const [footerNames, setFooterNames] = useState(["Table"]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [storyComponents, setStoryComponents] = useState([]); // Add storyComponents state
+  const [storyComponents, setStoryComponents] = useState([]);
+
+  const [isUndoDisabled, setUndoDisabled] = useState(true);
+  const [isRedoDisabled, setRedoDisabled] = useState(true);
+
+  const updateUndoRedoState = () => {
+    if (hotRef.current) {
+      const undoRedo = hotRef.current.hotInstance.undoRedo;
+      setUndoDisabled(!undoRedo.isUndoAvailable());
+      setRedoDisabled(!undoRedo.isRedoAvailable());
+    }
+  };
+
+  useEffect(() => {
+    if (hotRef.current) {
+      const hotInstance = hotRef.current.hotInstance;
+      updateUndoRedoState();
+
+      // Listen to Handsontable's hooks to update button states
+      hotInstance.addHook("afterUndoStackChange", updateUndoRedoState);
+      hotInstance.addHook("afterRedoStackChange", updateUndoRedoState);
+    }
+  }, [hotRef.current]);
 
   const handleSaveCurrentVersion = () => {
     saveDataToHistory(
@@ -86,7 +108,7 @@ function App() {
       hotRef,
       chartConfigs,
       footerNames,
-      storyComponents // Pass storyComponents here
+      storyComponents
     );
     if (hotRef.current) {
       setInitialActionStack([
@@ -96,7 +118,7 @@ function App() {
         hotRef.current.hotInstance.undoRedo.doneActions.length
       );
     }
-    setCurrentDataIdLocalStorage(currentDataId); // Save the current data ID to localStorage
+    setCurrentDataIdLocalStorage(currentDataId);
   };
 
   const handleHistoryClick = (historyEntry, index) => {
@@ -142,7 +164,7 @@ function App() {
       );
       setShowConfirmation(true);
       setOnConfirmAction(() => () => {
-        handleSaveCurrentVersion(); // Use the new function
+        handleSaveCurrentVersion();
         performSwitch();
       });
       setOnCancelAction(() => performSwitch);
@@ -243,7 +265,7 @@ function App() {
         hotRef,
         setInitialActionStack,
         setInitialActionStackLength,
-        storyComponents // Pass storyComponents
+        storyComponents
       );
     }
   }, []);
@@ -266,10 +288,12 @@ function App() {
 
   const handleUndoAction = () => {
     handleUndo(hotRef);
+    updateUndoRedoState();
   };
 
   const handleRedoAction = () => {
     handleRedo(hotRef);
+    updateUndoRedoState();
   };
 
   return (
@@ -278,10 +302,18 @@ function App() {
         <div className="top-banner">
           <h1>Data-Story</h1>
           <div className="undo-redo-container">
-            <button className="btn btn-primary" onClick={handleUndoAction}>
+            <button
+              className={`btn btn-primary ${isUndoDisabled ? "disabled" : ""}`}
+              onClick={handleUndoAction}
+              disabled={isUndoDisabled}
+            >
               Undo
             </button>
-            <button className="btn btn-primary" onClick={handleRedoAction}>
+            <button
+              className={`btn btn-primary ${isRedoDisabled ? "disabled" : ""}`}
+              onClick={handleRedoAction}
+              disabled={isRedoDisabled}
+            >
               Redo
             </button>
           </div>
@@ -292,7 +324,7 @@ function App() {
                 if (idList.length === 0) {
                   setIdList([1]);
                 }
-                handleSaveCurrentVersion(); // Use the new function
+                handleSaveCurrentVersion();
               }}
             >
               Save Current Version
@@ -342,12 +374,12 @@ function App() {
             setChartConfigs={setChartConfigs}
             idList={idList}
             setIdList={setIdList}
-            pages={pages} // Pass pages
-            setPages={setPages} // Pass setPages
-            footerNames={footerNames} // Pass footerNames
-            setFooterNames={setFooterNames} // Pass setFooterNames
-            currentPage={currentPage} // Pass currentPage
-            setCurrentPage={setCurrentPage} // Pass setCurrentPage
+            pages={pages}
+            setPages={setPages}
+            footerNames={footerNames}
+            setFooterNames={setFooterNames}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
           <SidebarWithStoryMenu
             data={data}
@@ -364,8 +396,8 @@ function App() {
             setConfirmationMessage={setConfirmationMessage}
             chartNames={chartNames}
             chartConfigs={chartConfigs}
-            components={storyComponents} // Pass storyComponents
-            setComponents={setStoryComponents} // Pass setStoryComponents
+            components={storyComponents}
+            setComponents={setStoryComponents}
           />
         </div>
         <HistorySidebar
