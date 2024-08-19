@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { Button, Form, Card, Accordion } from "react-bootstrap";
 import { CirclePicker } from "react-color";
 
@@ -187,6 +187,7 @@ const TableMenu = ({
     colorPickerVisible,
     setColorPickerVisible,
     allColors,
+    selectedColumns,
   }) => (
     <Accordion.Item eventKey={`highlight-${index}`}>
       <Accordion.Header>{`Highlight ${index + 1}`}</Accordion.Header>
@@ -244,17 +245,17 @@ const TableMenu = ({
               {highlightSettings.columnSelection === "of selected columns" && (
                 <>
                   <Form.Label>Select Columns</Form.Label>
-                  {columnConfigs.map((column, i) => (
+                  {selectedColumns.map((column, i) => (
                     <Form.Check
                       key={i}
                       type="checkbox"
                       checked={highlightSettings.selectedColumns.includes(
-                        column.title
+                        column
                       )}
                       onChange={() =>
-                        handleHighlightColumnSelect(index, column.title)
+                        handleHighlightColumnSelect(index, column)
                       }
-                      label={column.title}
+                      label={column}
                     />
                   ))}
                 </>
@@ -284,7 +285,6 @@ const TableMenu = ({
                   placeholder="e.g., 1-5"
                   value={highlightSettings.rowRange}
                   onChange={handleRowRangeChange(index)}
-                  className={styles.inputField}
                 />
               )}
             </Form.Group>
@@ -329,7 +329,6 @@ const TableMenu = ({
                   type="text"
                   value={highlightSettings.value}
                   onChange={handleHighlightValueChange(index)}
-                  className={styles.inputField}
                 />
               )}
             </Form.Group>
@@ -371,6 +370,7 @@ const TableMenu = ({
               colorPickerVisible={colorPickerVisible}
               setColorPickerVisible={setColorPickerVisible}
               allColors={allColors}
+              selectedColumns={selectedColumns}
             />
           ))}
         </Accordion>
