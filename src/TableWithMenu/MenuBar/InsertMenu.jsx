@@ -154,7 +154,8 @@ const InsertMenu = ({
   };
 
   const handleAddChart = () => {
-    if (!isAddChartDisabled) {
+    console.log("Add Chart button clicked");
+    if (!isAddChartDisabled()) {
       let chartDataToUse = chartData;
 
       if (aggregate) {

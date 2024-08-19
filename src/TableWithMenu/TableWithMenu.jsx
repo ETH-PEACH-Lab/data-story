@@ -155,9 +155,12 @@ const TableWithMenu = ({
   };
 
   const renderPageContent = () => {
+    console.log("Rendering page content for currentPage:", currentPage);
+
     const currentPageContent = pages.find(
       (page) => page.id === currentPage
     )?.content;
+
     if (currentPageContent === "table") {
       return (
         <div
@@ -260,6 +263,8 @@ const TableWithMenu = ({
         yAxisTitle,
       } = chartConfigs[chartIndex];
 
+      console.log("Rendering chart content for chartIndex:", chartIndex);
+
       return (
         <Chart
           type={type}
@@ -298,6 +303,14 @@ const TableWithMenu = ({
     aggregateFunction,
     seriesLabels
   ) => {
+    console.log("addChartPage called with:", {
+      type,
+      data,
+      aggregate,
+      aggregateFunction,
+      seriesLabels,
+    });
+
     const numColors = type === "pie" ? data.x.length : data.y.length;
     const shuffledColors = shuffleArray([...allColors]);
     const generatedColors = shuffledColors.slice(0, numColors);
@@ -305,11 +318,12 @@ const TableWithMenu = ({
     const newPageId = pages.length;
     const newChartId = chartConfigs.length;
     const newTitle = `Chart ${newChartId}`;
-    setPages([
+
+    const newPages = [
       ...pages,
       { id: newPageId, content: `chart-${newChartId}`, title: newTitle },
-    ]);
-    setChartConfigs([
+    ];
+    const newChartConfigs = [
       ...chartConfigs,
       {
         type,
@@ -323,11 +337,21 @@ const TableWithMenu = ({
         xAxisTitle: "x-axis",
         yAxisTitle: "y-axis",
       },
-    ]);
+    ];
+
+    console.log("Updated pages:", newPages);
+    console.log("Updated chartConfigs:", newChartConfigs);
+
+    setPages(newPages);
+    setChartConfigs(newChartConfigs);
     setChartNotes({ ...chartNotes, [newChartId]: "Title" });
     setFooterNames([...footerNames, `Chart ${newChartId}`]);
     setCurrentPage(newPageId);
     setChartNames([...footerNames, `Chart ${newChartId}`]);
+
+    console.log("Updated pages:", newPages);
+    console.log("Updated chartConfigs:", newChartConfigs);
+    console.log("New chart added successfully");
   };
 
   const handleDeleteChart = (chartIndex) => {
@@ -361,6 +385,78 @@ const TableWithMenu = ({
     setChartNames((prevFooterNames) =>
       prevFooterNames.map((name, i) => (i === index + 1 ? newName : name))
     );
+  };
+
+  const handleApplyChartData = (axis, index = 0) => {
+    if (!selectedRange || isInvalidRange(selectedRange)) {
+      console.log("Invalid range selected:", selectedRange);
+      return;
+    }
+
+    const hotInstance = hotRef.current.hotInstance;
+    const selectedData = hotInstance
+      .getData(
+        selectedRange.minRow,
+        selectedRange.minCol,
+        selectedRange.maxRow,
+        selectedRange.maxCol
+      )
+      .flat();
+
+    // Check if the data contains non-numerical values
+    const containsNonNumerical = selectedData.some((value) => isNaN(value));
+
+    console.log(`handleApplyChartData for ${axis} axis`, {
+      selectedData,
+      containsNonNumerical,
+    });
+
+    if (axis === "x") {
+      if (containsNonNumerical && selectedChartType === "scatter") {
+        setConfirmationMessage(
+          "Non-numerical values cannot be used for the x-axis of a scatter plot."
+        );
+        setOnConfirmAction(() => null); // No action needed, just dismiss the popup
+        setShowConfirmation(true);
+      } else {
+        setChartData((prevState) => ({ ...prevState, x: selectedData }));
+        setXAxisLocked(true);
+        setLockedRange((prevState) => ({ ...prevState, x: selectedRange }));
+      }
+    } else if (axis === "y") {
+      if (containsNonNumerical) {
+        setConfirmationMessage(
+          "Non-numerical values cannot be used for series."
+        );
+        setOnConfirmAction(() => null); // No action needed, just dismiss the popup
+        setShowConfirmation(true);
+      } else {
+        setChartData((prevState) => {
+          const newY = [...prevState.y];
+          newY[index] = selectedData;
+          return { ...prevState, y: newY };
+        });
+        setYAxisLocked((prevState) => {
+          const newLocked = [...prevState];
+          newLocked[index] = true;
+          return newLocked;
+        });
+        setLockedRange((prevState) => {
+          const newY = [...prevState.y];
+          newY[index] = selectedRange;
+          return { ...prevState, y: newY };
+        });
+        setSeriesLabels((prevLabels) => {
+          const newLabels = [...prevLabels];
+          newLabels[index] = hotInstance.getColHeader(selectedRange.minCol);
+          return newLabels;
+        });
+      }
+    }
+
+    console.log("Updated chartData:", chartData);
+    console.log("Updated lockedRange:", lockedRange);
+    console.log("Updated seriesLabels:", seriesLabels);
   };
 
   return (

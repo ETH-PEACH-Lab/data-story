@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Line, Bar, Pie, Scatter } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -83,6 +83,8 @@ const Chart = ({
   updateYAxisTitle,
   onDeleteChart,
 }) => {
+  const colorPickerRef = useRef(null); // Reference to the color picker
+
   const handleNoteChange = (e) => {
     setChartNotes({ ...chartNotes, [index]: e.target.value });
   };
@@ -91,7 +93,9 @@ const Chart = ({
     setEditingNote(null);
   };
 
+  console.log("Chart data before aggregation:", data);
   const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
+  console.log("Aggregated data:", aggregatedData);
 
   const [selectedItem, setSelectedItem] = useState("");
   const [newLabel, setNewLabel] = useState("");
@@ -221,8 +225,25 @@ const Chart = ({
   }[type];
 
   const chartContainerStyle = {
-    marginLeft: type ? "38px" : "0px",
+    marginLeft: type ? "8px" : "0px",
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        colorPickerRef.current &&
+        !colorPickerRef.current.contains(event.target)
+      ) {
+        setColorPickerVisible(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [colorPickerRef]);
 
   return ChartComponent ? (
     <div className="handsontable-container" style={chartContainerStyle}>
@@ -231,6 +252,7 @@ const Chart = ({
           <button
             className="btn btn-outline-secondary"
             onClick={() => setIsRenamingVisible(!isRenamingVisible)}
+            style={{ marginLeft: "30px" }}
           >
             {isRenamingVisible ? "Hide" : "Edit"}
           </button>
@@ -258,7 +280,7 @@ const Chart = ({
         </div>
 
         {isRenamingVisible && selectedModification === "title" && (
-          <div className="d-flex mt-2">
+          <div className="d-flex mt-2" style={{ marginLeft: "22px" }}>
             <input
               type="text"
               className="form-control ms-2"
@@ -281,7 +303,7 @@ const Chart = ({
         )}
 
         {isRenamingVisible && selectedModification === "axis-titles" && (
-          <div className="mt-2">
+          <div className="mt-2" style={{ marginLeft: "22px" }}>
             <div className="d-flex mb-2">
               <input
                 type="text"
@@ -326,7 +348,7 @@ const Chart = ({
         )}
 
         {isRenamingVisible && selectedModification === "color" && (
-          <div className="mt-2">
+          <div className="mt-2" style={{ marginLeft: "30px" }}>
             <div className="d-flex align-items-center">
               <select
                 className="form-select"
@@ -348,7 +370,7 @@ const Chart = ({
                 onClick={() => setColorPickerVisible(!colorPickerVisible)}
                 className="ms-2"
                 style={{
-                  width: "36px",
+                  width: "75px",
                   height: "36px",
                   backgroundColor: currentColor,
                   cursor: "pointer",
@@ -368,6 +390,7 @@ const Chart = ({
               </button>
               {colorPickerVisible && (
                 <div
+                  ref={colorPickerRef} // Reference to the color picker container
                   className="dropdown-menu show"
                   style={{
                     position: "absolute",
@@ -388,7 +411,7 @@ const Chart = ({
         )}
 
         {isRenamingVisible && selectedModification === "name" && (
-          <div className="mt-2">
+          <div className="mt-2" style={{ marginLeft: "30px" }}>
             <div className="d-flex align-items-center">
               <select
                 className="form-select"
