@@ -251,7 +251,18 @@ const InsertMenu = ({
               ></i>
             )}
             {item === "Row" && (
-              <i className="bi bi-list" style={{ marginRight: "5px" }}></i>
+              <span
+                style={{
+                  transform: "rotate(90deg)",
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                  marginRight: "5px",
+                  position: "relative",
+                  top: "-2px",
+                }}
+              >
+                <i className="bi bi-layout-three-columns"></i>
+              </span>
             )}
             {item === "Chart" && (
               <i className="bi bi-graph-up" style={{ marginRight: "5px" }}></i>
