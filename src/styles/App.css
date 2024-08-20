@@ -314,3 +314,12 @@ body {
   text-align: center;
   font-weight: bold;
 }
+
+.scatter-icon {
+  fill: var(--dark); /* $dark color */
+}
+
+.nav-button:hover .scatter-icon,
+.nav-button.active .scatter-icon {
+  fill: var(--light); /* $light color */
+}

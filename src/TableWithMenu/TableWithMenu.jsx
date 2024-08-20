@@ -131,14 +131,23 @@ const TableWithMenu = ({
         );
       case "scatter":
         return (
-          <img
-            src={scatterIcon}
-            alt="Scatter Icon"
-            style={{ width: "16px", height: "16px", marginRight: "5px" }}
-          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            className="scatter-icon"
+            style={{ marginRight: "5px" }}
+          >
+            <path fill="currentColor" d="M1 15V0H0v16h16v-1H1z"></path>
+            <path
+              fill="currentColor"
+              d="M5 11a1 1 0 11-2 0 1 1 0 012 0zM8 6a1 1 0 11-2 0 1 1 0 012 0zM14 5a1 1 0 11-2 0 1 1 0 012 0zM11 10a1 1 0 11-2 0 1 1 0 012 0z"
+            ></path>
+          </svg>
         );
       default:
-        return null; // No icon for other types
+        return null;
     }
   };
 
