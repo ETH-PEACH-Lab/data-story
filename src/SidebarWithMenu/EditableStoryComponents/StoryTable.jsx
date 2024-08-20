@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { HotTable } from "@handsontable/react";
 import Handsontable from "handsontable";
 import { textRenderer } from "handsontable/renderers/textRenderer";
@@ -18,6 +18,9 @@ const StoryTable = ({
   highlightColors = [], // Add default value
 }) => {
   const [isTableExpanded, setIsTableExpanded] = useState(false);
+  const [containerWidth, setContainerWidth] = useState("100%");
+  const [containerHeight, setContainerHeight] = useState("180px"); // Default height when not expanded
+  const tableRef = useRef(null);
 
   const toggleFirstTableExpand = () => {
     setIsTableExpanded(!isTableExpanded);
@@ -120,13 +123,72 @@ const StoryTable = ({
     })
     .filter((index) => index !== null);
 
+  useEffect(() => {
+    const hotInstance = tableRef.current?.hotInstance;
+
+    const calculateDimensions = () => {
+      if (hotInstance) {
+        let totalWidth = 0;
+        let totalHeight = 0;
+
+        // Calculate total width
+        for (let col = -1; col < hotInstance.countCols(); col++) {
+          if (!hiddenColumnsIndexes.includes(col)) {
+            totalWidth += hotInstance.getColWidth(col);
+          }
+        }
+
+        // Calculate total height
+        for (let row = -1; row < hotInstance.countRows(); row++) {
+          totalHeight += hotInstance.getRowHeight(row) || 23; // Default row height is 23px if undefined
+        }
+
+        // Only update state if the new width/height is different from the current one
+        const newContainerWidth = Math.max(
+          totalWidth + 0,
+          hotInstance.rootElement.clientWidth
+        );
+        const newContainerHeight = isTableExpanded
+          ? Math.min(totalHeight + 4, 400)
+          : Math.min(totalHeight + 4, 180);
+
+        if (
+          newContainerWidth !== containerWidth ||
+          newContainerHeight !== containerHeight
+        ) {
+          // Batch state updates to avoid multiple re-renders
+          setContainerWidth(newContainerWidth);
+          setContainerHeight(newContainerHeight);
+        }
+      }
+    };
+
+    if (hotInstance) {
+      calculateDimensions();
+      hotInstance.addHook("afterRender", calculateDimensions);
+    }
+
+    // Cleanup the hook when component unmounts
+    return () => {
+      if (hotInstance && !hotInstance.isDestroyed) {
+        hotInstance.removeHook("afterRender", calculateDimensions);
+      }
+    };
+  }, [
+    hiddenColumnsIndexes,
+    columnConfigs,
+    isTableExpanded,
+    containerWidth,
+    containerHeight,
+  ]);
+
   return (
     <div className="table-container">
       <div className="edit-menu-toggle">
         <button
           onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
         >
-          <i class="bi bi-three-dots-vertical"></i>
+          <i className="bi bi-three-dots-vertical"></i>
         </button>
       </div>
       {isMenuVisible && (
@@ -142,12 +204,13 @@ const StoryTable = ({
         <div
           className="small-table-wrapper"
           style={{
-            width: "100%",
-            height: isTableExpanded ? 400 : 180,
+            height: containerHeight,
             overflow: "auto",
+            width: containerWidth,
           }}
         >
           <HotTable
+            ref={tableRef} // Reference to the Handsontable instance
             data={data} // Pass the entire dataset
             colHeaders={columnConfigs.map((column) => column.title)}
             columns={columnsConfig}
@@ -176,11 +239,15 @@ const StoryTable = ({
             }}
           />
         </div>
-        <button className="expandButton" onClick={toggleFirstTableExpand}>
+        <button
+          className="expandButton"
+          onClick={toggleFirstTableExpand}
+          style={{ width: "calc(100% - 8px)" }}
+        >
           {isTableExpanded ? (
-            <i class="bi bi-arrows-collapse"></i>
+            <i className="bi bi-arrows-collapse"></i>
           ) : (
-            <i class="bi bi-arrows-expand"></i>
+            <i className="bi bi-arrows-expand"></i>
           )}
         </button>
       </div>
