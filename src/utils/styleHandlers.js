@@ -1,5 +1,5 @@
 import { textRenderer } from 'handsontable/renderers/textRenderer';
-import { TextStyleAction, CellStyleAction, ClearFormattingAction} from '../CustomUndoRedo';
+import { TextStyleAction, CellStyleAction, ClearFormattingAction } from '../CustomUndoRedo';
 
 export const handleStyleChange = (styleType, value, selectedCellsRef, setTextStyles, hotRef) => {
   const changes = [];
@@ -11,21 +11,20 @@ export const handleStyleChange = (styleType, value, selectedCellsRef, setTextSty
       const visualRowIndex = hotInstance.toPhysicalRow(row);
       const visualColIndex = hotInstance.toPhysicalColumn(col);
       const cellKey = `${visualRowIndex}-${visualColIndex}`;
-      
+
       if (!newTextStyles[cellKey]) {
         newTextStyles[cellKey] = {};
       }
       const oldStyle = { ...newTextStyles[cellKey] };
-      
-      if (styleType === 'clear formatting') {
-        newTextStyles[cellKey] = {};
-      } else if (styleType === 'bold') {
-        newTextStyles[cellKey].fontWeight = newTextStyles[cellKey].fontWeight === 'bold' ? 'normal' : 'bold';
-      } else if (styleType === 'italic') {
-        newTextStyles[cellKey].fontStyle = newTextStyles[cellKey].fontStyle === 'italic' ? 'normal' : 'italic';
-      } else if (styleType === 'strikethrough') {
-        newTextStyles[cellKey].textDecoration = newTextStyles[cellKey].textDecoration === 'line-through' ? 'none' : 'line-through';
-      } else if (styleType === 'borderColor') {
+
+      if (styleType === "clear formatting") {
+        newTextStyles[cellKey] = {}; // Clear all styles
+      } else if (styleType === "remove border") {
+        newTextStyles[cellKey].borderTop = '';
+        newTextStyles[cellKey].borderBottom = '';
+        newTextStyles[cellKey].borderLeft = '';
+        newTextStyles[cellKey].borderRight = '';
+      } else if (styleType === "borderColor") {
         const minRow = Math.min(...selectedCellsRef.current.map(([row, _]) => row));
         const maxRow = Math.max(...selectedCellsRef.current.map(([row, _]) => row));
         const minCol = Math.min(...selectedCellsRef.current.map(([_, col]) => col));
@@ -46,17 +45,17 @@ export const handleStyleChange = (styleType, value, selectedCellsRef, setTextSty
       } else {
         newTextStyles[cellKey][styleType] = value;
       }
-      
+
       changes.push({ row: visualRowIndex, col: visualColIndex, oldStyle, newStyle: { ...newTextStyles[cellKey] } });
     });
     return newTextStyles;
   });
 
-  const action = styleType === 'clear formatting'
+  const action = styleType === "clear formatting"
     ? new ClearFormattingAction(changes)
-    : styleType === 'backgroundColor' || styleType.includes('border')
-    ? new CellStyleAction(changes)
-    : new TextStyleAction(changes);
+    : styleType === "backgroundColor" || styleType.includes("border")
+      ? new CellStyleAction(changes)
+      : new TextStyleAction(changes);
 
   hotInstance.undoRedo.done(() => action);
 };
@@ -73,7 +72,7 @@ export const customRenderer = (instance, td, row, col, prop, value, cellProperti
   td.style.fontWeight = styles.fontWeight || 'normal';
   td.style.fontStyle = styles.fontStyle || 'normal';
   td.style.textDecoration = styles.textDecoration || 'none';
-  td.style.borderTop = styles.borderTop || '';
+  td.style.borderTop = styles.borderTop || ''; 
   td.style.borderBottom = styles.borderBottom || '';
   td.style.borderLeft = styles.borderLeft || '';
   td.style.borderRight = styles.borderRight || '';

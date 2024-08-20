@@ -20,16 +20,17 @@ const FormatMenu = ({
   const textButtonRef = useRef(null);
   const cellButtonRef = useRef(null);
 
-  const menuItems = [
-    "Text",
-    "Cell",
-    //"Conditional Formatting",
-    "Clear Formatting",
-  ];
+  const menuItems = ["Text", "Cell", "Clear Formatting"];
 
   const handleMenuClick = (item, buttonRef) => {
     const updateDropdownState = (updates) =>
       setDropdownState((prev) => ({ ...prev, ...updates }));
+
+    if (item === "Remove Border") {
+      onStyleChange("remove border", null);
+      setDropdownState({ activeItem: "", isColorDropdownVisible: false });
+      return; // Ensure no further processing is done after removing the border
+    }
 
     if (item === "Color") {
       setDropdownState((prev) => ({
@@ -175,7 +176,6 @@ const FormatMenu = ({
             style={{ width: "400px", marginTop: "8px" }}
           >
             <Cell
-              position={{}}
               stopPropagation={stopPropagation}
               handleMenuClick={handleMenuClick}
               handleColorClick={handleColorClick}

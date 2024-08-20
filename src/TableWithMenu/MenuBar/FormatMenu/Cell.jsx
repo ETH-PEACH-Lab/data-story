@@ -10,13 +10,13 @@ const Cell = ({
 }) => {
   const fillButtonRef = useRef(null);
   const borderButtonRef = useRef(null);
+  const removeBorderButtonRef = useRef(null);
 
   const handleColorChange = (color) => {
     const appliedColor = color.hex === "#D3D3D3" ? "#FFFFFF" : color.hex;
     handleColorClick(appliedColor);
   };
 
-  // Define the active button color style for Fill and Border
   const getActiveButtonStyle = (option) =>
     isColorDropdownVisible && colorContext === option.toLowerCase()
       ? { backgroundColor: "var(--secondary)", color: "white" }
@@ -29,8 +29,14 @@ const Cell = ({
         role="group"
         aria-label="Cell formatting options"
       >
-        {["Fill", "Border"].map((cellOption, idx) => {
-          const ref = cellOption === "Fill" ? fillButtonRef : borderButtonRef;
+        {["Fill", "Border", "Remove Border"].map((cellOption, idx) => {
+          const ref =
+            cellOption === "Fill"
+              ? fillButtonRef
+              : cellOption === "Border"
+              ? borderButtonRef
+              : removeBorderButtonRef;
+
           return (
             <button
               key={idx}
@@ -54,13 +60,16 @@ const Cell = ({
                   style={{ marginRight: "5px" }}
                 ></i>
               )}
+              {cellOption === "Remove Border" && (
+                <i className="bi bi-border" style={{ marginRight: "5px" }}></i>
+              )}
               {cellOption}
             </button>
           );
         })}
       </div>
 
-      {["Fill", "Border"].map((cellOption, idx) => {
+      {["Fill", "Border", "Remove Border"].map((cellOption, idx) => {
         return (
           isColorDropdownVisible &&
           colorContext === cellOption.toLowerCase() && (

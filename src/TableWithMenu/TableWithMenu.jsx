@@ -200,8 +200,6 @@ const TableWithMenu = ({
   };
 
   const renderPageContent = () => {
-    console.log("Rendering page content for currentPage:", currentPage);
-
     const currentPageContent = pages.find(
       (page) => page.id === currentPage
     )?.content;
