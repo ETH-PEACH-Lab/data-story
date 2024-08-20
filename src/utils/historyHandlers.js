@@ -33,6 +33,13 @@ export const handleHistoryDelete = (
 
   const parentEntryExists = newHistory.some((entry) => entry.id === parentId);
 
+  const addIdToList = (id) => {
+    if (typeof id === 'number' && !isNaN(id)) {
+      setIdList(prevList => [id, ...prevList]);
+      setIdListLocalStorage([id, ...prevList]);
+    }
+  };
+
   if (!parentEntryExists) {
     setShowConfirmation(true);
     setConfirmationMessage('Parent version no longer exists. Do you want to delete this version?');
@@ -47,9 +54,7 @@ export const handleHistoryDelete = (
       setUploadHistory(newHistory);
       setHistoryLocalStorage(newHistory);
       setCurrentDataIdLocalStorage(null);
-      // Add the deleted ID back to the list
-      setIdList(prevList => [historyEntryToDelete.id, ...prevList]);
-      setIdListLocalStorage([historyEntryToDelete.id, ...idList]);
+      addIdToList(historyEntryToDelete.id);
 
       // Reset ID list if history is empty
       if (newHistory.length === 0) {
@@ -70,9 +75,7 @@ export const handleHistoryDelete = (
     setUploadHistory(newHistory);
     setHistoryLocalStorage(newHistory);
     setCurrentDataIdLocalStorage(currentDataId);
-    // Add the deleted ID back to the list
-    setIdList(prevList => [historyEntryToDelete.id, ...prevList]);
-    setIdListLocalStorage([historyEntryToDelete.id, ...idList]);
+    addIdToList(historyEntryToDelete.id);
 
     // Reset ID list if history is empty
     if (newHistory.length === 0) {
@@ -112,14 +115,19 @@ export const saveDataToHistory = (
   const newActions = currentActionStack.slice(initialActionStackLength);
 
   const newHistoryId = idList.shift();
-  setIdList(prevList => {
-    const newList = [...prevList];
-    if (newList.length < 3) {
-      newList.push(newList[newList.length - 1] + 1);
+
+  const addIdToList = (id) => {
+    if (typeof id === 'number' && !isNaN(id)) {
+      setIdList(prevList => {
+        const newList = [...prevList];
+        if (newList.length < 3) {
+          newList.push(newList[newList.length - 1] + 1);
+        }
+        return newList;
+      });
+      setIdListLocalStorage(idList);
     }
-    return newList;
-  });
-  setIdListLocalStorage(idList);
+  };
 
   setUploadHistory(prevHistory => {
     const updatedHistory = [
@@ -142,6 +150,7 @@ export const saveDataToHistory = (
     return updatedHistory;
   });
   setCurrentDataId(newHistoryId);
+  addIdToList(newHistoryId);
 };
 
 export const areActionStacksEqual = (stack1, stack2, length) => {
