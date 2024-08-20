@@ -155,10 +155,16 @@ const InsertMenu = ({
 
   const handleAddChart = () => {
     console.log("Add Chart button clicked");
+
     if (!isAddChartDisabled()) {
       let chartDataToUse = chartData;
 
-      if (aggregate) {
+      // Check if the COUNT function is selected
+      if (selectedAggregateFunction === "COUNT" && aggregate) {
+        // Automatically use the x-axis data for the y-axis, then aggregate
+        chartDataToUse.y = [chartDataToUse.x];
+        chartDataToUse = aggregateData(chartDataToUse, aggregate, "COUNT");
+      } else if (aggregate && selectedAggregateFunction !== "COUNT") {
         chartDataToUse = aggregateData(
           chartData,
           aggregate,
@@ -212,6 +218,10 @@ const InsertMenu = ({
   };
 
   const isAddChartDisabled = () => {
+    if (selectedAggregateFunction === "COUNT" && aggregate) {
+      return !isXAxisLocked;
+    }
+
     if (selectedChartType === "pie") {
       return !isXAxisLocked || !isYAxisLocked[0];
     } else {
@@ -220,6 +230,8 @@ const InsertMenu = ({
   };
 
   const handleAddSeries = () => {
+    if (selectedAggregateFunction === "COUNT" && aggregate) return; // Prevent adding series if COUNT is selected and aggregate is true
+
     setSeriesCount((prevCount) => prevCount + 1);
     setYAxisLocked((prevLocked) => [...prevLocked, false]);
     setLockedRange((prevRange) => ({
@@ -232,6 +244,20 @@ const InsertMenu = ({
   const activeButtonColor = {
     backgroundColor: "var(--secondary)", // Define your active color here
     color: "white",
+  };
+
+  const handleAggregateChange = (e) => {
+    setAggregate(e.target.checked);
+
+    // Reset Y-axis selections if COUNT is selected and aggregate is turned off
+    if (!e.target.checked && selectedAggregateFunction === "COUNT") {
+      setYAxisLocked(new Array(seriesCount).fill(false));
+      setLockedRange((prevState) => ({
+        ...prevState,
+        y: new Array(seriesCount).fill(null),
+      }));
+      setSeriesLabels(new Array(seriesCount).fill(""));
+    }
   };
 
   return (
@@ -307,7 +333,7 @@ const InsertMenu = ({
                   <input
                     type="checkbox"
                     checked={aggregate}
-                    onChange={(e) => setAggregate(e.target.checked)}
+                    onChange={handleAggregateChange} // Updated to handle state change correctly
                     className="me-2"
                   />
                   {selectedChartType === "pie"
@@ -327,6 +353,8 @@ const InsertMenu = ({
                     <option value="AVERAGE">AVERAGE</option>
                     <option value="MAX">MAX</option>
                     <option value="MIN">MIN</option>
+                    <option value="COUNT">COUNT</option>{" "}
+                    {/* Added COUNT option */}
                   </select>
                 )}
               </div>
@@ -345,32 +373,35 @@ const InsertMenu = ({
                   handleApply={() => handleApplyChartData("x")}
                   handleReset={() => handleResetChartData("x")}
                 />
-                {Array.from({ length: seriesCount }).map((_, index) => (
-                  <AxisSelection
-                    key={index}
-                    axis="y"
-                    index={index}
-                    isLocked={isYAxisLocked[index]}
-                    rangeString={generateRangeString(
-                      isYAxisLocked[index]
-                        ? lockedRange.y[index]
-                        : selectedRange
-                    )}
-                    isInvalidRange={isInvalidRange(selectedRange)}
-                    handleApply={() => handleApplyChartData("y", index)}
-                    handleReset={() => handleResetChartData("y", index)}
-                    handleRemoveSeries={() => handleRemoveSeries(index)}
-                    seriesCount={seriesCount}
-                  />
-                ))}
+                {(!aggregate || selectedAggregateFunction !== "COUNT") &&
+                  Array.from({ length: seriesCount }).map((_, index) => (
+                    <AxisSelection
+                      key={index}
+                      axis="y"
+                      index={index}
+                      isLocked={isYAxisLocked[index]}
+                      rangeString={generateRangeString(
+                        isYAxisLocked[index]
+                          ? lockedRange.y[index]
+                          : selectedRange
+                      )}
+                      isInvalidRange={isInvalidRange(selectedRange)}
+                      handleApply={() => handleApplyChartData("y", index)}
+                      handleReset={() => handleResetChartData("y", index)}
+                      handleRemoveSeries={() => handleRemoveSeries(index)}
+                      seriesCount={seriesCount}
+                    />
+                  ))}
                 <div className="d-flex gap-2">
-                  <button
-                    onClick={handleAddSeries}
-                    className="btn btn-secondary"
-                    style={{ marginTop: "8px" }}
-                  >
-                    Add Series
-                  </button>
+                  {(!aggregate || selectedAggregateFunction !== "COUNT") && (
+                    <button
+                      onClick={handleAddSeries}
+                      className="btn btn-secondary"
+                      style={{ marginTop: "8px" }}
+                    >
+                      Add Series
+                    </button>
+                  )}
                   <button
                     onClick={handleAddChart}
                     className="btn btn-primary"
@@ -394,18 +425,20 @@ const InsertMenu = ({
                   handleApply={() => handleApplyChartData("x")}
                   handleReset={() => handleResetChartData("x")}
                 />
-                <AxisSelection
-                  axis="y"
-                  index={0}
-                  isLocked={isYAxisLocked[0]}
-                  rangeString={generateRangeString(
-                    isYAxisLocked[0] ? lockedRange.y[0] : selectedRange
-                  )}
-                  isInvalidRange={isInvalidRange(selectedRange)}
-                  handleApply={() => handleApplyChartData("y", 0)}
-                  handleReset={() => handleResetChartData("y", 0)}
-                  seriesCount={seriesCount}
-                />
+                {(!aggregate || selectedAggregateFunction !== "COUNT") && (
+                  <AxisSelection
+                    axis="y"
+                    index={0}
+                    isLocked={isYAxisLocked[0]}
+                    rangeString={generateRangeString(
+                      isYAxisLocked[0] ? lockedRange.y[0] : selectedRange
+                    )}
+                    isInvalidRange={isInvalidRange(selectedRange)}
+                    handleApply={() => handleApplyChartData("y", 0)}
+                    handleReset={() => handleResetChartData("y", 0)}
+                    seriesCount={seriesCount}
+                  />
+                )}
                 <div className="d-flex gap-2">
                   <button
                     onClick={handleAddChart}

@@ -152,49 +152,78 @@ const TableWithMenu = ({
   };
 
   const aggregateData = (data, aggregate, aggregateFunction) => {
+    console.log("Input Data:", data);
     if (!aggregate) return data;
-    if (!data || !data.y || !Array.isArray(data.y) || data.y.length === 0) {
+    if (!data || !data.x || !Array.isArray(data.x) || data.x.length === 0) {
       console.error("Invalid data structure in aggregateData", data);
       return { x: [], y: [[]] };
     }
 
-    // Group data by non-numerical x-axis values
+    // Initialize the aggregated data structure
     const aggregatedData = {
       x: [],
-      y: Array(data.y.length)
-        .fill(null)
-        .map(() => []),
+      y: [[]], // Adjust to accommodate y values as arrays
     };
-    const groupedData = {};
 
-    data.x.forEach((xValue, index) => {
-      // Use the xValue directly as the key for grouping, even if it's non-numerical
-      if (!groupedData[xValue])
-        groupedData[xValue] = Array(data.y.length)
-          .fill(null)
-          .map(() => []);
+    if (aggregateFunction === "COUNT") {
+      const counts = {};
 
-      data.y.forEach((series, seriesIndex) => {
-        groupedData[xValue][seriesIndex].push(Number(series[index]));
+      // Count occurrences of each x-value
+      data.x.forEach((xValue) => {
+        counts[xValue] = (counts[xValue] || 0) + 1;
       });
-    });
 
-    Object.keys(groupedData).forEach((xValue) => {
-      aggregatedData.x.push(xValue);
-      groupedData[xValue].forEach((yValues, seriesIndex) => {
-        const aggregateFunctions = {
-          SUM: (values) => values.reduce((acc, curr) => acc + curr, 0),
-          AVERAGE: (values) =>
-            values.reduce((acc, curr) => acc + curr, 0) / values.length,
-          COUNT: (values) => values.length,
-          MAX: (values) => Math.max(...values),
-          MIN: (values) => Math.min(...values),
-        };
-        aggregatedData.y[seriesIndex].push(
-          aggregateFunctions[aggregateFunction](yValues)
-        );
+      aggregatedData.x = Object.keys(counts); // The distinct values for the x-axis
+      aggregatedData.y = [Object.values(counts)]; // The counts for the y-axis
+      console.log("Aggregated Data (COUNT):", aggregatedData);
+    } else {
+      // For other aggregation functions (SUM, AVERAGE, etc.)
+      const groupedData = {};
+
+      data.x.forEach((xValue, index) => {
+        if (!groupedData[xValue]) {
+          groupedData[xValue] = Array(data.y.length)
+            .fill(null)
+            .map(() => []);
+        }
+
+        data.y.forEach((series, seriesIndex) => {
+          const value = Number(series[index]);
+          if (!isNaN(value)) {
+            groupedData[xValue][seriesIndex].push(value);
+          }
+        });
       });
-    });
+
+      Object.keys(groupedData).forEach((xValue) => {
+        aggregatedData.x.push(xValue);
+        groupedData[xValue].forEach((yValues, seriesIndex) => {
+          const aggregateFunctions = {
+            SUM: (values) => values.reduce((acc, curr) => acc + curr, 0),
+            AVERAGE: (values) =>
+              values.reduce((acc, curr) => acc + curr, 0) / values.length,
+            MAX: (values) => Math.max(...values),
+            MIN: (values) => Math.min(...values),
+          };
+          aggregatedData.y[seriesIndex].push(
+            yValues.length > 0
+              ? aggregateFunctions[aggregateFunction](yValues)
+              : null
+          );
+        });
+      });
+    }
+
+    if (
+      aggregatedData.x.length === 0 ||
+      aggregatedData.y.some((y) => y.length === 0)
+    ) {
+      console.error(
+        "Aggregated data resulted in an empty dataset",
+        aggregatedData
+      );
+      return { x: [], y: [[]] };
+    }
 
     return aggregatedData;
   };
@@ -306,12 +335,10 @@ const TableWithMenu = ({
         yAxisTitle,
       } = chartConfigs[chartIndex];
 
-      console.log("Rendering chart content for chartIndex:", chartIndex);
-
       return (
         <Chart
           type={type}
-          data={data}
+          data={data} // Already aggregated data
           index={chartIndex}
           aggregate={aggregate}
           aggregateFunction={aggregateFunction}
@@ -346,15 +373,17 @@ const TableWithMenu = ({
     aggregateFunction,
     seriesLabels
   ) => {
-    console.log("addChartPage called with:", {
-      type,
-      data,
-      aggregate,
-      aggregateFunction,
-      seriesLabels,
-    });
+    // Ensure data is aggregated only if it hasn't been aggregated already
+    let aggregatedData = data;
 
-    const numColors = type === "pie" ? data.x.length : data.y.length;
+    if (aggregate && aggregateFunction !== "COUNT") {
+      aggregatedData = aggregateData(data, aggregate, aggregateFunction);
+    }
+
+    console.log("Final Aggregated Data for Chart:", aggregatedData);
+
+    const numColors =
+      type === "pie" ? aggregatedData.x.length : aggregatedData.y.length;
     const shuffledColors = shuffleArray([...allColors]);
     const generatedColors = shuffledColors.slice(0, numColors);
 
@@ -370,11 +399,11 @@ const TableWithMenu = ({
       ...chartConfigs,
       {
         type,
-        data,
+        data: aggregatedData, // Ensure only pre-aggregated data is passed
         aggregate,
         aggregateFunction,
         seriesLabels: type !== "pie" ? seriesLabels : [],
-        pieLabels: type === "pie" ? data.x : [],
+        pieLabels: type === "pie" ? aggregatedData.x : [],
         colors: generatedColors,
         title: newTitle,
         xAxisTitle: "x-axis",
@@ -382,19 +411,12 @@ const TableWithMenu = ({
       },
     ];
 
-    console.log("Updated pages:", newPages);
-    console.log("Updated chartConfigs:", newChartConfigs);
-
     setPages(newPages);
     setChartConfigs(newChartConfigs);
     setChartNotes({ ...chartNotes, [newChartId]: "Title" });
     setFooterNames([...footerNames, `Chart ${newChartId}`]);
     setCurrentPage(newPageId);
     setChartNames([...footerNames, `Chart ${newChartId}`]);
-
-    console.log("Updated pages:", newPages);
-    console.log("Updated chartConfigs:", newChartConfigs);
-    console.log("New chart added successfully");
   };
 
   const handleDeleteChart = (chartIndex) => {

@@ -93,10 +93,6 @@ const Chart = ({
     setEditingNote(null);
   };
 
-  console.log("Chart data before aggregation:", data);
-  const aggregatedData = aggregateData(data, aggregate, aggregateFunction);
-  console.log("Aggregated data:", aggregatedData);
-
   const [selectedItem, setSelectedItem] = useState("");
   const [newLabel, setNewLabel] = useState("");
   const [isRenamingVisible, setIsRenamingVisible] = useState(false);
@@ -198,17 +194,17 @@ const Chart = ({
   }, [title, xAxisTitle, yAxisTitle]);
 
   const chartData = {
-    labels: type === "pie" ? pieLabels : aggregatedData.x,
+    labels: type === "pie" ? pieLabels : data.x,
     datasets:
       type === "pie"
         ? [
             {
-              data: aggregatedData.y[0],
+              data: data.y[0],
               backgroundColor: colors,
               borderColor: colors,
             },
           ]
-        : aggregatedData.y.map((series, idx) => ({
+        : data.y.map((series, idx) => ({
             label: seriesLabels[idx] || `Series ${idx + 1}`,
             data: series,
             fill: false,
@@ -216,6 +212,8 @@ const Chart = ({
             borderColor: colors[idx],
           })),
   };
+
+  console.log("Chart Data:", chartData);
 
   const ChartComponent = {
     line: Line,
