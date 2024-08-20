@@ -116,13 +116,19 @@ const FileMenu = ({
             onClick={() => handleMenuClick(item)}
           >
             {item === "New" && (
-              <i class="bi bi-plus-circle" style={{ marginRight: "5px" }}></i>
+              <i
+                className="bi bi-plus-circle"
+                style={{ marginRight: "5px" }}
+              ></i>
             )}
             {item === "Open" && (
-              <i class="bi bi-upload" style={{ marginRight: "5px" }}></i>
+              <i className="bi bi-upload" style={{ marginRight: "5px" }}></i>
             )}
             {item === "History" && (
-              <i class="bi bi-clock-history" style={{ marginRight: "5px" }}></i>
+              <i
+                className="bi bi-clock-history"
+                style={{ marginRight: "5px" }}
+              ></i>
             )}
             {item}
           </button>

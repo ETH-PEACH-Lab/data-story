@@ -275,7 +275,7 @@ function Story({
           onClick={handleShowCard}
           style={{ paddingBottom: "4px", paddingLeft: "11px" }}
         >
-          <i class="bi bi-plus-lg"></i>
+          <i className="bi bi-plus-lg"></i>
         </button>
       </div>
 
