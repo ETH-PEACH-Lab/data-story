@@ -424,6 +424,7 @@ const InsertMenu = ({
                   isInvalidRange={isInvalidRange(selectedRange)}
                   handleApply={() => handleApplyChartData("x")}
                   handleReset={() => handleResetChartData("x")}
+                  labelOverride="Selected Labels:"
                 />
                 {(!aggregate || selectedAggregateFunction !== "COUNT") && (
                   <AxisSelection
@@ -468,10 +469,13 @@ const AxisSelection = ({
   handleReset,
   handleRemoveSeries,
   seriesCount,
+  labelOverride,
 }) => (
   <div>
     <label>
-      {axis === "x"
+      {labelOverride
+        ? `${labelOverride} ${rangeString}`
+        : axis === "x"
         ? `Selected X-axis: ${rangeString}`
         : `Selected Series ${index + 1}: ${rangeString}`}
       {isInvalidRange && !isLocked && (
