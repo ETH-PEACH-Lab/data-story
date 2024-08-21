@@ -111,6 +111,7 @@
   border: 2px dashed black;
   width: 100%;
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .ql-bubble .ql-editor {

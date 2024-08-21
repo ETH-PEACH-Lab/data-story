@@ -81,10 +81,7 @@ function EditableText({
   }, [isEditing]);
 
   return (
-    <div
-      className="editable-text-container"
-      style={{ position: "relative", overflow: "hidden" }}
-    >
+    <div className="editable-text-container" style={{ position: "relative" }}>
       <div className="edit-menu-toggle">
         <button
           onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
