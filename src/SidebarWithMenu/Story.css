@@ -30,6 +30,7 @@
   flex-grow: 1;
   position: relative;
   right: 8px;
+  overflow: visible;
 }
 
 .edit-menu-toggle {
@@ -106,8 +107,14 @@
   min-height: 100px;
   z-index: 10;
   line-height: 1;
-  overflow: visible;
   z-index: 300;
+  border: 2px solid black;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ql-bubble .ql-editor {
+  max-height: 100%;
 }
 
 .quill-editor-container h1 {

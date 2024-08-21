@@ -41,6 +41,7 @@ function EditableText({
           ],
         },
         theme: "bubble",
+        bounds: containerRef.current, // Use the ref to set bounds
       });
 
       quillRef.current.on("text-change", () => {
@@ -80,12 +81,15 @@ function EditableText({
   }, [isEditing]);
 
   return (
-    <div className="editable-text-container" ref={containerRef}>
+    <div
+      className="editable-text-container"
+      style={{ position: "relative", overflow: "hidden" }}
+    >
       <div className="edit-menu-toggle">
         <button
           onClick={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
         >
-          <i class="bi bi-three-dots-vertical"></i>
+          <i className="bi bi-three-dots-vertical"></i>
         </button>
       </div>
       {isMenuVisible && (
@@ -97,7 +101,11 @@ function EditableText({
           setVisibleMenuIndex={setVisibleMenuIndex}
         />
       )}
-      <div onClick={handleTextClick} className="editable-text">
+      <div
+        onClick={handleTextClick}
+        className="editable-text"
+        ref={containerRef}
+      >
         {isEditing ? (
           <div ref={editorRef} className="quill-editor-container" />
         ) : (
