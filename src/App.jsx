@@ -8,6 +8,8 @@ import HistorySidebar from "./HistorySidebar";
 import ErrorBoundary from "./ErrorBoundary";
 import ConfirmationWindow from "./ConfirmationWindow";
 import Papa from "papaparse";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 import {
   handleDataLoaded,
@@ -83,33 +85,46 @@ function App() {
   }, []);
 
   const handleExport = useCallback(() => {
-    if (!hotRef.current) return;
+    const storyContainer = document.querySelector(".story-container");
 
-    const hotInstance = hotRef.current.hotInstance;
-    const data = hotInstance.getData();
-    const headers = hotInstance.getColHeader();
+    if (!storyContainer) return;
 
-    const csvData = Papa.unparse({
-      fields: headers,
-      data: data,
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pdf.internal.pageSize.getWidth();
+    let yPosition = 0;
+
+    // Convert each story component to an image and add to the PDF
+    const storyComponents = Array.from(storyContainer.children);
+
+    // Exclude the last component (the '+ button')
+    const componentsToExport = storyComponents.slice(0, -1);
+
+    componentsToExport.forEach((component, index) => {
+      html2canvas(component, { scale: 2 }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        if (yPosition + imgHeight > pageHeight) {
+          // Add a new page if the current content exceeds the page height
+          pdf.addPage();
+          yPosition = 0; // Reset y position for the new page
+        }
+
+        pdf.addImage(imgData, "PNG", 0, yPosition, imgWidth, imgHeight);
+        yPosition += imgHeight;
+
+        // If it's the last component, save the PDF
+        if (index === componentsToExport.length - 1) {
+          const fileName = `DataStory_${originalFileName.replace(
+            /\.[^/.]+$/,
+            ""
+          )}_Story.pdf`;
+          pdf.save(fileName);
+        }
+      });
     });
-
-    // Construct the filename
-    const sanitizedOriginalFileName = originalFileName
-      ? originalFileName.replace(/\.[^/.]+$/, "") // Remove file extension if any
-      : "Untitled"; // Default to 'Untitled' if originalFileName is not provided
-    const fileName = `DataStory_${sanitizedOriginalFileName}.csv`;
-
-    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-
-    link.href = url;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }, [hotRef, originalFileName]);
+  }, [originalFileName]);
 
   useEffect(() => {
     if (hotRef.current) {

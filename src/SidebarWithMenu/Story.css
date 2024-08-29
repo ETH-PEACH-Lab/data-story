@@ -79,7 +79,7 @@
   position: relative;
   padding: 6px;
   border: 2px solid #ccc;
-  width: calc(100% + 24px);
+  width: max-content;
   margin-top: 8px;
   background-color: transparent;
   font-size: 16px;
@@ -92,7 +92,7 @@
   display: flex;
   align-items: flex-start;
   right: 6px;
-  width: fit-content;
+  width: calc(100% + 5px);
   position: relative;
   margin-bottom: 0px;
 }
@@ -130,7 +130,7 @@
   display: flex;
   align-items: flex-start;
   right: 6px;
-  width: calc(100% - 24px);
+  width: calc(100% + 24px);
   position: relative;
   margin-bottom: 0px;
 }
@@ -140,14 +140,14 @@
   position: relative;
   height: 400px;
   width: calc(100% - 8px);
-  right: 8px;
+  right: 18px;
 }
 
 .table-container {
   display: flex;
   align-items: flex-start;
   right: 6px;
-  width: calc(100% - 24px);
+  width: calc(100% + 24px);
   position: relative;
   margin-bottom: 0px;
   overflow: auto;
