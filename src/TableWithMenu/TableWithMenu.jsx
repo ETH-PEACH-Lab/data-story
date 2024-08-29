@@ -76,6 +76,7 @@ const TableWithMenu = ({
   setFooterNames,
   currentPage,
   setCurrentPage,
+  handleExport,
 }) => {
   const [selectedRange, setSelectedRangeState] = useState(null);
   const [chartNotes, setChartNotes] = useState({});
@@ -571,6 +572,7 @@ const TableWithMenu = ({
           addChartPage={addChartPage}
           selectedRange={selectedRange}
           aggregateData={aggregateData}
+          handleExport={handleExport}
         />
       </div>
       {renderPageContent()}

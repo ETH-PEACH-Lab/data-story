@@ -15,6 +15,7 @@ const FileMenu = ({
   setInitialActionStack,
   initialActionStackLength,
   setInitialActionStackLength,
+  handleExport,
 }) => {
   const fileInputRef = useRef(null);
 
@@ -41,6 +42,11 @@ const FileMenu = ({
 
     if (item === "History") {
       toggleHistory();
+      return;
+    }
+
+    if (item === "Export") {
+      handleExport();
       return;
     }
 
@@ -109,7 +115,7 @@ const FileMenu = ({
   return (
     <>
       <div className="d-flex gap-2">
-        {["New", "Open", "History"].map((item, index) => (
+        {["New", "Open", "Save", "History", "Export"].map((item, index) => (
           <button
             key={index}
             className="btn btn-outline-secondary"
@@ -124,9 +130,18 @@ const FileMenu = ({
             {item === "Open" && (
               <i className="bi bi-upload" style={{ marginRight: "5px" }}></i>
             )}
+            {item === "Save" && (
+              <i className="bi bi-save" style={{ marginRight: "5px" }}></i>
+            )}
             {item === "History" && (
               <i
                 className="bi bi-clock-history"
+                style={{ marginRight: "5px" }}
+              ></i>
+            )}
+            {item === "Export" && (
+              <i
+                className="bi bi-file-earmark-arrow-down"
                 style={{ marginRight: "5px" }}
               ></i>
             )}

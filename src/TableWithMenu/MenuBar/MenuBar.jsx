@@ -38,6 +38,7 @@ const MenuBar = ({
   addChartPage,
   selectedRange,
   aggregateData,
+  handleExport,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -58,6 +59,7 @@ const MenuBar = ({
         setInitialActionStack={setInitialActionStack}
         initialActionStackLength={initialActionStackLength}
         setInitialActionStackLength={setInitialActionStackLength}
+        handleExport={handleExport}
       />
     ),
     Edit: (

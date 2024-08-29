@@ -7,6 +7,7 @@ import SidebarWithStoryMenu from "./SidebarWithMenu/SidebarWithStoryMenu";
 import HistorySidebar from "./HistorySidebar";
 import ErrorBoundary from "./ErrorBoundary";
 import ConfirmationWindow from "./ConfirmationWindow";
+import Papa from "papaparse";
 
 import {
   handleDataLoaded,
@@ -80,6 +81,35 @@ function App() {
       setRedoDisabled(!undoRedo.isRedoAvailable());
     }
   }, []);
+
+  const handleExport = useCallback(() => {
+    if (!hotRef.current) return;
+
+    const hotInstance = hotRef.current.hotInstance;
+    const data = hotInstance.getData();
+    const headers = hotInstance.getColHeader();
+
+    const csvData = Papa.unparse({
+      fields: headers,
+      data: data,
+    });
+
+    // Construct the filename
+    const sanitizedOriginalFileName = originalFileName
+      ? originalFileName.replace(/\.[^/.]+$/, "") // Remove file extension if any
+      : "Untitled"; // Default to 'Untitled' if originalFileName is not provided
+    const fileName = `DataStory_${sanitizedOriginalFileName}.csv`;
+
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.href = url;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, [hotRef, originalFileName]);
 
   useEffect(() => {
     if (hotRef.current) {
@@ -404,6 +434,7 @@ function App() {
             setFooterNames={setFooterNames}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            handleExport={handleExport}
           />
           <SidebarWithStoryMenu
             data={data}
