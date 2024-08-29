@@ -84,47 +84,61 @@ function App() {
     }
   }, []);
 
-  const handleExport = useCallback(() => {
-    const storyContainer = document.querySelector(".story-container");
-
-    if (!storyContainer) return;
-
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pdf.internal.pageSize.getWidth();
-    let yPosition = 0;
-
-    // Convert each story component to an image and add to the PDF
-    const storyComponents = Array.from(storyContainer.children);
-
-    // Exclude the last component (the '+ button')
-    const componentsToExport = storyComponents.slice(0, -1);
-
-    componentsToExport.forEach((component, index) => {
-      html2canvas(component, { scale: 2 }).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        if (yPosition + imgHeight > pageHeight) {
-          // Add a new page if the current content exceeds the page height
-          pdf.addPage();
-          yPosition = 0; // Reset y position for the new page
-        }
-
-        pdf.addImage(imgData, "PNG", 0, yPosition, imgWidth, imgHeight);
-        yPosition += imgHeight;
-
-        // If it's the last component, save the PDF
-        if (index === componentsToExport.length - 1) {
-          const fileName = `DataStory_${originalFileName.replace(
+  const handleExport = useCallback(
+    (exportType) => {
+      if (exportType === "table") {
+        if (hotRef.current) {
+          const tableData = hotRef.current.hotInstance.getData();
+          const csv = Papa.unparse(tableData);
+          const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+          const link = document.createElement("a");
+          const fileName = `${originalFileName.replace(
             /\.[^/.]+$/,
             ""
-          )}_Story.pdf`;
-          pdf.save(fileName);
+          )}_Table.csv`;
+          link.href = URL.createObjectURL(blob);
+          link.download = fileName;
+          link.click();
         }
-      });
-    });
-  }, [originalFileName]);
+      } else if (exportType === "story") {
+        const storyContainer = document.querySelector(".story-container");
+
+        if (!storyContainer) return;
+
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pdf.internal.pageSize.getWidth();
+        let yPosition = 0;
+
+        const storyComponents = Array.from(storyContainer.children);
+        const componentsToExport = storyComponents.slice(0, -1);
+
+        componentsToExport.forEach((component, index) => {
+          html2canvas(component, { scale: 2 }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            if (yPosition + imgHeight > pageHeight) {
+              pdf.addPage();
+              yPosition = 0;
+            }
+
+            pdf.addImage(imgData, "PNG", 0, yPosition, imgWidth, imgHeight);
+            yPosition += imgHeight;
+
+            if (index === componentsToExport.length - 1) {
+              const fileName = `DataStory_${originalFileName.replace(
+                /\.[^/.]+$/,
+                ""
+              )}_Story.pdf`;
+              pdf.save(fileName);
+            }
+          });
+        });
+      }
+    },
+    [originalFileName, hotRef]
+  );
 
   useEffect(() => {
     if (hotRef.current) {

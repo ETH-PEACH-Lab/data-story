@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import Papa from "papaparse";
 
 const FileMenu = ({
@@ -18,6 +18,7 @@ const FileMenu = ({
   handleExport,
 }) => {
   const fileInputRef = useRef(null);
+  const [activeItem, setActiveItem] = useState("");
 
   const generateEmptyDataset = () => {
     const columns = Array.from({ length: 5 }, (_, i) => `Column ${i + 1}`);
@@ -46,7 +47,7 @@ const FileMenu = ({
     }
 
     if (item === "Export") {
-      handleExport();
+      setActiveItem(activeItem === "Export" ? "" : "Export");
       return;
     }
 
@@ -155,6 +156,39 @@ const FileMenu = ({
         style={{ display: "none" }}
         onChange={handleFileInputChange}
       />
+
+      <div className={`collapse ${activeItem === "Export" ? "show" : ""}`}>
+        <div
+          className="card card-body"
+          style={{ marginTop: "8px", width: "400px" }}
+        >
+          <div
+            className="btn-group"
+            role="group"
+            style={{ width: "fit-content" }}
+          >
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={() => handleExport("table")}
+            >
+              <i className="bi bi-table" style={{ marginRight: "5px" }}></i>
+              Table
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={() => handleExport("story")}
+            >
+              <i
+                className="bi bi-journal-text"
+                style={{ marginRight: "5px" }}
+              ></i>
+              Story
+            </button>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
