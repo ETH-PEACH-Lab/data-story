@@ -444,7 +444,13 @@ const Chart = ({
           </div>
         )}
       </div>
-      <div className="flex-grow-1 d-flex flex-column">
+      <div
+        className="flex-grow-1 d-flex flex-column"
+        style={{
+          marginTop: "0px",
+          marginLeft: "20px",
+        }}
+      >
         <ChartComponent key={index} data={chartData} options={chartOptions} />
       </div>
     </div>
