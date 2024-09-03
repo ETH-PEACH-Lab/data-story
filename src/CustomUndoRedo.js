@@ -103,18 +103,21 @@ class TypeAction extends Handsontable.plugins.UndoRedo.Action {
 export { TypeAction };
 
 class HeaderAction extends Handsontable.plugins.UndoRedo.Action {
-  constructor(columnIndex, oldHeader, newHeader) {
+  constructor(columnIndex, oldHeaderName, newHeaderName) {
     super();
     this.columnIndex = columnIndex;
-    this.oldHeader = oldHeader;
-    this.newHeader = newHeader;
+    this.oldHeaderName = oldHeaderName;
+    this.newHeaderName = newHeaderName;
     this.actionType = 'change_header';
   }
 
   undo(instance, undoneCallback) {
     const columns = instance.getSettings().columns;
-    columns[this.columnIndex].title = this.oldHeader;
-    instance.updateSettings({ columns: columns });
+    
+    // Update the header to the old header name
+    columns[this.columnIndex].title = this.oldHeaderName;
+    instance.updateSettings({ colHeaders: columns.map((col) => col.title) });
+    
     instance.render();
     if (undoneCallback) {
       undoneCallback();
@@ -123,8 +126,10 @@ class HeaderAction extends Handsontable.plugins.UndoRedo.Action {
 
   redo(instance, redoneCallback) {
     const columns = instance.getSettings().columns;
-    columns[this.columnIndex].title = this.newHeader;
-    instance.updateSettings({ columns: columns });
+    
+    columns[this.columnIndex].title = this.newHeaderName;
+    instance.updateSettings({ colHeaders: columns.map((col) => col.title) });
+    
     instance.render();
     if (redoneCallback) {
       redoneCallback();

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { HeaderAction } from "../../CustomUndoRedo";
 
 const EditMenu = ({
   countAndRemoveDuplicates,
@@ -33,6 +34,14 @@ const EditMenu = ({
     setActiveItem("");
   };
 
+  const logUndoRedoStacks = () => {
+    const hotInstance = hotRef.current.hotInstance;
+    const undoRedoPlugin = hotInstance.undoRedo;
+
+    console.log("Done Actions Stack:", undoRedoPlugin.doneActions);
+    console.log("Undone Actions Stack:", undoRedoPlugin.undoneActions);
+  };
+
   const handleRenameColumn = () => {
     setColumns((prevColumns) => {
       const newColumns = [...prevColumns];
@@ -41,20 +50,26 @@ const EditMenu = ({
 
       newColumns[selectedColumnIndex] = {
         ...newColumns[selectedColumnIndex],
-        title: newColumnName,
+        title: newHeader,
       };
 
-      const wrappedAction = new HeaderAction(
+      hotRef.current.hotInstance.updateSettings({
+        colHeaders: newColumns.map((col) => col.title),
+      });
+
+      const headerAction = new HeaderAction(
         selectedColumnIndex,
         oldHeader,
         newHeader
       );
-      hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+      hotRef.current.hotInstance.undoRedo.done(() => headerAction);
 
       return newColumns;
     });
+
     setNewColumnName("");
     setActiveItem("");
+    console.log("New column name and active item reset");
   };
 
   // Define your active button color
