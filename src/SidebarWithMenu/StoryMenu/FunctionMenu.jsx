@@ -121,7 +121,13 @@ const FunctionMenu = ({
   };
 
   const generateRangeString = () => {
-    if (!selectedRangeState) return "No range selected";
+    if (!selectedRangeState) {
+      return (
+        <span style={{ color: "#a53939", fontWeight: "bold" }}>
+          No range selected
+        </span>
+      );
+    }
 
     if (selectedRangeState.allCols) {
       const colWord =

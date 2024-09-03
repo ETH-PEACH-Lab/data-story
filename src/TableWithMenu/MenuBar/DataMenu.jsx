@@ -259,11 +259,22 @@ const DataMenu = ({
   };
 
   const toggleAccordion = (section) => {
+    if (!selectedColumnName) return; // Do not open if no column is selected
+
     setAccordionState((prevState) => ({
       condition: section === "condition" ? !prevState.condition : false,
       value: section === "value" ? !prevState.value : false,
     }));
   };
+
+  useEffect(() => {
+    if (!selectedColumnName) {
+      setAccordionState({
+        condition: false,
+        value: false,
+      });
+    }
+  }, [selectedColumnName]);
 
   const activeButtonColor = {
     backgroundColor: "var(--secondary)",
@@ -311,8 +322,14 @@ const DataMenu = ({
             style={{ width: "400px", marginTop: "16px" }}
           >
             <div className="mb-2">
-              {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
-                "No column selected"}
+              <span style={{ fontWeight: "bold" }}>Selected column:</span>{" "}
+              {selectedColumnName ? (
+                selectedColumnName
+              ) : (
+                <span style={{ color: "#a53939", fontWeight: "bold" }}>
+                  No column selected
+                </span>
+              )}
             </div>
             <div className="d-flex gap-2">
               <select
@@ -326,7 +343,11 @@ const DataMenu = ({
                 <option value="Ascending">Ascending</option>
                 <option value="Descending">Descending</option>
               </select>
-              <button onClick={handleSortClick} className="btn btn-secondary">
+              <button
+                onClick={handleSortClick}
+                className="btn btn-secondary"
+                disabled={!selectedColumnName}
+              >
                 Apply
               </button>
             </div>
@@ -349,8 +370,14 @@ const DataMenu = ({
             style={{ width: "400px", marginTop: "16px" }}
           >
             <div className="mb-2">
-              {`Selected column: index ${selectedColumnIndex}, ${selectedColumnName}` ||
-                "No column selected"}
+              <span style={{ fontWeight: "bold" }}>Selected column:</span>{" "}
+              {selectedColumnName ? (
+                selectedColumnName
+              ) : (
+                <span style={{ color: "#a53939", fontWeight: "bold" }}>
+                  No column selected
+                </span>
+              )}
             </div>
             <div className="accordion" id="filterAccordion">
               <div className="accordion-item">
@@ -479,6 +506,7 @@ const DataMenu = ({
               onClick={resetFilter}
               className="btn btn-secondary mt-2"
               style={{ width: "220px" }}
+              disabled={!selectedColumnName}
             >
               Reset filter for this column
             </button>

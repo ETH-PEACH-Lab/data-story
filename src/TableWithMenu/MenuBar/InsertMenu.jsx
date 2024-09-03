@@ -473,11 +473,14 @@ const AxisSelection = ({
 }) => (
   <div>
     <label>
-      {labelOverride
-        ? `${labelOverride} ${rangeString}`
-        : axis === "x"
-        ? `Selected X-axis: ${rangeString}`
-        : `Selected Series ${index + 1}: ${rangeString}`}
+      <span style={{ fontWeight: "bold", color: "black" }}>
+        {labelOverride
+          ? `${labelOverride}`
+          : axis === "x"
+          ? `Selected X-axis:`
+          : `Selected Series ${index + 1}:`}
+      </span>{" "}
+      {rangeString}
       {isInvalidRange && !isLocked && (
         <strong className="text-danger">
           {" "}

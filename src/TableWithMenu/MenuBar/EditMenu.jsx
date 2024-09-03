@@ -117,8 +117,15 @@ const EditMenu = ({
             className="card card-body"
             style={{ width: "400px", marginTop: "8px" }}
           >
-            <div>
-              {`Selected column: ${selectedColumnName}` || "No column selected"}
+            <div style={{ color: "black" }}>
+              <span style={{ fontWeight: "bold" }}>Selected column:</span>{" "}
+              {selectedColumnName ? (
+                selectedColumnName
+              ) : (
+                <span style={{ color: "#a53939", fontWeight: "bold" }}>
+                  No column selected
+                </span>
+              )}
             </div>
             <div>
               <input
@@ -142,6 +149,7 @@ const EditMenu = ({
               <button
                 onClick={handleFindReplaceClick}
                 className="btn btn-secondary mt-2"
+                disabled={!selectedColumnName} // Disable if no column is selected
               >
                 Apply
               </button>
@@ -158,7 +166,12 @@ const EditMenu = ({
             className="card card-body"
             style={{ width: "400px", marginTop: "8px" }}
           >
-            <div>Number of duplicate rows: {duplicateCount}</div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>
+                Number of duplicate rows:
+              </span>{" "}
+              {duplicateCount}
+            </div>
             <button
               onClick={handleRemoveDuplicates}
               className="btn btn-secondary mt-2"
@@ -174,8 +187,15 @@ const EditMenu = ({
             className="card card-body"
             style={{ width: "400px", marginTop: "8px" }}
           >
-            <div>
-              {`Selected column: ${selectedColumnName}` || "No column selected"}
+            <div style={{ color: "black" }}>
+              <span style={{ fontWeight: "bold" }}>Selected column:</span>{" "}
+              {selectedColumnName ? (
+                selectedColumnName
+              ) : (
+                <span style={{ color: "#a53939", fontWeight: "bold" }}>
+                  No column selected
+                </span>
+              )}
             </div>
             <div className="d-flex">
               <input
@@ -188,6 +208,7 @@ const EditMenu = ({
               <button
                 onClick={handleRenameColumn}
                 className="btn btn-secondary ms-2"
+                disabled={!selectedColumnName} // Disable if no column is selected
               >
                 Rename
               </button>
