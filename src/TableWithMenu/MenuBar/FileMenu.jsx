@@ -95,7 +95,11 @@ const FileMenu = ({
       const reader = new FileReader();
       reader.onload = (e) => {
         const text = e.target.result;
-        const data = Papa.parse(text, { header: true }).data;
+
+        const data = Papa.parse(text, {
+          header: true,
+        }).data;
+
         onDataLoaded(data, file.name);
         resetFiltersAndSorting();
       };

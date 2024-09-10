@@ -88,8 +88,22 @@ function App() {
     (exportType) => {
       if (exportType === "table") {
         if (hotRef.current) {
-          const tableData = hotRef.current.hotInstance.getData();
-          const csv = Papa.unparse(tableData);
+          const hotInstance = hotRef.current.hotInstance;
+
+          const headers = hotInstance.getColHeader();
+          const tableData = hotInstance.getData();
+          const rowHeaders = Array.from({ length: tableData.length }, (_, i) =>
+            (i + 1).toString()
+          );
+
+          const tableDataWithRowHeaders = tableData.map((row, index) => [
+            rowHeaders[index],
+            ...row,
+          ]);
+
+          const fullData = [["", ...headers], ...tableDataWithRowHeaders];
+          const csv = Papa.unparse(fullData);
+
           const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
           const link = document.createElement("a");
           const fileName = `${originalFileName.replace(

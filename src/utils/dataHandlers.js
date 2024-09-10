@@ -35,7 +35,7 @@ export const handleDataLoaded = (
     type: 'text',
   }));
 
-  setData(dataWithTypes);
+  setData(newData);
   setColumnConfigs(initialColumnConfigs);
   setOriginalFileName(fileName);
 
