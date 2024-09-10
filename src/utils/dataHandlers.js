@@ -127,16 +127,19 @@ export const fetchData = async (
 export const initializeColumns = (
   newData,
   setColumnConfigs,
-  setFilteredColumns
+  setFilteredColumns,
+  savedColumnConfigs = null
 ) => {
   if (newData.length > 0) {
     const columnNames = Object.keys(newData[0]);
     const columnsCount = columnNames.length;
 
-    const columnConfigs = Array.from({ length: columnsCount }, (_, index) => ({
-      data: columnNames[index] || `column${index + 1}`,
-      title: columnNames[index] || `Column ${index + 1}`,
-    }));
+    const columnConfigs = savedColumnConfigs
+      ? savedColumnConfigs
+      : Array.from({ length: columnsCount }, (_, index) => ({
+          data: columnNames[index] || `column${index + 1}`,
+          title: columnNames[index] || `Column ${index + 1}`,
+        }));
 
     setColumnConfigs(columnConfigs);
     setFilteredColumns(Array(columnsCount).fill(false));

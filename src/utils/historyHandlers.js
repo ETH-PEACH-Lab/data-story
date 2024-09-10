@@ -34,11 +34,17 @@ export const handleHistoryDelete = (
   const parentEntryExists = newHistory.some((entry) => entry.id === parentId);
 
   const addIdToList = (id) => {
-    if (typeof id === 'number' && !isNaN(id)) {
-      setIdList(prevList => [id, ...prevList]);
-      setIdListLocalStorage([id, ...prevList]);
-    }
-  };
+  if (typeof id === 'number' && !isNaN(id)) {
+    setIdList((prevList) => {
+      const newList = [...prevList];  // prevList is passed correctly here
+      if (newList.length < 3) {
+        newList.push(newList[newList.length - 1] + 1);
+      }
+      setIdListLocalStorage(newList);  // Save the updated list to localStorage
+      return newList;  // Return the updated list
+    });
+  }
+};
 
   if (!parentEntryExists) {
     setShowConfirmation(true);
@@ -101,7 +107,8 @@ export const saveDataToHistory = (
   hotRef,
   chartConfigs = [],
   footerNames = ["Table"],
-  storyComponents = [] // Include storyComponents
+  storyComponents = [],
+  columnConfigs // Ensure columnConfigs is passed here
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
@@ -109,27 +116,14 @@ export const saveDataToHistory = (
   const stylesCopy = JSON.parse(JSON.stringify(textStyles));
   const chartsCopy = JSON.parse(JSON.stringify(chartConfigs));
   const footersCopy = JSON.parse(JSON.stringify(footerNames));
-  const storyComponentsCopy = JSON.parse(JSON.stringify(storyComponents)); // Deep copy of story components
+  const storyComponentsCopy = JSON.parse(JSON.stringify(storyComponents));
 
   const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
   const newActions = currentActionStack.slice(initialActionStackLength);
 
   const newHistoryId = idList.shift();
 
-  const addIdToList = (id) => {
-    if (typeof id === 'number' && !isNaN(id)) {
-      setIdList(prevList => {
-        const newList = [...prevList];
-        if (newList.length < 3) {
-          newList.push(newList[newList.length - 1] + 1);
-        }
-        return newList;
-      });
-      setIdListLocalStorage(idList);
-    }
-  };
-
-  setUploadHistory(prevHistory => {
+  setUploadHistory((prevHistory) => {
     const updatedHistory = [
       ...prevHistory,
       {
@@ -142,15 +136,15 @@ export const saveDataToHistory = (
         styles: stylesCopy,
         charts: chartsCopy,
         footers: footersCopy,
-        storyComponents: storyComponentsCopy // Include story components in the history entry
-      }
+        columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
+        storyComponents: storyComponentsCopy,
+      },
     ];
     setHistoryLocalStorage(updatedHistory);
     setCurrentDataIdLocalStorage(newHistoryId);
     return updatedHistory;
   });
   setCurrentDataId(newHistoryId);
-  addIdToList(newHistoryId);
 };
 
 export const areActionStacksEqual = (stack1, stack2, length) => {
@@ -184,11 +178,22 @@ export const switchHistoryEntry = (
   setCurrentPage,
   setChartNames,
   currentPage,
-  setStoryComponents // Ensure setStoryComponents is passed
+  setStoryComponents
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
   setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
-  initializeColumns(historyEntry.data, setColumnConfigs, setFilteredColumns);
+
+  // Use saved columnConfigs from history if available
+  const savedColumnConfigs = historyEntry.columnConfigs || null;
+
+  // Initialize columns with saved columnConfigs (if available)
+  initializeColumns(
+    historyEntry.data,
+    setColumnConfigs,
+    setFilteredColumns,
+    savedColumnConfigs // Pass savedColumnConfigs
+  );
+
   setClickedIndex(index);
   setCurrentDataId(historyEntry.id);
   setActions(historyEntry.actions);
@@ -207,7 +212,7 @@ export const switchHistoryEntry = (
     pages.push({
       id: idx + 1,
       content: `chart-${idx}`,
-      title: title
+      title: title,
     });
   });
   setPages(pages);

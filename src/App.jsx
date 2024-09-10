@@ -166,24 +166,25 @@ function App() {
   }, [hotRef.current, updateUndoRedoState]);
 
   const handleSaveCurrentVersion = useCallback(() => {
-    saveDataToHistory(
-      data,
-      originalFileName,
-      currentDataId,
-      setUploadHistory,
-      setCurrentDataId,
-      idList,
-      setIdList,
-      actions,
-      originalFileName,
-      textStyles,
-      initialActionStackLength,
-      hotRef,
-      chartConfigs,
-      footerNames,
-      storyComponents
-    );
     if (hotRef.current) {
+      saveDataToHistory(
+        data,
+        originalFileName,
+        currentDataId,
+        setUploadHistory,
+        setCurrentDataId,
+        idList,
+        setIdList,
+        actions,
+        originalFileName,
+        textStyles,
+        initialActionStackLength,
+        hotRef,
+        chartConfigs,
+        footerNames,
+        storyComponents,
+        columnConfigs // Ensure columnConfigs is passed here
+      );
       setInitialActionStack([
         ...hotRef.current.hotInstance.undoRedo.doneActions,
       ]);
@@ -195,6 +196,7 @@ function App() {
   }, [
     actions,
     chartConfigs,
+    columnConfigs,
     currentDataId,
     data,
     footerNames,
