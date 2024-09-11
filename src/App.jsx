@@ -364,8 +364,13 @@ function App() {
         hotRef,
         setInitialActionStack,
         setInitialActionStackLength,
-        storyComponents
+        []
       );
+
+      // The study instructions should appear here
+      setStoryComponents([
+        { type: "text", text: "<h1>This is the start</h1>", fontSize: "16px" },
+      ]);
     }
   }, []);
 
