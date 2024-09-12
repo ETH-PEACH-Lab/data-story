@@ -73,6 +73,85 @@ export const handleDataLoaded = (
   }
 };
 
+export const generateRandomTable = (
+  setData,
+  setColumnConfigs,
+  setOriginalFileName,
+  setCurrentDataId,
+  saveDataToHistory,
+  idList,
+  setIdList,
+  setUploadHistory,
+  setActions,
+  originalFileName,
+  setTextStyles,
+  setFilteredColumns,
+  hotRef,
+  setInitialActionStack,
+  setInitialActionStackLength,
+  storyComponents = [] // Add storyComponents parameter with default empty array
+) => {
+  // Generate a 5x8 table of random numbers
+  const rows = 8;
+  const cols = 5;
+  const data = Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => Math.floor(Math.random() * 100) + 1)
+  );
+
+  // Create column headers
+  const initialColumnConfigs = Array.from({ length: cols }, (_, index) => ({
+    data: `Column ${index + 1}`,
+    title: `Column ${index + 1}`,
+    type: 'numeric', // We are working with numbers
+  }));
+
+  // Convert the data into a format suitable for Handsontable
+  const dataWithTypes = data.map((row, rowIndex) => {
+    const newRow = {};
+    initialColumnConfigs.forEach((colConfig, colIndex) => {
+      newRow[colConfig.data] = row[colIndex];
+    });
+    return newRow;
+  });
+
+  setData(dataWithTypes);
+  setColumnConfigs(initialColumnConfigs);
+  setOriginalFileName('random_table');
+
+  // Reset ID list if empty
+  if (idList.length === 0) {
+    setIdList([1, 2]);
+  }
+  const historyId = idList.length > 0 ? idList[0] : 1;
+
+  saveDataToHistory(
+    dataWithTypes,
+    'random_table',
+    null,
+    setUploadHistory,
+    setCurrentDataId,
+    idList,
+    setIdList,
+    [],
+    originalFileName,
+    {},
+    0,
+    hotRef,
+    [], // Initialize chartConfigs as an empty array
+    ["Table"], // Initialize footerNames with default value
+    storyComponents // Pass storyComponents
+  );
+  setTextStyles({});
+  setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
+
+  if (hotRef && hotRef.current) {
+    const undoRedo = hotRef.current.hotInstance.undoRedo;
+    undoRedo.clear();
+    setInitialActionStackLength(0);
+    setInitialActionStack([]);
+  }
+};
+
 export const fetchData = async (
   setData,
   setColumnConfigs,
@@ -91,37 +170,25 @@ export const fetchData = async (
   setInitialActionStackLength,
   storyComponents = [] // Add storyComponents parameter with default empty array
 ) => {
-  const response = await fetch('https://eth-peach-lab.github.io/data-story/euro2024_players.csv');
-  const reader = response.body.getReader();
-  const result = await reader.read();
-  const decoder = new TextDecoder('utf-8');
-  const csv = decoder.decode(result.value);
-  Papa.parse(csv, {
-    header: true,
-    complete: (results) => {
-      handleDataLoaded(
-        results.data,
-        'euro2024_players.csv',
-        setData,
-        setColumnConfigs,
-        setOriginalFileName,
-        setCurrentDataId,
-        saveDataToHistory,
-        idList,
-        setIdList,
-        setUploadHistory,
-        setActions,
-        originalFileName,
-        setTextStyles,
-        setFilteredColumns,
-        hotRef,
-        setInitialActionStack,
-        setInitialActionStackLength,
-        storyComponents, // Pass storyComponents
-        true // Indicate that this is a new table
-      );
-    },
-  });
+  // Instead of fetching the euro2024_players.csv file, generate the random table data
+  generateRandomTable(
+    setData,
+    setColumnConfigs,
+    setOriginalFileName,
+    setCurrentDataId,
+    saveDataToHistory,
+    idList,
+    setIdList,
+    setUploadHistory,
+    setActions,
+    originalFileName,
+    setTextStyles,
+    setFilteredColumns,
+    hotRef,
+    setInitialActionStack,
+    setInitialActionStackLength,
+    storyComponents
+  );
 };
 
 export const initializeColumns = (
