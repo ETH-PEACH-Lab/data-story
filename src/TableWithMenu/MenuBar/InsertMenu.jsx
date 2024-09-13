@@ -321,10 +321,10 @@ const InsertMenu = ({
                 className="form-select"
               >
                 <option value="">Select chart type</option>
-                <option value="line">Line</option>
-                <option value="bar">Bar</option>
-                <option value="pie">Pie</option>
-                <option value="scatter">Scatter</option>
+                <option value="line">Line Chart</option>
+                <option value="bar">Bar Chart</option>
+                <option value="pie">Pie Chart</option>
+                <option value="scatter">Scatter Chart</option>
               </select>
             </div>
             {selectedChartType && (

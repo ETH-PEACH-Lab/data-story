@@ -85,13 +85,9 @@ const Chart = ({
 }) => {
   const colorPickerRef = useRef(null); // Reference to the color picker
 
-  const handleNoteChange = (e) => {
-    setChartNotes({ ...chartNotes, [index]: e.target.value });
-  };
-
-  const handleNoteBlur = () => {
-    setEditingNote(null);
-  };
+  const numericXValues = data.x.map((value) =>
+    isNaN(value) ? value : Number(value)
+  );
 
   const [selectedItem, setSelectedItem] = useState("");
   const [newLabel, setNewLabel] = useState("");
@@ -168,8 +164,13 @@ const Chart = ({
       },
     },
     scales: {
-      x: { title: { display: true, text: xAxisTitle, font: { size: 16 } } },
-      y: { title: { display: true, text: yAxisTitle, font: { size: 16 } } },
+      x: {
+        title: { display: true, text: xAxisTitle, font: { size: 16 } },
+        type: type === "line" || type === "scatter" ? "linear" : "category",
+      },
+      y: {
+        title: { display: true, text: yAxisTitle, font: { size: 16 } },
+      },
     },
   });
 
