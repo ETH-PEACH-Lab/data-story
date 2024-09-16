@@ -82,6 +82,7 @@ const Chart = ({
   updateXAxisTitle,
   updateYAxisTitle,
   onDeleteChart,
+  isXNumeric, // New prop to determine if x-axis is numeric
 }) => {
   const colorPickerRef = useRef(null); // Reference to the color picker
 
@@ -166,7 +167,7 @@ const Chart = ({
     scales: {
       x: {
         title: { display: true, text: xAxisTitle, font: { size: 16 } },
-        type: type === "line" || type === "scatter" ? "linear" : "category",
+        type: isXNumeric ? "linear" : "category", // New: Set axis type based on whether x-axis is numeric
       },
       y: {
         title: { display: true, text: yAxisTitle, font: { size: 16 } },

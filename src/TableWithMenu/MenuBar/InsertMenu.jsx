@@ -172,12 +172,16 @@ const InsertMenu = ({
         );
       }
 
+      // New: Check if all x-axis values are numerical
+      const isXNumeric = chartDataToUse.x.every((value) => !isNaN(value));
+
       addChartPage(
         selectedChartType,
         chartDataToUse,
         aggregate,
         selectedAggregateFunction,
-        seriesLabels
+        seriesLabels,
+        isXNumeric // Pass whether the x-axis is numeric or not
       );
       resetChartData();
       setActiveItem("");

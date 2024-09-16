@@ -372,9 +372,9 @@ const TableWithMenu = ({
     data,
     aggregate,
     aggregateFunction,
-    seriesLabels
+    seriesLabels,
+    isXNumeric
   ) => {
-    // Ensure data is aggregated only if it hasn't been aggregated already
     let aggregatedData = data;
 
     if (aggregate && aggregateFunction !== "COUNT") {
@@ -400,7 +400,7 @@ const TableWithMenu = ({
       ...chartConfigs,
       {
         type,
-        data: aggregatedData, // Ensure only pre-aggregated data is passed
+        data: aggregatedData,
         aggregate,
         aggregateFunction,
         seriesLabels: type !== "pie" ? seriesLabels : [],
@@ -409,6 +409,7 @@ const TableWithMenu = ({
         title: newTitle,
         xAxisTitle: "x-axis",
         yAxisTitle: "y-axis",
+        isXNumeric, // Store whether the x-axis data is numeric
       },
     ];
 
