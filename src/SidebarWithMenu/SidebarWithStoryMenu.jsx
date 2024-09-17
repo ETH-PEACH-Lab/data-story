@@ -11,7 +11,12 @@ const initialStoryComponents = [
   },
   {
     type: "text",
-    text: `<p>Please document your thought process here:</p>`,
+    text: `<p>Participant ID:</p>`,
+    fontSize: "16px",
+  },
+  {
+    type: "text",
+    text: `<p>Please document your thought process underneath</p>`,
     fontSize: "16px",
   },
 ];
