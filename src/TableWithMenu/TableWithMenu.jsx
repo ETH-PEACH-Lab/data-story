@@ -388,7 +388,11 @@ const TableWithMenu = ({
       aggregatedData = aggregateData(data, aggregate, aggregateFunction);
     }
 
-    console.log("Final Aggregated Data for Chart:", aggregatedData);
+    // For COUNT, set the label to the column name of the selected x-axis
+    if (aggregateFunction === "COUNT" && aggregate) {
+      const xColumnName = seriesLabels[0]; // Use the first selected label (which corresponds to x-axis column)
+      seriesLabels = [xColumnName ? `Count of ${xColumnName}` : "Count"];
+    }
 
     const numColors =
       type === "pie" ? aggregatedData.x.length : aggregatedData.y.length;
