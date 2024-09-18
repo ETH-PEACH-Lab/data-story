@@ -225,7 +225,8 @@ const Chart = ({
   }[type];
 
   const chartContainerStyle = {
-    marginLeft: type ? "8px" : "0px",
+    marginLeft: "10px",
+    height: "700px",
   };
 
   useEffect(() => {

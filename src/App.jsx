@@ -183,7 +183,7 @@ function App() {
         chartConfigs,
         footerNames,
         storyComponents,
-        columnConfigs // Ensure columnConfigs is passed here
+        columnConfigs
       );
       setInitialActionStack([
         ...hotRef.current.hotInstance.undoRedo.doneActions,
@@ -191,7 +191,10 @@ function App() {
       setInitialActionStackLength(
         hotRef.current.hotInstance.undoRedo.doneActions.length
       );
+    } else {
+      console.log("hotRef.current is null");
     }
+
     setCurrentDataIdLocalStorage(currentDataId);
   }, [
     actions,

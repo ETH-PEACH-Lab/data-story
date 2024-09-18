@@ -153,10 +153,8 @@ const TableWithMenu = ({
   };
 
   const aggregateData = (data, aggregate, aggregateFunction) => {
-    console.log("Input Data:", data);
     if (!aggregate) return data;
     if (!data || !data.x || !Array.isArray(data.x) || data.x.length === 0) {
-      console.error("Invalid data structure in aggregateData", data);
       return { x: [], y: [[]] };
     }
 
@@ -174,7 +172,6 @@ const TableWithMenu = ({
 
       aggregatedData.x = Object.keys(counts);
       aggregatedData.y = [Object.values(counts)];
-      console.log("Aggregated Data (COUNT):", aggregatedData);
     } else {
       const groupedData = {};
 
@@ -241,94 +238,7 @@ const TableWithMenu = ({
       (page) => page.id === currentPage
     )?.content;
 
-    if (currentPageContent === "table") {
-      return (
-        <div
-          className="handsontable-container container-fluid"
-          ref={tableContainerRef}
-        >
-          <div className="hot-table-wrapper">
-            <HotTable
-              ref={hotRef}
-              data={data}
-              colHeaders
-              columns={columnConfigs.map((col) => ({
-                ...col,
-                renderer: (
-                  instance,
-                  td,
-                  row,
-                  col,
-                  prop,
-                  value,
-                  cellProperties
-                ) =>
-                  customRenderer(
-                    instance,
-                    td,
-                    row,
-                    col,
-                    prop,
-                    value,
-                    cellProperties,
-                    textStyles
-                  ),
-                columnSorting: { headerAction: false },
-              }))}
-              rowHeaders
-              width="100%"
-              height="100%"
-              autoWrapRow
-              autoWrapCol
-              columnSorting
-              filters
-              manualColumnResize
-              afterSelectionEnd={(r1, c1, r2, c2) =>
-                handleSelectionEnd(
-                  r1,
-                  c1,
-                  r2,
-                  c2,
-                  selectedCellsRef,
-                  setSelectedColumnIndex,
-                  setSelectedRangeState,
-                  hotRef
-                )
-              }
-              selectionMode="range"
-              afterGetColHeader={(col, TH) => {
-                const headerLevel =
-                  -1 * TH.parentNode.parentNode.childNodes.length +
-                  Array.prototype.indexOf.call(
-                    TH.parentNode.parentNode.childNodes,
-                    TH.parentNode
-                  );
-                if (headerLevel === -1 && filteredColumns[col])
-                  TH.classList.add("green-header");
-              }}
-              beforeColumnResize={(newSize, column, isDoubleClick) => {
-                if (newSize > 300) {
-                  return 300;
-                }
-              }}
-              outsideClickDeselects={false}
-              fillHandle
-              comments
-              licenseKey="non-commercial-and-evaluation"
-              undoRedo
-              settings={{ textStyles }}
-              autoColumnSize={{ syncLimit: 300 }}
-              modifyColWidth={(width, col) => {
-                if (width > 300) {
-                  return 300;
-                }
-                return width;
-              }}
-            />
-          </div>
-        </div>
-      );
-    } else if (currentPageContent.startsWith("chart")) {
+    if (currentPageContent.startsWith("chart")) {
       const chartIndex = parseInt(currentPageContent.split("-")[1], 10);
       const {
         type,
@@ -344,34 +254,37 @@ const TableWithMenu = ({
       } = chartConfigs[chartIndex];
 
       return (
-        <Chart
-          type={type}
-          data={data} // Already aggregated data
-          index={chartIndex}
-          aggregate={aggregate}
-          aggregateFunction={aggregateFunction}
-          chartNotes={chartNotes}
-          setChartNotes={setChartNotes}
-          editingNote={editingNote}
-          setEditingNote={setEditingNote}
-          seriesLabels={seriesLabels}
-          setSeriesLabels={setSeriesLabels}
-          pieLabels={pieLabels}
-          setPieLabels={setPieLabels}
-          aggregateData={aggregateData}
-          colors={colors}
-          setColors={setColors}
-          updateChartTitle={updateChartTitle}
-          updateFooterName={updateFooterName}
-          title={title}
-          xAxisTitle={xAxisTitle}
-          yAxisTitle={yAxisTitle}
-          updateXAxisTitle={updateXAxisTitle}
-          updateYAxisTitle={updateYAxisTitle}
-          onDeleteChart={() => handleDeleteChart(chartIndex)}
-        />
+        <div className="chart-overlay">
+          <Chart
+            type={type}
+            data={data} // Already aggregated data
+            index={chartIndex}
+            aggregate={aggregate}
+            aggregateFunction={aggregateFunction}
+            chartNotes={chartNotes}
+            setChartNotes={setChartNotes}
+            editingNote={editingNote}
+            setEditingNote={setEditingNote}
+            seriesLabels={seriesLabels}
+            setSeriesLabels={setSeriesLabels}
+            pieLabels={pieLabels}
+            setPieLabels={setPieLabels}
+            aggregateData={aggregateData}
+            colors={colors}
+            setColors={setColors}
+            updateChartTitle={updateChartTitle}
+            updateFooterName={updateFooterName}
+            title={title}
+            xAxisTitle={xAxisTitle}
+            yAxisTitle={yAxisTitle}
+            updateXAxisTitle={updateXAxisTitle}
+            updateYAxisTitle={updateYAxisTitle}
+            onDeleteChart={() => handleDeleteChart(chartIndex)}
+          />
+        </div>
       );
     }
+    return null;
   };
 
   const addChartPage = (
@@ -586,6 +499,82 @@ const TableWithMenu = ({
           aggregateData={aggregateData}
           handleExport={handleExport}
         />
+      </div>
+      <div
+        className="handsontable-container container-fluid"
+        ref={tableContainerRef}
+      >
+        <div className="hot-table-wrapper">
+          <HotTable
+            ref={hotRef}
+            data={data}
+            colHeaders
+            columns={columnConfigs.map((col) => ({
+              ...col,
+              renderer: (instance, td, row, col, prop, value, cellProperties) =>
+                customRenderer(
+                  instance,
+                  td,
+                  row,
+                  col,
+                  prop,
+                  value,
+                  cellProperties,
+                  textStyles
+                ),
+              columnSorting: { headerAction: false },
+            }))}
+            rowHeaders
+            width="100%"
+            height="100%"
+            autoWrapRow
+            autoWrapCol
+            columnSorting
+            filters
+            manualColumnResize
+            afterSelectionEnd={(r1, c1, r2, c2) =>
+              handleSelectionEnd(
+                r1,
+                c1,
+                r2,
+                c2,
+                selectedCellsRef,
+                setSelectedColumnIndex,
+                setSelectedRangeState,
+                hotRef
+              )
+            }
+            selectionMode="range"
+            afterGetColHeader={(col, TH) => {
+              const headerLevel =
+                -1 * TH.parentNode.parentNode.childNodes.length +
+                Array.prototype.indexOf.call(
+                  TH.parentNode.parentNode.childNodes,
+                  TH.parentNode
+                );
+              if (headerLevel === -1 && filteredColumns[col])
+                TH.classList.add("green-header");
+            }}
+            beforeColumnResize={(newSize, column, isDoubleClick) => {
+              if (newSize > 300) {
+                return 300;
+              }
+            }}
+            outsideClickDeselects={false}
+            fillHandle
+            comments
+            licenseKey="non-commercial-and-evaluation"
+            undoRedo
+            settings={{ textStyles }}
+            autoColumnSize={{ syncLimit: 300 }}
+            modifyColWidth={(width, col) => {
+              if (width > 300) {
+                return 300;
+              }
+              return width;
+            }}
+          />
+        </div>
       </div>
       {renderPageContent()}
       <div className="page-footer btn-group" role="group">

@@ -262,6 +262,7 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
+  z-index: 100;
 }
 
 .page-footer .nav-button {
@@ -322,4 +323,14 @@ body {
 .nav-button:hover .scatter-icon,
 .nav-button.active .scatter-icon {
   fill: var(--light); /* $light color */
+}
+
+.chart-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 60; /* Ensures chart is on top */
+  background: white; /* Optional: semi-transparent background */
 }
