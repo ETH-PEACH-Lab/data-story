@@ -369,7 +369,21 @@ function App() {
 
       // The study instructions should appear here
       setStoryComponents([
-        { type: "text", text: "<h1>This is the start</h1>", fontSize: "16px" },
+        {
+          type: "text",
+          text: `<h1 style="color:darkgreen; text-decoration:underline; font-weight:bold;">Data-Story</h1>`,
+          fontSize: "32px",
+        },
+        {
+          type: "text",
+          text: `<p>Participant ID:</p>`,
+          fontSize: "16px",
+        },
+        {
+          type: "text",
+          text: `<p>Please document your thought process underneath</p>`,
+          fontSize: "16px",
+        },
       ]);
     }
   }, []);

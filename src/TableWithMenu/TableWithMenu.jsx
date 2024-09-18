@@ -160,25 +160,22 @@ const TableWithMenu = ({
       return { x: [], y: [[]] };
     }
 
-    // Initialize the aggregated data structure
     const aggregatedData = {
       x: [],
-      y: [[]], // Adjust to accommodate y values as arrays
+      y: [[]], // Ensure y is initialized as an array of arrays
     };
 
     if (aggregateFunction === "COUNT") {
       const counts = {};
 
-      // Count occurrences of each x-value
       data.x.forEach((xValue) => {
         counts[xValue] = (counts[xValue] || 0) + 1;
       });
 
-      aggregatedData.x = Object.keys(counts); // The distinct values for the x-axis
-      aggregatedData.y = [Object.values(counts)]; // The counts for the y-axis
+      aggregatedData.x = Object.keys(counts);
+      aggregatedData.y = [Object.values(counts)];
       console.log("Aggregated Data (COUNT):", aggregatedData);
     } else {
-      // For other aggregation functions (SUM, AVERAGE, etc.)
       const groupedData = {};
 
       data.x.forEach((xValue, index) => {
@@ -191,6 +188,10 @@ const TableWithMenu = ({
         data.y.forEach((series, seriesIndex) => {
           const value = Number(series[index]);
           if (!isNaN(value)) {
+            // Ensure the y array for this series exists and is initialized as an array
+            if (!aggregatedData.y[seriesIndex]) {
+              aggregatedData.y[seriesIndex] = [];
+            }
             groupedData[xValue][seriesIndex].push(value);
           }
         });
@@ -206,6 +207,12 @@ const TableWithMenu = ({
             MAX: (values) => Math.max(...values),
             MIN: (values) => Math.min(...values),
           };
+
+          // Ensure the y array for this series exists before pushing values
+          if (!aggregatedData.y[seriesIndex]) {
+            aggregatedData.y[seriesIndex] = [];
+          }
+
           aggregatedData.y[seriesIndex].push(
             yValues.length > 0
               ? aggregateFunctions[aggregateFunction](yValues)
