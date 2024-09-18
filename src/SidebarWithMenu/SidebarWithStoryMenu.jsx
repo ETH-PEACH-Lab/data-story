@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TutorialMenu from "./Tutorial/TutorialMenu";
 import Story from "./Story";
 
@@ -62,7 +62,11 @@ const SidebarWithStoryMenu = ({
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
 
-  [components, setComponents] = useState(initialStoryComponents);
+  useEffect(() => {
+    if (components.length === 0) {
+      setComponents(initialStoryComponents); // Use the default components if no story is loaded
+    }
+  }, [components, setComponents]);
 
   const [tutorialComponents, setTutorialComponents] = useState(
     initialTutorialComponents
