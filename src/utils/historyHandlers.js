@@ -33,18 +33,16 @@ export const handleHistoryDelete = (
 
   const parentEntryExists = newHistory.some((entry) => entry.id === parentId);
 
-  const addIdToList = (id) => {
-  if (typeof id === 'number' && !isNaN(id)) {
-    setIdList((prevList) => {
-      const newList = [...prevList];  // prevList is passed correctly here
-      if (newList.length < 3) {
-        newList.push(newList[newList.length - 1] + 1);
-      }
-      setIdListLocalStorage(newList);  // Save the updated list to localStorage
-      return newList;  // Return the updated list
-    });
-  }
-};
+  const addIdToFront = (id) => {
+    if (typeof id === 'number' && !isNaN(id)) {
+      // Add the deleted entry's ID back to the front of the list
+      setIdList((prevList) => {
+        const newList = [id, ...prevList];
+        setIdListLocalStorage(newList); // Save the updated list to localStorage
+        return newList;
+      });
+    }
+  };
 
   if (!parentEntryExists) {
     setShowConfirmation(true);
@@ -60,11 +58,10 @@ export const handleHistoryDelete = (
       setUploadHistory(newHistory);
       setHistoryLocalStorage(newHistory);
       setCurrentDataIdLocalStorage(null);
-      addIdToList(historyEntryToDelete.id);
+      addIdToFront(historyEntryToDelete.id);
 
-      // Reset ID list if history is empty
       if (newHistory.length === 0) {
-        const resetIdList = [1, 2];
+        const resetIdList = [1, 2, 3];  // Reset the idList
         setIdList(resetIdList);
         setIdListLocalStorage(resetIdList);
       }
@@ -81,11 +78,10 @@ export const handleHistoryDelete = (
     setUploadHistory(newHistory);
     setHistoryLocalStorage(newHistory);
     setCurrentDataIdLocalStorage(currentDataId);
-    addIdToList(historyEntryToDelete.id);
+    addIdToFront(historyEntryToDelete.id);
 
-    // Reset ID list if history is empty
     if (newHistory.length === 0) {
-      const resetIdList = [1, 2];
+      const resetIdList = [1, 2, 3];  // Reset the idList when all history is deleted
       setIdList(resetIdList);
       setIdListLocalStorage(resetIdList);
     }
@@ -121,8 +117,20 @@ export const saveDataToHistory = (
   const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
   const newActions = currentActionStack.slice(initialActionStackLength);
 
-  const newHistoryId = idList.shift();
+  // Pick the first ID from the list
+  const newHistoryId = idList[0];
 
+  // Only extend the list if its length is less than 3
+  let updatedIdList = idList.slice(1);
+  if (updatedIdList.length < 3) {
+    const nextId = idList.length > 0 ? Math.max(...idList) + 1 : 1;  // Use 1 if idList is empty
+    updatedIdList = [...updatedIdList, nextId];
+  }
+
+  setIdList(updatedIdList);
+  setIdListLocalStorage(updatedIdList);
+
+  // Save the history entry
   setUploadHistory((prevHistory) => {
     const updatedHistory = [
       ...prevHistory,
