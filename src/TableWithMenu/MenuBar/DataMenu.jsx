@@ -20,6 +20,7 @@ const DataMenu = ({
   const [checkedValues, setCheckedValues] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [filterConditionError, setFilterConditionError] = useState("");
+  const sortCardRef = useRef(null);
   const [accordionState, setAccordionState] = useState({
     condition: false,
     value: false,
@@ -36,11 +37,9 @@ const DataMenu = ({
       !accordionRef.current.contains(event.target) &&
       !sortButtonRef.current.contains(event.target) &&
       !filterButtonRef.current.contains(event.target) &&
-      tableContainerRef.current &&
-      !tableContainerRef.current.contains(event.target)
+      !tableContainerRef.current.contains(event.target) &&
+      !sortCardRef.current.contains(event.target) // Check if click is inside sort card
     ) {
-      if (accordionRef.current.contains(event.target)) return;
-
       setActiveItem("");
     }
   };
@@ -323,6 +322,7 @@ const DataMenu = ({
           <div
             className="card card-body"
             style={{ width: "400px", marginTop: "16px" }}
+            ref={sortCardRef}
           >
             <div className="mb-2">
               <span style={{ fontWeight: "bold" }}>Selected column:</span>{" "}
