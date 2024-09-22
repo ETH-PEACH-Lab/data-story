@@ -36,8 +36,11 @@ const DataMenu = ({
       !accordionRef.current.contains(event.target) &&
       !sortButtonRef.current.contains(event.target) &&
       !filterButtonRef.current.contains(event.target) &&
+      tableContainerRef.current &&
       !tableContainerRef.current.contains(event.target)
     ) {
+      if (accordionRef.current.contains(event.target)) return;
+
       setActiveItem("");
     }
   };
