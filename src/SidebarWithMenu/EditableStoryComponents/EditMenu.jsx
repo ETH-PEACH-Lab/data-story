@@ -6,6 +6,7 @@ const EditMenu = ({
   onMoveUp,
   onMoveDown,
   onDelete,
+  onUpdate,  
   setVisibleMenuIndex,
 }) => {
   const menuRef = useRef(null);
@@ -44,6 +45,9 @@ const EditMenu = ({
       </button>
       <button onClick={() => onDelete(index)}>
         <i className="bi bi-trash3"></i>
+      </button>
+      <button onClick={() => onUpdate(index)}>
+      <i class="bi bi-arrow-clockwise"></i>
       </button>
     </div>
   );

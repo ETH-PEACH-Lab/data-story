@@ -9,6 +9,7 @@ const StoryTable = ({
   onDelete,
   onMoveUp,
   onMoveDown,
+  onUpdate,
   isMenuVisible,
   setVisibleMenuIndex,
   data,
@@ -197,6 +198,7 @@ const StoryTable = ({
           onMoveUp={onMoveUp}
           onMoveDown={onMoveDown}
           onDelete={onDelete}
+          onUpdate={onUpdate}
           setVisibleMenuIndex={setVisibleMenuIndex}
         />
       )}

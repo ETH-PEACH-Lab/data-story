@@ -40,6 +40,7 @@ const StoryChart = ({
   onDelete,
   onMoveUp,
   onMoveDown,
+  onUpdate, 
   isMenuVisible,
   setVisibleMenuIndex,
 }) => {
@@ -82,6 +83,7 @@ const StoryChart = ({
           onMoveUp={onMoveUp}
           onMoveDown={onMoveDown}
           onDelete={onDelete}
+          onUpdate={onUpdate}
           setVisibleMenuIndex={setVisibleMenuIndex}
         />
       )}

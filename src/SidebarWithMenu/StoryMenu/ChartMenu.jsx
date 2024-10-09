@@ -1,78 +1,78 @@
 import React, { useState } from "react";
 import { Button, Form, Card } from "react-bootstrap";
 
-const ChartMenu = ({ addComponent, chartNames = [], chartConfigs = [] }) => {
-  const [selectedChartName, setSelectedChartName] = useState("");
+export const transformChartConfig = (chartConfig) => {
+  if (!chartConfig || !chartConfig.data || !chartConfig.colors) {
+    console.error("Invalid chart configuration", chartConfig);
+    return chartConfig;
+  }
 
-  const transformChartConfig = (chartConfig) => {
-    if (!chartConfig || !chartConfig.data || !chartConfig.colors) {
-      console.error("Invalid chart configuration", chartConfig);
-      return chartConfig;
-    }
+  const { data, colors, type, seriesLabels, pieLabels, title } = chartConfig;
 
-    const { data, colors, type, seriesLabels, pieLabels, title } = chartConfig;
+  const transformedData = {
+    labels: type === "pie" ? pieLabels : data.x,
+    datasets:
+      type === "pie"
+        ? [
+            {
+              data: data.y[0],
+              backgroundColor: colors,
+              borderColor: colors,
+            },
+          ]
+        : data.y.map((series, idx) => ({
+            label: seriesLabels[idx] || `Series ${idx + 1}`,
+            data: series,
+            fill: false,
+            backgroundColor: colors[idx],
+            borderColor: colors[idx],
+          })),
+  };
 
-    const transformedData = {
-      labels: type === "pie" ? pieLabels : data.x,
-      datasets:
-        type === "pie"
-          ? [
-              {
-                data: data.y[0],
-                backgroundColor: colors,
-                borderColor: colors,
-              },
-            ]
-          : data.y.map((series, idx) => ({
-              label: seriesLabels[idx] || `Series ${idx + 1}`,
-              data: series,
-              fill: false,
-              backgroundColor: colors[idx],
-              borderColor: colors[idx],
-            })),
-    };
-
-    const transformedConfig = {
-      ...chartConfig,
-      data: transformedData,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
+  const transformedConfig = {
+    ...chartConfig,
+    data: transformedData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: title || `Chart ${chartConfig.index}`,
+          font: {
+            size: 24,
+          },
+          color: "#000",
+        },
+      },
+      scales: {
+        x: {
           title: {
             display: true,
-            text: title || `Chart ${chartConfig.index}`,
+            text: chartConfig.xAxisTitle || "x-axis",
             font: {
-              size: 24,
+              size: 16,
             },
-            color: "#000",
           },
         },
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: chartConfig.xAxisTitle || "x-axis",
-              font: {
-                size: 16,
-              },
-            },
-          },
-          y: {
-            title: {
-              display: true,
-              text: chartConfig.yAxisTitle || "y-axis",
-              font: {
-                size: 16,
-              },
+        y: {
+          title: {
+            display: true,
+            text: chartConfig.yAxisTitle || "y-axis",
+            font: {
+              size: 16,
             },
           },
         },
       },
-    };
-
-    return transformedConfig;
+    },
   };
+
+  return transformedConfig;
+};
+
+const ChartMenu = ({ addComponent, chartNames = [], chartConfigs = [] }) => {
+  const [selectedChartName, setSelectedChartName] = useState("");
 
   const handleInsertClick = () => {
     const selectedChartConfig = chartConfigs.find(

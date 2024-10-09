@@ -12,6 +12,7 @@ function EditableText({
   onDelete,
   onMoveUp,
   onMoveDown,
+  onUpdate,
   isMenuVisible,
   setVisibleMenuIndex,
 }) {
@@ -95,6 +96,7 @@ function EditableText({
           onMoveUp={onMoveUp}
           onMoveDown={onMoveDown}
           onDelete={onDelete}
+          onUpdate={onUpdate}
           setVisibleMenuIndex={setVisibleMenuIndex}
         />
       )}

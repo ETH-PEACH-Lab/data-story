@@ -6,6 +6,7 @@ import StoryTable from "./EditableStoryComponents/StoryTable";
 import StoryMenu from "./StoryMenu/StoryMenu";
 import "./Story.css";
 import { Card, Form } from "react-bootstrap";
+import { transformChartConfig } from "./StoryMenu/ChartMenu"
 
 function Story({
   components,
@@ -116,6 +117,7 @@ function Story({
     }
 
     setComponents([...components, newComponent]);
+    components = [...components, newComponent];
     setShowCard(false); // Close the card after adding the component
   };
 
@@ -156,7 +158,8 @@ function Story({
 
   const handleDelete = (index) => {
     const newComponents = components.filter((_, i) => i !== index);
-    setComponents(newComponents);
+    components = newComponents;
+    setComponents(components);
     setVisibleMenuIndex(null);
   };
 
@@ -167,6 +170,7 @@ function Story({
         newComponents[index],
         newComponents[index - 1],
       ];
+      components = newComponents;
       setComponents(newComponents);
       setVisibleMenuIndex(index - 1);
     }
@@ -180,7 +184,24 @@ function Story({
         newComponents[index + 1],
       ];
       setComponents(newComponents);
+      components = newComponents;
       setVisibleMenuIndex(index + 1);
+    }
+  };
+
+  const handleUpdate = (index) => {
+    const currentComponent = components[index];
+    if (currentComponent.type === "chart") {
+      const prevIndex = index;  
+      handleDelete(index);
+      const matchingChartConfig = chartConfigs.find(chartConfig => chartConfig.title === currentComponent.chartConfig.title);
+      const transformedMatchingChartConfig = transformChartConfig(matchingChartConfig);
+      handleAddComponent(currentComponent.type, [], [], [], "", "", transformedMatchingChartConfig);
+      let newIndex = components.length - 1;
+      while (newIndex > prevIndex) {
+        handleMoveUp(newIndex);
+        newIndex--;
+      }
     }
   };
 
@@ -188,6 +209,7 @@ function Story({
     const newComponents = [...components];
     newComponents[index] = { ...newComponents[index], ...newTextObj };
     setComponents(newComponents);
+    components = newComponents;
   };
 
   const handleShowCard = () => {
@@ -218,6 +240,7 @@ function Story({
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}
+                onUpdate={handleUpdate}
                 isMenuVisible={visibleMenuIndex === index}
                 setVisibleMenuIndex={setVisibleMenuIndex}
               />
@@ -231,6 +254,7 @@ function Story({
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}
+                onUpdate={handleUpdate}
                 isMenuVisible={visibleMenuIndex === index}
                 setVisibleMenuIndex={setVisibleMenuIndex}
               />
@@ -248,6 +272,7 @@ function Story({
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}
+                onUpdate={handleUpdate}
                 isMenuVisible={visibleMenuIndex === index}
                 setVisibleMenuIndex={setVisibleMenuIndex}
               />
@@ -262,6 +287,7 @@ function Story({
                 onDelete={handleDelete}
                 onMoveUp={handleMoveUp}
                 onMoveDown={handleMoveDown}
+                onUpdate={handleUpdate}
                 isMenuVisible={visibleMenuIndex === index}
                 setVisibleMenuIndex={setVisibleMenuIndex}
               />

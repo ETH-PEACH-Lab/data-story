@@ -9,6 +9,7 @@ const Function = ({
   onDelete,
   onMoveUp,
   onMoveDown,
+  onUpdate,
   isMenuVisible,
   setVisibleMenuIndex,
   result,
@@ -28,6 +29,7 @@ const Function = ({
           onMoveUp={onMoveUp}
           onMoveDown={onMoveDown}
           onDelete={onDelete}
+          onUpdate={onUpdate}
           setVisibleMenuIndex={setVisibleMenuIndex}
         />
       )}
