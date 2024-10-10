@@ -12,7 +12,7 @@ const StoryTable = ({
   onUpdate,
   isMenuVisible,
   setVisibleMenuIndex,
-  data,
+  shownData,
   columnConfigs,
   selectedColumns = [],
   highlightSettings = [], // Add default value
@@ -213,7 +213,7 @@ const StoryTable = ({
         >
           <HotTable
             ref={tableRef} // Reference to the Handsontable instance
-            data={data} // Pass the entire dataset
+            data={shownData} // Pass the entire dataset
             colHeaders={columnConfigs.map((column) => column.title)}
             columns={columnsConfig}
             rowHeaders={true}

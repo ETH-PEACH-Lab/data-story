@@ -111,11 +111,14 @@ function Story({
       newComponent.func = func;
       newComponent.result = result;
     } else if (type === "table") {
+      // console.log("116", newComponent, data, shownData);
+      newComponent.shownData = JSON.parse(JSON.stringify(data));
       newComponent.selectedColumns = selectedColumns;
       newComponent.highlightSettings = highlightSettings;
       newComponent.highlightColors = highlightColors;
     }
 
+    // console.log("121 @@@@@", newComponent.shownData, data, newComponent);
     setComponents([...components, newComponent]);
     components = [...components, newComponent];
     setShowCard(false); // Close the card after adding the component
@@ -203,6 +206,23 @@ function Story({
         newIndex--;
       }
     }
+    else if (currentComponent.type === "table") {
+      const prevIndex = index;  
+      handleDelete(index);
+      handleAddComponent(currentComponent.type, 
+        currentComponent.selectedColumns, 
+        currentComponent.highlightSettings, 
+        currentComponent.highlightColors, 
+        currentComponent.func, 
+        currentComponent.result, 
+        currentComponent.chartConfig);
+      let newIndex = components.length - 1;
+      console.log(newIndex, " ", prevIndex);
+        while (newIndex > prevIndex) {
+          handleMoveUp(newIndex);
+          newIndex--;
+        }
+    } 
   };
 
   const handleTextChange = (index, newTextObj) => {
@@ -264,7 +284,7 @@ function Story({
               <StoryTable
                 key={index}
                 index={index}
-                data={data}
+                shownData={component.shownData}
                 columnConfigs={columnConfigs}
                 selectedColumns={component.selectedColumns}
                 highlightSettings={component.highlightSettings}
