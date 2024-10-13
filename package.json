@@ -33,7 +33,9 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "sass": "^1.77.8"
+    "sass": "^1.77.8",
+    "y-webrtc": "^10.3.0",
+    "yjs": "^13.6.19"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
