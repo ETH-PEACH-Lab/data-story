@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { HotTable } from '@handsontable/react'
 import MenuBar from './MenuBar/MenuBar'
 import Chart from './Chart'
@@ -16,6 +16,8 @@ import { handleFindReplace } from '../utils/findReplaceHandlers'
 import { handleStyleChange, customRenderer } from '../utils/styleHandlers'
 import '../styles/App.css'
 import { originalColors, tintedColors } from './Chart'
+import * as Y from 'yjs'
+import { WebsocketProvider } from 'y-websocket'
 
 const allColors = [...originalColors, ...tintedColors]
 
@@ -107,6 +109,92 @@ const TableWithMenu = ({
 		updateChartConfigs(chartIndex, { xAxisTitle: newTitle })
 	const updateYAxisTitle = (chartIndex, newTitle) =>
 		updateChartConfigs(chartIndex, { yAxisTitle: newTitle })
+
+	const doc = useRef()
+	const sharedArray = useRef()
+
+	const [startEdit, setStartEdit] = useState(false)
+
+	useEffect(() => {
+		// Initialize Yjs document and WebSocket provider only once
+		doc.current = new Y.Doc()
+		sharedArray.current = doc.current.getArray('tableData3')
+		const provider = new WebsocketProvider(
+			'ws://10.6.37.157:3000',
+			'data-story',
+			doc.current
+		)
+
+		provider.on('status', (event) => {
+			console.log(`WebSocket status: ${event.status}`) // logs "connected" or "disconnected"
+		})
+
+		provider.on('synced', (isSynced) => {
+			console.log(`WebSocket synced: ${isSynced}`) // logs true or false
+		})
+
+		// Attach observer only once
+		sharedArray.current.observe((event) => {
+			const { transaction } = event
+			const updatedData = sharedArray.current.toJSON().slice(-1)[0]
+
+			// Ensure that the change was not made locally before syncing
+			if (!transaction.local) {
+				// Only update if data is actually different
+				if (JSON.stringify(data) !== JSON.stringify(updatedData)) {
+					console.log(
+						'Observed changes in shared array, updating local data',
+						updatedData
+					)
+					setData(updatedData) // Sync local table data with Yjs data from other clients
+				}
+			}
+		})
+	}, []) // Empty dependency array ensures it runs only once on mount
+
+	useEffect(() => {
+		if (!data || data.length === 0) {
+			console.log('Data is not initialized, skipping synchronization.')
+			return // Exit if data is not initialized
+		}
+
+		// Synchronize only once at the start
+		if (!startEdit) {
+			if (sharedArray.current.length === 0) {
+				// Initialize shared array if empty
+				console.log('Shared array is empty, pushing local data to Yjs')
+				sharedArray.current.push([data])
+			} else {
+				// Sync local data with Yjs data
+				console.log('Setting data from shared array')
+				setData(sharedArray.current.toJSON().slice(-1)[0])
+			}
+		}
+	}, [data]) // Depend only on `data`
+
+	const handleTableChange = (changes, source) => {
+		if (!sharedArray.current || source === 'loadData' || !changes) return
+
+		const newData = [...data]
+
+		// Apply the changes made to the table to the newData array
+		changes.forEach(([row, prop, oldValue, newValue]) => {
+			newData[row][prop] = newValue
+			console.log('changes: ', row, prop, oldValue, newValue)
+		})
+
+		// Update if there are any actual changes
+		if (changes.length > 0) {
+			console.log('Updating local state and pushing changes to Yjs')
+			setData(newData)
+
+			// Push the updated data to Yjs for real-time sync
+			sharedArray.current.delete(0, 1)
+			sharedArray.current.push([newData])
+		}
+
+		setStartEdit(true)
+	}
 
 	const getIconForFooter = (index) => {
 		if (index === 0) {
@@ -571,6 +659,7 @@ const TableWithMenu = ({
 							}
 							return width
 						}}
+						afterChange={handleTableChange}
 					/>
 				</div>
 			</div>
