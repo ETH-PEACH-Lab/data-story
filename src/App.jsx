@@ -39,6 +39,49 @@ import { handleUndo, handleRedo } from "./utils/undoRedoHandlers";
 
 registerAllModules();
 
+// console.log("42   ");
+const passkey = '123456';
+
+  const Authentication = ({ onAuthenticated }) => {
+    const [name, setName] = useState('');
+    const [enteredPasskey, setEnteredPasskey] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+  
+    const handleLogin = () => {
+      if (enteredPasskey === passkey) {
+        // Pass the name to the parent component if the passkey is correct
+        onAuthenticated(name);
+      } else {
+        setErrorMessage('Incorrect passkey. Please try again.');
+      }
+    };
+
+    return (
+      <div className="auth-container">
+        <h2>Please enter your name and the passkey</h2>
+        <div>
+          <label>Name: </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Passkey: </label>
+          <input
+            type="password"
+            value={enteredPasskey}
+            onChange={(e) => setEnteredPasskey(e.target.value)}
+          />
+        </div>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        <button onClick={handleLogin}>Submit</button>
+      </div>
+    );
+  };
+
+
 function App() {
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
@@ -83,6 +126,14 @@ function App() {
       setRedoDisabled(!undoRedo.isRedoAvailable());
     }
   }, []);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  const handleAuthentication = (name) => {
+    setIsAuthenticated(true);
+    setUserName(name);
+  };
 
   const handleExport = useCallback(
     (exportType) => {
@@ -419,7 +470,26 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <div className="container-fluid">
+      <div>
+      {isAuthenticated ? (
+        <div>
+          <h1>Welcome, {userName}!</h1>
+          {/* Collaborative Yjs Table goes here */}
+        </div>
+      ) : (
+        <>
+          {/* Dark overlay on top of the entire page */}
+          <div className="auth-overlay"></div>
+          {/* The actual authentication dialog */}
+          <div className="auth-container">
+            <Authentication onAuthenticated={handleAuthentication} />
+          </div>
+        </>
+      )}
+    </div>
+
+    {/* The rest of the page content */}
+    <div className={`container-fluid ${!isAuthenticated ? 'blurred' : ''}`}>
         <div className="top-banner">
           <h1>Data-Story</h1>
           <div className="undo-redo-container">

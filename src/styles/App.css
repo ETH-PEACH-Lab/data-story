@@ -334,3 +334,60 @@ body {
   z-index: 60; /* Ensures chart is on top */
   background: white; /* Optional: semi-transparent background */
 }
+
+/* Authentication.css or your global styles file */
+.auth-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
+  z-index: 999; /* Ensure it is above the rest of the content */
+  pointer-events: none; /* Allow seeing the background but not interacting with it */
+}
+
+.auth-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 1000; /* Above everything else, including the overlay */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.blurred {
+  filter: blur(5px); /* Blurred background effect */
+  pointer-events: none; /* Disable clicking */
+}
+
+.auth-container input {
+  margin-bottom: 15px;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  background-color: #C19A6B; /* Camel color */
+  color: black; /* Black typed letters */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-container button {
+  padding: 12px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
+.auth-container button:hover {
+  background-color: #218838;
+}
+
