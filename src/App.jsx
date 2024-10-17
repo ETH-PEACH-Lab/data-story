@@ -566,6 +566,7 @@ function App() {
           />
         )}
       </div>
+      <div id="cursor-layer" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
     </ErrorBoundary>
   );
 }

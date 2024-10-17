@@ -112,6 +112,9 @@ const TableWithMenu = ({
 
 	const doc = useRef()
 	const sharedArray = useRef()
+  const awareness = useRef(null)
+  const cursors = useRef({})
+  const provider = useRef(null);
 
 	const [startEdit, setStartEdit] = useState(false)
 
@@ -119,17 +122,25 @@ const TableWithMenu = ({
 		// Initialize Yjs document and WebSocket provider only once
 		doc.current = new Y.Doc()
 		sharedArray.current = doc.current.getArray('tableData3')
-		const provider = new WebsocketProvider(
-			'ws://10.6.37.157:3000',
+		provider.current = new WebsocketProvider(
+			'ws://10.5.89.232:3000',
 			'data-story',
 			doc.current
 		)
 
-		provider.on('status', (event) => {
+    awareness.current = provider.current.awareness
+    awareness.current.setLocalStateField('cursor', {
+      x: 0,  // Initial x position (pixels)
+      y: 0,  // Initial y position (pixels)
+      color: getRandomColor(),  // Assign a unique color to this user
+    })
+    
+    
+		provider.current.on('status', (event) => {
 			console.log(`WebSocket status: ${event.status}`) // logs "connected" or "disconnected"
 		})
 
-		provider.on('synced', (isSynced) => {
+		provider.current.on('synced', (isSynced) => {
 			console.log(`WebSocket synced: ${isSynced}`) // logs true or false
 		})
 
@@ -150,6 +161,19 @@ const TableWithMenu = ({
 				}
 			}
 		})
+
+    awareness.current.on('change', (changes) => {
+      const states = awareness.current.getStates()
+      // Save the cursor positions for each connected client
+      cursors.current = states
+      // Now you can update the UI to render other users' cursors
+      renderCursors(states)
+    })
+
+    return () => {
+      provider.current.disconnect()
+    }
+    
 	}, []) // Empty dependency array ensures it runs only once on mount
 
 	useEffect(() => {
@@ -195,6 +219,73 @@ const TableWithMenu = ({
 
 		setStartEdit(true)
 	}
+
+  const handleMouseMove = (event) => {
+    const x = event.clientX // Cursor X position in pixels
+    const y = event.clientY // Cursor Y position in pixels
+
+    const currentLocalState = awareness.current.getLocalState();
+    const currentCursorState = currentLocalState.cursor
+
+    // Update local state with the current cursor position
+    awareness.current.setLocalStateField('cursor', {
+       // Preserve previous state including color
+      x: x,
+      y: y,
+      color: currentCursorState.color,
+    })
+  }
+
+  useEffect(() => {
+    // Add the event listener when the component mounts
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const renderCursors = (states) => {
+    const cursorLayer = document.getElementById('cursor-layer');
+  
+    // Clear the current cursors in the layer
+    cursorLayer.innerHTML = '';
+  
+    // Loop through the states to render each client's cursor
+    states.forEach((state, clientId) => {
+      const { cursor } = state;
+
+      // Check if cursor data exists for the client
+      if (cursor) {
+        const cursorElement = document.createElement('div');
+        cursorElement.className = 'cursor';
+        cursorElement.style.position = 'absolute';
+        cursorElement.style.left = `${cursor.x}px`;
+        cursorElement.style.top = `${cursor.y}px`;
+        cursorElement.style.width = '15px'; // Cursor size
+        cursorElement.style.height = '15px';
+        cursorElement.style.borderRadius = '50%';
+        cursorElement.style.backgroundColor = cursor.color; // Use the user's unique color
+        cursorElement.style.zIndex = '1000'; // Ensure it's on top of other elements
+  
+        // Optionally add a label or other client-specific info
+        //  cursorElement.innerHTML = `<span style="color: black; font-size: 15px; position: absolute; left: 15px; top: 0;">User ${clientId}</span>`;
+  
+        // Append the cursor to the cursor layer
+        cursorLayer.appendChild(cursorElement);
+      }
+    });
+  }
+
+  const getRandomColor = () => {
+    const letters = '0123456789A'
+    let color = '#'
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 11)]
+    }
+    return color
+  }
 
 	const getIconForFooter = (index) => {
 		if (index === 0) {
