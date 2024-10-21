@@ -30,6 +30,8 @@ const shuffleArray = (array) => {
 }
 
 const TableWithMenu = ({
+	userCursorColor,
+	setUserCursorColor,
 	data,
 	setData,
 	columnConfigs,
@@ -123,7 +125,7 @@ const TableWithMenu = ({
 		doc.current = new Y.Doc()
 		sharedArray.current = doc.current.getArray('tableData3')
 		provider.current = new WebsocketProvider(
-			'ws://172.20.10.3:3000',
+			'ws://10.5.46.162:3000',
 			'data-story',
 			doc.current
 		)
@@ -132,7 +134,7 @@ const TableWithMenu = ({
     awareness.current.setLocalStateField('cursor', {
       x: 0,  // Initial x position (pixels)
       y: 0,  // Initial y position (pixels)
-      color: getRandomColor(),  // Assign a unique color to this user
+      color: userCursorColor,  // Assign a unique color to this user
     })
     
     
@@ -225,8 +227,7 @@ const TableWithMenu = ({
     const y = event.clientY // Cursor Y position in pixels
 
     const currentLocalState = awareness.current.getLocalState();
-    const currentCursorState = currentLocalState.cursor
-
+    const currentCursorState = currentLocalState.cursor;
     // Update local state with the current cursor position
     awareness.current.setLocalStateField('cursor', {
        // Preserve previous state including color
@@ -235,6 +236,22 @@ const TableWithMenu = ({
       color: currentCursorState.color,
     })
   }
+
+  useEffect(() => {
+    if (userCursorColor) {
+      // Handle the logic that needs to happen when userCursorColor is available
+      console.log('Cursor color updated:', userCursorColor);
+	  const currentLocalState = awareness.current.getLocalState();
+      const currentCursorState = currentLocalState.cursor;
+
+	  awareness.current.setLocalStateField('cursor', {
+        x: currentCursorState.x, // Replace with the actual x position
+        y: currentCursorState.y, // Replace with the actual y position
+        color: userCursorColor, // Set the new cursor color
+      });
+    }
+  }, [userCursorColor]);
+
 
   useEffect(() => {
     // Add the event listener when the component mounts

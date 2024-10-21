@@ -74,6 +74,25 @@ body {
   color: var(--body-color);
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-left: 50px; /* Push user info to the right */
+}
+
+.user-circle {
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
+  border-radius: 50%; /* Make it a circle */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  color: white; /* Set letter color to white */
+  font-weight: bold; /* Make the letter bold */
+  font-size: 26px; /* Adjust font size as needed */
+  margin-right: 10px; /* Space between circle and the next one */
+} 
+
 .save-button-container {
   display: flex;
   align-items: center;

@@ -42,6 +42,17 @@ registerAllModules();
 // console.log("42   ");
 const passkey = '123456';
 
+let userCursorColor = '';
+
+const getRandomColor = () => {
+  const letters = '0123456789A'
+  let color = '#'
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 11)]
+  }
+  return color
+}
+
   const Authentication = ({ onAuthenticated }) => {
     const [name, setName] = useState('');
     const [enteredPasskey, setEnteredPasskey] = useState('');
@@ -50,6 +61,7 @@ const passkey = '123456';
     const handleLogin = () => {
       if (enteredPasskey === passkey) {
         // Pass the name to the parent component if the passkey is correct
+        userCursorColor = getRandomColor();
         onAuthenticated(name);
       } else {
         setErrorMessage('Incorrect passkey. Please try again.');
@@ -129,10 +141,13 @@ function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userCursorColor, setUserCursorColor] = useState(null);
 
   const handleAuthentication = (name) => {
-    setIsAuthenticated(true);
     setUserName(name);
+    const color =  getRandomColor();
+    setUserCursorColor(color);
+    setIsAuthenticated(true);
   };
 
   const handleExport = useCallback(
@@ -508,6 +523,17 @@ function App() {
               <i className="bi bi-arrow-clockwise"></i> {"Redo"}
             </button>
           </div>
+          <div className="user-info">
+            <div
+              className="user-circle"
+              style={{
+                backgroundColor: userCursorColor, // Use the color from userCursorColor
+                color: 'white', // Set text color to white
+              }}
+              >
+              {userName.charAt(0).toUpperCase()} {/* Display the first letter of the name */}
+            </div>
+          </div>
           <div className="save-button-container">
             <button
               className="btn btn-secondary"
@@ -524,6 +550,8 @@ function App() {
         </div>
         <div className="content-area">
           <TableWithMenu
+            userCursorColor={userCursorColor}
+            setUserCursorColor={setUserCursorColor}
             data={data}
             setData={setData}
             columnConfigs={columnConfigs}
