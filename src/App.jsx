@@ -148,11 +148,10 @@ function App() {
     setIsAuthenticated(true);
   };
 
-  //--------------------------------------------------------------------------------------------//
   const doc = useRef()
 	const sharedArray = useRef()
-  	const awareness = useRef(null)
-  	const cursors = useRef({})
+  const awareness = useRef(null)
+  const cursors = useRef({})
  	const provider = useRef(null);
 
 	const [startEdit, setStartEdit] = useState(false)
@@ -173,7 +172,10 @@ function App() {
       y: 0,  // Initial y position (pixels)
       color: userCursorColor,  
     })
-    
+
+    console.log("176!!!!!  ", userName);
+
+    awareness.current.setLocalStateField('name', userName);
     
 		provider.current.on('status', (event) => {
 			console.log(`WebSocket status: ${event.status}`) // logs "connected" or "disconnected"
@@ -203,6 +205,7 @@ function App() {
 
     awareness.current.on('change', (changes) => {
       const states = awareness.current.getStates()
+      console.log("205    ", states, cursors);
       // Save the cursor positions for each connected client
       cursors.current = states
       // Now you can update the UI to render other users' cursors
@@ -254,14 +257,17 @@ function App() {
     if (userCursorColor) {
       // Handle the logic that needs to happen when userCursorColor is available
       console.log('Cursor color updated:', userCursorColor);
-	  const currentLocalState = awareness.current.getLocalState();
+	    const currentLocalState = awareness.current.getLocalState();
       const currentCursorState = currentLocalState.cursor;
 
-	  awareness.current.setLocalStateField('cursor', {
+	    awareness.current.setLocalStateField('cursor', {
         x: currentCursorState.x, // Replace with the actual x position
         y: currentCursorState.y, // Replace with the actual y position
         color: userCursorColor, // Set the new cursor color
       });
+    
+      awareness.current.setLocalStateField('name', userName);
+
     }
   }, [userCursorColor]);
 
@@ -284,6 +290,7 @@ function App() {
   
     // Loop through the states to render each client's cursor
     states.forEach((state, clientId) => {
+      // console.log("287", clientId, state);
       const { cursor } = state;
 
       // Check if cursor data exists for the client
@@ -307,7 +314,30 @@ function App() {
       }
     });
   }
-//--------------------------------------------------------------------------------------------//
+
+  const [collaborators, setCollaborators] = useState([]);
+
+  useEffect(() => {
+    const handleAwarenessUpdate = () => {
+      const states = awareness.current.getStates();
+      console.log("317!!!!", states);
+      const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
+        const name = state.name; // Ensure a default name if not provided
+        const color = state.cursor.color; // Get the cursor color
+        console.log(name, color, state, clientID);
+        return { name, color };
+      });
+      console.log("324!!!!", updatedCollaborators);
+      setCollaborators(updatedCollaborators);
+    };
+
+    awareness.current.on('change', handleAwarenessUpdate);
+
+    // Clean up listener when the component unmounts
+    return () => {
+      awareness.current.off('change', handleAwarenessUpdate);
+    };
+  }, []);
 
   const handleExport = useCallback(
     (exportType) => {
@@ -682,16 +712,12 @@ function App() {
               <i className="bi bi-arrow-clockwise"></i> {"Redo"}
             </button>
           </div>
-          <div className="user-info">
-            <div
-              className="user-circle"
-              style={{
-                backgroundColor: userCursorColor, // Use the color from userCursorColor
-                color: 'white', // Set text color to white
-              }}
-              >
-              {userName.charAt(0).toUpperCase()} {/* Display the first letter of the name */}
-            </div>
+          <div className="collaborators-container">
+            {collaborators.map((collaborator, index) => (
+              <div key={index} className="user-circle" style={{ backgroundColor: collaborator.color, color: 'white' }}>
+                {collaborator.name.charAt(0).toUpperCase()}
+              </div>
+            ))}
           </div>
           <div className="save-button-container">
             <button

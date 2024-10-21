@@ -80,6 +80,15 @@ body {
   margin-left: 50px; /* Push user info to the right */
 }
 
+.collaborators-container {
+  display: flex;
+  flex-direction: row; /* Ensure circles are in a row */
+  align-items: center; /* Vertically align the circles */
+  gap: 10px; /* Optional: Adds some spacing between circles */
+  margin-left: auto;
+  margin-right: 50px; /* Push user info to the right */
+}
+
 .user-circle {
   width: 50px; /* Adjust size as needed */
   height: 50px; /* Adjust size as needed */
