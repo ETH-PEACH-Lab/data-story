@@ -111,12 +111,12 @@ const TableWithMenu = ({
 		updateChartConfigs(chartIndex, { xAxisTitle: newTitle })
 	const updateYAxisTitle = (chartIndex, newTitle) =>
 		updateChartConfigs(chartIndex, { yAxisTitle: newTitle })
-
+// --------------------------------------------------------------------------------------------------------------
 	const doc = useRef()
 	const sharedArray = useRef()
-  const awareness = useRef(null)
-  const cursors = useRef({})
-  const provider = useRef(null);
+  	const awareness = useRef(null)
+  	const cursors = useRef({})
+ 	const provider = useRef(null);
 
 	const [startEdit, setStartEdit] = useState(false)
 
@@ -134,7 +134,7 @@ const TableWithMenu = ({
     awareness.current.setLocalStateField('cursor', {
       x: 0,  // Initial x position (pixels)
       y: 0,  // Initial y position (pixels)
-      color: userCursorColor,  // Assign a unique color to this user
+      color: userCursorColor,  
     })
     
     
@@ -293,15 +293,6 @@ const TableWithMenu = ({
         cursorLayer.appendChild(cursorElement);
       }
     });
-  }
-
-  const getRandomColor = () => {
-    const letters = '0123456789A'
-    let color = '#'
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 11)]
-    }
-    return color
   }
 
 	const getIconForFooter = (index) => {

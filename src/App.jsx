@@ -39,10 +39,7 @@ import { handleUndo, handleRedo } from "./utils/undoRedoHandlers";
 
 registerAllModules();
 
-// console.log("42   ");
 const passkey = '123456';
-
-let userCursorColor = '';
 
 const getRandomColor = () => {
   const letters = '0123456789A'
@@ -61,7 +58,6 @@ const getRandomColor = () => {
     const handleLogin = () => {
       if (enteredPasskey === passkey) {
         // Pass the name to the parent component if the passkey is correct
-        userCursorColor = getRandomColor();
         onAuthenticated(name);
       } else {
         setErrorMessage('Incorrect passkey. Please try again.');
