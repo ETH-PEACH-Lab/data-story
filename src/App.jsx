@@ -10,6 +10,8 @@ import ConfirmationWindow from "./ConfirmationWindow";
 import Papa from "papaparse";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import * as Y from 'yjs'
+import { WebsocketProvider } from 'y-websocket'
 
 import {
   handleDataLoaded,
@@ -145,6 +147,167 @@ function App() {
     setUserCursorColor(color);
     setIsAuthenticated(true);
   };
+
+  //--------------------------------------------------------------------------------------------//
+  const doc = useRef()
+	const sharedArray = useRef()
+  	const awareness = useRef(null)
+  	const cursors = useRef({})
+ 	const provider = useRef(null);
+
+	const [startEdit, setStartEdit] = useState(false)
+
+	useEffect(() => {
+		// Initialize Yjs document and WebSocket provider only once
+		doc.current = new Y.Doc()
+		sharedArray.current = doc.current.getArray('tableData3')
+		provider.current = new WebsocketProvider(
+			'ws://10.5.46.162:3000',
+			'data-story',
+			doc.current
+		)
+
+    awareness.current = provider.current.awareness
+    awareness.current.setLocalStateField('cursor', {
+      x: 0,  // Initial x position (pixels)
+      y: 0,  // Initial y position (pixels)
+      color: userCursorColor,  
+    })
+    
+    
+		provider.current.on('status', (event) => {
+			console.log(`WebSocket status: ${event.status}`) // logs "connected" or "disconnected"
+		})
+
+		provider.current.on('synced', (isSynced) => {
+			console.log(`WebSocket synced: ${isSynced}`) // logs true or false
+		})
+
+		// Attach observer only once
+		sharedArray.current.observe((event) => {
+			const { transaction } = event
+			const updatedData = sharedArray.current.toJSON().slice(-1)[0]
+
+			// Ensure that the change was not made locally before syncing
+			if (!transaction.local) {
+				// Only update if data is actually different
+				if (JSON.stringify(data) !== JSON.stringify(updatedData)) {
+					console.log(
+						'Observed changes in shared array, updating local data',
+						updatedData
+					)
+					setData(updatedData) // Sync local table data with Yjs data from other clients
+				}
+			}
+		})
+
+    awareness.current.on('change', (changes) => {
+      const states = awareness.current.getStates()
+      // Save the cursor positions for each connected client
+      cursors.current = states
+      // Now you can update the UI to render other users' cursors
+      renderCursors(states)
+    })
+
+    return () => {
+      provider.current.disconnect()
+    }
+    
+	}, []) // Empty dependency array ensures it runs only once on mount
+
+	useEffect(() => {
+		if (!data || data.length === 0) {
+			console.log('Data is not initialized, skipping synchronization.')
+			return // Exit if data is not initialized
+		}
+
+		// Synchronize only once at the start
+		if (!startEdit) {
+			if (sharedArray.current.length === 0) {
+				// Initialize shared array if empty
+				console.log('Shared array is empty, pushing local data to Yjs')
+				sharedArray.current.push([data])
+			} else {
+				// Sync local data with Yjs data
+				console.log('Setting data from shared array')
+				setData(sharedArray.current.toJSON().slice(-1)[0])
+			}
+		}
+	}, [data]) // Depend only on `data`
+
+  const handleMouseMove = (event) => {
+    const x = event.clientX // Cursor X position in pixels
+    const y = event.clientY // Cursor Y position in pixels
+
+    const currentLocalState = awareness.current.getLocalState();
+    const currentCursorState = currentLocalState.cursor;
+    // Update local state with the current cursor position
+    awareness.current.setLocalStateField('cursor', {
+       // Preserve previous state including color
+      x: x,
+      y: y,
+      color: currentCursorState.color,
+    })
+  }
+
+  useEffect(() => {
+    if (userCursorColor) {
+      // Handle the logic that needs to happen when userCursorColor is available
+      console.log('Cursor color updated:', userCursorColor);
+	  const currentLocalState = awareness.current.getLocalState();
+      const currentCursorState = currentLocalState.cursor;
+
+	  awareness.current.setLocalStateField('cursor', {
+        x: currentCursorState.x, // Replace with the actual x position
+        y: currentCursorState.y, // Replace with the actual y position
+        color: userCursorColor, // Set the new cursor color
+      });
+    }
+  }, [userCursorColor]);
+
+
+  useEffect(() => {
+    // Add the event listener when the component mounts
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const renderCursors = (states) => {
+    const cursorLayer = document.getElementById('cursor-layer');
+  
+    // Clear the current cursors in the layer
+    cursorLayer.innerHTML = '';
+  
+    // Loop through the states to render each client's cursor
+    states.forEach((state, clientId) => {
+      const { cursor } = state;
+
+      // Check if cursor data exists for the client
+      if (cursor) {
+        const cursorElement = document.createElement('div');
+        cursorElement.className = 'cursor';
+        cursorElement.style.position = 'absolute';
+        cursorElement.style.left = `${cursor.x}px`;
+        cursorElement.style.top = `${cursor.y}px`;
+        cursorElement.style.width = '15px'; // Cursor size
+        cursorElement.style.height = '15px';
+        cursorElement.style.borderRadius = '50%';
+        cursorElement.style.backgroundColor = cursor.color; // Use the user's unique color
+        cursorElement.style.zIndex = '1000'; // Ensure it's on top of other elements
+  
+        // Optionally add a label or other client-specific info
+        //  cursorElement.innerHTML = `<span style="color: black; font-size: 15px; position: absolute; left: 15px; top: 0;">User ${clientId}</span>`;
+  
+        // Append the cursor to the cursor layer
+        cursorLayer.appendChild(cursorElement);
+      }
+    });
+  }
+//--------------------------------------------------------------------------------------------//
 
   const handleExport = useCallback(
     (exportType) => {
@@ -548,6 +711,9 @@ function App() {
           <TableWithMenu
             userCursorColor={userCursorColor}
             setUserCursorColor={setUserCursorColor}
+            sharedArray={sharedArray}
+            startEdit={startEdit}
+            setStartEdit={setStartEdit}
             data={data}
             setData={setData}
             columnConfigs={columnConfigs}

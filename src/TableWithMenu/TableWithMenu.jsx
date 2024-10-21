@@ -16,8 +16,7 @@ import { handleFindReplace } from '../utils/findReplaceHandlers'
 import { handleStyleChange, customRenderer } from '../utils/styleHandlers'
 import '../styles/App.css'
 import { originalColors, tintedColors } from './Chart'
-import * as Y from 'yjs'
-import { WebsocketProvider } from 'y-websocket'
+
 
 const allColors = [...originalColors, ...tintedColors]
 
@@ -32,6 +31,9 @@ const shuffleArray = (array) => {
 const TableWithMenu = ({
 	userCursorColor,
 	setUserCursorColor,
+	sharedArray,
+	startEdit,
+	setStartEdit,
 	data,
 	setData,
 	columnConfigs,
@@ -111,7 +113,32 @@ const TableWithMenu = ({
 		updateChartConfigs(chartIndex, { xAxisTitle: newTitle })
 	const updateYAxisTitle = (chartIndex, newTitle) =>
 		updateChartConfigs(chartIndex, { yAxisTitle: newTitle })
+
+	const handleTableChange = (changes, source) => {
+		if (!sharedArray.current || source === 'loadData' || !changes) return
+
+		const newData = [...data]
+
+		// Apply the changes made to the table to the newData array
+		changes.forEach(([row, prop, oldValue, newValue]) => {
+			newData[row][prop] = newValue
+			console.log('changes: ', row, prop, oldValue, newValue)
+		})
+
+		// Update if there are any actual changes
+		if (changes.length > 0) {
+			console.log('Updating local state and pushing changes to Yjs')
+			setData(newData)
+
+			// Push the updated data to Yjs for real-time sync
+			sharedArray.current.delete(0, 1)
+			sharedArray.current.push([newData])
+		}
+
+		setStartEdit(true)
+	}
 // --------------------------------------------------------------------------------------------------------------
+/*
 	const doc = useRef()
 	const sharedArray = useRef()
   	const awareness = useRef(null)
@@ -294,6 +321,9 @@ const TableWithMenu = ({
       }
     });
   }
+	*/
+//--------------------------------------------------------------------------------------------//
+
 
 	const getIconForFooter = (index) => {
 		if (index === 0) {
