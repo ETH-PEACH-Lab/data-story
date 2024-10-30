@@ -59,6 +59,7 @@ const SidebarWithStoryMenu = ({
   chartConfigs,
   components, // Main Story components
   setComponents, // Set Main Story components
+  handleSaveCurrentVersion,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
 
@@ -94,6 +95,7 @@ const SidebarWithStoryMenu = ({
           selectedRange={selectedRange}
           tableContainerRef={tableContainerRef}
           hotRef={hotRef}
+          handleSaveCurrentVersion={handleSaveCurrentVersion}
         />
       </div>
     ),
@@ -123,6 +125,7 @@ const SidebarWithStoryMenu = ({
                 selectedRange={selectedRange}
                 tableContainerRef={tableContainerRef}
                 hotRef={hotRef}
+                handleSaveCurrentVersion={handleSaveCurrentVersion}
               />
             )}
           </div>

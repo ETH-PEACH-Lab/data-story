@@ -173,7 +173,6 @@ function App() {
       color: userCursorColor,  
     })
 
-    // console.log("176!!!!!  ", userName);
 
     awareness.current.setLocalStateField('name', userName);
     
@@ -205,7 +204,6 @@ function App() {
 
     awareness.current.on('change', (changes) => {
       const states = awareness.current.getStates()
-      // console.log("205    ", states, cursors);
       // Save the cursor positions for each connected client
       cursors.current = states
       // Now you can update the UI to render other users' cursors
@@ -290,7 +288,6 @@ function App() {
   
     // Loop through the states to render each client's cursor
     states.forEach((state, clientId) => {
-      // console.log("287", clientId, state);
       const { cursor } = state;
 
       // Check if cursor data exists for the client
@@ -326,7 +323,6 @@ function App() {
         const color = state.cursor.color; // Get the cursor color
         return { name, color };
       });
-      // console.log("324!!!!", updatedCollaborators);
       setCollaborators(updatedCollaborators);
     };
 
@@ -807,6 +803,7 @@ function App() {
             chartConfigs={chartConfigs}
             components={storyComponents}
             setComponents={setStoryComponents}
+            handleSaveCurrentVersion={handleSaveCurrentVersion}
           />
         </div>
         <HistorySidebar

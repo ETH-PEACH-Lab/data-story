@@ -22,6 +22,7 @@ function Story({
   selectedRange,
   tableContainerRef,
   hotRef,
+  handleSaveCurrentVersion,
 }) {
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
   const [showCard, setShowCard] = useState(false);
@@ -99,7 +100,8 @@ function Story({
     highlightColors = [],
     func = "",
     result = "",
-    chartConfig = null
+    chartConfig = null,
+    historyLogNeeded = true 
   ) => {
     const newComponent =
       type === "chart"
@@ -122,6 +124,8 @@ function Story({
     setComponents([...components, newComponent]);
     components = [...components, newComponent];
     setShowCard(false); // Close the card after adding the component
+    if (historyLogNeeded)
+      handleSaveCurrentVersion();
   };
 
   const handleOptionChange = (e) => {
@@ -159,14 +163,16 @@ function Story({
     };
   }, [components]);
 
-  const handleDelete = (index) => {
+  const handleDelete = (index, historyLogNeeded = true) => {
     const newComponents = components.filter((_, i) => i !== index);
     components = newComponents;
     setComponents(components);
     setVisibleMenuIndex(null);
+    if (historyLogNeeded)
+      handleSaveCurrentVersion();
   };
 
-  const handleMoveUp = (index) => {
+  const handleMoveUp = (index, historyLogNeeded = true) => {
     if (index > 0) {
       const newComponents = [...components];
       [newComponents[index - 1], newComponents[index]] = [
@@ -176,10 +182,12 @@ function Story({
       components = newComponents;
       setComponents(newComponents);
       setVisibleMenuIndex(index - 1);
+      if (historyLogNeeded)
+        handleSaveCurrentVersion();
     }
   };
 
-  const handleMoveDown = (index) => {
+  const handleMoveDown = (index, historyLogNeeded = true) => {
     if (index < components.length - 1) {
       const newComponents = [...components];
       [newComponents[index + 1], newComponents[index]] = [
@@ -189,6 +197,8 @@ function Story({
       setComponents(newComponents);
       components = newComponents;
       setVisibleMenuIndex(index + 1);
+      if (historyLogNeeded)
+        handleSaveCurrentVersion();
     }
   };
 
@@ -196,33 +206,35 @@ function Story({
     const currentComponent = components[index];
     if (currentComponent.type === "chart") {
       const prevIndex = index;  
-      handleDelete(index);
+      handleDelete(index, false);
       const matchingChartConfig = chartConfigs.find(chartConfig => chartConfig.title === currentComponent.chartConfig.title);
       const transformedMatchingChartConfig = transformChartConfig(matchingChartConfig);
-      handleAddComponent(currentComponent.type, [], [], [], "", "", transformedMatchingChartConfig);
+      handleAddComponent(currentComponent.type, [], [], [], "", "", transformedMatchingChartConfig, false);
       let newIndex = components.length - 1;
       while (newIndex > prevIndex) {
-        handleMoveUp(newIndex);
+        handleMoveUp(newIndex, false);
         newIndex--;
       }
     }
     else if (currentComponent.type === "table") {
       const prevIndex = index;  
-      handleDelete(index);
+      handleDelete(index, false);
       handleAddComponent(currentComponent.type, 
         currentComponent.selectedColumns, 
         currentComponent.highlightSettings, 
         currentComponent.highlightColors, 
         currentComponent.func, 
         currentComponent.result, 
-        currentComponent.chartConfig);
+        currentComponent.chartConfig, 
+        false);
       let newIndex = components.length - 1;
       console.log(newIndex, " ", prevIndex);
         while (newIndex > prevIndex) {
-          handleMoveUp(newIndex);
+          handleMoveUp(newIndex, false);
           newIndex--;
         }
-    } 
+    }
+    handleSaveCurrentVersion(); 
   };
 
   const handleTextChange = (index, newTextObj) => {
