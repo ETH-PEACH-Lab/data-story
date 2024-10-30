@@ -1,7 +1,7 @@
 import { textRenderer } from 'handsontable/renderers/textRenderer';
 import { TextStyleAction, CellStyleAction, ClearFormattingAction } from '../CustomUndoRedo';
 
-export const handleStyleChange = (styleType, value, selectedCellsRef, setTextStyles, hotRef) => {
+export const handleStyleChange = (styleType, value, selectedCellsRef, setTextStyles, hotRef, handleSaveCurrentVersion) => {
   const changes = [];
   const hotInstance = hotRef.current.hotInstance;
 
@@ -56,8 +56,9 @@ export const handleStyleChange = (styleType, value, selectedCellsRef, setTextSty
     : styleType === "backgroundColor" || styleType.includes("border")
       ? new CellStyleAction(changes)
       : new TextStyleAction(changes);
-
   hotInstance.undoRedo.done(() => action);
+  handleSaveCurrentVersion();
+  //*#*//
 };
 
 export const customRenderer = (instance, td, row, col, prop, value, cellProperties, textStyles) => {

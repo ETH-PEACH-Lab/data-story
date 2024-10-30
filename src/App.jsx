@@ -161,7 +161,7 @@ function App() {
 		doc.current = new Y.Doc()
 		sharedArray.current = doc.current.getArray('tableData3')
 		provider.current = new WebsocketProvider(
-			'ws://10.5.46.162:3000',
+			'ws://10.5.47.199:3000',
 			'data-story',
 			doc.current
 		)
@@ -173,7 +173,7 @@ function App() {
       color: userCursorColor,  
     })
 
-    console.log("176!!!!!  ", userName);
+    // console.log("176!!!!!  ", userName);
 
     awareness.current.setLocalStateField('name', userName);
     
@@ -205,7 +205,7 @@ function App() {
 
     awareness.current.on('change', (changes) => {
       const states = awareness.current.getStates()
-      console.log("205    ", states, cursors);
+      // console.log("205    ", states, cursors);
       // Save the cursor positions for each connected client
       cursors.current = states
       // Now you can update the UI to render other users' cursors
@@ -320,14 +320,13 @@ function App() {
   useEffect(() => {
     const handleAwarenessUpdate = () => {
       const states = awareness.current.getStates();
-      console.log("317!!!!", states);
+      // console.log("317!!!!", states);
       const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
         const name = state.name; // Ensure a default name if not provided
         const color = state.cursor.color; // Get the cursor color
-        console.log(name, color, state, clientID);
         return { name, color };
       });
-      console.log("324!!!!", updatedCollaborators);
+      // console.log("324!!!!", updatedCollaborators);
       setCollaborators(updatedCollaborators);
     };
 
@@ -677,7 +676,6 @@ function App() {
       <div>
       {isAuthenticated ? (
         <div>
-          <h1>Welcome, {userName}!</h1>
           {/* Collaborative Yjs Table goes here */}
         </div>
       ) : (
@@ -787,6 +785,7 @@ function App() {
             setFooterNames={setFooterNames}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            handleSaveCurrentVersion={handleSaveCurrentVersion}
             handleExport={handleExport}
           />
           <SidebarWithStoryMenu

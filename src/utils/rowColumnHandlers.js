@@ -33,7 +33,7 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   });
 };
   
-  export const addRow = (data, setData, columnConfigs, hotRef) => {
+  export const addRow = (data, setData, columnConfigs, hotRef, handleSaveCurrentVersion) => {
     const newRowIndex = data.length;
     const emptyRow = columnConfigs.reduce((acc, col) => ({ ...acc, [col.data]: '' }), {});
     const newData = [...data, emptyRow];
@@ -41,9 +41,11 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   
     const wrappedAction = () => new InsertRowAction(newRowIndex, 1);
     hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+    handleSaveCurrentVersion();
+    //*#*//
   };
   
-  export const addColumn = (data, setData, columnConfigs, setColumnConfigs, hotRef) => {
+  export const addColumn = (data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion) => {
     const newColumnIndex = columnConfigs.length;
     const newColumnKey = `column${newColumnIndex + 1}`;
     const newColumn = { data: newColumnKey, title: `Column ${newColumnIndex + 1}` };
@@ -61,6 +63,8 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   
     const wrappedAction = () => new InsertColumnAction(newColumnIndex, newColumnKey);
     hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+    handleSaveCurrentVersion();
+    //*#*//
   };
   
   export const removeColumn = (index, columnKey, data, setData, columnConfigs, setColumnConfigs, hotRef) => {

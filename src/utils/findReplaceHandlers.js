@@ -1,6 +1,6 @@
 import { FindReplaceAction } from '../CustomUndoRedo';
 
-export const handleFindReplace = (findText, replaceText, selectedColumnIndex, selectedColumnName, data, setData, hotRef) => {
+export const handleFindReplace = (findText, replaceText, selectedColumnIndex, selectedColumnName, data, setData, hotRef, handleSaveCurrentVersion) => {
   if (selectedColumnIndex === null) return;
 
   const changes = [];
@@ -24,5 +24,6 @@ export const handleFindReplace = (findText, replaceText, selectedColumnIndex, se
     const wrappedAction = () => new FindReplaceAction(changes);
     hotInstance.undoRedo.done(wrappedAction);
     setData([...data]); // Update the state with the modified data
+    handleSaveCurrentVersion();
   }
 };

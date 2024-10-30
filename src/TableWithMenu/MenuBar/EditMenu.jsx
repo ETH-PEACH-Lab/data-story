@@ -9,6 +9,7 @@ const EditMenu = ({
   handleFindReplace,
   setColumns,
   hotRef,
+  handleSaveCurrentVersion,
 }) => {
   const [activeItem, setActiveItem] = useState("");
   const [duplicateCount, setDuplicateCount] = useState(0);
@@ -70,6 +71,8 @@ const EditMenu = ({
     setNewColumnName("");
     setActiveItem("");
     console.log("New column name and active item reset");
+    handleSaveCurrentVersion();
+    //*#*//
   };
 
   // Define your active button color
