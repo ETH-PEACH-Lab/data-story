@@ -24,6 +24,6 @@ export const handleFindReplace = (findText, replaceText, selectedColumnIndex, se
     const wrappedAction = () => new FindReplaceAction(changes);
     hotInstance.undoRedo.done(wrappedAction);
     setData([...data]); // Update the state with the modified data
-    handleSaveCurrentVersion();
+    handleSaveCurrentVersion("Find and replace: " + findText + " is replaced with " + replaceText);
   }
 };

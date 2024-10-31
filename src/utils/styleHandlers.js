@@ -57,7 +57,7 @@ export const handleStyleChange = (styleType, value, selectedCellsRef, setTextSty
       ? new CellStyleAction(changes)
       : new TextStyleAction(changes);
   hotInstance.undoRedo.done(() => action);
-  handleSaveCurrentVersion();
+  handleSaveCurrentVersion("Table's style has changed: " + styleType);
   //*#*//
 };
 

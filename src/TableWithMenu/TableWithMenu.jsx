@@ -100,7 +100,7 @@ const TableWithMenu = ({
 				idx === index ? { ...config, ...updates } : config
 			)
 		)
-		handleSaveCurrentVersion();
+		handleSaveCurrentVersion("Chart configs are updated");
 		//*#*//
 	}
 
@@ -132,7 +132,7 @@ const TableWithMenu = ({
 		if (changes.length > 0) {
 			console.log('Updating local state and pushing changes to Yjs')
 			setData(newData)
-			handleSaveCurrentVersion();
+			handleSaveCurrentVersion("Table data is updated");
 			//*#*//
 
 			// Push the updated data to Yjs for real-time sync
@@ -377,7 +377,7 @@ const TableWithMenu = ({
 		setCurrentPage(newPageId)
 		setChartNames([...footerNames, `Chart ${newChartId}`])
 
-		handleSaveCurrentVersion();
+		handleSaveCurrentVersion("Chart " + newChartId + " is added");
 		//*#*//
 	}
 
@@ -403,7 +403,7 @@ const TableWithMenu = ({
 		if (currentPage === chartIndex + 1) {
 			setCurrentPage(0)
 		}
-		handleSaveCurrentVersion();
+		handleSaveCurrentVersion("Chart " + chartIndex + " is deleted");
 		//*#*//
 	}
 

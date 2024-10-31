@@ -161,7 +161,7 @@ function App() {
 		doc.current = new Y.Doc()
 		sharedArray.current = doc.current.getArray('tableData3')
 		provider.current = new WebsocketProvider(
-			'ws://10.5.47.199:3000',
+			'ws://172.20.10.3:3000',
 			'data-story',
 			doc.current
 		)
@@ -415,7 +415,7 @@ function App() {
     }
   }, [hotRef.current, updateUndoRedoState]);
 
-  const handleSaveCurrentVersion = useCallback(() => {
+  const handleSaveCurrentVersion = useCallback((historyMessage = "Undefined Change") => {
     if (hotRef.current) {
       saveDataToHistory(
         data,
@@ -433,7 +433,8 @@ function App() {
         chartConfigs,
         footerNames,
         storyComponents,
-        columnConfigs
+        columnConfigs,
+        historyMessage
       );
       setInitialActionStack([
         ...hotRef.current.hotInstance.undoRedo.doneActions,
@@ -504,7 +505,7 @@ function App() {
         );
         setShowConfirmation(true);
         setOnConfirmAction(() => () => {
-          handleSaveCurrentVersion();
+          handleSaveCurrentVersion("Unsaved changes are saved");
           performSwitch();
         });
         setOnCancelAction(() => performSwitch);
@@ -720,7 +721,7 @@ function App() {
                 if (idList.length === 0) {
                   setIdList([1]);
                 }
-                handleSaveCurrentVersion();
+                handleSaveCurrentVersion("History update button is triggered");
               }}
             >
               <i className="bi bi-save"></i> {"Save Current Version"}

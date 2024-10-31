@@ -130,7 +130,7 @@ const HistorySidebar = ({
                 )}
                 {" - "} <em>{entry.timestamp}</em>
                 <div>
-                  ID: {entry.id}, Derived from: {entry.parentId}
+                  ID: {entry.id}, {entry.historyMessage}
                 </div>
                 {entry.actions && entry.actions.length > 0 && (
                   <details>

@@ -25,7 +25,7 @@ export const countAndRemoveDuplicates = (data, setData, hotRef, remove = false, 
       const newData = data.filter((_, index) => !duplicates.includes(index));
       const rowIndexesSequence = hotRef.current.hotInstance.rowIndexMapper.getIndexesSequence();
       setData(newData);
-      handleSaveCurrentVersion();
+      handleSaveCurrentVersion("Duplicated rows are removed: " + duplicates);
       
       const wrappedAction = () => new RemoveDuplicatesAction(duplicates, removedData, rowIndexesSequence);
       hotRef.current.hotInstance.undoRedo.done(wrappedAction);

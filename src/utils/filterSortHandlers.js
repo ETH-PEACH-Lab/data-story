@@ -9,7 +9,7 @@ export const handleSort = (columnName, sortOrder, columnConfigs, hotRef, handleS
 
     sortPlugin.clearSort();
     hotInstance.render();
-    handleSaveCurrentVersion();
+    handleSaveCurrentVersion("Sortings on the table is reset");
     //*#*//
 
     // const wrappedAction = () => new SortAction(previousSortConfig, []);
@@ -30,7 +30,7 @@ export const handleSort = (columnName, sortOrder, columnConfigs, hotRef, handleS
   }];
 
   sortPlugin.sort(newSortConfig);
-  handleSaveCurrentVersion();
+  handleSaveCurrentVersion("Column " + (columnIndex + 1) + " is sorted in the " + sortOrder + " order");
   //*#*//
 
   // const wrappedAction = () => new SortAction(previousSortConfig, newSortConfig);
@@ -82,7 +82,7 @@ export const handleFilter = (
   const currentFilteredColumns = [...filteredColumns];
 
   setFilteredColumns([...filteredColumns]);
-  handleSaveCurrentVersion();
+  handleSaveCurrentVersion("New filter on column " + (columnIndex + 1) + " is added, condition: " + condition);
   //*#*//
 
   const wrappedAction = () => new FilterAction(previousConditionsStack, currentConditionsStack, previousFilteredColumns, currentFilteredColumns, setFilteredColumns);

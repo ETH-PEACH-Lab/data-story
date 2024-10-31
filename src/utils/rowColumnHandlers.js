@@ -41,7 +41,7 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   
     const wrappedAction = () => new InsertRowAction(newRowIndex, 1);
     hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-    handleSaveCurrentVersion();
+    handleSaveCurrentVersion("New row is added");
     //*#*//
   };
   
@@ -63,7 +63,7 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   
     const wrappedAction = () => new InsertColumnAction(newColumnIndex, newColumnKey);
     hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-    handleSaveCurrentVersion();
+    handleSaveCurrentVersion("New column is added");
     //*#*//
   };
   

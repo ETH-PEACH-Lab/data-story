@@ -125,7 +125,7 @@ function Story({
     components = [...components, newComponent];
     setShowCard(false); // Close the card after adding the component
     if (historyLogNeeded)
-      handleSaveCurrentVersion();
+      handleSaveCurrentVersion("New " + type + " is added to the story");
   };
 
   const handleOptionChange = (e) => {
@@ -169,7 +169,7 @@ function Story({
     setComponents(components);
     setVisibleMenuIndex(null);
     if (historyLogNeeded)
-      handleSaveCurrentVersion();
+      handleSaveCurrentVersion("Story component " + (index + 1) + " is deleted");
   };
 
   const handleMoveUp = (index, historyLogNeeded = true) => {
@@ -183,7 +183,7 @@ function Story({
       setComponents(newComponents);
       setVisibleMenuIndex(index - 1);
       if (historyLogNeeded)
-        handleSaveCurrentVersion();
+        handleSaveCurrentVersion("Story component " + (index + 1) + " is moved up");
     }
   };
 
@@ -198,7 +198,7 @@ function Story({
       components = newComponents;
       setVisibleMenuIndex(index + 1);
       if (historyLogNeeded)
-        handleSaveCurrentVersion();
+        handleSaveCurrentVersion("Story component " + (index + 1) + " is moved down");
     }
   };
 
@@ -234,7 +234,7 @@ function Story({
           newIndex--;
         }
     }
-    handleSaveCurrentVersion(); 
+    handleSaveCurrentVersion("Story component " + (index + 1) + " is updated"); 
   };
 
   const handleTextChange = (index, newTextObj) => {

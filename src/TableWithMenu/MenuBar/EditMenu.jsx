@@ -65,14 +65,15 @@ const EditMenu = ({
       );
       hotRef.current.hotInstance.undoRedo.done(() => headerAction);
 
+      handleSaveCurrentVersion("Column " + (selectedColumnIndex + 1) + " header is changed to " + newHeader);
+      //*#*//
+
       return newColumns;
     });
 
     setNewColumnName("");
     setActiveItem("");
     console.log("New column name and active item reset");
-    handleSaveCurrentVersion();
-    //*#*//
   };
 
   // Define your active button color
