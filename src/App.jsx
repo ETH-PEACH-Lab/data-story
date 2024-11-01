@@ -161,7 +161,7 @@ function App() {
 		doc.current = new Y.Doc()
 		sharedArray.current = doc.current.getArray('tableData3')
 		provider.current = new WebsocketProvider(
-			'ws://172.20.10.3:3000',
+			'ws://10.5.34.218:3000',
 			'data-story',
 			doc.current
 		)
@@ -840,6 +840,7 @@ function App() {
           idList={idList}
           setIdList={setIdList}
           handleDeleteAllHistory={handleDeleteAllHistory}
+          collaborators={collaborators}
         />
         {showConfirmation && (
           <ConfirmationWindow
