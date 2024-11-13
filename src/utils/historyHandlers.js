@@ -104,7 +104,8 @@ export const saveDataToHistory = (
   chartConfigs = [],
   footerNames = ["Table"],
   storyComponents = [],
-  columnConfigs // Ensure columnConfigs is passed here
+  columnConfigs, // Ensure columnConfigs is passed here
+  historyMessage
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
@@ -146,6 +147,7 @@ export const saveDataToHistory = (
         footers: footersCopy,
         columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
         storyComponents: storyComponentsCopy,
+        historyMessage: historyMessage,
       },
     ];
     setHistoryLocalStorage(updatedHistory);

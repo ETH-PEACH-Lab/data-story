@@ -10,6 +10,7 @@ const DataMenu = ({
   hotRef,
   filteredColumns,
   setFilteredColumns,
+  handleSaveCurrentVersion,
 }) => {
   const [activeItem, setActiveItem] = useState("");
   const [sortOrder, setSortOrder] = useState("");

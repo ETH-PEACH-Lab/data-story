@@ -9,6 +9,7 @@ const EditMenu = ({
   handleFindReplace,
   setColumns,
   hotRef,
+  handleSaveCurrentVersion,
 }) => {
   const [activeItem, setActiveItem] = useState("");
   const [duplicateCount, setDuplicateCount] = useState(0);
@@ -63,6 +64,9 @@ const EditMenu = ({
         newHeader
       );
       hotRef.current.hotInstance.undoRedo.done(() => headerAction);
+
+      handleSaveCurrentVersion("Column " + (selectedColumnIndex + 1) + " header is changed to " + newHeader);
+      //*#*//
 
       return newColumns;
     });

@@ -38,6 +38,7 @@ const MenuBar = ({
   addChartPage,
   selectedRange,
   aggregateData,
+  handleSaveCurrentVersion,
   handleExport,
 }) => {
   const [activeMenu, setActiveMenu] = useState("");
@@ -73,6 +74,7 @@ const MenuBar = ({
         handleRedo={handleRedo}
         setColumns={setColumns}
         hotRef={hotRef}
+        handleSaveCurrentVersion={handleSaveCurrentVersion}
       />
     ),
     Format: (
@@ -111,6 +113,7 @@ const MenuBar = ({
         hotRef={hotRef}
         filteredColumns={filteredColumns}
         setFilteredColumns={setFilteredColumns}
+        handleSaveCurrentVersion={handleSaveCurrentVersion}
       />
     ),
   };

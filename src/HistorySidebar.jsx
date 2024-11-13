@@ -31,6 +31,7 @@ const HistorySidebar = ({
   idList,
   setIdList,
   handleDeleteAllHistory,
+  collaborators,
 }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -130,7 +131,7 @@ const HistorySidebar = ({
                 )}
                 {" - "} <em>{entry.timestamp}</em>
                 <div>
-                  ID: {entry.id}, Derived from: {entry.parentId}
+                  ID: {collaborators[0].name}, {entry.historyMessage}
                 </div>
                 {entry.actions && entry.actions.length > 0 && (
                   <details>

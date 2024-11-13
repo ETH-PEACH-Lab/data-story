@@ -82,6 +82,7 @@ const TableWithMenu = ({
 	setFooterNames,
 	currentPage,
 	setCurrentPage,
+	handleSaveCurrentVersion,
 	handleExport,
 }) => {
 	const [selectedRange, setSelectedRangeState] = useState(null)
@@ -99,6 +100,8 @@ const TableWithMenu = ({
 				idx === index ? { ...config, ...updates } : config
 			)
 		)
+		handleSaveCurrentVersion("Chart configs are updated");
+		//*#*//
 	}
 
 	const setSeriesLabels = (chartIndex, newLabels) =>
@@ -129,6 +132,8 @@ const TableWithMenu = ({
 		if (changes.length > 0) {
 			console.log('Updating local state and pushing changes to Yjs')
 			setData(newData)
+			handleSaveCurrentVersion("Table data is updated");
+			//*#*//
 
 			// Push the updated data to Yjs for real-time sync
 			sharedArray.current.delete(0, 1)
@@ -371,6 +376,9 @@ const TableWithMenu = ({
 		setFooterNames([...footerNames, `Chart ${newChartId}`])
 		setCurrentPage(newPageId)
 		setChartNames([...footerNames, `Chart ${newChartId}`])
+
+		handleSaveCurrentVersion("Chart " + newChartId + " is added");
+		//*#*//
 	}
 
 	const handleDeleteChart = (chartIndex) => {
@@ -395,6 +403,8 @@ const TableWithMenu = ({
 		if (currentPage === chartIndex + 1) {
 			setCurrentPage(0)
 		}
+		handleSaveCurrentVersion("Chart " + chartIndex + " is deleted");
+		//*#*//
 	}
 
 	const updateFooterName = (index, newName) => {
@@ -469,7 +479,8 @@ const TableWithMenu = ({
 							value,
 							selectedCellsRef,
 							setTextStyles,
-							hotRef
+							hotRef,
+							handleSaveCurrentVersion
 						)
 					}
 					selectedColumnIndex={selectedColumnIndex}
@@ -477,7 +488,7 @@ const TableWithMenu = ({
 					setColumns={setColumnConfigs}
 					columns={columnConfigs}
 					handleSort={(columnName, sortOrder) =>
-						handleSort(columnName, sortOrder, columnConfigs, hotRef)
+						handleSort(columnName, sortOrder, columnConfigs, hotRef, handleSaveCurrentVersion)
 					}
 					handleFilter={(columnIndex, condition, value, checkedValues) =>
 						handleFilter(
@@ -487,16 +498,17 @@ const TableWithMenu = ({
 							hotRef,
 							checkedValues,
 							filteredColumns,
-							setFilteredColumns
+							setFilteredColumns,
+							handleSaveCurrentVersion
 						)
 					}
 					tableContainerRef={tableContainerRef}
 					countAndRemoveDuplicates={(remove) =>
-						countAndRemoveDuplicates(data, setData, hotRef, remove)
+						countAndRemoveDuplicates(data, setData, hotRef, remove, handleSaveCurrentVersion)
 					}
-					addRow={() => addRow(data, setData, columnConfigs, hotRef)}
+					addRow={() => addRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion)}
 					addColumn={() =>
-						addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef)
+						addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion)
 					}
 					handleFindReplace={(findText, replaceText) =>
 						handleFindReplace(
@@ -506,7 +518,8 @@ const TableWithMenu = ({
 							selectedColumnName,
 							data,
 							setData,
-							hotRef
+							hotRef,
+							handleSaveCurrentVersion
 						)
 					}
 					hotRef={hotRef}
@@ -525,6 +538,7 @@ const TableWithMenu = ({
 					addChartPage={addChartPage}
 					selectedRange={selectedRange}
 					aggregateData={aggregateData}
+					handleSaveCurrentVersion={handleSaveCurrentVersion}
 					handleExport={handleExport}
 				/>
 			</div>
