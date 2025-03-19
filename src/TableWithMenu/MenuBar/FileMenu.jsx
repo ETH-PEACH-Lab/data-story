@@ -57,7 +57,6 @@ const FileMenu = ({
       );
       setShowConfirmation(true);
       setOnConfirmAction(() => () => {
-        onSaveCurrent();
         if (item === "New") {
           const { data } = generateEmptyDataset();
           onDataLoaded(data, `New Table ${Date.now()}`);
@@ -65,6 +64,7 @@ const FileMenu = ({
         } else if (item === "Open") {
           fileInputRef.current.click();
         }
+        onSaveCurrent();
       });
       setOnCancelAction(() => () => {
         if (item === "New") {

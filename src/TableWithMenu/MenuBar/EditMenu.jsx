@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { HeaderAction } from "../../CustomUndoRedo";
+import { SharedContext } from "../../App";
 
 const EditMenu = ({
   countAndRemoveDuplicates,
@@ -16,6 +17,8 @@ const EditMenu = ({
   const [findText, setFindText] = useState("");
   const [replaceText, setReplaceText] = useState("");
   const [newColumnName, setNewColumnName] = useState("");
+
+	const { updateCols } = useContext(SharedContext)
 
   const handleMenuClick = (item) => {
     setActiveItem(activeItem === item ? "" : item);
@@ -65,6 +68,7 @@ const EditMenu = ({
       );
       hotRef.current.hotInstance.undoRedo.done(() => headerAction);
 
+      updateCols(newColumns)
       handleSaveCurrentVersion("Column " + (selectedColumnIndex + 1) + " header is changed to " + newHeader);
       //*#*//
 

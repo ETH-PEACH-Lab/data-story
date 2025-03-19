@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useContext } from 'react'
 import { HotTable } from '@handsontable/react'
 import MenuBar from './MenuBar/MenuBar'
 import Chart from './Chart'
@@ -16,7 +16,7 @@ import { handleFindReplace } from '../utils/findReplaceHandlers'
 import { handleStyleChange, customRenderer } from '../utils/styleHandlers'
 import '../styles/App.css'
 import { originalColors, tintedColors } from './Chart'
-
+import { SharedContext } from '../App'
 
 const allColors = [...originalColors, ...tintedColors]
 
@@ -31,7 +31,6 @@ const shuffleArray = (array) => {
 const TableWithMenu = ({
 	userCursorColor,
 	setUserCursorColor,
-	sharedArray,
 	startEdit,
 	setStartEdit,
 	data,
@@ -89,6 +88,8 @@ const TableWithMenu = ({
 	const [chartNotes, setChartNotes] = useState({})
 	const [editingNote, setEditingNote] = useState(null)
 
+	const { updateCols, updateHist, updateTable } = useContext(SharedContext)
+
 	const selectedColumnName =
 		selectedColumnIndex !== null
 			? columnConfigs[selectedColumnIndex]?.title
@@ -118,7 +119,7 @@ const TableWithMenu = ({
 		updateChartConfigs(chartIndex, { yAxisTitle: newTitle })
 
 	const handleTableChange = (changes, source) => {
-		if (!sharedArray.current || source === 'loadData' || !changes) return
+		if (source === 'loadData' || !changes) return
 
 		const newData = [...data]
 
@@ -136,8 +137,7 @@ const TableWithMenu = ({
 			//*#*//
 
 			// Push the updated data to Yjs for real-time sync
-			sharedArray.current.delete(0, 1)
-			sharedArray.current.push([newData])
+			updateTable(newData)
 		}
 
 		setStartEdit(true)
@@ -430,6 +430,7 @@ const TableWithMenu = ({
 							setCurrentDataId,
 							idList,
 							setIdList,
+							updateHist,
 							actions,
 							originalFileName,
 							textStyles,
@@ -456,6 +457,9 @@ const TableWithMenu = ({
 							saveDataToHistory,
 							idList,
 							setIdList,
+							updateHist,
+  							updateTable,
+  							updateCols,
 							setUploadHistory,
 							setActions,
 							originalFileName,
@@ -506,9 +510,9 @@ const TableWithMenu = ({
 					countAndRemoveDuplicates={(remove) =>
 						countAndRemoveDuplicates(data, setData, hotRef, remove, handleSaveCurrentVersion)
 					}
-					addRow={() => addRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion)}
+					addRow={() => addRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable)}
 					addColumn={() =>
-						addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion)
+						addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols)
 					}
 					handleFindReplace={(findText, replaceText) =>
 						handleFindReplace(
@@ -564,7 +568,6 @@ const TableWithMenu = ({
 									cellProperties,
 									textStyles
 								),
-							columnSorting: { headerAction: false },
 						}))}
 						rowHeaders
 						width='100%'
@@ -616,6 +619,7 @@ const TableWithMenu = ({
 							return width
 						}}
 						afterChange={handleTableChange}
+						contextMenu
 					/>
 				</div>
 			</div>

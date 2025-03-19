@@ -10,6 +10,9 @@ export const handleDataLoaded = (
   saveDataToHistory,
   idList,
   setIdList,
+  updateHist,
+  updateTable,
+  updateCols,
   setUploadHistory,
   setActions,
   originalFileName,
@@ -38,6 +41,8 @@ export const handleDataLoaded = (
   setData(newData);
   setColumnConfigs(initialColumnConfigs);
   setOriginalFileName(fileName);
+  updateTable(newData);
+  updateCols(initialColumnConfigs);
 
   // Reset ID list if empty
   if (idList.length === 0) {
@@ -53,6 +58,7 @@ export const handleDataLoaded = (
     setCurrentDataId,
     idList,
     setIdList,
+    updateHist,
     [],
     originalFileName,
     {},
@@ -81,6 +87,7 @@ export const generateRandomTable = (
   saveDataToHistory,
   idList,
   setIdList,
+  updateHist,
   setUploadHistory,
   setActions,
   originalFileName,
@@ -132,6 +139,7 @@ export const generateRandomTable = (
     setCurrentDataId,
     idList,
     setIdList,
+    updateHist,
     [],
     originalFileName,
     {},
@@ -160,6 +168,7 @@ export const fetchData = async (
   saveDataToHistory,
   idList,
   setIdList,
+  updateHist,
   setUploadHistory,
   setActions,
   originalFileName,
@@ -179,6 +188,7 @@ export const fetchData = async (
     saveDataToHistory,
     idList,
     setIdList,
+    updateHist,
     setUploadHistory,
     setActions,
     originalFileName,
