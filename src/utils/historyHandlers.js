@@ -24,7 +24,8 @@ export const handleHistoryDelete = (
   setColumnConfigs,
   setFilteredColumns,
   idList,
-  setIdList
+  setIdList,
+  updateHist,
 ) => {
   const historyEntryToDelete = uploadHistory[index];
   const isDeletingCurrentData = historyEntryToDelete.id === currentDataId;
@@ -86,6 +87,7 @@ export const handleHistoryDelete = (
       setIdListLocalStorage(resetIdList);
     }
   }
+  updateHist(newHistory)
 };
 
 export const saveDataToHistory = (
@@ -96,6 +98,7 @@ export const saveDataToHistory = (
   setCurrentDataId,
   idList,
   setIdList,
+  updateHist,
   actions,
   originalFileName,
   textStyles,
@@ -105,7 +108,7 @@ export const saveDataToHistory = (
   footerNames = ["Table"],
   storyComponents = [],
   columnConfigs, // Ensure columnConfigs is passed here
-  historyMessage
+  historyMessage,
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
@@ -152,6 +155,7 @@ export const saveDataToHistory = (
     ];
     setHistoryLocalStorage(updatedHistory);
     setCurrentDataIdLocalStorage(newHistoryId);
+    updateHist(updatedHistory);
     return updatedHistory;
   });
   setCurrentDataId(newHistoryId);

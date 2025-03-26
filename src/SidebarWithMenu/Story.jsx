@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import EditableText from "./EditableStoryComponents/EditableText";
 import Function from "./EditableStoryComponents/Function";
 import StoryChart from "./EditableStoryComponents/StoryChart";
@@ -7,6 +7,7 @@ import StoryMenu from "./StoryMenu/StoryMenu";
 import "./Story.css";
 import { Card, Form } from "react-bootstrap";
 import { transformChartConfig } from "./StoryMenu/ChartMenu"
+import { SharedContext } from "../App";
 
 function Story({
   components,
@@ -29,6 +30,7 @@ function Story({
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedRangeState, setSelectedRangeState] = useState(null);
   const cardRef = useRef(null);
+  const { updateStory } = useContext(SharedContext)
 
   // Hook to update the selected range state based on user selection in the table
   useEffect(() => {
@@ -124,6 +126,8 @@ function Story({
     setComponents([...components, newComponent]);
     components = [...components, newComponent];
     setShowCard(false); // Close the card after adding the component
+    console.log("brother you created new comp:")
+		updateStory(components)
     if (historyLogNeeded)
       handleSaveCurrentVersion("New " + type + " is added to the story");
   };
@@ -168,6 +172,7 @@ function Story({
     components = newComponents;
     setComponents(components);
     setVisibleMenuIndex(null);
+    updateStory(components)
     if (historyLogNeeded)
       handleSaveCurrentVersion("Story component " + (index + 1) + " is deleted");
   };
@@ -243,6 +248,11 @@ function Story({
     setComponents(newComponents);
     components = newComponents;
   };
+
+  const updateText = () => {
+    updateStory(components)
+    handleSaveCurrentVersion("Story text was changed");
+  }
 
   const handleShowCard = () => {
     setShowCard((prevShowCard) => !prevShowCard);
@@ -322,6 +332,7 @@ function Story({
                 onUpdate={handleUpdate}
                 isMenuVisible={visibleMenuIndex === index}
                 setVisibleMenuIndex={setVisibleMenuIndex}
+                updateText={updateText}
               />
             );
         }

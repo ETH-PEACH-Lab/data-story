@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
 import "./styles/History.css";
 import {
   setHistoryLocalStorage,
   clearAllLocalStorage,
 } from "./utils/storageHandlers";
+import { SharedContext } from "./App";
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -31,12 +32,14 @@ const HistorySidebar = ({
   idList,
   setIdList,
   handleDeleteAllHistory,
-  collaborators,
+  awareness,
 }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
   const [editingIndex, setEditingIndex] = useState(null);
   const [newFileName, setNewFileName] = useState("");
+  const [collaborators, setCollaborators] = useState([]);
   const inputRef = useRef(null);
+  const { updateHist }= useContext(SharedContext)
 
   useEffect(() => {
     setLastSelectedEntry(currentDataId);
@@ -52,6 +55,7 @@ const HistorySidebar = ({
         const updatedHistory = [...uploadHistory];
         updatedHistory[index].fileName = trimmedFileName;
         setUploadHistory(updatedHistory);
+        updateHist(updatedHistory)
         setHistoryLocalStorage(updatedHistory);
       }
       setEditingIndex(null);
@@ -70,6 +74,17 @@ const HistorySidebar = ({
     setEditingIndex(index);
     setNewFileName(fileName);
   };
+
+  useEffect(() => {
+    if (!awareness.current) return;
+    const states = awareness.current.getStates();
+    const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
+      const name = state.name; // Ensure a default name if not provided
+      const color = state.cursor.color; // Get the cursor color
+      return { name, color };
+    });
+    setCollaborators(updatedCollaborators);
+  }, [isHistoryVisible]);
 
   return (
     <div className={`history-sidebar ${isHistoryVisible ? "visible" : ""}`}>
@@ -91,7 +106,7 @@ const HistorySidebar = ({
       {isHistoryVisible && (
         <>
           <ul className="list-group w-100">
-            {uploadHistory.map((entry, index) => (
+            {uploadHistory.filter(logEntry => !logEntry.historyMessage?.toLowerCase().includes("story")).map((entry, index) => (
               <li
                 key={index}
                 className={`history-entry list-group-item ${
@@ -131,7 +146,7 @@ const HistorySidebar = ({
                 )}
                 {" - "} <em>{entry.timestamp}</em>
                 <div>
-                  ID: {collaborators[0].name}, {entry.historyMessage}
+                  ID: {collaborators.length > 0 && collaborators[0].name}, {entry.historyMessage}
                 </div>
                 {entry.actions && entry.actions.length > 0 && (
                   <details>

@@ -15,6 +15,7 @@ function EditableText({
   onUpdate,
   isMenuVisible,
   setVisibleMenuIndex,
+  updateText,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const quillRef = useRef(null);
@@ -28,6 +29,7 @@ function EditableText({
   const handleClickOutside = (event) => {
     if (containerRef.current && !containerRef.current.contains(event.target)) {
       setIsEditing(false);
+      updateText();
     }
   };
 

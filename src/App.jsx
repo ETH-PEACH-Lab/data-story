@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, createContext } from "react";
 import "./styles/App.css";
 import "handsontable/dist/handsontable.full.min.css";
 import { registerAllModules } from "handsontable/registry";
@@ -91,6 +91,41 @@ const getRandomColor = () => {
     );
   };
 
+export const SharedContext = createContext(null);
+
+const UserCircles = ({ awareness }) => {
+
+  const [collaborators, setCollaborators] = useState([]);
+
+  useEffect(() => {
+    const handleAwarenessUpdate = () => {
+      const states = awareness.current.getStates();
+      const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
+        const name = state.name; // Ensure a default name if not provided
+        const color = state.cursor.color; // Get the cursor color
+        return { name, color };
+      });
+      setCollaborators(updatedCollaborators);
+    };
+
+    awareness.current?.on('change', handleAwarenessUpdate);
+
+    // Clean up listener when the component unmounts
+    return () => {
+      awareness.current.off('change', handleAwarenessUpdate);
+    };
+  }, [awareness.current]);
+
+  return (
+    <div className="collaborators-container">
+      {collaborators.map((collaborator, index) => (
+        <div key={index} className="user-circle" style={{ backgroundColor: collaborator.color, color: 'white' }}>
+          {collaborator.name.charAt(0).toUpperCase()}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function App() {
   const [data, setData] = useState([]);
@@ -149,58 +184,63 @@ function App() {
   };
 
   const doc = useRef()
-	const sharedArray = useRef()
+  const sharedArray = useRef()
+  const sharedStoryPanel = useRef()
+  const sharedHist = useRef()
+  const sharedCols = useRef()
   const awareness = useRef(null)
   const cursors = useRef({})
- 	const provider = useRef(null);
+  const provider = useRef(null);
 
-	const [startEdit, setStartEdit] = useState(false)
+  const [startEdit, setStartEdit] = useState(false)
 
-	useEffect(() => {
-		// Initialize Yjs document and WebSocket provider only once
-		doc.current = new Y.Doc()
-		sharedArray.current = doc.current.getArray('tableData3')
-		provider.current = new WebsocketProvider(
-			'ws://10.5.34.218:3000',
-			'data-story',
-			doc.current
-		)
+  useEffect(() => {
+    // Initialize Yjs document and WebSocket provider only once
+    doc.current = new Y.Doc()
+    sharedArray.current = doc.current.getArray('tableData3')
+    sharedStoryPanel.current = doc.current.getArray('storyPanelData')
+    sharedHist.current = doc.current.getArray('history')
+    sharedCols.current = doc.current.getArray('columnConfigs')
+    console.log("DIES IST EIN TEST")
+    provider.current = new WebsocketProvider(
+      'ws://10.5.34.218:3000',
+      'data-story',
+      doc.current
+    )
 
     awareness.current = provider.current.awareness
     awareness.current.setLocalStateField('cursor', {
       x: 0,  // Initial x position (pixels)
       y: 0,  // Initial y position (pixels)
-      color: userCursorColor,  
+      color: userCursorColor,
     })
 
 
     awareness.current.setLocalStateField('name', userName);
+
+    provider.current.on('status', (event) => {
+      console.log(`WebSocket status: ${event.status}`) // logs "connected" or "disconnected"
+    })
+
+    provider.current.on('synced', (isSynced) => {
+      console.log(`WebSocket synced: ${isSynced}`) // logs true or false
+    })
     
-		provider.current.on('status', (event) => {
-			console.log(`WebSocket status: ${event.status}`) // logs "connected" or "disconnected"
-		})
+    sharedHist.current.observe((event) => {
+      const { transaction } = event
+      const updatedStory = sharedStoryPanel.current.toJSON().slice(-1)[0]
+      const updatedHist = sharedHist.current.toJSON().slice(-1)[0]
+      const updatedTable = sharedArray.current.toJSON().slice(-1)[0]
+      const updatedCols = sharedCols.current.toJSON().slice(-1)[0]
 
-		provider.current.on('synced', (isSynced) => {
-			console.log(`WebSocket synced: ${isSynced}`) // logs true or false
-		})
-
-		// Attach observer only once
-		sharedArray.current.observe((event) => {
-			const { transaction } = event
-			const updatedData = sharedArray.current.toJSON().slice(-1)[0]
-
-			// Ensure that the change was not made locally before syncing
-			if (!transaction.local) {
-				// Only update if data is actually different
-				if (JSON.stringify(data) !== JSON.stringify(updatedData)) {
-					console.log(
-						'Observed changes in shared array, updating local data',
-						updatedData
-					)
-					setData(updatedData) // Sync local table data with Yjs data from other clients
-				}
-			}
-		})
+      // Ensure that the change was not made locally before syncing
+      if (!transaction.local) {
+        setData(updatedTable)
+        setUploadHistory(updatedHist)
+        setStoryComponents(updatedStory || [])
+        if (updatedCols) setColumnConfigs(updatedCols)
+      } 
+    })
 
     awareness.current.on('change', (changes) => {
       const states = awareness.current.getStates()
@@ -216,25 +256,25 @@ function App() {
     
 	}, []) // Empty dependency array ensures it runs only once on mount
 
-	useEffect(() => {
-		if (!data || data.length === 0) {
-			console.log('Data is not initialized, skipping synchronization.')
-			return // Exit if data is not initialized
-		}
+  useEffect(() => {
+    if (!data || data.length === 0) {
+      console.log('Data is not initialized, skipping synchronization.')
+      return // Exit if data is not initialized
+      }
 
-		// Synchronize only once at the start
-		if (!startEdit) {
-			if (sharedArray.current.length === 0) {
-				// Initialize shared array if empty
-				console.log('Shared array is empty, pushing local data to Yjs')
-				sharedArray.current.push([data])
-			} else {
-				// Sync local data with Yjs data
-				console.log('Setting data from shared array')
-				setData(sharedArray.current.toJSON().slice(-1)[0])
-			}
-		}
-	}, [data]) // Depend only on `data`
+    // Synchronize only once at the start
+    if (!startEdit) {
+      if (sharedArray.current.length === 0) {
+        // Initialize shared array if empty
+        console.log('Shared array is empty, pushing local data to Yjs')
+        updateTable(data)
+      } else {
+        // Sync local data with Yjs data
+        console.log('Setting data from shared array')
+        setData(sharedArray.current.toJSON().slice(-1)[0])
+      }
+    }  
+  }, [data]) // Depend only on `data`
 
   const handleMouseMove = (event) => {
     const x = event.clientX // Cursor X position in pixels
@@ -311,28 +351,6 @@ function App() {
       }
     });
   }
-
-  const [collaborators, setCollaborators] = useState([]);
-
-  useEffect(() => {
-    const handleAwarenessUpdate = () => {
-      const states = awareness.current.getStates();
-      // console.log("317!!!!", states);
-      const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
-        const name = state.name; // Ensure a default name if not provided
-        const color = state.cursor.color; // Get the cursor color
-        return { name, color };
-      });
-      setCollaborators(updatedCollaborators);
-    };
-
-    awareness.current.on('change', handleAwarenessUpdate);
-
-    // Clean up listener when the component unmounts
-    return () => {
-      awareness.current.off('change', handleAwarenessUpdate);
-    };
-  }, []);
 
   const handleExport = useCallback(
     (exportType) => {
@@ -425,6 +443,7 @@ function App() {
         setCurrentDataId,
         idList,
         setIdList,
+        updateHist,
         actions,
         originalFileName,
         textStyles,
@@ -459,6 +478,7 @@ function App() {
     originalFileName,
     storyComponents,
     textStyles,
+    sharedHist,
   ]);
 
   const handleHistoryClick = useCallback(
@@ -549,6 +569,7 @@ function App() {
       setIdList([]);
       setCurrentDataId(0);
       clearAllLocalStorage();
+      updateHist([]);
     });
     setOnCancelAction(() => () => {
       setShowConfirmation(false);
@@ -610,6 +631,7 @@ function App() {
         saveDataToHistory,
         idList,
         setIdList,
+        updateHist,
         setUploadHistory,
         setActions,
         originalFileName,
@@ -668,190 +690,202 @@ function App() {
     updateUndoRedoState();
   }, [updateUndoRedoState]);
 
-  return (
-    <ErrorBoundary>
-      <div>
-      {isAuthenticated ? (
-        <div>
-          {/* Collaborative Yjs Table goes here */}
-        </div>
-      ) : (
-        <>
-          {/* Dark overlay on top of the entire page */}
-          <div className="auth-overlay"></div>
-          {/* The actual authentication dialog */}
-          <div className="auth-container">
-            <Authentication onAuthenticated={handleAuthentication} />
-          </div>
-        </>
-      )}
-    </div>
+  const updateStory = (components) => {
+    sharedStoryPanel.current.push([components])
+  }
 
-    {/* The rest of the page content */}
-    <div className={`container-fluid ${!isAuthenticated ? 'blurred' : ''}`}>
-        <div className="top-banner">
-          <h1>Data-Story</h1>
-          <div className="undo-redo-container">
-            <button
-              className={`btn btn-primary ${isUndoDisabled ? "disabled" : ""}`}
-              onClick={handleUndoAction}
-              disabled={isUndoDisabled}
-            >
-              <i className="bi bi-arrow-counterclockwise"></i> {"Undo"}
-            </button>
-            <button
-              className={`btn btn-primary ${isRedoDisabled ? "disabled" : ""}`}
-              onClick={handleRedoAction}
-              disabled={isRedoDisabled}
-            >
-              <i className="bi bi-arrow-clockwise"></i> {"Redo"}
-            </button>
-          </div>
-          <div className="collaborators-container">
-            {collaborators.map((collaborator, index) => (
-              <div key={index} className="user-circle" style={{ backgroundColor: collaborator.color, color: 'white' }}>
-                {collaborator.name.charAt(0).toUpperCase()}
+  const updateHist = (history) => {
+    sharedHist.current.push([history])
+  }
+
+  const updateCols = (columns) => {
+    sharedCols.current.push([columns])
+  }
+
+  const updateTable = (data) => {
+    sharedArray.current.push([data])
+  }
+
+  return (
+    <SharedContext.Provider value={{updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray}}>
+      <ErrorBoundary>
+        <div>
+          {isAuthenticated ? (
+            <div>
+              {/* Collaborative Yjs Table goes here */}
+            </div>
+          ) : (
+            <>
+              {/* Dark overlay on top of the entire page */}
+              <div className="auth-overlay"></div>
+              {/* The actual authentication dialog */}
+              <div className="auth-container">
+                <Authentication onAuthenticated={handleAuthentication} />
               </div>
-            ))}
-          </div>
-          <div className="save-button-container">
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                if (idList.length === 0) {
-                  setIdList([1]);
-                }
-                handleSaveCurrentVersion("History update button is triggered");
-              }}
-            >
-              <i className="bi bi-save"></i> {"Save Current Version"}
-            </button>
-          </div>
+            </>
+          )}
         </div>
-        <div className="content-area">
-          <TableWithMenu
-            userCursorColor={userCursorColor}
-            setUserCursorColor={setUserCursorColor}
-            sharedArray={sharedArray}
-            startEdit={startEdit}
-            setStartEdit={setStartEdit}
-            data={data}
-            setData={setData}
-            columnConfigs={columnConfigs}
-            setColumnConfigs={setColumnConfigs}
-            selectedColumnIndex={selectedColumnIndex}
-            setSelectedColumnIndex={setSelectedColumnIndex}
-            textStyles={textStyles}
-            setTextStyles={setTextStyles}
-            filteredColumns={filteredColumns}
-            setFilteredColumns={setFilteredColumns}
-            hotRef={hotRef}
-            selectedCellsRef={selectedCellsRef}
-            tableContainerRef={tableContainerRef}
-            fileInputRef={fileInputRef}
-            saveDataToHistory={saveDataToHistory}
-            handleDataLoaded={handleDataLoaded}
-            originalFileName={originalFileName}
-            setOriginalFileName={setOriginalFileName}
-            currentDataId={currentDataId}
-            setCurrentDataId={setCurrentDataId}
+
+        {/* The rest of the page content */}
+        <div className={`container-fluid ${!isAuthenticated ? 'blurred' : ''}`}>
+          <div className="top-banner">
+            <h1>Data-Story</h1>
+            <div className="undo-redo-container">
+              <button
+                className={`btn btn-primary ${isUndoDisabled ? "disabled" : ""}`}
+                onClick={handleUndoAction}
+                disabled={isUndoDisabled}
+              >
+                <i className="bi bi-arrow-counterclockwise"></i> {"Undo"}
+              </button>
+              <button
+                className={`btn btn-primary ${isRedoDisabled ? "disabled" : ""}`}
+                onClick={handleRedoAction}
+                disabled={isRedoDisabled}
+              >
+                <i className="bi bi-arrow-clockwise"></i> {"Redo"}
+              </button>
+            </div>
+            <UserCircles awareness={awareness} />
+            <div className="save-button-container">
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  if (idList.length === 0) {
+                    setIdList([1]);
+                  }
+                  handleSaveCurrentVersion("History update button is triggered");
+                }}
+              >
+                <i className="bi bi-save"></i> {"Save Current Version"}
+              </button>
+            </div>
+          </div>
+          <div className="content-area">
+            <TableWithMenu
+              userCursorColor={userCursorColor}
+              setUserCursorColor={setUserCursorColor}
+              startEdit={startEdit}
+              setStartEdit={setStartEdit}
+              data={data}
+              setData={setData}
+              columnConfigs={columnConfigs}
+              setColumnConfigs={setColumnConfigs}
+              selectedColumnIndex={selectedColumnIndex}
+              setSelectedColumnIndex={setSelectedColumnIndex}
+              textStyles={textStyles}
+              setTextStyles={setTextStyles}
+              filteredColumns={filteredColumns}
+              setFilteredColumns={setFilteredColumns}
+              hotRef={hotRef}
+              selectedCellsRef={selectedCellsRef}
+              tableContainerRef={tableContainerRef}
+              fileInputRef={fileInputRef}
+              saveDataToHistory={saveDataToHistory}
+              handleDataLoaded={handleDataLoaded}
+              originalFileName={originalFileName}
+              setOriginalFileName={setOriginalFileName}
+              currentDataId={currentDataId}
+              setCurrentDataId={setCurrentDataId}
+              setUploadHistory={setUploadHistory}
+              actions={actions}
+              setActions={setActions}
+              setInitialActionStack={setInitialActionStack}
+              setInitialActionStackLength={setInitialActionStackLength}
+              showConfirmation={showConfirmation}
+              setShowConfirmation={setShowConfirmation}
+              setConfirmationMessage={setConfirmationMessage}
+              setOnConfirmAction={setOnConfirmAction}
+              setOnCancelAction={setOnCancelAction}
+              initialActionStack={initialActionStack}
+              initialActionStackLength={initialActionStackLength}
+              handleStyleChange={handleStyleChange}
+              toggleHistory={() => toggleHistory(setHistoryVisible)}
+              setSelectedRange={setSelectedRange}
+              chartNames={chartNames}
+              setChartNames={setChartNames}
+              chartConfigs={chartConfigs}
+              setChartConfigs={setChartConfigs}
+              idList={idList}
+              setIdList={setIdList}
+              pages={pages}
+              setPages={setPages}
+              footerNames={footerNames}
+              setFooterNames={setFooterNames}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              handleSaveCurrentVersion={handleSaveCurrentVersion}
+              handleExport={handleExport}
+            />
+            <SidebarWithStoryMenu
+              data={data}
+              columnConfigs={columnConfigs}
+              selectedColumnIndex={selectedColumnIndex}
+              selectedColumnName={columnConfigs[selectedColumnIndex]?.title}
+              handleFilter={handleFilter}
+              hotRef={hotRef}
+              filteredColumns={filteredColumns}
+              setFilteredColumns={setFilteredColumns}
+              selectedRange={selectedRange}
+              tableContainerRef={tableContainerRef}
+              setShowConfirmation={setShowConfirmation}
+              setConfirmationMessage={setConfirmationMessage}
+              setOnConfirmAction={setOnConfirmAction}
+              setOnCancelAction={setOnCancelAction}
+              chartNames={chartNames}
+              chartConfigs={chartConfigs}
+              components={storyComponents}
+              setComponents={setStoryComponents}
+              handleSaveCurrentVersion={handleSaveCurrentVersion}
+            />
+          </div>
+          <HistorySidebar
+            isHistoryVisible={isHistoryVisible}
+            uploadHistory={uploadHistory}
             setUploadHistory={setUploadHistory}
-            actions={actions}
-            setActions={setActions}
-            setInitialActionStack={setInitialActionStack}
-            setInitialActionStackLength={setInitialActionStackLength}
-            showConfirmation={showConfirmation}
-            setShowConfirmation={setShowConfirmation}
-            setConfirmationMessage={setConfirmationMessage}
-            setOnConfirmAction={setOnConfirmAction}
-            setOnCancelAction={setOnCancelAction}
-            initialActionStack={initialActionStack}
-            initialActionStackLength={initialActionStackLength}
-            handleStyleChange={handleStyleChange}
+            clickedIndex={clickedIndex}
+            setColumnConfigs={setColumnConfigs}
+            initializeColumns={initializeColumns}
+            onHistoryItemClick={handleHistoryClick}
+            onHistoryItemDelete={(index) =>
+              handleHistoryDelete(
+                index,
+                uploadHistory,
+                currentDataId,
+                setData,
+                initializeColumns,
+                setCurrentDataId,
+                setActions,
+                setOriginalFileName,
+                setUploadHistory,
+                setShowConfirmation,
+                setConfirmationMessage,
+                setOnConfirmAction,
+                setColumnConfigs,
+                setFilteredColumns,
+                idList,
+                setIdList,
+                updateHist,
+              )
+            }
             toggleHistory={() => toggleHistory(setHistoryVisible)}
-            setSelectedRange={setSelectedRange}
-            chartNames={chartNames}
-            setChartNames={setChartNames}
-            chartConfigs={chartConfigs}
-            setChartConfigs={setChartConfigs}
+            currentDataId={currentDataId}
             idList={idList}
             setIdList={setIdList}
-            pages={pages}
-            setPages={setPages}
-            footerNames={footerNames}
-            setFooterNames={setFooterNames}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            handleSaveCurrentVersion={handleSaveCurrentVersion}
-            handleExport={handleExport}
+            handleDeleteAllHistory={handleDeleteAllHistory}
+            awareness={awareness}
           />
-          <SidebarWithStoryMenu
-            data={data}
-            columnConfigs={columnConfigs}
-            selectedColumnIndex={selectedColumnIndex}
-            selectedColumnName={columnConfigs[selectedColumnIndex]?.title}
-            handleFilter={handleFilter}
-            hotRef={hotRef}
-            filteredColumns={filteredColumns}
-            setFilteredColumns={setFilteredColumns}
-            selectedRange={selectedRange}
-            tableContainerRef={tableContainerRef}
-            setShowConfirmation={setShowConfirmation}
-            setConfirmationMessage={setConfirmationMessage}
-            setOnConfirmAction={setOnConfirmAction}
-            setOnCancelAction={setOnCancelAction}
-            chartNames={chartNames}
-            chartConfigs={chartConfigs}
-            components={storyComponents}
-            setComponents={setStoryComponents}
-            handleSaveCurrentVersion={handleSaveCurrentVersion}
-          />
+          {showConfirmation && (
+            <ConfirmationWindow
+              message={confirmationMessage}
+              onConfirm={handleConfirm}
+              onCancel={onCancelAction ? handleCancel : undefined}
+            />
+          )}
         </div>
-        <HistorySidebar
-          isHistoryVisible={isHistoryVisible}
-          uploadHistory={uploadHistory}
-          setUploadHistory={setUploadHistory}
-          clickedIndex={clickedIndex}
-          setColumnConfigs={setColumnConfigs}
-          initializeColumns={initializeColumns}
-          onHistoryItemClick={handleHistoryClick}
-          onHistoryItemDelete={(index) =>
-            handleHistoryDelete(
-              index,
-              uploadHistory,
-              currentDataId,
-              setData,
-              initializeColumns,
-              setCurrentDataId,
-              setActions,
-              setOriginalFileName,
-              setUploadHistory,
-              setShowConfirmation,
-              setConfirmationMessage,
-              setOnConfirmAction,
-              setColumnConfigs,
-              setFilteredColumns,
-              idList,
-              setIdList
-            )
-          }
-          toggleHistory={() => toggleHistory(setHistoryVisible)}
-          currentDataId={currentDataId}
-          idList={idList}
-          setIdList={setIdList}
-          handleDeleteAllHistory={handleDeleteAllHistory}
-          collaborators={collaborators}
-        />
-        {showConfirmation && (
-          <ConfirmationWindow
-            message={confirmationMessage}
-            onConfirm={handleConfirm}
-            onCancel={onCancelAction ? handleCancel : undefined}
-          />
-        )}
-      </div>
-      <div id="cursor-layer" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
-    </ErrorBoundary>
+        <div id="cursor-layer" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
+      </ErrorBoundary>
+    </SharedContext.Provider>
   );
 }
 
