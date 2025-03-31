@@ -40,6 +40,7 @@ const HistorySidebar = ({
   const [collaborators, setCollaborators] = useState([]);
   const inputRef = useRef(null);
   const { updateHist }= useContext(SharedContext)
+  const listRef = useRef(null);
 
   useEffect(() => {
     setLastSelectedEntry(currentDataId);
@@ -86,6 +87,12 @@ const HistorySidebar = ({
     setCollaborators(updatedCollaborators);
   }, [isHistoryVisible]);
 
+  useEffect(() => {
+    if (!listRef.current) return
+      const lastChild = listRef.current.lastElementChild;
+      if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
+  }, [uploadHistory]);
+
   return (
     <div className={`history-sidebar ${isHistoryVisible ? "visible" : ""}`}>
       <div className="button-container d-flex justify-content-between align-items-center p-2">
@@ -105,7 +112,7 @@ const HistorySidebar = ({
       </div>
       {isHistoryVisible && (
         <>
-          <ul className="list-group w-100">
+          <ul className="list-group w-100" ref={listRef}>
             {uploadHistory.filter(logEntry => !logEntry.historyMessage?.toLowerCase().includes("story")).map((entry, index) => (
               <li
                 key={index}
