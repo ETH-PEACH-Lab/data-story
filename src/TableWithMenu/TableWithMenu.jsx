@@ -619,7 +619,28 @@ const TableWithMenu = ({
 							return width
 						}}
 						afterChange={handleTableChange}
-						contextMenu
+						contextMenu={{
+							items: {
+								insert_col: {
+									name: 'Insert column',
+									callback() {
+										addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols)
+									},
+								},
+								insert_row: {
+									name: 'Insert row',
+									callback() {
+										addRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable)
+									},
+								},
+								clear_cells: {
+									name: 'Clear all cells',
+									callback() {
+										this.clear();
+									},
+								},
+							},
+						}}
 					/>
 				</div>
 			</div>
