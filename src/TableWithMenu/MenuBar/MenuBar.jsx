@@ -77,17 +77,6 @@ const MenuBar = ({
         handleSaveCurrentVersion={handleSaveCurrentVersion}
       />
     ),
-    Format: (
-      <FormatMenu
-        onStyleChange={onStyleChange}
-        selectedColumnIndex={selectedColumnIndex}
-        selectedColumnName={selectedColumnName}
-        setColumns={setColumns}
-        columns={columns}
-        tableContainerRef={tableContainerRef}
-        hotRef={hotRef}
-      />
-    ),
     Insert: (
       <InsertMenu
         addRow={addRow}
