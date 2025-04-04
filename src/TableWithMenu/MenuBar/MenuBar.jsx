@@ -102,20 +102,6 @@ const MenuBar = ({
         setOnCancelAction={setOnCancelAction}
       />
     ),
-    Data: (
-      <DataMenu
-        columns={columns}
-        selectedColumnIndex={selectedColumnIndex}
-        selectedColumnName={selectedColumnName}
-        handleSort={handleSort}
-        handleFilter={handleFilter}
-        tableContainerRef={tableContainerRef}
-        hotRef={hotRef}
-        filteredColumns={filteredColumns}
-        setFilteredColumns={setFilteredColumns}
-        handleSaveCurrentVersion={handleSaveCurrentVersion}
-      />
-    ),
   };
 
   const handleMenuClick = (menu) => {
