@@ -89,7 +89,7 @@ const EditMenu = ({
   return (
     <div>
       <div className="d-flex gap-2">
-        {["Find and Replace", "Remove Duplicates", "Headers"].map(
+        {["Headers"].map(
           (item, index) => (
             <button
               key={index}
