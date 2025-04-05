@@ -87,6 +87,8 @@ const TableWithMenu = ({
 	const [selectedRange, setSelectedRangeState] = useState(null)
 	const [chartNotes, setChartNotes] = useState({})
 	const [editingNote, setEditingNote] = useState(null)
+  	const [activeItem, setActiveItem] = useState("");
+  	const [activeMenu, setActiveMenu] = useState("");
 
 	const { updateCols, updateHist, updateTable } = useContext(SharedContext)
 
@@ -417,6 +419,7 @@ const TableWithMenu = ({
 	}
 
 	return (
+    <SharedContext.Provider value={{...useContext(SharedContext), activeMenu, setActiveMenu, activeItem, setActiveItem}}>
 		<div className='table-content-area'>
 			<div className='rectangle'></div>
 			<div className='menu-bar-container'>
@@ -639,6 +642,13 @@ const TableWithMenu = ({
 										this.clear();
 									},
 								},
+								rename_col: {
+									name: 'Rename column',
+									callback() {
+										setActiveMenu("Edit")
+										setActiveItem("Headers")
+									},
+								},
 							},
 						}}
 					/>
@@ -661,6 +671,7 @@ const TableWithMenu = ({
 				))}
 			</div>
 		</div>
+</SharedContext.Provider>
 	)
 }
 

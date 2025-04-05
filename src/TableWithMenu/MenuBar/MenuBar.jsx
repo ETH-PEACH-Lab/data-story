@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import FileMenu from "./FileMenu";
 import EditMenu from "./EditMenu";
 import FormatMenu from "./FormatMenu";
 import InsertMenu from "./InsertMenu";
 import DataMenu from "./DataMenu";
+import { SharedContext } from "../../App";
 
 const MenuBar = ({
   onSaveCurrent,
@@ -41,7 +42,7 @@ const MenuBar = ({
   handleSaveCurrentVersion,
   handleExport,
 }) => {
-  const [activeMenu, setActiveMenu] = useState("");
+	const { activeMenu, setActiveMenu, setActiveItem} = useContext(SharedContext)
   const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const menuOptions = {
@@ -95,6 +96,9 @@ const MenuBar = ({
 
   const handleMenuClick = (menu) => {
     setActiveMenu(activeMenu === menu ? "" : menu);
+    if (menu === "Edit") {
+      setActiveItem("Headers");
+    }
   };
 
   const handleMouseEnter = (menu) => {
