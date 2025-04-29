@@ -52,44 +52,44 @@ const getRandomColor = () => {
   return color
 }
 
-  const Authentication = ({ onAuthenticated }) => {
-    const [name, setName] = useState('');
-    const [enteredPasskey, setEnteredPasskey] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-  
-    const handleLogin = () => {
-      if (enteredPasskey === passkey) {
-        // Pass the name to the parent component if the passkey is correct
-        onAuthenticated(name);
-      } else {
-        setErrorMessage('Incorrect passkey. Please try again.');
-      }
-    };
+const Authentication = ({ onAuthenticated }) => {
+  const [name, setName] = useState('');
+  const [enteredPasskey, setEnteredPasskey] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-    return (
-      <div className="auth-container">
-        <h2>Please enter your name and the passkey</h2>
-        <div>
-          <label>Name: </label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Passkey: </label>
-          <input
-            type="password"
-            value={enteredPasskey}
-            onChange={(e) => setEnteredPasskey(e.target.value)}
-          />
-        </div>
-        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        <button onClick={handleLogin}>Submit</button>
-      </div>
-    );
+  const handleLogin = () => {
+    if (enteredPasskey === passkey) {
+      // Pass the name to the parent component if the passkey is correct
+      onAuthenticated(name);
+    } else {
+      setErrorMessage('Incorrect passkey. Please try again.');
+    }
   };
+
+  return (
+    <div className="auth-container">
+      <h2>Please enter your name and the passkey</h2>
+      <div>
+        <label>Name: </label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Passkey: </label>
+        <input
+          type="password"
+          value={enteredPasskey}
+          onChange={(e) => setEnteredPasskey(e.target.value)}
+        />
+      </div>
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      <button onClick={handleLogin}>Submit</button>
+    </div>
+  );
+};
 
 export const SharedContext = createContext(null);
 
@@ -178,7 +178,7 @@ function App() {
 
   const handleAuthentication = (name) => {
     setUserName(name);
-    const color =  getRandomColor();
+    const color = getRandomColor();
     setUserCursorColor(color);
     setIsAuthenticated(true);
   };
@@ -225,7 +225,7 @@ function App() {
     provider.current.on('synced', (isSynced) => {
       console.log(`WebSocket synced: ${isSynced}`) // logs true or false
     })
-    
+
     sharedHist.current.observe((event) => {
       const { transaction } = event
       const updatedStory = sharedStoryPanel.current.toJSON().slice(-1)[0]
@@ -239,7 +239,7 @@ function App() {
         setUploadHistory(updatedHist)
         setStoryComponents(updatedStory || [])
         if (updatedCols) setColumnConfigs(updatedCols)
-      } 
+      }
     })
 
     awareness.current.on('change', (changes) => {
@@ -253,14 +253,14 @@ function App() {
     return () => {
       provider.current.disconnect()
     }
-    
-	}, []) // Empty dependency array ensures it runs only once on mount
+
+  }, []) // Empty dependency array ensures it runs only once on mount
 
   useEffect(() => {
     if (!data || data.length === 0) {
       console.log('Data is not initialized, skipping synchronization.')
       return // Exit if data is not initialized
-      }
+    }
 
     // Synchronize only once at the start
     if (!startEdit) {
@@ -273,7 +273,7 @@ function App() {
         console.log('Setting data from shared array')
         setData(sharedArray.current.toJSON().slice(-1)[0])
       }
-    }  
+    }
   }, [data]) // Depend only on `data`
 
   const handleMouseMove = (event) => {
@@ -284,7 +284,7 @@ function App() {
     const currentCursorState = currentLocalState.cursor;
     // Update local state with the current cursor position
     awareness.current.setLocalStateField('cursor', {
-       // Preserve previous state including color
+      // Preserve previous state including color
       x: x,
       y: y,
       color: currentCursorState.color,
@@ -295,15 +295,15 @@ function App() {
     if (userCursorColor) {
       // Handle the logic that needs to happen when userCursorColor is available
       console.log('Cursor color updated:', userCursorColor);
-	    const currentLocalState = awareness.current.getLocalState();
+      const currentLocalState = awareness.current.getLocalState();
       const currentCursorState = currentLocalState.cursor;
 
-	    awareness.current.setLocalStateField('cursor', {
+      awareness.current.setLocalStateField('cursor', {
         x: currentCursorState.x, // Replace with the actual x position
         y: currentCursorState.y, // Replace with the actual y position
         color: userCursorColor, // Set the new cursor color
       });
-    
+
       awareness.current.setLocalStateField('name', userName);
 
     }
@@ -313,7 +313,7 @@ function App() {
   useEffect(() => {
     // Add the event listener when the component mounts
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -322,10 +322,10 @@ function App() {
 
   const renderCursors = (states) => {
     const cursorLayer = document.getElementById('cursor-layer');
-  
+
     // Clear the current cursors in the layer
     cursorLayer.innerHTML = '';
-  
+
     // Loop through the states to render each client's cursor
     states.forEach((state, clientId) => {
       const { cursor } = state;
@@ -342,10 +342,10 @@ function App() {
         cursorElement.style.borderRadius = '50%';
         cursorElement.style.backgroundColor = cursor.color; // Use the user's unique color
         cursorElement.style.zIndex = '1000'; // Ensure it's on top of other elements
-  
+
         // Optionally add a label or other client-specific info
         //  cursorElement.innerHTML = `<span style="color: black; font-size: 15px; position: absolute; left: 15px; top: 0;">User ${clientId}</span>`;
-  
+
         // Append the cursor to the cursor layer
         cursorLayer.appendChild(cursorElement);
       }
@@ -707,7 +707,7 @@ function App() {
   }
 
   return (
-    <SharedContext.Provider value={{updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray}}>
+    <SharedContext.Provider value={{ updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray }}>
       <ErrorBoundary>
         <div>
           {isAuthenticated ? (
