@@ -453,7 +453,8 @@ function App() {
         footerNames,
         storyComponents,
         columnConfigs,
-        historyMessage
+        historyMessage,
+        userName,
       );
       setInitialActionStack([
         ...hotRef.current.hotInstance.undoRedo.doneActions,
@@ -479,6 +480,7 @@ function App() {
     storyComponents,
     textStyles,
     sharedHist,
+    userName,
   ]);
 
   const handleHistoryClick = useCallback(
