@@ -153,7 +153,7 @@ const HistorySidebar = ({
                 )}
                 {" - "} <em>{entry.timestamp}</em>
                 <div>
-                  ID: {collaborators.length > 0 && collaborators[0].name}, {entry.historyMessage}
+                  ID: {entry.author}, {entry.historyMessage}
                 </div>
                 {entry.actions && entry.actions.length > 0 && (
                   <details>
