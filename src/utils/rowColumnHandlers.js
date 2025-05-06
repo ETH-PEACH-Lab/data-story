@@ -45,10 +45,23 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
     handleSaveCurrentVersion("New row is added");
     //*#*//
   };
+
+  export const insertRow = (data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, newRowIndex ) => {
+    const emptyRow = columnConfigs.reduce((acc, col) => ({ ...acc, [col.data]: '' }), {});
+    const newData = [...data.slice(0, newRowIndex), emptyRow, ...data.slice(newRowIndex)];
+    console.log("invokation", newRowIndex)
+    console.log(newData)
+    setData(newData);
+    updateTable(newData)
+  
+    const wrappedAction = () => new InsertRowAction(newRowIndex, 1);
+    hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+    handleSaveCurrentVersion("New row is inserted");
+  };
   
   export const addColumn = (data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols) => {
     const newColumnIndex = columnConfigs.length;
-    const newColumnKey = `column${newColumnIndex + 1}`;
+    const newColumnKey = `Column ${newColumnIndex + 1}`;
     const newColumn = { data: newColumnKey, title: `Column ${newColumnIndex + 1}` };
   
     const newData = data.map(row => ({
@@ -68,6 +81,30 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
     hotRef.current.hotInstance.undoRedo.done(wrappedAction);
     handleSaveCurrentVersion("New column is added");
     //*#*//
+  };
+
+  export const insertColumn = (data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, newColumnIndex) => {
+    const newColumnKey = `Column ${columnConfigs.length + 1}`;
+    const newColumn = { data: newColumnKey, title: `Column ${columnConfigs.length + 1}` };
+  
+    const newData = data.map(row => ({
+      ...row,
+      [newColumnKey]: ''
+    }));
+
+    console.log(newData)
+  
+    setData(newData);
+    updateTable(newData)
+    const newColumnConfigs = [...columnConfigs.slice(0, newColumnIndex), newColumn, ...columnConfigs.slice(newColumnIndex)];
+    setColumnConfigs(newColumnConfigs);
+    updateCols(newColumnConfigs)
+  
+    hotRef.current.hotInstance.updateSettings({ columns: newColumnConfigs });
+  
+    const wrappedAction = () => new InsertColumnAction(newColumnIndex, newColumnKey);
+    hotRef.current.hotInstance.undoRedo.done(wrappedAction);
+    handleSaveCurrentVersion("New column is inserted");
   };
   
   export const removeColumn = (index, columnKey, data, setData, columnConfigs, setColumnConfigs, hotRef) => {

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import FileMenu from "./FileMenu";
 import EditMenu from "./EditMenu";
 import FormatMenu from "./FormatMenu";
 import InsertMenu from "./InsertMenu";
 import DataMenu from "./DataMenu";
+import { SharedContext } from "../../App";
 
 const MenuBar = ({
   onSaveCurrent,
@@ -41,7 +42,7 @@ const MenuBar = ({
   handleSaveCurrentVersion,
   handleExport,
 }) => {
-  const [activeMenu, setActiveMenu] = useState("");
+	const { activeMenu, setActiveMenu, setActiveItem} = useContext(SharedContext)
   const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const menuOptions = {
@@ -77,17 +78,6 @@ const MenuBar = ({
         handleSaveCurrentVersion={handleSaveCurrentVersion}
       />
     ),
-    Format: (
-      <FormatMenu
-        onStyleChange={onStyleChange}
-        selectedColumnIndex={selectedColumnIndex}
-        selectedColumnName={selectedColumnName}
-        setColumns={setColumns}
-        columns={columns}
-        tableContainerRef={tableContainerRef}
-        hotRef={hotRef}
-      />
-    ),
     Insert: (
       <InsertMenu
         addRow={addRow}
@@ -102,24 +92,13 @@ const MenuBar = ({
         setOnCancelAction={setOnCancelAction}
       />
     ),
-    Data: (
-      <DataMenu
-        columns={columns}
-        selectedColumnIndex={selectedColumnIndex}
-        selectedColumnName={selectedColumnName}
-        handleSort={handleSort}
-        handleFilter={handleFilter}
-        tableContainerRef={tableContainerRef}
-        hotRef={hotRef}
-        filteredColumns={filteredColumns}
-        setFilteredColumns={setFilteredColumns}
-        handleSaveCurrentVersion={handleSaveCurrentVersion}
-      />
-    ),
   };
 
   const handleMenuClick = (menu) => {
     setActiveMenu(activeMenu === menu ? "" : menu);
+    if (menu === "Edit") {
+      setActiveItem("Headers");
+    }
   };
 
   const handleMouseEnter = (menu) => {

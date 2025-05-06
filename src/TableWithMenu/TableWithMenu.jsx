@@ -7,7 +7,9 @@ import scatterIcon from '../assets/scatter.svg'
 import {
 	handleSelectionEnd,
 	addRow,
+	insertRow,
 	addColumn,
+	insertColumn,
 	removeColumn,
 } from '../utils/rowColumnHandlers'
 import { handleSort, handleFilter } from '../utils/filterSortHandlers'
@@ -87,6 +89,8 @@ const TableWithMenu = ({
 	const [selectedRange, setSelectedRangeState] = useState(null)
 	const [chartNotes, setChartNotes] = useState({})
 	const [editingNote, setEditingNote] = useState(null)
+  	const [activeItem, setActiveItem] = useState("");
+  	const [activeMenu, setActiveMenu] = useState("");
 
 	const { updateCols, updateHist, updateTable } = useContext(SharedContext)
 
@@ -417,6 +421,7 @@ const TableWithMenu = ({
 	}
 
 	return (
+    <SharedContext.Provider value={{...useContext(SharedContext), activeMenu, setActiveMenu, activeItem, setActiveItem}}>
 		<div className='table-content-area'>
 			<div className='rectangle'></div>
 			<div className='menu-bar-container'>
@@ -621,22 +626,47 @@ const TableWithMenu = ({
 						afterChange={handleTableChange}
 						contextMenu={{
 							items: {
-								insert_col: {
-									name: 'Insert column',
-									callback() {
-										addColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols)
+								insert_row_above: {
+									name: 'Insert row above',
+									callback(_, selection) {
+										const idx = selection[0].start.row
+										insertRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, idx)
 									},
 								},
-								insert_row: {
-									name: 'Insert row',
-									callback() {
-										addRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable)
+								insert_row_below: {
+									name: 'Insert row below',
+									callback(_, selection) {
+										const idx = selection[0].end.row + 1
+										insertRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, idx)
 									},
 								},
+								sep1: "---------",
+								insert_col_left: {
+									name: 'Insert column left',
+									callback(_, selection) {
+										const idx = selection[0].start.col
+										insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, idx)
+									},
+								},
+								insert_col_right: {
+									name: 'Insert column right',
+									callback(_, selection) {
+										const idx = selection[0].end.col + 1
+										insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, idx)
+									},
+								},
+								sep2: "---------",
 								clear_cells: {
 									name: 'Clear all cells',
 									callback() {
 										this.clear();
+									},
+								},
+								rename_col: {
+									name: 'Rename column',
+									callback() {
+										setActiveMenu("Edit")
+										setActiveItem("Headers")
 									},
 								},
 							},
@@ -661,6 +691,7 @@ const TableWithMenu = ({
 				))}
 			</div>
 		</div>
+</SharedContext.Provider>
 	)
 }
 
