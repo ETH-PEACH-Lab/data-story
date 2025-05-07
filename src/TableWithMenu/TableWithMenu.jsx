@@ -144,7 +144,7 @@ const TableWithMenu = ({
 		if (changes.length > 0) {
 			console.log('Updating local state and pushing changes to Yjs')
 			setData(newData)
-			const histMsg = changes[0][3]?.startsWith("=") ? "Formula has been updated" : "Table data has been updated"
+			const histMsg = String(changes[0][3]).startsWith("=") ? "Formula has been updated" : "Table data has been updated"
 			handleSaveCurrentVersion(histMsg)
 			//*#*//
 
