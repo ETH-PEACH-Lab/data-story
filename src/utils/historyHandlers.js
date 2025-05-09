@@ -247,3 +247,44 @@ export const switchHistoryEntry = (
   }, 500);
   setCurrentDataIdLocalStorage(historyEntry.id);
 };
+
+export const filterHistory = (uploadHistory) => 
+  uploadHistory.filter(logEntry => !logEntry.historyMessage?.toLowerCase().includes("story"))
+
+export const getAuthors = (bundle) => {
+  const entries = bundle.entries
+  const authors = entries.map(entry => entry.author).filter(author => author !== undefined)
+  const uniqueAuthors = [...new Set(authors)]
+  return uniqueAuthors.join(", ")
+}
+
+export const bundleHistoryEntries = (uploadHistory) => {
+
+  const threshold = 5 * 60 * 1000 // 5 minutes
+
+  return uploadHistory.reduce((bundledHistory, entry) => {
+    const entryTimestamp = new Date(entry.timestamp).getTime()
+
+    const lastBundle = bundledHistory[bundledHistory.length - 1]
+    if (lastBundle && entryTimestamp - new Date(lastBundle.endTime).getTime() <= threshold) {
+      return bundledHistory.map((bundle, index) =>
+        index === bundledHistory.length - 1
+          ? {
+              ...bundle,
+              entries: [...bundle.entries, entry],
+              endTime: entry.timestamp,
+            }
+          : bundle
+      );
+    }
+
+    return [
+      ...bundledHistory,
+      {
+        startTime: entry.timestamp,
+        endTime: entry.timestamp,
+        entries: [entry],
+      },
+    ]
+  }, []);
+}

@@ -1,10 +1,19 @@
 import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Collapse from '@mui/material/Collapse';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
 import "./styles/History.css";
 import {
   setHistoryLocalStorage,
   clearAllLocalStorage,
 } from "./utils/storageHandlers";
 import { SharedContext } from "./App";
+import { filterHistory, bundleHistoryEntries, getAuthors } from "./utils/historyHandlers";
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -38,6 +47,8 @@ const HistorySidebar = ({
   const [editingIndex, setEditingIndex] = useState(null);
   const [newFileName, setNewFileName] = useState("");
   const [collaborators, setCollaborators] = useState([]);
+  const [bundles, setBundles] = useState([]);
+  const [isOpen, setIsOpen] = useState([]);
   const inputRef = useRef(null);
   const { updateHist }= useContext(SharedContext)
   const listRef = useRef(null);
@@ -76,6 +87,12 @@ const HistorySidebar = ({
     setNewFileName(fileName);
   };
 
+  const toggleBundle = useCallback((index) => {
+    const bundleState = [...isOpen]
+    bundleState[index] = !bundleState[index]
+    setIsOpen(bundleState)
+  }, [isOpen]);
+
   useEffect(() => {
     if (!awareness.current) return;
     const states = awareness.current.getStates();
@@ -91,7 +108,10 @@ const HistorySidebar = ({
     if (!listRef.current) return
       const lastChild = listRef.current.lastElementChild;
       if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
-  }, [uploadHistory]);
+      const bundles = bundleHistoryEntries(uploadHistory)
+      setBundles(bundles)
+      if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
+  }, [uploadHistory, isHistoryVisible]);
 
   return (
     <div className={`history-sidebar ${isHistoryVisible ? "visible" : ""}`}>
@@ -112,76 +132,30 @@ const HistorySidebar = ({
       </div>
       {isHistoryVisible && (
         <>
-          <ul className="list-group w-100" ref={listRef}>
-            {uploadHistory.filter(logEntry => !logEntry.historyMessage?.toLowerCase().includes("story")).map((entry, index) => (
-              <li
-                key={index}
-                className={`history-entry list-group-item ${
-                  entry.id === lastSelectedEntry ? "active" : ""
-                }`}
-                onClick={() => {
-                  onHistoryItemClick(entry, index);
-                  setLastSelectedEntry(entry.id);
-                }}
-              >
-                {editingIndex === index ? (
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    className="form-control"
-                    value={newFileName}
-                    onChange={(e) => setNewFileName(e.target.value)}
-                    onBlur={() => {
-                      saveFileName(index);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        saveFileName(index);
-                      }
-                    }}
-                    autoFocus
-                  />
-                ) : (
-                  <strong
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      startEditing(index, entry.fileName);
-                    }}
-                  >
-                    {entry.fileName}
-                  </strong>
-                )}
-                {" - "} <em>{entry.timestamp}</em>
-                <div>
-                  ID: {entry.author}, {entry.historyMessage}
-                </div>
-                {entry.actions && entry.actions.length > 0 && (
-                  <details>
-                    <summary>Actions since last save</summary>
-                    <ul className="list-unstyled text-muted">
-                      {entry.actions.map((action, actionIndex) => (
-                        <li key={actionIndex}>
-                          <details>
-                            <summary>{action.actionType}</summary>
-                            <pre>{JSON.stringify(action, null, 2)}</pre>
-                          </details>
-                        </li>
+          <List
+          >
+            <ul className="list-group w-100" ref={listRef}>
+              {bundles.map((bundle, index) => (
+                <>
+                  <ListItemButton onClick={() => toggleBundle(index)}>
+                    <ListItemIcon>
+                      {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
+                    </ListItemIcon>
+                    <ListItemText primary={getAuthors(bundle)} secondary={`${bundle.startTime} - ${bundle.endTime.substring(11)}`} />
+                  </ListItemButton>
+                  <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {filterHistory(bundle.entries).map((entry, index) => (
+                        <ListItemButton sx={{ pl: 9 }}>
+                          <ListItemText primary={`${entry.author} - ${entry.timestamp.substring(12)}`} secondary={entry.historyMessage} />
+                        </ListItemButton>
                       ))}
-                    </ul>
-                  </details>
-                )}
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onHistoryItemDelete(index);
-                  }}
-                  className="btn btn-danger mt-2"
-                >
-                  <i className="bi bi-trash3"></i>
-                </button>
-              </li>
-            ))}
-          </ul>
+                    </List>
+                  </Collapse>
+                </>
+              ))}
+            </ul>
+          </List>
         </>
       )}
     </div>
