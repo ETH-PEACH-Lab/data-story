@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { HotTable } from '@handsontable/react'
+import { HyperFormula } from 'hyperformula';
 import MenuBar from './MenuBar/MenuBar'
 import Chart from './Chart'
 import 'handsontable/dist/handsontable.full.min.css'
@@ -94,6 +95,10 @@ const TableWithMenu = ({
 
 	const { updateCols, updateHist, updateTable } = useContext(SharedContext)
 
+	const formulaInstance = HyperFormula.buildEmpty({
+		licenseKey: "internal-use-in-handsontable",	
+	})
+
 	const selectedColumnName =
 		selectedColumnIndex !== null
 			? columnConfigs[selectedColumnIndex]?.title
@@ -131,13 +136,16 @@ const TableWithMenu = ({
 		changes.forEach(([row, prop, oldValue, newValue]) => {
 			newData[row][prop] = newValue
 			console.log('changes: ', row, prop, oldValue, newValue)
+			const col = hotRef.current.hotInstance.propToCol(prop)
+			hotRef.current.hotInstance.getPlugin('formulas').engine.setCellContents({sheet: 0, col: col, row: row}, [[newValue]])
 		})
 
 		// Update if there are any actual changes
 		if (changes.length > 0) {
 			console.log('Updating local state and pushing changes to Yjs')
 			setData(newData)
-			handleSaveCurrentVersion("Table data is updated");
+			const histMsg = String(changes[0][3]).startsWith("=") ? "Formula has been updated" : "Table data has been updated"
+			handleSaveCurrentVersion(histMsg)
 			//*#*//
 
 			// Push the updated data to Yjs for real-time sync
@@ -670,6 +678,9 @@ const TableWithMenu = ({
 									},
 								},
 							},
+						}}
+						formulas={{
+							engine: HyperFormula,
 						}}
 					/>
 				</div>

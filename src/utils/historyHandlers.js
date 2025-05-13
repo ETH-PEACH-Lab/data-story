@@ -109,6 +109,7 @@ export const saveDataToHistory = (
   storyComponents = [],
   columnConfigs, // Ensure columnConfigs is passed here
   historyMessage,
+  author,
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
@@ -151,6 +152,7 @@ export const saveDataToHistory = (
         columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
         storyComponents: storyComponentsCopy,
         historyMessage: historyMessage,
+        author: author,
       },
     ];
     setHistoryLocalStorage(updatedHistory);
