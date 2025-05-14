@@ -42,6 +42,7 @@ const HistorySidebar = ({
   setIdList,
   handleDeleteAllHistory,
   awareness,
+  selectEntry,
 }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -49,6 +50,7 @@ const HistorySidebar = ({
   const [collaborators, setCollaborators] = useState([]);
   const [bundles, setBundles] = useState([]);
   const [isOpen, setIsOpen] = useState([]);
+  const [selectedId, setSelectedId] = useState(-1);
   const inputRef = useRef(null);
   const { updateHist }= useContext(SharedContext)
   const listRef = useRef(null);
@@ -141,13 +143,27 @@ const HistorySidebar = ({
                     <ListItemIcon>
                       {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
                     </ListItemIcon>
-                    <ListItemText primary={getAuthors(bundle)} secondary={`${bundle.startTime} - ${bundle.endTime.substring(11)}`} />
+                    <ListItemText primary={getAuthors(bundle)} 
+                      secondary={
+                        `${bundle.startTime.substring(0, bundle.startTime.length - 3)}
+                         - ${bundle.endTime.substring(11, bundle.endTime.length - 3)}`
+                      } 
+                    />
                   </ListItemButton>
                   <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {filterHistory(bundle.entries).map((entry, index) => (
-                        <ListItemButton sx={{ pl: 9 }}>
-                          <ListItemText primary={`${entry.author} - ${entry.timestamp.substring(12)}`} secondary={entry.historyMessage} />
+                        <ListItemButton 
+                          sx={{ ml: 9 }} 
+                          className={entry.id === selectedId ? "bg-success" : ""}
+                          onClick={() => {selectEntry(entry); setSelectedId(entry.id)}}
+                        >
+                          <ListItemText 
+                            primary={
+                              `${entry.author} - ${entry.timestamp.substring(11, entry.timestamp.length - 3)}`
+                            } 
+                            secondary={entry.historyMessage} 
+                          />
                         </ListItemButton>
                       ))}
                     </List>

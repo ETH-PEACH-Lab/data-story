@@ -26,6 +26,7 @@ import {
   saveDataToHistory,
   areActionStacksEqual,
   switchHistoryEntry,
+  getCellDiff,
 } from "./utils/historyHandlers";
 import { handleStyleChange } from "./utils/styleHandlers";
 import {
@@ -193,6 +194,7 @@ function App() {
   const provider = useRef(null);
 
   const [startEdit, setStartEdit] = useState(false)
+  const [cellDiff, setCellDiff] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     // Initialize Yjs document and WebSocket provider only once
@@ -709,7 +711,7 @@ function App() {
   }
 
   return (
-    <SharedContext.Provider value={{ updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray }}>
+    <SharedContext.Provider value={{ updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray, cellDiff }}>
       <ErrorBoundary>
         <div>
           {isAuthenticated ? (
@@ -876,6 +878,7 @@ function App() {
             setIdList={setIdList}
             handleDeleteAllHistory={handleDeleteAllHistory}
             awareness={awareness}
+            selectEntry={(entry) => setCellDiff(getCellDiff(entry))}
           />
           {showConfirmation && (
             <ConfirmationWindow

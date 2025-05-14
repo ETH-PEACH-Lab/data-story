@@ -260,7 +260,7 @@ export const getAuthors = (bundle) => {
 
 export const bundleHistoryEntries = (uploadHistory) => {
 
-  const threshold = 5 * 60 * 1000 // 5 minutes
+  const threshold = 10 * 60 * 1000
 
   return uploadHistory.reduce((bundledHistory, entry) => {
     const entryTimestamp = new Date(entry.timestamp).getTime()
@@ -287,4 +287,14 @@ export const bundleHistoryEntries = (uploadHistory) => {
       },
     ]
   }, []);
+}
+
+export const getCellDiff = (entry) => {
+  console.log(entry)
+  const cells = new Set()
+  if (entry?.actions[0]?.actionType !== "change") return cells
+  entry.actions[0].changes.forEach((change) => {
+    cells.add(change[0] + "," + change[1])
+  })
+  return cells
 }
