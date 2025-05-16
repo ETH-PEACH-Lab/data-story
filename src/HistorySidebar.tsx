@@ -30,6 +30,19 @@ const useOutsideClick = (ref, callback) => {
   }, [ref, callback]);
 };
 
+interface HistoryEntry {
+  id: number;
+  author: string;
+  timestamp: string;
+  historyMessage: string;
+}
+
+interface HistoryBundle {
+  startTime: string;
+  endTime: string;
+  entries: HistoryEntry[];
+}
+
 const HistorySidebar = ({
   isHistoryVisible,
   uploadHistory,
@@ -48,11 +61,11 @@ const HistorySidebar = ({
   const [editingIndex, setEditingIndex] = useState(null);
   const [newFileName, setNewFileName] = useState("");
   const [collaborators, setCollaborators] = useState([]);
-  const [bundles, setBundles] = useState([]);
-  const [isOpen, setIsOpen] = useState([]);
+  const [bundles, setBundles] = useState<HistoryBundle[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
   const inputRef = useRef(null);
-  const { updateHist }= useContext(SharedContext)
+  const { updateHist } = useContext(SharedContext)
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -60,7 +73,7 @@ const HistorySidebar = ({
   }, [currentDataId]);
 
   const saveFileName = useCallback(
-    (index) => {
+    (index: number) => {
       const trimmedFileName = newFileName.trim();
       if (
         trimmedFileName !== "" &&
@@ -89,7 +102,7 @@ const HistorySidebar = ({
     setNewFileName(fileName);
   };
 
-  const toggleBundle = useCallback((index) => {
+  const toggleBundle = useCallback((index: number) => {
     const bundleState = [...isOpen]
     bundleState[index] = !bundleState[index]
     setIsOpen(bundleState)
@@ -108,11 +121,11 @@ const HistorySidebar = ({
 
   useEffect(() => {
     if (!listRef.current) return
-      const lastChild = listRef.current.lastElementChild;
-      if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
-      const bundles = bundleHistoryEntries(uploadHistory)
-      setBundles(bundles)
-      if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
+    const lastChild = listRef.current.lastElementChild;
+    if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
+    const bundles = bundleHistoryEntries(uploadHistory)
+    setBundles(bundles)
+    if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
   }, [uploadHistory, isHistoryVisible]);
 
   return (
@@ -120,9 +133,8 @@ const HistorySidebar = ({
       <div className="button-container d-flex justify-content-between align-items-center p-2">
         <button
           onClick={toggleHistory}
-          className={`btn btn-light ${
-            isHistoryVisible ? "history-visible" : "history-collapsed"
-          }`}
+          className={`btn btn-light ${isHistoryVisible ? "history-visible" : "history-collapsed"
+            }`}
         >
           {isHistoryVisible ? "Hide History" : "Show History"}
         </button>
@@ -133,46 +145,43 @@ const HistorySidebar = ({
         )}
       </div>
       {isHistoryVisible && (
-        <>
-          <List
-          >
-            <ul className="list-group w-100" ref={listRef}>
-              {bundles.map((bundle, index) => (
-                <>
-                  <ListItemButton onClick={() => toggleBundle(index)}>
-                    <ListItemIcon>
-                      {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
-                    </ListItemIcon>
-                    <ListItemText primary={getAuthors(bundle)} 
-                      secondary={
-                        `${bundle.startTime.substring(0, bundle.startTime.length - 3)}
+        <List>
+          <ul className="list-group w-100" ref={listRef}>
+            {bundles.map((bundle, index) => (
+              <>
+                <ListItemButton onClick={() => toggleBundle(index)}>
+                  <ListItemIcon>
+                    {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
+                  </ListItemIcon>
+                  <ListItemText primary={getAuthors(bundle)}
+                    secondary={
+                      `${bundle.startTime.substring(0, bundle.startTime.length - 3)}
                          - ${bundle.endTime.substring(11, bundle.endTime.length - 3)}`
-                      } 
-                    />
-                  </ListItemButton>
-                  <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                      {filterHistory(bundle.entries).map((entry, index) => (
-                        <ListItemButton 
-                          sx={{ ml: 9 }} 
-                          className={entry.id === selectedId ? "bg-success" : ""}
-                          onClick={() => {selectEntry(entry); setSelectedId(entry.id)}}
-                        >
-                          <ListItemText 
-                            primary={
-                              `${entry.author} - ${entry.timestamp.substring(11, entry.timestamp.length - 3)}`
-                            } 
-                            secondary={entry.historyMessage} 
-                          />
-                        </ListItemButton>
-                      ))}
-                    </List>
-                  </Collapse>
-                </>
-              ))}
-            </ul>
-          </List>
-        </>
+                    }
+                  />
+                </ListItemButton>
+                <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {filterHistory(bundle.entries).map((entry: HistoryEntry) => (
+                      <ListItemButton
+                        sx={{ ml: 9 }}
+                        className={entry.id === selectedId ? "bg-success" : ""}
+                        onClick={() => { selectEntry(entry); setSelectedId(entry.id) }}
+                      >
+                        <ListItemText
+                          primary={
+                            `${entry.author} - ${entry.timestamp.substring(11, entry.timestamp.length - 3)}`
+                          }
+                          secondary={entry.historyMessage}
+                        />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              </>
+            ))}
+          </ul>
+        </List>
       )}
     </div>
   );
