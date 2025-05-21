@@ -153,6 +153,7 @@ export const saveDataToHistory = (
         storyComponents: storyComponentsCopy,
         historyMessage: historyMessage,
         author: author,
+        date: new Date(),
       },
     ];
     setHistoryLocalStorage(updatedHistory);
@@ -273,6 +274,7 @@ export const bundleHistoryEntries = (uploadHistory) => {
               ...bundle,
               entries: [...bundle.entries, entry],
               endTime: entry.timestamp,
+              endDate: entry.date,
             }
           : bundle
       );
@@ -283,6 +285,8 @@ export const bundleHistoryEntries = (uploadHistory) => {
       {
         startTime: entry.timestamp,
         endTime: entry.timestamp,
+        startDate: entry.date,
+        endDate: entry.date,
         entries: [entry],
       },
     ]

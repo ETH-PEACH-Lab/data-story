@@ -14,6 +14,7 @@ import {
 } from "./utils/storageHandlers";
 import { SharedContext } from "./App";
 import { filterHistory, bundleHistoryEntries, getAuthors } from "./utils/historyHandlers";
+import { getTime, getInterval } from "./utils/formatHandlers"
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -35,6 +36,7 @@ interface HistoryEntry {
   author: string;
   timestamp: string;
   historyMessage: string;
+  date: Date
 }
 
 interface HistoryBundle {
@@ -123,6 +125,7 @@ const HistorySidebar = ({
     if (!listRef.current) return
     const lastChild = listRef.current.lastElementChild;
     if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
+    console.log("USEEFFECT HAS BEEN TRIGGERED")
     const bundles = bundleHistoryEntries(uploadHistory)
     setBundles(bundles)
     if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
@@ -155,8 +158,7 @@ const HistorySidebar = ({
                   </ListItemIcon>
                   <ListItemText primary={getAuthors(bundle)}
                     secondary={
-                      `${bundle.startTime.substring(0, bundle.startTime.length - 3)}
-                         - ${bundle.endTime.substring(11, bundle.endTime.length - 3)}`
+                      getInterval(bundle.startTime, bundle.endTime)
                     }
                   />
                 </ListItemButton>
@@ -170,7 +172,7 @@ const HistorySidebar = ({
                       >
                         <ListItemText
                           primary={
-                            `${entry.author} - ${entry.timestamp.substring(11, entry.timestamp.length - 3)}`
+                            `${entry.author} - ${getTime(entry.date)}`
                           }
                           secondary={entry.historyMessage}
                         />
