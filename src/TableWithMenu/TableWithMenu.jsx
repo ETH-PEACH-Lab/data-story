@@ -93,7 +93,7 @@ const TableWithMenu = ({
   	const [activeItem, setActiveItem] = useState("");
   	const [activeMenu, setActiveMenu] = useState("");
 
-	const { updateCols, updateHist, updateTable } = useContext(SharedContext)
+	const { updateCols, updateHist, updateTable, cellDiff } = useContext(SharedContext)
 
 	const formulaInstance = HyperFormula.buildEmpty({
 		licenseKey: "internal-use-in-handsontable",	
@@ -582,6 +582,9 @@ const TableWithMenu = ({
 									textStyles
 								),
 						}))}
+						cells={
+							(row, col) => ({ className: cellDiff.has(row + "," + col) ? "bg-success" : ""})
+						}
 						rowHeaders
 						width='100%'
 						height='100%'
