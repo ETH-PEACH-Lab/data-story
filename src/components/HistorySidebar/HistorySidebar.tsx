@@ -60,7 +60,7 @@ const HistorySidebar = ({
   const { uploadHistory, currentDataId, idList } = historyState;
   const {
     setUploadHistory,
-    handleDeleteAllHistory,
+    handleHistoryClick,
   } = historyActions;
   const listRef = useRef(null);
 
@@ -109,6 +109,12 @@ const HistorySidebar = ({
     if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
   }, [uploadHistory]);
 
+  const handleHistoryItemClick = (entry: HistoryEntry) => {
+    selectEntry(entry)
+    setSelectedId(entry.id)
+    handleHistoryClick(entry, -1)
+  }
+
   return (
     <div className={"history-sidebar"}>
       <div className="button-container d-flex justify-content-between align-items-center p-2">
@@ -138,7 +144,7 @@ const HistorySidebar = ({
                         key={i}
                         sx={{ ml: 9 }}
                         className={entry.id === selectedId ? "bg-success" : ""}
-                        onClick={() => { selectEntry(entry); setSelectedId(entry.id) }}
+                        onClick={() => { handleHistoryItemClick(entry) }}
                       >
                         <ListItemText
                           primary={
