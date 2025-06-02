@@ -10,17 +10,20 @@ import ConfirmationWindow from "./ConfirmationWindow";
 import Papa from "papaparse";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import * as Y from 'yjs'
-import { WebsocketProvider } from 'y-websocket'
-import { Authentication } from "./components/AuthComponent";
+import { Authentication } from "./components/Authentication/AuthComponent";
+// import { Authentication } from "./components/AuthComponent";
+
 import { UserCircles } from "./components/UserCircles";
 import CursorLayer from './components/CursorLayer';
+import { useYjsSetup } from './hooks/useYjsSetup';
+import { useAwareness } from './hooks/useAwareness';
 
 import {
   handleDataLoaded,
   fetchData,
   initializeColumns,
 } from "./utils/dataHandlers";
+
 
 // import { handleSort, handleFilter } from "./utils/filterSortHandlers";
 
@@ -59,7 +62,7 @@ export const SharedContext = createContext(null);
 
 
 function App() {
-  const [awarenessStates, setAwarenessStates] = useState(new Map());
+
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
@@ -108,85 +111,35 @@ function App() {
   const [userCursorColor, setUserCursorColor] = useState(null);
 
   const handleAuthentication = (name) => {
+    console.log('handle auth')
     setUserName(name);
     const color = getRandomColor();
     setUserCursorColor(color);
     setIsAuthenticated(true);
   };
 
-  const doc = useRef()
-  const sharedArray = useRef()
-  const sharedStoryPanel = useRef()
-  const sharedHist = useRef()
-  const sharedCols = useRef()
-  const awareness = useRef(null)
-  const cursors = useRef({})
-  const provider = useRef(null);
+  const {
+    awareness,
+    provider,
+    sharedArray,
+    sharedStoryPanel,
+    sharedHist,
+    sharedCols,
+  } = useYjsSetup({
+    roomName: 'data-story',
+    onSynced: (synced) => console.log('Synced:', synced),
+    onSharedHistoryUpdate: ({ table, story, hist, cols }) => {
+      setData(table);
+      setUploadHistory(hist);
+      setStoryComponents(story || []);
+      if (cols) setColumnConfigs(cols);
+    },
+  });
+
+  const awarenessStates = useAwareness(awareness);
 
   const [startEdit, setStartEdit] = useState(false)
   const [cellDiff, setCellDiff] = useState<Set<string>>(new Set())
-
-  useEffect(() => {
-    // Initialize Yjs document and WebSocket provider only once
-    doc.current = new Y.Doc();
-    sharedArray.current = doc.current.getArray('tableData3');
-    sharedStoryPanel.current = doc.current.getArray('storyPanelData');
-    sharedHist.current = doc.current.getArray('history');
-    sharedCols.current = doc.current.getArray('columnConfigs');
-
-    provider.current = new WebsocketProvider(
-      'ws://10.5.34.218:3000',
-      'data-story',
-      doc.current
-    );
-
-    awareness.current = provider.current.awareness;
-    awareness.current.setLocalStateField('cursor', {
-      x: 0,
-      y: 0,
-      color: userCursorColor,
-    });
-    awareness.current.setLocalStateField('name', userName);
-
-    provider.current.on('status', (event) => {
-      console.log(`WebSocket status: ${event.status}`);
-    });
-
-    provider.current.on('synced', (isSynced) => {
-      console.log(`WebSocket synced: ${isSynced}`);
-    });
-
-    // Listen to shared history changes
-    sharedHist.current.observe((event) => {
-      const { transaction } = event;
-      if (!transaction.local) {
-        const updatedStory = sharedStoryPanel.current.toJSON().slice(-1)[0];
-        const updatedHist = sharedHist.current.toJSON().slice(-1)[0];
-        const updatedTable = sharedArray.current.toJSON().slice(-1)[0];
-        const updatedCols = sharedCols.current.toJSON().slice(-1)[0];
-
-        setData(updatedTable);
-        setUploadHistory(updatedHist);
-        setStoryComponents(updatedStory || []);
-        if (updatedCols) setColumnConfigs(updatedCols);
-      }
-    });
-
-    // Listen to awareness state changes (e.g., cursors)
-    const updateAwarenessStates = () => {
-      setAwarenessStates(new Map(awareness.current.getStates()));
-    };
-
-    awareness.current.on('change', updateAwarenessStates);
-    updateAwarenessStates();
-
-    return () => {
-      provider.current.disconnect();
-      awareness.current.off('change', updateAwarenessStates);
-    };
-  }, []);
-
-
 
   useEffect(() => {
     if (!data || data.length === 0) {
@@ -210,23 +163,19 @@ function App() {
 
 
   useEffect(() => {
-    if (userCursorColor) {
-      // Handle the logic that needs to happen when userCursorColor is available
-      console.log('Cursor color updated:', userCursorColor);
-      const currentLocalState = awareness.current.getLocalState();
-      const currentCursorState = currentLocalState.cursor;
+    if (!awareness?.current || !userCursorColor) return;
 
-      awareness.current.setLocalStateField('cursor', {
-        x: currentCursorState.x, // Replace with the actual x position
-        y: currentCursorState.y, // Replace with the actual y position
-        color: userCursorColor, // Set the new cursor color
-      });
+    const localState = awareness.current.getLocalState() || {};
+    const currentCursor = localState.cursor || { x: 0, y: 0 };
 
-      awareness.current.setLocalStateField('name', userName);
+    awareness.current.setLocalStateField('cursor', {
+      x: currentCursor.x,
+      y: currentCursor.y,
+      color: userCursorColor,
+    });
 
-    }
-  }, [userCursorColor]);
-
+    awareness.current.setLocalStateField('name', userName);
+  }, [userCursorColor, userName, awareness]);
 
 
   const handleExport = useCallback(
@@ -718,7 +667,7 @@ function App() {
               handleSaveCurrentVersion={handleSaveCurrentVersion}
             /> */}
           </div>
-          <HistorySidebar
+          {/* <HistorySidebar
             isHistoryVisible={isHistoryVisible}
             uploadHistory={uploadHistory}
             setUploadHistory={setUploadHistory}
@@ -754,7 +703,7 @@ function App() {
             handleDeleteAllHistory={handleDeleteAllHistory}
             awareness={awareness}
             selectEntry={(entry) => setCellDiff(getCellDiff(entry))}
-          />
+          /> */}
           {showConfirmation && (
             <ConfirmationWindow
               message={confirmationMessage}
