@@ -93,7 +93,7 @@ const TableWithMenu = ({
   	const [activeItem, setActiveItem] = useState("");
   	const [activeMenu, setActiveMenu] = useState("");
 
-	const { updateCols, updateHist, updateTable, cellDiff } = useContext(SharedContext)
+	const { updateCols, updateHist, updateTable, cellDiff, historyManager } = useContext(SharedContext)
 
 	const formulaInstance = HyperFormula.buildEmpty({
 		licenseKey: "internal-use-in-handsontable",	

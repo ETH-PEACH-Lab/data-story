@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { SharedContext } from "../App"; // Update this path if needed
+import { SharedContext } from "../../App"; // Update this path if needed
 import { UserCircles } from "./UserCircles"; // Ensure this import is correct
+import "./TopBanner.css";
 
 function TopBanner() {
   const {

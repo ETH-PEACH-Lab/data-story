@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./UserCircles.css";
 
 export const UserCircles = ({ awareness }) => {
     const [collaborators, setCollaborators] = useState([]);

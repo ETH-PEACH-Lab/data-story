@@ -4,7 +4,7 @@ import "handsontable/dist/handsontable.full.min.css";
 import { registerAllModules } from "handsontable/registry";
 import TableWithMenu from "./TableWithMenu/TableWithMenu";
 // import SidebarWithStoryMenu from "./SidebarWithMenu/SidebarWithStoryMenu";
-import HistorySidebar from "./HistorySidebar";
+import HistorySidebar from "./components/HistorySidebar/HistorySidebar";
 import ErrorBoundary from "./ErrorBoundary";
 import ConfirmationWindow from "./ConfirmationWindow";
 import Papa from "papaparse";
@@ -13,9 +13,9 @@ import html2canvas from "html2canvas";
 import { Authentication } from "./components/Authentication/AuthComponent";
 // import { Authentication } from "./components/AuthComponent";
 
-import { UserCircles } from "./components/UserCircles";
+import { UserCircles } from "./components/TopBanner/UserCircles";
 import CursorLayer from './components/CursorLayer';
-import TopBanner from "./components/TopBanner";
+import TopBanner from "./components/TopBanner/TopBanner";
 
 import { useYjsSetup } from './hooks/useYjsSetup';
 import { useAwareness } from './hooks/useAwareness';
@@ -573,29 +573,8 @@ function App() {
               handleSaveCurrentVersion={handleSaveCurrentVersion}
               handleExport={handleExport}
             />
-            {/* <SidebarWithStoryMenu
-              data={data}
-              columnConfigs={columnConfigs}
-              selectedColumnIndex={selectedColumnIndex}
-              selectedColumnName={columnConfigs[selectedColumnIndex]?.title}
-              handleFilter={handleFilter}
-              hotRef={hotRef}
-              filteredColumns={filteredColumns}
-              setFilteredColumns={setFilteredColumns}
-              selectedRange={selectedRange}
-              tableContainerRef={tableContainerRef}
-              setShowConfirmation={setShowConfirmation}
-              setConfirmationMessage={setConfirmationMessage}
-              setOnConfirmAction={setOnConfirmAction}
-              setOnCancelAction={setOnCancelAction}
-              chartNames={chartNames}
-              chartConfigs={chartConfigs}
-              components={storyComponents}
-              setComponents={setStoryComponents}
-              handleSaveCurrentVersion={handleSaveCurrentVersion}
-            /> */}
           </div>
-          {/* <HistorySidebar
+          <HistorySidebar
             isHistoryVisible={isHistoryVisible}
             uploadHistory={uploadHistory}
             setUploadHistory={setUploadHistory}
@@ -631,7 +610,7 @@ function App() {
             handleDeleteAllHistory={handleDeleteAllHistory}
             awareness={awareness}
             selectEntry={(entry) => setCellDiff(getCellDiff(entry))}
-          /> */}
+          />
           {showConfirmation && (
             <ConfirmationWindow
               message={confirmationMessage}

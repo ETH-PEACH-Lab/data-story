@@ -1,10 +1,10 @@
 :root {
-  --primary: #7b5f4d;
-  --primary-light: #a1887f;
-  --primary-dark: #563d38;
-  --secondary: #656d4a;
-  --secondary-light: #909a6e;
-  --secondary-dark: #404a29;
+  --primary: #525252;
+  --primary-light: #a0a0a0;
+  --primary-dark: #414141;
+  --secondary: #4a586d;
+  --secondary-light: #6e839a;
+  --secondary-dark: #29364a;
   --body-bg: #eae7dc;
   --body-color: #2e2e2e;
   --light: #f7f6f2;
@@ -16,7 +16,7 @@
   --warning: #cc8a00;
   --danger: #a53939;
   --border-color: #d7ccc8;
-  --active-bg: #4e342e; /* New variable for active background color */
+  --active-bg: #494949; /* New variable for active background color */
   --active-color: #ffffff; /* New variable for active text color */
 }
 
@@ -62,60 +62,10 @@ body {
   font-family: "Inter", sans-serif;
 }
 
-.top-banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  left: 10px;
-  padding: 10px;
-  margin-right: 95px;
-  background-color: var(--body-bg);
-  position: relative;
-  color: var(--body-color);
-}
-
 .user-info {
   display: flex;
   align-items: center;
   margin-left: 50px; /* Push user info to the right */
-}
-
-.collaborators-container {
-  display: flex;
-  flex-direction: row; /* Ensure circles are in a row */
-  align-items: center; /* Vertically align the circles */
-  gap: 10px; /* Optional: Adds some spacing between circles */
-  margin-left: auto;
-  margin-right: 50px; /* Push user info to the right */
-}
-
-.user-circle {
-  width: 50px; /* Adjust size as needed */
-  height: 50px; /* Adjust size as needed */
-  border-radius: 50%; /* Make it a circle */
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  color: white; /* Set letter color to white */
-  font-weight: bold; /* Make the letter bold */
-  font-size: 26px; /* Adjust font size as needed */
-  margin-right: 10px; /* Space between circle and the next one */
-} 
-
-.save-button-container {
-  display: flex;
-  align-items: center;
-  right: 10px;
-  position: relative;
-}
-
-.undo-redo-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(calc(-50% - 118px));
 }
 
 .menu-bar-container {

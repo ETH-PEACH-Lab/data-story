@@ -7,14 +7,14 @@ import Collapse from '@mui/material/Collapse';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import "./styles/History.css";
+import "./HistorySidebar.css";
 import {
   setHistoryLocalStorage,
   clearAllLocalStorage,
-} from "./utils/storageHandlers";
-import { SharedContext } from "./App";
-import { filterHistory, bundleHistoryEntries, getAuthors } from "./utils/historyHandlers";
-import { getTime, getInterval } from "./utils/formatHandlers"
+} from "../../utils/storageHandlers";
+import { SharedContext } from "../../App";
+import { filterHistory, bundleHistoryEntries, getAuthors } from "../../utils/historyHandlers";
+import { getTime, getInterval } from "../../utils/formatHandlers"
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -114,10 +114,11 @@ const HistorySidebar = ({
     if (!awareness.current) return;
     const states = awareness.current.getStates();
     const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
-      const name = state.name; // Ensure a default name if not provided
-      const color = state.cursor.color; // Get the cursor color
+      const name = state?.name || "Anon";
+      const color = state?.cursor?.color || "#ccc";
       return { name, color };
     });
+
     setCollaborators(updatedCollaborators);
   }, [isHistoryVisible]);
 
