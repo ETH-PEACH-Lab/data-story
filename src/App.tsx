@@ -14,7 +14,9 @@ import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 import { Authentication } from "./components/AuthComponent";
 import { UserCircles } from "./components/UserCircles";
-import { handleMouseMove } from './utils/mouseMoveHandlers';
+import CursorLayer from './components/CursorLayer';
+
+
 
 
 import {
@@ -60,6 +62,7 @@ export const SharedContext = createContext(null);
 
 
 function App() {
+  const [awarenessStates, setAwarenessStates] = useState(new Map());
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
@@ -128,65 +131,81 @@ function App() {
 
   useEffect(() => {
     // Initialize Yjs document and WebSocket provider only once
-    doc.current = new Y.Doc()
-    sharedArray.current = doc.current.getArray('tableData3')
-    sharedStoryPanel.current = doc.current.getArray('storyPanelData')
-    sharedHist.current = doc.current.getArray('history')
-    sharedCols.current = doc.current.getArray('columnConfigs')
-    console.log("DIES IST EIN TEST")
+    doc.current = new Y.Doc();
+    sharedArray.current = doc.current.getArray('tableData3');
+    sharedStoryPanel.current = doc.current.getArray('storyPanelData');
+    sharedHist.current = doc.current.getArray('history');
+    sharedCols.current = doc.current.getArray('columnConfigs');
+
     provider.current = new WebsocketProvider(
       'ws://10.5.34.218:3000',
       'data-story',
       doc.current
-    )
+    );
 
-    awareness.current = provider.current.awareness
+    awareness.current = provider.current.awareness;
     awareness.current.setLocalStateField('cursor', {
-      x: 0,  // Initial x position (pixels)
-      y: 0,  // Initial y position (pixels)
+      x: 0,
+      y: 0,
       color: userCursorColor,
-    })
-
-
+    });
     awareness.current.setLocalStateField('name', userName);
 
     provider.current.on('status', (event) => {
-      console.log(`WebSocket status: ${event.status}`) // logs "connected" or "disconnected"
-    })
+      console.log(`WebSocket status: ${event.status}`);
+    });
 
     provider.current.on('synced', (isSynced) => {
-      console.log(`WebSocket synced: ${isSynced}`) // logs true or false
-    })
+      console.log(`WebSocket synced: ${isSynced}`);
+    });
 
+    // Listen to shared history changes
     sharedHist.current.observe((event) => {
-      const { transaction } = event
-      const updatedStory = sharedStoryPanel.current.toJSON().slice(-1)[0]
-      const updatedHist = sharedHist.current.toJSON().slice(-1)[0]
-      const updatedTable = sharedArray.current.toJSON().slice(-1)[0]
-      const updatedCols = sharedCols.current.toJSON().slice(-1)[0]
-
-      // Ensure that the change was not made locally before syncing
+      const { transaction } = event;
       if (!transaction.local) {
-        setData(updatedTable)
-        setUploadHistory(updatedHist)
-        setStoryComponents(updatedStory || [])
-        if (updatedCols) setColumnConfigs(updatedCols)
-      }
-    })
+        const updatedStory = sharedStoryPanel.current.toJSON().slice(-1)[0];
+        const updatedHist = sharedHist.current.toJSON().slice(-1)[0];
+        const updatedTable = sharedArray.current.toJSON().slice(-1)[0];
+        const updatedCols = sharedCols.current.toJSON().slice(-1)[0];
 
-    awareness.current.on('change', (changes) => {
-      const states = awareness.current.getStates()
-      // Save the cursor positions for each connected client
-      cursors.current = states
-      // Now you can update the UI to render other users' cursors
-      renderCursors(states)
-    })
+        setData(updatedTable);
+        setUploadHistory(updatedHist);
+        setStoryComponents(updatedStory || []);
+        if (updatedCols) setColumnConfigs(updatedCols);
+      }
+    });
+
+    // Listen to awareness state changes (e.g., cursors)
+    const updateAwarenessStates = () => {
+      setAwarenessStates(new Map(awareness.current.getStates()));
+    };
+
+    awareness.current.on('change', updateAwarenessStates);
+    updateAwarenessStates();
+
+    // Mousemove event listener to update cursor position
+    const handleMouseMove = (event) => {
+      console.log('move', event.clientX, event.clientY)
+      const current = awareness.current.getLocalState() || {};
+      const color = current.cursor?.color || 'blue';
+
+      awareness.current.setLocalStateField('cursor', {
+        x: event.clientX,
+        y: event.clientY,
+        color,
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      provider.current.disconnect()
-    }
+      provider.current.disconnect();
+      awareness.current.off('change', updateAwarenessStates);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
-  }, []) // Empty dependency array ensures it runs only once on mount
+
 
   useEffect(() => {
     if (!data || data.length === 0) {
@@ -208,6 +227,7 @@ function App() {
     }
   }, [data]) // Depend only on `data`
 
+
   useEffect(() => {
     if (userCursorColor) {
       // Handle the logic that needs to happen when userCursorColor is available
@@ -227,50 +247,6 @@ function App() {
   }, [userCursorColor]);
 
 
-  useEffect(() => {
-    const mouseMoveHandler = (event) => {
-      handleMouseMove(event, awareness);
-    };
-
-    window.addEventListener('mousemove', mouseMoveHandler);
-
-    return () => {
-      window.removeEventListener('mousemove', mouseMoveHandler);
-    };
-  }, [awareness]);
-
-
-  const renderCursors = (states) => {
-    // const cursorLayer = document.getElementById('cursor-layer');
-
-    // // Clear the current cursors in the layer
-    // cursorLayer.innerHTML = '';
-
-    // // Loop through the states to render each client's cursor
-    // states.forEach((state, clientId) => {
-    //   const { cursor } = state;
-
-    //   // Check if cursor data exists for the client
-    //   if (cursor) {
-    //     const cursorElement = document.createElement('div');
-    //     cursorElement.className = 'cursor';
-    //     cursorElement.style.position = 'absolute';
-    //     cursorElement.style.left = `${cursor.x}px`;
-    //     cursorElement.style.top = `${cursor.y}px`;
-    //     cursorElement.style.width = '15px'; // Cursor size
-    //     cursorElement.style.height = '15px';
-    //     cursorElement.style.borderRadius = '50%';
-    //     cursorElement.style.backgroundColor = cursor.color; // Use the user's unique color
-    //     cursorElement.style.zIndex = '1000'; // Ensure it's on top of other elements
-
-    //     // Optionally add a label or other client-specific info
-    //     //  cursorElement.innerHTML = `<span style="color: black; font-size: 15px; position: absolute; left: 15px; top: 0;">User ${clientId}</span>`;
-
-    //     // Append the cursor to the cursor layer
-    //     cursorLayer.appendChild(cursorElement);
-    //   }
-    // });
-  }
 
   const handleExport = useCallback(
     (exportType) => {
@@ -806,7 +782,8 @@ function App() {
             />
           )}
         </div>
-        <div id="cursor-layer" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
+        <CursorLayer awarenessStates={awarenessStates} />
+        {/* <div id="cursor-layer" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', display:"none" }} /> */}
       </ErrorBoundary>
     </SharedContext.Provider>
   );
