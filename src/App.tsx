@@ -821,7 +821,7 @@ function App() {
               handleSaveCurrentVersion={handleSaveCurrentVersion}
               handleExport={handleExport}
             />
-            <SidebarWithStoryMenu
+            {/* <SidebarWithStoryMenu
               data={data}
               columnConfigs={columnConfigs}
               selectedColumnIndex={selectedColumnIndex}
@@ -841,7 +841,7 @@ function App() {
               components={storyComponents}
               setComponents={setStoryComponents}
               handleSaveCurrentVersion={handleSaveCurrentVersion}
-            />
+            /> */}
           </div>
           <HistorySidebar
             isHistoryVisible={isHistoryVisible}
