@@ -43,8 +43,6 @@ interface HistoryBundle {
 }
 
 const HistorySidebar = ({
-  isHistoryVisible,
-  toggleHistory,
   selectEntry,
 }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
@@ -112,18 +110,6 @@ const HistorySidebar = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (!awareness.current) return;
-    const states = awareness.current.getStates();
-    const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
-      const name = state?.name || "Anon";
-      const color = state?.cursor?.color || "#ccc";
-      return { name, color };
-    });
-
-    setCollaborators(updatedCollaborators);
-  }, [isHistoryVisible]);
-
-  useEffect(() => {
     if (!listRef.current) return
     const lastChild = listRef.current.lastElementChild;
     if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
@@ -132,25 +118,15 @@ const HistorySidebar = ({
     const bundles = bundleHistoryEntries(uploadHistory)
     setBundles(bundles)
     if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
-  }, [uploadHistory, isHistoryVisible]);
+  }, [uploadHistory]);
 
   return (
-    <div className={`history-sidebar ${isHistoryVisible ? "visible" : ""}`}>
+    <div className={"history-sidebar"}>
       <div className="button-container d-flex justify-content-between align-items-center p-2">
-        <button
-          onClick={toggleHistory}
-          className={`btn btn-light ${isHistoryVisible ? "history-visible" : "history-collapsed"
-            }`}
-        >
-          {isHistoryVisible ? "Hide History" : "Show History"}
-        </button>
-        {isHistoryVisible && (
           <button onClick={handleDeleteAllHistory} className="btn btn-danger">
             <i className="bi bi-trash3"></i> Delete All
           </button>
-        )}
       </div>
-      {isHistoryVisible && (
         <List>
           <ul className="list-group w-100" ref={listRef}>
             {bundles.map((bundle, index) => (
@@ -188,7 +164,6 @@ const HistorySidebar = ({
             ))}
           </ul>
         </List>
-      )}
     </div>
   );
 };

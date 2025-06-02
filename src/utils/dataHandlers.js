@@ -16,12 +16,10 @@ export const handleDataLoaded = (
   setUploadHistory,
   setActions,
   originalFileName,
-  setTextStyles,
   setFilteredColumns,
   hotRef,
   setInitialActionStack,
   setInitialActionStackLength,
-  storyComponents = [], // Add storyComponents parameter with default empty array
   isNewTable = false
 ) => {
   const dataWithTypes = newData.map((row) => {
@@ -63,12 +61,8 @@ export const handleDataLoaded = (
     originalFileName,
     {},
     0,
-    hotRef,
-    [], // Initialize chartConfigs as an empty array
-    ["Table"], // Initialize footerNames with default value
-    storyComponents // Pass storyComponents
+    hotRef
   );
-  setTextStyles({});
   setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
   if (isNewTable || (hotRef && hotRef.current)) {
@@ -91,12 +85,10 @@ export const generateRandomTable = (
   setUploadHistory,
   setActions,
   originalFileName,
-  setTextStyles,
   setFilteredColumns,
   hotRef,
   setInitialActionStack,
-  setInitialActionStackLength,
-  storyComponents = [] // Add storyComponents parameter with default empty array
+  setInitialActionStackLength
 ) => {
   // Generate a 5x8 table of random numbers
   const rows = 8;
@@ -144,12 +136,8 @@ export const generateRandomTable = (
     originalFileName,
     {},
     0,
-    hotRef,
-    [], // Initialize chartConfigs as an empty array
-    ["Table"], // Initialize footerNames with default value
-    storyComponents // Pass storyComponents
+    hotRef
   );
-  setTextStyles({});
   setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
   if (hotRef && hotRef.current) {
@@ -172,12 +160,10 @@ export const fetchData = async (
   setUploadHistory,
   setActions,
   originalFileName,
-  setTextStyles,
   setFilteredColumns,
   hotRef,
   setInitialActionStack,
-  setInitialActionStackLength,
-  storyComponents = [] // Add storyComponents parameter with default empty array
+  setInitialActionStackLength
 ) => {
   // Instead of fetching the euro2024_players.csv file, generate the random table data
   generateRandomTable(
@@ -192,12 +178,10 @@ export const fetchData = async (
     setUploadHistory,
     setActions,
     originalFileName,
-    setTextStyles,
     setFilteredColumns,
     hotRef,
     setInitialActionStack,
-    setInitialActionStackLength,
-    storyComponents
+    setInitialActionStackLength
   );
 };
 

@@ -9,7 +9,6 @@ import { SharedContext } from "../../App";
 const MenuBar = ({
   onSaveCurrent,
   onDataLoaded,
-  toggleHistory,
   onStyleChange,
   selectedColumnIndex,
   selectedColumnName,
@@ -25,8 +24,6 @@ const MenuBar = ({
   handleUndo,
   handleRedo,
   hotRef,
-  filteredColumns,
-  setFilteredColumns,
   showConfirmation,
   setShowConfirmation,
   setConfirmationMessage,
@@ -36,7 +33,6 @@ const MenuBar = ({
   initialActionStackLength,
   setInitialActionStack,
   setInitialActionStackLength,
-  addChartPage,
   selectedRange,
   aggregateData,
   handleSaveCurrentVersion,
@@ -50,7 +46,6 @@ const MenuBar = ({
       <FileMenu
         onSaveCurrent={onSaveCurrent}
         onDataLoaded={onDataLoaded}
-        toggleHistory={toggleHistory}
         hotRef={hotRef}
         showConfirmation={showConfirmation}
         setShowConfirmation={setShowConfirmation}
@@ -83,7 +78,6 @@ const MenuBar = ({
         addRow={addRow}
         addColumn={addColumn}
         hotRef={hotRef}
-        addChartPage={addChartPage}
         selectedRange={selectedRange}
         aggregateData={aggregateData}
         setShowConfirmation={setShowConfirmation}

@@ -75,7 +75,6 @@ const Chart = ({
   colors,
   setColors,
   updateChartTitle,
-  updateFooterName,
   title,
   xAxisTitle,
   yAxisTitle,
@@ -142,7 +141,6 @@ const Chart = ({
   const handleTitleChange = () => {
     const updatedTitle = titleText.trim() || `Chart ${index}`;
     updateChartTitle(index, updatedTitle);
-    updateFooterName(index, updatedTitle);
   };
 
   const handleXAxisTitleChange = () => {

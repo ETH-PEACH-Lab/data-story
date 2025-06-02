@@ -1,8 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { HotTable } from '@handsontable/react'
 import { HyperFormula } from 'hyperformula';
-import MenuBar from './MenuBar/MenuBar'
-import Chart from './Chart'
 import 'handsontable/dist/handsontable.full.min.css'
 import {
 	handleSelectionEnd,
@@ -11,18 +9,19 @@ import {
 	addColumn,
 	insertColumn,
 	removeColumn,
-} from '../utils/rowColumnHandlers'
-import { handleStyleChange, customRenderer } from '../utils/styleHandlers'
-import '../styles/App.css'
-import { SharedContext } from '../App'
+} from '../../utils/rowColumnHandlers'
+import { customRenderer } from '../../utils/styleHandlers'
+import { SharedContext } from '../../App'
+import "./TableComponent.css";
 
-const TableWithMenu = ({
+const TableComponent = ({
 	setStartEdit,
 	data,
 	setData,
 	columnConfigs,
 	setColumnConfigs,
 	setSelectedColumnIndex,
+	textStyles,
 	filteredColumns,
 	hotRef,
 	selectedCellsRef,
@@ -131,7 +130,7 @@ const TableWithMenu = ({
 							comments
 							licenseKey='non-commercial-and-evaluation'
 							undoRedo
-							settings
+							settings={{ textStyles }}
 							autoColumnSize={{ syncLimit: 300 }}
 							modifyColWidth={(width, col) => {
 								if (width > 300) {
@@ -198,4 +197,4 @@ const TableWithMenu = ({
 	)
 }
 
-export default TableWithMenu
+export default TableComponent

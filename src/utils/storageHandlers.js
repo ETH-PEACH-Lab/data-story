@@ -54,3 +54,11 @@ export const clearAllLocalStorage = () => {
   localStorage.removeItem('idList');
   console.log('All localStorage data cleared.');
 };
+
+export const generateEmptyDataset = () => {
+  const columns = Array.from({ length: 5 }, (_, i) => String.fromCharCode(65 + i)); // 'A' to 'E'
+  const emptyData = Array.from({ length: 5 }, () =>
+    columns.reduce((acc, column) => ({ ...acc, [column]: null }), {})
+  );
+  return { data: emptyData };
+};

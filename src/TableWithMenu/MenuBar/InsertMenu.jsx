@@ -4,13 +4,11 @@ const InsertMenu = ({
   addRow,
   addColumn,
   hotRef,
-  addChartPage,
   selectedRange,
   aggregateData,
   setShowConfirmation,
   setConfirmationMessage,
   setOnConfirmAction,
-  setOnCancelAction,
 }) => {
   const [activeItem, setActiveItem] = useState("");
   const [selectedChartType, setSelectedChartType] = useState("");
@@ -170,17 +168,6 @@ const InsertMenu = ({
         );
       }
 
-      // New: Check if all x-axis values are numerical
-      const isXNumeric = chartDataToUse.x.every((value) => !isNaN(value));
-
-      addChartPage(
-        selectedChartType,
-        chartDataToUse,
-        aggregate,
-        selectedAggregateFunction,
-        seriesLabels,
-        isXNumeric // Pass whether the x-axis is numeric or not
-      );
       resetChartData();
       setActiveItem("");
     }

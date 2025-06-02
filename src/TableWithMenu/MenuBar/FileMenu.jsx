@@ -4,7 +4,6 @@ import Papa from "papaparse";
 const FileMenu = ({
   onSaveCurrent,
   onDataLoaded,
-  toggleHistory,
   hotRef,
   showConfirmation,
   setShowConfirmation,
@@ -40,11 +39,6 @@ const FileMenu = ({
 
   const handleMenuClick = (item) => {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
-
-    if (item === "History") {
-      toggleHistory();
-      return;
-    }
 
     if (item === "Export") {
       setActiveItem(activeItem === "Export" ? "" : "Export");

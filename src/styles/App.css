@@ -98,30 +98,6 @@ body {
   overflow-x: auto;
 }
 
-.content-area {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  position: relative;
-  right: 95px;
-  left: 10px;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.table-content-area {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  height: 100%;
-  width: 100%;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
 .sidebar-content-area {
   display: flex;
   flex-direction: column;
@@ -133,29 +109,6 @@ body {
   box-sizing: border-box;
   overflow: hidden;
   z-index: 75;
-}
-
-.handsontable-container {
-  flex: 1;
-  margin-right: 65px !important;
-  left: -38px;
-  width: calc(50vw - 100px) !important;
-  height: calc(100vh - 41);
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  z-index: 50;
-}
-
-.table-content-area {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
 }
 
 .sidebar {
@@ -171,28 +124,6 @@ body {
   z-index: 75;
   font-family: "Inter", sans-serif;
   overflow-y: auto;
-}
-
-.hot-table-wrapper {
-  flex: 1;
-  overflow: hidden;
-}
-
-.small-table-wrapper {
-  overflow: auto;
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.handsontable THEAD TH.green-header {
-  background: rgb(174, 216, 174);
-  z-index: 50;
-}
-
-.handsontable THEAD TH.green-header.ht__highlight {
-  background: rgb(120, 159, 120) !important;
-  z-index: 50;
 }
 
 .shift-right {
@@ -230,43 +161,6 @@ body {
   z-index: 999; /* Ensure it appears above other elements */
 }
 
-.page-footer {
-  display: flex;
-  height: 41px;
-  width: calc(50vw - 127px);
-  align-items: center;
-  padding: 0px;
-  background-color: var(--primary);
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  z-index: 100;
-}
-
-.page-footer .nav-button {
-  margin: 0px;
-  padding: 10px 20px;
-  background-color: var(--light);
-  border-color: var(--dark);
-  color: var(--dark);
-  border: none;
-  cursor: pointer;
-  border-radius: 0px;
-  font-size: 18px;
-}
-
-.page-footer .nav-button:hover {
-  background-color: var(--primary-light);
-}
-
-.page-footer .nav-button.active {
-  background-color: var(--primary);
-  color: var(--light);
-}
-
-.page-footer .nav-button:disabled {
-  cursor: not-allowed;
-}
 
 .empty-page {
   display: flex;
@@ -369,3 +263,27 @@ body {
   background-color: #218838;
 }
 
+
+/* Layout container for below the top banner */
+.main-content-row {
+  display: flex;
+  height: calc(100vh - 60px); /* adjust 60px based on your top-banner height */
+  width: 100%;
+}
+
+/* Left side: table content */
+.table-content-area {
+  flex: 0 0 70%;
+  overflow: hidden;
+  border-right: 1px solid #ccc;
+  background: #fff;
+}
+
+/* Right side: history sidebar */
+.history-sidebar {
+  flex: 0 0 30%;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.05);
+}

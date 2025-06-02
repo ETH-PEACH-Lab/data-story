@@ -10,6 +10,7 @@ function TopBanner() {
     idList,
     setIdList,
     handleSaveCurrentVersion,
+    historyActions
   } = useContext(SharedContext);
 
   const {
@@ -24,6 +25,17 @@ function TopBanner() {
       <h1>Data-Story</h1>
       <div className="undo-redo-container">
         <button
+          className="btn btn-warning"
+          onClick={() => {
+            if (window.confirm("Are you sure you want to reset everything? This cannot be undone.")) {
+              historyActions.handleReset();
+            }
+          }}
+        >
+          <i className="bi bi-arrow-repeat"></i> Reset
+        </button>
+
+        <button
           className={`btn btn-primary ${isUndoDisabled ? "disabled" : ""}`}
           onClick={handleUndoAction}
           disabled={isUndoDisabled}
@@ -37,9 +49,6 @@ function TopBanner() {
         >
           <i className="bi bi-arrow-clockwise"></i> Redo
         </button>
-      </div>
-      <UserCircles awareness={awareness} />
-      <div className="save-button-container">
         <button
           className="btn btn-secondary"
           onClick={() => {
@@ -49,9 +58,10 @@ function TopBanner() {
             handleSaveCurrentVersion("History update button is triggered");
           }}
         >
-          <i className="bi bi-save"></i> Save Current Version
+          <i className="bi bi-save"></i> Save
         </button>
       </div>
+      <UserCircles awareness={awareness} />
     </div>
   );
 }

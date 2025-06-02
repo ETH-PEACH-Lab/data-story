@@ -1,0 +1,27 @@
+.handsontable-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  overflow: hidden;
+  height: 100%;
+}
+
+.hot-table-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+
+/* Optional: customize header or selection highlights */
+.ht_master .green-header {
+  background-color: #e0ffe0 !important;
+  font-weight: bold;
+}
+
+.handsontable td.bg-success {
+  background-color: #d1e7dd !important; /* light green */
+}
