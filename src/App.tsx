@@ -55,6 +55,10 @@ function App() {
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [onConfirmAction, setOnConfirmAction] = useState(() => () => { });
+
   const [actions, setActions] = useState([]);
   // const [clickedIndex, setClickedIndex] = useState(-1);
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
@@ -268,12 +272,17 @@ function App() {
     setCurrentPage,
     setChartNames,
     setStoryComponents,
+    onRequireConfirmation: (message, confirmCallback) => {
+      setConfirmationMessage(message);
+      setOnConfirmAction(() => confirmCallback); // wrap in function to delay execution
+      setConfirmationVisible(true);
+    }
   });
 
   return (
     <SharedContext.Provider value={{
       updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray, cellDiff, undoRedo, awareness, historyState: history.historyState,
-      historyActions: history.historyActions, confirmationState: history.confirmationState
+      historyActions: history.historyActions
     }}>
       <ErrorBoundary>
         <div>
@@ -297,6 +306,7 @@ function App() {
         <div className={`container-fluid ${!isAuthenticated ? 'blurred' : ''}`}>
           <TopBanner />
           <div className="content-area">
+            <TableWithMenu />
             {/* <TableWithMenu
               userCursorColor={userCursorColor}
               setUserCursorColor={setUserCursorColor}
@@ -358,11 +368,21 @@ function App() {
             toggleHistory={() => toggleHistory(setHistoryVisible)}
             selectEntry={(entry) => setCellDiff(getCellDiff(entry))}
           />
-          {history.confirmationState.showConfirmation && (
+          {/* {history.confirmationState.showConfirmation && (
             <ConfirmationWindow
               message={history.confirmationState.confirmationMessage}
               onConfirm={history.confirmationState.handleConfirm}
               onCancel={onCancelAction ? history.confirmationState.handleCancel : undefined}
+            />
+          )} */}
+          {confirmationVisible && (
+            <ConfirmationWindow
+              message={confirmationMessage}
+              onConfirm={() => {
+                onConfirmAction(); // do the confirmed action
+                setConfirmationVisible(false);
+              }}
+              onCancel={() => setConfirmationVisible(false)}
             />
           )}
         </div>
