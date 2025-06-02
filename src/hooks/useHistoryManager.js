@@ -1,171 +1,245 @@
 import { useCallback, useState, useEffect } from "react";
 import {
-  saveDataToHistory,
-  areActionStacksEqual,
-  switchHistoryEntry,
-  handleHistoryDelete,
+    saveDataToHistory,
+    areActionStacksEqual,
+    switchHistoryEntry,
 } from "../utils/historyHandlers";
 import {
-  getHistoryLocalStorage,
-  getCurrentDataIdLocalStorage,
-  getIdListLocalStorage,
-  setCurrentDataIdLocalStorage,
-  setIdListLocalStorage,
-  clearAllLocalStorage,
+    getHistoryLocalStorage,
+    getCurrentDataIdLocalStorage,
+    getIdListLocalStorage,
+    setCurrentDataIdLocalStorage,
+    setIdListLocalStorage,
+    clearAllLocalStorage,
 } from "../utils/storageHandlers";
 
 export function useHistoryManager({
-  hotRef,
-  initializeColumns,
-  updateHist,
-  userName,
-  originalFileName,
-  textStyles,
-  chartConfigs,
-  footerNames,
-  storyComponents,
-  columnConfigs,
-  currentPage,
+    hotRef,
+    initializeColumns,
+    updateHist,
+    userName,
+    originalFileName,
+    // Setters needed for switching history entries
+    setData,
+    setTextStyles,
+    setColumnConfigs,
+    setFilteredColumns,
+    setClickedIndex,
+    setActions,
+    setOriginalFileName,
+    setChartConfigs,
+    setPages,
+    setFooterNames,
+    setCurrentPage,
+    setChartNames,
+    setStoryComponents,
+    columnConfigs,
+    chartConfigs,
+    footerNames,
+    textStyles,
+    storyComponents,
+    currentPage,
 }) {
-  const [uploadHistory, setUploadHistory] = useState([]);
-  const [idList, setIdList] = useState(getIdListLocalStorage());
-  const [currentDataId, setCurrentDataId] = useState(0);
-  const [actions, setActions] = useState([]);
-  const [initialActionStack, setInitialActionStack] = useState([]);
-  const [initialActionStackLength, setInitialActionStackLength] = useState(0);
+    const [uploadHistory, setUploadHistory] = useState([]);
+    const [idList, setIdList] = useState(getIdListLocalStorage());
+    const [currentDataId, setCurrentDataId] = useState(0);
+    const [initialActionStack, setInitialActionStack] = useState([]);
+    const [initialActionStackLength, setInitialActionStackLength] = useState(0);
+    const [actions, setLocalActions] = useState([]);
 
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState("");
-  const [onConfirmAction, setOnConfirmAction] = useState(null);
-  const [onCancelAction, setOnCancelAction] = useState(null);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationMessage, setConfirmationMessage] = useState("");
+    const [onConfirmAction, setOnConfirmAction] = useState(null);
+    const [onCancelAction, setOnCancelAction] = useState(null);
 
-  const handleSaveCurrentVersion = useCallback((historyMessage = "Undefined Change") => {
-    if (hotRef.current) {
-      saveDataToHistory(
-        hotRef.current.getData(),
+    const handleSaveCurrentVersion = useCallback((message = "Manual Save") => {
+        if (!hotRef.current) return;
+
+        saveDataToHistory(
+            hotRef.current.getData(),
+            originalFileName,
+            currentDataId,
+            setUploadHistory,
+            setCurrentDataId,
+            idList,
+            setIdList,
+            updateHist,
+            actions,
+            originalFileName,
+            textStyles,
+            initialActionStackLength,
+            hotRef,
+            chartConfigs,
+            footerNames,
+            storyComponents,
+            columnConfigs,
+            message,
+            userName
+        );
+
+        const undoRedo = hotRef.current?.hotInstance?.undoRedo;
+        if (undoRedo) {
+            setInitialActionStack([...undoRedo.doneActions]);
+            setInitialActionStackLength(undoRedo.doneActions.length);
+        }
+
+        setCurrentDataIdLocalStorage(currentDataId);
+    }, [
+        hotRef,
         originalFileName,
         currentDataId,
-        setUploadHistory,
-        setCurrentDataId,
         idList,
-        setIdList,
         updateHist,
         actions,
-        originalFileName,
         textStyles,
         initialActionStackLength,
-        hotRef,
         chartConfigs,
         footerNames,
         storyComponents,
         columnConfigs,
-        historyMessage,
         userName,
-      );
-      setInitialActionStack([...hotRef.current.hotInstance.undoRedo.doneActions]);
-      setInitialActionStackLength(hotRef.current.hotInstance.undoRedo.doneActions.length);
-      setCurrentDataIdLocalStorage(currentDataId);
-    }
-  }, [
-    actions, chartConfigs, columnConfigs, currentDataId, footerNames,
-    hotRef, idList, initialActionStackLength, originalFileName,
-    storyComponents, textStyles, updateHist, userName
-  ]);
+    ]);
 
-  const handleHistoryClick = useCallback((historyEntry, index, switchToPage) => {
-    const undoRedo = hotRef.current?.hotInstance?.undoRedo;
+    const handleHistoryClick = useCallback((historyEntry, index, switchToPage) => {
+        const undoRedo = hotRef.current?.hotInstance?.undoRedo;
 
-    const performSwitch = () => {
-      if (currentPage > 0 && !historyEntry.charts?.[currentPage - 1]) {
-        switchToPage(0);
-      }
+        const performSwitch = () => {
+            if (currentPage > 0 && !historyEntry.charts?.[currentPage - 1]) {
+                switchToPage(0);
+            }
 
-      switchHistoryEntry(
-        historyEntry,
-        index,
-        hotRef,
-        initializeColumns,
-        setUploadHistory,
-        setCurrentDataId,
-        setActions,
-        setInitialActionStack,
-        setInitialActionStackLength,
-      );
+            switchHistoryEntry(
+                historyEntry,
+                savedHistory.indexOf(historyEntry),
+                setData,
+                setTextStyles,
+                initializeColumns,
+                setColumnConfigs,
+                setFilteredColumns,
+                setClickedIndex,
+                setCurrentDataId,
+                setActions,
+                setOriginalFileName,
+                hotRef,
+                setInitialActionStack,
+                setInitialActionStackLength,
+                setChartConfigs,
+                setPages,
+                setFooterNames,
+                setCurrentPage,
+                setChartNames,
+                currentPage,
+                setStoryComponents
+            );
 
-      setCurrentDataIdLocalStorage(historyEntry.id);
+
+            setCurrentDataIdLocalStorage(historyEntry.id);
+        };
+
+        if (undoRedo && !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
+            setConfirmationMessage("You have unsaved changes. Save them?");
+            setShowConfirmation(true);
+            setOnConfirmAction(() => () => {
+                handleSaveCurrentVersion("Unsaved changes saved");
+                performSwitch();
+            });
+            setOnCancelAction(() => performSwitch);
+        } else {
+            performSwitch();
+        }
+    }, [hotRef, currentPage, initialActionStack, handleSaveCurrentVersion]);
+
+    const handleDeleteAllHistory = useCallback(() => {
+        setConfirmationMessage("Delete all history?");
+        setShowConfirmation(true);
+        setOnConfirmAction(() => () => {
+            setUploadHistory([]);
+            setIdList([]);
+            setCurrentDataId(0);
+            clearAllLocalStorage();
+            updateHist([]);
+        });
+        setOnCancelAction(() => () => setShowConfirmation(false));
+    }, [updateHist]);
+
+    const handleConfirm = useCallback(async () => {
+        if (onConfirmAction) await onConfirmAction();
+        setShowConfirmation(false);
+        setOnConfirmAction(null);
+        setOnCancelAction(null);
+    }, [onConfirmAction]);
+
+    const handleCancel = useCallback(() => {
+        if (onCancelAction) onCancelAction();
+        setShowConfirmation(false);
+        setOnConfirmAction(null);
+        setOnCancelAction(null);
+    }, [onCancelAction]);
+
+    // Load history on mount
+    useEffect(() => {
+        const savedHistory = getHistoryLocalStorage();
+        const savedCurrentDataId = getCurrentDataIdLocalStorage();
+        const savedIdList = getIdListLocalStorage();
+
+        setUploadHistory(savedHistory);
+        setCurrentDataId(savedCurrentDataId ?? 0);
+        setIdList(savedIdList);
+
+        const historyEntry = savedHistory.find((entry) => entry.id === savedCurrentDataId);
+        if (historyEntry) {
+            switchHistoryEntry(
+                historyEntry,
+                savedHistory.indexOf(historyEntry),
+                setData,
+                setTextStyles,
+                initializeColumns,
+                setColumnConfigs,
+                setFilteredColumns,
+                setClickedIndex,
+                setCurrentDataId,
+                setActions,
+                setOriginalFileName,
+                hotRef,
+                setInitialActionStack,
+                setInitialActionStackLength,
+                setChartConfigs,
+                setPages,
+                setFooterNames,
+                setCurrentPage,
+                setChartNames,
+                currentPage,
+                setStoryComponents
+            );
+
+        }
+    }, []);
+
+    useEffect(() => {
+        setIdListLocalStorage(idList);
+    }, [idList]);
+
+    return {
+        historyState: {
+            uploadHistory,
+            setUploadHistory,
+            currentDataId,
+            setCurrentDataId,
+            idList,
+            setIdList,
+        },
+        historyActions: {
+            handleSaveCurrentVersion,
+            handleHistoryClick,
+            handleDeleteAllHistory,
+        },
+        confirmationState: {
+            showConfirmation,
+            setShowConfirmation,
+            confirmationMessage,
+            setConfirmationMessage,
+            handleConfirm,
+            handleCancel,
+        },
     };
-
-    if (undoRedo && !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
-      setConfirmationMessage("You have unsaved changes. Save them?");
-      setShowConfirmation(true);
-      setOnConfirmAction(() => () => {
-        handleSaveCurrentVersion("Unsaved changes saved");
-        performSwitch();
-      });
-      setOnCancelAction(() => performSwitch);
-    } else {
-      performSwitch();
-    }
-  }, [currentPage, handleSaveCurrentVersion, hotRef, initialActionStack]);
-
-  const handleDeleteAllHistory = useCallback(() => {
-    setConfirmationMessage("Delete all history?");
-    setShowConfirmation(true);
-    setOnConfirmAction(() => () => {
-      setUploadHistory([]);
-      setIdList([]);
-      setCurrentDataId(0);
-      clearAllLocalStorage();
-      updateHist([]);
-    });
-    setOnCancelAction(() => () => {
-      setShowConfirmation(false);
-    });
-  }, [updateHist]);
-
-  const handleConfirm = useCallback(async () => {
-    if (onConfirmAction) await onConfirmAction();
-    setShowConfirmation(false);
-    setOnConfirmAction(null);
-    setOnCancelAction(null);
-  }, [onConfirmAction]);
-
-  const handleCancel = useCallback(() => {
-    if (onCancelAction) onCancelAction();
-    setShowConfirmation(false);
-    setOnConfirmAction(null);
-    setOnCancelAction(null);
-  }, [onCancelAction]);
-
-  // Initial load
-  useEffect(() => {
-    const savedHistory = getHistoryLocalStorage();
-    const savedCurrentDataId = getCurrentDataIdLocalStorage();
-
-    setUploadHistory(savedHistory);
-    setCurrentDataId(savedCurrentDataId ?? 0);
-    setIdList(getIdListLocalStorage());
-  }, []);
-
-  useEffect(() => {
-    setIdListLocalStorage(idList);
-  }, [idList]);
-
-  return {
-    uploadHistory,
-    currentDataId,
-    setCurrentDataId,
-    handleHistoryClick,
-    handleSaveCurrentVersion,
-    handleDeleteAllHistory,
-    showConfirmation,
-    setShowConfirmation,
-    confirmationMessage,
-    setConfirmationMessage,
-    handleConfirm,
-    handleCancel,
-    idList,
-    setIdList,
-    setUploadHistory,
-  };
 }

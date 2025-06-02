@@ -23,7 +23,6 @@ export const handleHistoryDelete = (
   setOnConfirmAction,
   setColumnConfigs,
   setFilteredColumns,
-  idList,
   setIdList,
   updateHist,
 ) => {
@@ -182,7 +181,6 @@ export const switchHistoryEntry = (
   initializeColumns,
   setColumnConfigs,
   setFilteredColumns,
-  setClickedIndex,
   setCurrentDataId,
   setActions,
   setOriginalFileName,
@@ -243,9 +241,6 @@ export const switchHistoryEntry = (
   const storyComponents = historyEntry.storyComponents ? JSON.parse(JSON.stringify(historyEntry.storyComponents)) : [];
   setStoryComponents(storyComponents); // Restore story components
 
-  setTimeout(() => {
-    setClickedIndex(-1);
-  }, 500);
   setCurrentDataIdLocalStorage(historyEntry.id);
 };
 
@@ -262,6 +257,7 @@ export const getAuthors = (bundle) => {
 export const bundleHistoryEntries = (uploadHistory) => {
 
   const threshold = 10 * 60 * 1000
+  console.log(uploadHistory)
 
   return uploadHistory.reduce((bundledHistory, entry) => {
     const entryTimestamp = new Date(entry.timestamp).getTime()

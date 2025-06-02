@@ -6,15 +6,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-
-import "./HistorySidebar.css";
-import {
-  setHistoryLocalStorage,
-  clearAllLocalStorage,
-} from "../../utils/storageHandlers";
+import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext } from "../../App";
 import { filterHistory, bundleHistoryEntries, getAuthors } from "../../utils/historyHandlers";
 import { getTime, getInterval } from "../../utils/formatHandlers"
+
+import "./HistorySidebar.css";
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -47,16 +44,7 @@ interface HistoryBundle {
 
 const HistorySidebar = ({
   isHistoryVisible,
-  uploadHistory,
-  setUploadHistory,
-  onHistoryItemClick,
-  onHistoryItemDelete,
   toggleHistory,
-  currentDataId,
-  idList,
-  setIdList,
-  handleDeleteAllHistory,
-  awareness,
   selectEntry,
 }) => {
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
@@ -67,7 +55,20 @@ const HistorySidebar = ({
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
   const inputRef = useRef(null);
-  const { updateHist } = useContext(SharedContext)
+  const {
+    awareness,
+    historyState,
+    historyActions
+  } = useContext(SharedContext);
+
+  const { uploadHistory, currentDataId, idList } = historyState;
+  const {
+    setUploadHistory,
+    setIdList,
+    onHistoryItemClick,
+    onHistoryItemDelete,
+    handleDeleteAllHistory,
+  } = historyActions;
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -127,6 +128,7 @@ const HistorySidebar = ({
     const lastChild = listRef.current.lastElementChild;
     if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
     console.log("USEEFFECT HAS BEEN TRIGGERED")
+    console.log(uploadHistory)
     const bundles = bundleHistoryEntries(uploadHistory)
     setBundles(bundles)
     if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
@@ -152,8 +154,8 @@ const HistorySidebar = ({
         <List>
           <ul className="list-group w-100" ref={listRef}>
             {bundles.map((bundle, index) => (
-              <>
-                <ListItemButton onClick={() => toggleBundle(index)}>
+              <div key={index}>
+                <ListItemButton key={index} onClick={() => toggleBundle(index)}>
                   <ListItemIcon>
                     {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
                   </ListItemIcon>
@@ -165,8 +167,9 @@ const HistorySidebar = ({
                 </ListItemButton>
                 <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {filterHistory(bundle.entries).map((entry: HistoryEntry) => (
+                    {filterHistory(bundle.entries).map((entry: HistoryEntry, i) => (
                       <ListItemButton
+                        key={i}
                         sx={{ ml: 9 }}
                         className={entry.id === selectedId ? "bg-success" : ""}
                         onClick={() => { selectEntry(entry); setSelectedId(entry.id) }}
@@ -181,7 +184,7 @@ const HistorySidebar = ({
                     ))}
                   </List>
                 </Collapse>
-              </>
+              </div>
             ))}
           </ul>
         </List>

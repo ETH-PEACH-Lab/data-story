@@ -13,17 +13,16 @@ import html2canvas from "html2canvas";
 import { Authentication } from "./components/Authentication/AuthComponent";
 // import { Authentication } from "./components/AuthComponent";
 
-import { UserCircles } from "./components/TopBanner/UserCircles";
 import CursorLayer from './components/CursorLayer';
 import TopBanner from "./components/TopBanner/TopBanner";
 
 import { useYjsSetup } from './hooks/useYjsSetup';
 import { useAwareness } from './hooks/useAwareness';
 import { useUndoRedo } from './hooks/useUndoRedo';
+import { useHistoryManager } from './hooks/useHistoryManager';
 
 import {
   handleDataLoaded,
-  fetchData,
   initializeColumns,
 } from "./utils/dataHandlers";
 
@@ -32,21 +31,10 @@ import {
 
 import {
   toggleHistory,
-  handleHistoryDelete,
   saveDataToHistory,
-  areActionStacksEqual,
-  switchHistoryEntry,
   getCellDiff,
 } from "./utils/historyHandlers";
 import { handleStyleChange } from "./utils/styleHandlers";
-import {
-  getHistoryLocalStorage,
-  setCurrentDataIdLocalStorage,
-  getCurrentDataIdLocalStorage,
-  getIdListLocalStorage,
-  setIdListLocalStorage,
-  clearAllLocalStorage,
-} from "./utils/storageHandlers";
 
 registerAllModules();
 
@@ -67,28 +55,23 @@ function App() {
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
-  const [uploadHistory, setUploadHistory] = useState([]);
-  const [currentDataId, setCurrentDataId] = useState(0);
   const [actions, setActions] = useState([]);
-  const [clickedIndex, setClickedIndex] = useState(-1);
+  // const [clickedIndex, setClickedIndex] = useState(-1);
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
   const [originalFileName, setOriginalFileName] = useState("");
   const [textStyles, setTextStyles] = useState({});
   const [filteredColumns, setFilteredColumns] = useState([]);
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
-  const [selectedRange, setSelectedRange] = useState(null);
+  // const [selectedRange, setSelectedRange] = useState(null);
   const tableContainerRef = useRef(null);
   const fileInputRef = useRef(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState("");
-  const [onConfirmAction, setOnConfirmAction] = useState(null);
+  // const [onConfirmAction, setOnConfirmAction] = useState(null);
   const [onCancelAction, setOnCancelAction] = useState(null);
   const [initialActionStackLength, setInitialActionStackLength] = useState(0);
   const [initialActionStack, setInitialActionStack] = useState([]);
   const [chartNames, setChartNames] = useState(["Table"]);
   const [chartConfigs, setChartConfigs] = useState([]);
-  const [idList, setIdList] = useState(getIdListLocalStorage());
   const [pages, setPages] = useState([
     { id: 0, content: "table", title: "Table" },
   ]);
@@ -102,6 +85,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [userCursorColor, setUserCursorColor] = useState(null);
+
 
   const handleAuthentication = (name) => {
     console.log('handle auth')
@@ -134,7 +118,7 @@ function App() {
   const [cellDiff, setCellDiff] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    if (!data || data.length === 0) {
+    if (data === null) {
       console.log('Data is not initialized, skipping synchronization.')
       return // Exit if data is not initialized
     }
@@ -240,244 +224,6 @@ function App() {
     [originalFileName, hotRef]
   );
 
-  const handleSaveCurrentVersion = useCallback((historyMessage = "Undefined Change") => {
-    if (hotRef.current) {
-      saveDataToHistory(
-        data,
-        originalFileName,
-        currentDataId,
-        setUploadHistory,
-        setCurrentDataId,
-        idList,
-        setIdList,
-        updateHist,
-        actions,
-        originalFileName,
-        textStyles,
-        initialActionStackLength,
-        hotRef,
-        chartConfigs,
-        footerNames,
-        storyComponents,
-        columnConfigs,
-        historyMessage,
-        userName,
-      );
-      setInitialActionStack([
-        ...hotRef.current.hotInstance.undoRedo.doneActions,
-      ]);
-      setInitialActionStackLength(
-        hotRef.current.hotInstance.undoRedo.doneActions.length
-      );
-    } else {
-      console.log("hotRef.current is null");
-    }
-
-    setCurrentDataIdLocalStorage(currentDataId);
-  }, [
-    actions,
-    chartConfigs,
-    columnConfigs,
-    currentDataId,
-    data,
-    footerNames,
-    idList,
-    initialActionStackLength,
-    originalFileName,
-    storyComponents,
-    textStyles,
-    sharedHist,
-    userName,
-  ]);
-
-  const handleHistoryClick = useCallback(
-    (historyEntry, index) => {
-      const undoRedo = hotRef.current?.hotInstance?.undoRedo;
-
-      const performSwitch = () => {
-        if (currentPage > 0 && !historyEntry.charts?.[currentPage - 1]) {
-          setCurrentPage(0);
-        }
-
-        switchHistoryEntry(
-          historyEntry,
-          index,
-          setData,
-          setTextStyles,
-          initializeColumns,
-          setColumnConfigs,
-          setFilteredColumns,
-          setClickedIndex,
-          setCurrentDataId,
-          setActions,
-          setOriginalFileName,
-          hotRef,
-          setInitialActionStack,
-          setInitialActionStackLength,
-          setChartConfigs,
-          setPages,
-          setFooterNames,
-          setCurrentPage,
-          setChartNames,
-          currentPage,
-          setStoryComponents
-        );
-        setCurrentDataIdLocalStorage(historyEntry.id);
-      };
-
-      if (
-        undoRedo &&
-        !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)
-      ) {
-        setConfirmationMessage(
-          "You have unsaved changes. Do you want to save them?"
-        );
-        setShowConfirmation(true);
-        setOnConfirmAction(() => () => {
-          handleSaveCurrentVersion("Unsaved changes are saved");
-          performSwitch();
-        });
-        setOnCancelAction(() => performSwitch);
-      } else {
-        performSwitch();
-      }
-    },
-    [
-      currentPage,
-      handleSaveCurrentVersion,
-      hotRef,
-      initialActionStack,
-      setConfirmationMessage,
-      setData,
-      setShowConfirmation,
-    ]
-  );
-
-  const handleConfirm = useCallback(async () => {
-    if (onConfirmAction) {
-      await onConfirmAction(); // Handle async confirm actions
-    }
-    setShowConfirmation(false);
-    setOnConfirmAction(null);
-    setOnCancelAction(null);
-  }, [onConfirmAction]);
-
-  const handleCancel = useCallback(() => {
-    if (onCancelAction) {
-      onCancelAction();
-    }
-    setShowConfirmation(false);
-    setOnConfirmAction(null);
-    setOnCancelAction(null);
-  }, [onCancelAction]);
-
-  const handleDeleteAllHistory = useCallback(() => {
-    setConfirmationMessage("Are you sure you want to delete all history?");
-    setOnConfirmAction(() => () => {
-      setUploadHistory([]);
-      setIdList([]);
-      setCurrentDataId(0);
-      clearAllLocalStorage();
-      updateHist([]);
-    });
-    setOnCancelAction(() => () => {
-      setShowConfirmation(false);
-      setOnConfirmAction(null);
-      setOnCancelAction(null);
-    });
-    setShowConfirmation(true);
-  }, []);
-
-  useEffect(() => {
-    const savedHistory = getHistoryLocalStorage();
-    const savedCurrentDataId = getCurrentDataIdLocalStorage();
-    const savedIdList = getIdListLocalStorage();
-    setIdList(savedIdList);
-    console.log("Initial loaded history:", savedHistory);
-    console.log("Initial loaded currentDataId:", savedCurrentDataId);
-
-    if (savedHistory.length > 0) {
-      setUploadHistory(savedHistory);
-      if (savedCurrentDataId !== null && savedCurrentDataId !== undefined) {
-        setCurrentDataId(savedCurrentDataId);
-        const historyEntry = savedHistory.find(
-          (entry) => entry.id === savedCurrentDataId
-        );
-        if (historyEntry) {
-          switchHistoryEntry(
-            historyEntry,
-            savedHistory.indexOf(historyEntry),
-            setData,
-            setTextStyles,
-            initializeColumns,
-            setColumnConfigs,
-            setFilteredColumns,
-            setClickedIndex,
-            setCurrentDataId,
-            setActions,
-            setOriginalFileName,
-            hotRef,
-            setInitialActionStack,
-            setInitialActionStackLength,
-            setChartConfigs,
-            setPages,
-            setFooterNames,
-            setCurrentPage,
-            setChartNames,
-            currentPage,
-            setStoryComponents
-          );
-        }
-      } else {
-        setCurrentDataId(savedHistory[savedHistory.length - 1].id);
-      }
-    } else {
-      fetchData(
-        setData,
-        setColumnConfigs,
-        setOriginalFileName,
-        setCurrentDataId,
-        saveDataToHistory,
-        idList,
-        setIdList,
-        updateHist,
-        setUploadHistory,
-        setActions,
-        originalFileName,
-        setTextStyles,
-        setFilteredColumns,
-        hotRef,
-        setInitialActionStack,
-        setInitialActionStackLength,
-        []
-      );
-
-      // The study instructions should appear here
-      setStoryComponents([
-        {
-          type: "text",
-          text: `<h1 style="color:darkgreen; text-decoration:underline; font-weight:bold;">Data-Story</h1>`,
-          fontSize: "32px",
-        },
-        {
-          type: "text",
-          text: `<p>Participant ID:</p>`,
-          fontSize: "16px",
-        },
-        {
-          type: "text",
-          text: `<p>Please document your thought process underneath</p>`,
-          fontSize: "16px",
-        },
-      ]);
-    }
-  }, []);
-
-
-  useEffect(() => {
-    setIdListLocalStorage(idList);
-  }, [idList]);
-
   const updateStory = (components) => {
     sharedStoryPanel.current.push([components])
   }
@@ -494,8 +240,41 @@ function App() {
     sharedArray.current.push([data])
   }
 
+  const history = useHistoryManager({
+    hotRef,
+    initializeColumns,
+    updateHist,
+    userName,
+    originalFileName,
+    textStyles,
+    chartConfigs,
+    footerNames,
+    storyComponents,
+    columnConfigs,
+    currentPage,
+
+    // ✅ These are needed by switchHistoryEntry
+    setData,
+    setTextStyles,
+    setColumnConfigs,
+    setFilteredColumns,
+    setActions,
+    setOriginalFileName,
+    setInitialActionStack,
+    setInitialActionStackLength,
+    setChartConfigs,
+    setPages,
+    setFooterNames,
+    setCurrentPage,
+    setChartNames,
+    setStoryComponents,
+  });
+
   return (
-    <SharedContext.Provider value={{ updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray, cellDiff, undoRedo, awareness}}>
+    <SharedContext.Provider value={{
+      updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray, cellDiff, undoRedo, awareness, historyState: history.historyState,
+      historyActions: history.historyActions, confirmationState: history.confirmationState
+    }}>
       <ErrorBoundary>
         <div>
           {isAuthenticated ? (
@@ -518,7 +297,7 @@ function App() {
         <div className={`container-fluid ${!isAuthenticated ? 'blurred' : ''}`}>
           <TopBanner />
           <div className="content-area">
-            <TableWithMenu
+            {/* <TableWithMenu
               userCursorColor={userCursorColor}
               setUserCursorColor={setUserCursorColor}
               startEdit={startEdit}
@@ -572,50 +351,18 @@ function App() {
               setCurrentPage={setCurrentPage}
               handleSaveCurrentVersion={handleSaveCurrentVersion}
               handleExport={handleExport}
-            />
+            /> */}
           </div>
           <HistorySidebar
             isHistoryVisible={isHistoryVisible}
-            uploadHistory={uploadHistory}
-            setUploadHistory={setUploadHistory}
-            clickedIndex={clickedIndex}
-            setColumnConfigs={setColumnConfigs}
-            initializeColumns={initializeColumns}
-            onHistoryItemClick={handleHistoryClick}
-            onHistoryItemDelete={(index) =>
-              handleHistoryDelete(
-                index,
-                uploadHistory,
-                currentDataId,
-                setData,
-                initializeColumns,
-                setCurrentDataId,
-                setActions,
-                setOriginalFileName,
-                setUploadHistory,
-                setShowConfirmation,
-                setConfirmationMessage,
-                setOnConfirmAction,
-                setColumnConfigs,
-                setFilteredColumns,
-                idList,
-                setIdList,
-                updateHist,
-              )
-            }
             toggleHistory={() => toggleHistory(setHistoryVisible)}
-            currentDataId={currentDataId}
-            idList={idList}
-            setIdList={setIdList}
-            handleDeleteAllHistory={handleDeleteAllHistory}
-            awareness={awareness}
             selectEntry={(entry) => setCellDiff(getCellDiff(entry))}
           />
-          {showConfirmation && (
+          {history.confirmationState.showConfirmation && (
             <ConfirmationWindow
-              message={confirmationMessage}
-              onConfirm={handleConfirm}
-              onCancel={onCancelAction ? handleCancel : undefined}
+              message={history.confirmationState.confirmationMessage}
+              onConfirm={history.confirmationState.handleConfirm}
+              onCancel={onCancelAction ? history.confirmationState.handleCancel : undefined}
             />
           )}
         </div>
