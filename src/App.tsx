@@ -3,7 +3,7 @@ import "./styles/App.css";
 import "handsontable/dist/handsontable.full.min.css";
 import { registerAllModules } from "handsontable/registry";
 import TableWithMenu from "./TableWithMenu/TableWithMenu";
-import SidebarWithStoryMenu from "./SidebarWithMenu/SidebarWithStoryMenu";
+// import SidebarWithStoryMenu from "./SidebarWithMenu/SidebarWithStoryMenu";
 import HistorySidebar from "./HistorySidebar";
 import ErrorBoundary from "./ErrorBoundary";
 import ConfirmationWindow from "./ConfirmationWindow";
@@ -12,16 +12,21 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
+import { Authentication } from "./components/AuthComponent";
+import { UserCircles } from "./components/UserCircles";
+import { handleMouseMove } from './utils/mouseMoveHandlers';
+
 
 import {
   handleDataLoaded,
   fetchData,
   initializeColumns,
 } from "./utils/dataHandlers";
-import { handleSort, handleFilter } from "./utils/filterSortHandlers";
+
+// import { handleSort, handleFilter } from "./utils/filterSortHandlers";
+
 import {
   toggleHistory,
-  logAction,
   handleHistoryDelete,
   saveDataToHistory,
   areActionStacksEqual,
@@ -31,7 +36,6 @@ import {
 import { handleStyleChange } from "./utils/styleHandlers";
 import {
   getHistoryLocalStorage,
-  setHistoryLocalStorage,
   setCurrentDataIdLocalStorage,
   getCurrentDataIdLocalStorage,
   getIdListLocalStorage,
@@ -42,7 +46,6 @@ import { handleUndo, handleRedo } from "./utils/undoRedoHandlers";
 
 registerAllModules();
 
-const passkey = '123456';
 
 const getRandomColor = () => {
   const letters = '0123456789A'
@@ -53,80 +56,8 @@ const getRandomColor = () => {
   return color
 }
 
-const Authentication = ({ onAuthenticated }) => {
-  const [name, setName] = useState('');
-  const [enteredPasskey, setEnteredPasskey] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleLogin = () => {
-    if (enteredPasskey === passkey) {
-      // Pass the name to the parent component if the passkey is correct
-      onAuthenticated(name);
-    } else {
-      setErrorMessage('Incorrect passkey. Please try again.');
-    }
-  };
-
-  return (
-    <div className="auth-container">
-      <h2>Please enter your name and the passkey</h2>
-      <div>
-        <label>Name: </label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Passkey: </label>
-        <input
-          type="password"
-          value={enteredPasskey}
-          onChange={(e) => setEnteredPasskey(e.target.value)}
-        />
-      </div>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button onClick={handleLogin}>Submit</button>
-    </div>
-  );
-};
-
 export const SharedContext = createContext(null);
 
-const UserCircles = ({ awareness }) => {
-
-  const [collaborators, setCollaborators] = useState([]);
-
-  useEffect(() => {
-    const handleAwarenessUpdate = () => {
-      const states = awareness.current.getStates();
-      const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
-        const name = state.name; // Ensure a default name if not provided
-        const color = state.cursor.color; // Get the cursor color
-        return { name, color };
-      });
-      setCollaborators(updatedCollaborators);
-    };
-
-    awareness.current?.on('change', handleAwarenessUpdate);
-
-    // Clean up listener when the component unmounts
-    return () => {
-      awareness.current.off('change', handleAwarenessUpdate);
-    };
-  }, [awareness.current]);
-
-  return (
-    <div className="collaborators-container">
-      {collaborators.map((collaborator, index) => (
-        <div key={index} className="user-circle" style={{ backgroundColor: collaborator.color, color: 'white' }}>
-          {collaborator.name.charAt(0).toUpperCase()}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function App() {
   const [data, setData] = useState([]);
@@ -136,7 +67,6 @@ function App() {
   const [currentDataId, setCurrentDataId] = useState(0);
   const [actions, setActions] = useState([]);
   const [clickedIndex, setClickedIndex] = useState(-1);
-  const [replacementValue, setReplacementValue] = useState("");
   const [selectedColumnIndex, setSelectedColumnIndex] = useState(null);
   const [originalFileName, setOriginalFileName] = useState("");
   const [textStyles, setTextStyles] = useState({});
@@ -278,21 +208,6 @@ function App() {
     }
   }, [data]) // Depend only on `data`
 
-  const handleMouseMove = (event) => {
-    const x = event.clientX // Cursor X position in pixels
-    const y = event.clientY // Cursor Y position in pixels
-
-    const currentLocalState = awareness.current.getLocalState();
-    const currentCursorState = currentLocalState.cursor;
-    // Update local state with the current cursor position
-    awareness.current.setLocalStateField('cursor', {
-      // Preserve previous state including color
-      x: x,
-      y: y,
-      color: currentCursorState.color,
-    })
-  }
-
   useEffect(() => {
     if (userCursorColor) {
       // Handle the logic that needs to happen when userCursorColor is available
@@ -313,45 +228,48 @@ function App() {
 
 
   useEffect(() => {
-    // Add the event listener when the component mounts
-    window.addEventListener('mousemove', handleMouseMove);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+    const mouseMoveHandler = (event) => {
+      handleMouseMove(event, awareness);
     };
-  }, []);
+
+    window.addEventListener('mousemove', mouseMoveHandler);
+
+    return () => {
+      window.removeEventListener('mousemove', mouseMoveHandler);
+    };
+  }, [awareness]);
+
 
   const renderCursors = (states) => {
-    const cursorLayer = document.getElementById('cursor-layer');
+    // const cursorLayer = document.getElementById('cursor-layer');
 
-    // Clear the current cursors in the layer
-    cursorLayer.innerHTML = '';
+    // // Clear the current cursors in the layer
+    // cursorLayer.innerHTML = '';
 
-    // Loop through the states to render each client's cursor
-    states.forEach((state, clientId) => {
-      const { cursor } = state;
+    // // Loop through the states to render each client's cursor
+    // states.forEach((state, clientId) => {
+    //   const { cursor } = state;
 
-      // Check if cursor data exists for the client
-      if (cursor) {
-        const cursorElement = document.createElement('div');
-        cursorElement.className = 'cursor';
-        cursorElement.style.position = 'absolute';
-        cursorElement.style.left = `${cursor.x}px`;
-        cursorElement.style.top = `${cursor.y}px`;
-        cursorElement.style.width = '15px'; // Cursor size
-        cursorElement.style.height = '15px';
-        cursorElement.style.borderRadius = '50%';
-        cursorElement.style.backgroundColor = cursor.color; // Use the user's unique color
-        cursorElement.style.zIndex = '1000'; // Ensure it's on top of other elements
+    //   // Check if cursor data exists for the client
+    //   if (cursor) {
+    //     const cursorElement = document.createElement('div');
+    //     cursorElement.className = 'cursor';
+    //     cursorElement.style.position = 'absolute';
+    //     cursorElement.style.left = `${cursor.x}px`;
+    //     cursorElement.style.top = `${cursor.y}px`;
+    //     cursorElement.style.width = '15px'; // Cursor size
+    //     cursorElement.style.height = '15px';
+    //     cursorElement.style.borderRadius = '50%';
+    //     cursorElement.style.backgroundColor = cursor.color; // Use the user's unique color
+    //     cursorElement.style.zIndex = '1000'; // Ensure it's on top of other elements
 
-        // Optionally add a label or other client-specific info
-        //  cursorElement.innerHTML = `<span style="color: black; font-size: 15px; position: absolute; left: 15px; top: 0;">User ${clientId}</span>`;
+    //     // Optionally add a label or other client-specific info
+    //     //  cursorElement.innerHTML = `<span style="color: black; font-size: 15px; position: absolute; left: 15px; top: 0;">User ${clientId}</span>`;
 
-        // Append the cursor to the cursor layer
-        cursorLayer.appendChild(cursorElement);
-      }
-    });
+    //     // Append the cursor to the cursor layer
+    //     cursorLayer.appendChild(cursorElement);
+    //   }
+    // });
   }
 
   const handleExport = useCallback(
