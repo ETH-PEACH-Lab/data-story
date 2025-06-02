@@ -1,27 +1,34 @@
 import { useState, useEffect } from "react";
 
 export const UserCircles = ({ awareness }) => {
-
     const [collaborators, setCollaborators] = useState([]);
 
     useEffect(() => {
+        if (!awareness || !awareness.current) return;
+
+        const awarenessInstance = awareness.current;
+
         const handleAwarenessUpdate = () => {
-            const states = awareness.current.getStates();
+            const states = awarenessInstance.getStates();
             const updatedCollaborators = Array.from(states.entries()).map(([clientID, state]) => {
-                const name = state.name; // Ensure a default name if not provided
-                const color = state.cursor.color; // Get the cursor color
+                const name = state?.name || "Anon";
+                const color = state?.cursor?.color || "#ccc";
                 return { name, color };
             });
             setCollaborators(updatedCollaborators);
         };
 
-        awareness.current?.on('change', handleAwarenessUpdate);
+        awarenessInstance.on("change", handleAwarenessUpdate);
+        awarenessInstance.on("update", handleAwarenessUpdate);
 
-        // Clean up listener when the component unmounts
+        // Run once after hook mounts
+        handleAwarenessUpdate();
+
         return () => {
-            awareness.current.off('change', handleAwarenessUpdate);
+            awarenessInstance.off("change", handleAwarenessUpdate);
+            awarenessInstance.off("update", handleAwarenessUpdate);
         };
-    }, [awareness.current]);
+    }, [awareness?.current]);
 
     return (
         <div className="collaborators-container">
@@ -32,4 +39,4 @@ export const UserCircles = ({ awareness }) => {
             ))}
         </div>
     );
-}
+};

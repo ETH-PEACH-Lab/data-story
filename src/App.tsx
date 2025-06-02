@@ -15,8 +15,11 @@ import { Authentication } from "./components/Authentication/AuthComponent";
 
 import { UserCircles } from "./components/UserCircles";
 import CursorLayer from './components/CursorLayer';
+import TopBanner from "./components/TopBanner";
+
 import { useYjsSetup } from './hooks/useYjsSetup';
 import { useAwareness } from './hooks/useAwareness';
+import { useUndoRedo } from './hooks/useUndoRedo';
 
 import {
   handleDataLoaded,
@@ -44,7 +47,6 @@ import {
   setIdListLocalStorage,
   clearAllLocalStorage,
 } from "./utils/storageHandlers";
-import { handleUndo, handleRedo } from "./utils/undoRedoHandlers";
 
 registerAllModules();
 
@@ -62,7 +64,6 @@ export const SharedContext = createContext(null);
 
 
 function App() {
-
   const [data, setData] = useState([]);
   const [columnConfigs, setColumnConfigs] = useState([]);
   const [isHistoryVisible, setHistoryVisible] = useState(false);
@@ -95,16 +96,8 @@ function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [storyComponents, setStoryComponents] = useState([]);
 
-  const [isUndoDisabled, setUndoDisabled] = useState(true);
-  const [isRedoDisabled, setRedoDisabled] = useState(true);
+  const undoRedo = useUndoRedo(hotRef);
 
-  const updateUndoRedoState = useCallback(() => {
-    if (hotRef.current) {
-      const undoRedo = hotRef.current.hotInstance.undoRedo;
-      setUndoDisabled(!undoRedo.isUndoAvailable());
-      setRedoDisabled(!undoRedo.isRedoAvailable());
-    }
-  }, []);
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
@@ -120,7 +113,6 @@ function App() {
 
   const {
     awareness,
-    provider,
     sharedArray,
     sharedStoryPanel,
     sharedHist,
@@ -247,17 +239,6 @@ function App() {
     },
     [originalFileName, hotRef]
   );
-
-  useEffect(() => {
-    if (hotRef.current) {
-      const hotInstance = hotRef.current.hotInstance;
-      updateUndoRedoState();
-
-      // Listen to Handsontable's hooks to update button states
-      hotInstance.addHook("afterUndoStackChange", updateUndoRedoState);
-      hotInstance.addHook("afterRedoStackChange", updateUndoRedoState);
-    }
-  }, [hotRef.current, updateUndoRedoState]);
 
   const handleSaveCurrentVersion = useCallback((historyMessage = "Undefined Change") => {
     if (hotRef.current) {
@@ -492,31 +473,10 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    if (hotRef.current) {
-      setInitialActionStack([
-        ...hotRef.current.hotInstance.undoRedo.doneActions,
-      ]);
-      setInitialActionStackLength(
-        hotRef.current.hotInstance.undoRedo.doneActions.length
-      );
-      console.log("Handsontable instance:", hotRef.current.hotInstance);
-    }
-  }, [hotRef.current]);
 
   useEffect(() => {
     setIdListLocalStorage(idList);
   }, [idList]);
-
-  const handleUndoAction = useCallback(() => {
-    handleUndo(hotRef);
-    updateUndoRedoState();
-  }, [updateUndoRedoState]);
-
-  const handleRedoAction = useCallback(() => {
-    handleRedo(hotRef);
-    updateUndoRedoState();
-  }, [updateUndoRedoState]);
 
   const updateStory = (components) => {
     sharedStoryPanel.current.push([components])
@@ -535,7 +495,7 @@ function App() {
   }
 
   return (
-    <SharedContext.Provider value={{ updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray, cellDiff }}>
+    <SharedContext.Provider value={{ updateCols, updateStory, updateHist, updateTable, sharedHist, sharedArray, cellDiff, undoRedo, awareness}}>
       <ErrorBoundary>
         <div>
           {isAuthenticated ? (
@@ -556,39 +516,7 @@ function App() {
 
         {/* The rest of the page content */}
         <div className={`container-fluid ${!isAuthenticated ? 'blurred' : ''}`}>
-          <div className="top-banner">
-            <h1>Data-Story</h1>
-            <div className="undo-redo-container">
-              <button
-                className={`btn btn-primary ${isUndoDisabled ? "disabled" : ""}`}
-                onClick={handleUndoAction}
-                disabled={isUndoDisabled}
-              >
-                <i className="bi bi-arrow-counterclockwise"></i> {"Undo"}
-              </button>
-              <button
-                className={`btn btn-primary ${isRedoDisabled ? "disabled" : ""}`}
-                onClick={handleRedoAction}
-                disabled={isRedoDisabled}
-              >
-                <i className="bi bi-arrow-clockwise"></i> {"Redo"}
-              </button>
-            </div>
-            <UserCircles awareness={awareness} />
-            <div className="save-button-container">
-              <button
-                className="btn btn-secondary"
-                onClick={() => {
-                  if (idList.length === 0) {
-                    setIdList([1]);
-                  }
-                  handleSaveCurrentVersion("History update button is triggered");
-                }}
-              >
-                <i className="bi bi-save"></i> {"Save Current Version"}
-              </button>
-            </div>
-          </div>
+          <TopBanner />
           <div className="content-area">
             <TableWithMenu
               userCursorColor={userCursorColor}
