@@ -16,9 +16,6 @@ import { Authentication } from "./components/AuthComponent";
 import { UserCircles } from "./components/UserCircles";
 import CursorLayer from './components/CursorLayer';
 
-
-
-
 import {
   handleDataLoaded,
   fetchData,
@@ -183,25 +180,9 @@ function App() {
     awareness.current.on('change', updateAwarenessStates);
     updateAwarenessStates();
 
-    // Mousemove event listener to update cursor position
-    const handleMouseMove = (event) => {
-      console.log('move', event.clientX, event.clientY)
-      const current = awareness.current.getLocalState() || {};
-      const color = current.cursor?.color || 'blue';
-
-      awareness.current.setLocalStateField('cursor', {
-        x: event.clientX,
-        y: event.clientY,
-        color,
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
     return () => {
       provider.current.disconnect();
       awareness.current.off('change', updateAwarenessStates);
-      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
@@ -782,8 +763,10 @@ function App() {
             />
           )}
         </div>
-        <CursorLayer awarenessStates={awarenessStates} />
-        {/* <div id="cursor-layer" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', display:"none" }} /> */}
+        <CursorLayer
+          awareness={awareness.current}
+          awarenessStates={awarenessStates}
+        />
       </ErrorBoundary>
     </SharedContext.Provider>
   );
