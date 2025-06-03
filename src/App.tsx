@@ -104,6 +104,7 @@ function App() {
   }, [yjs]);
 
   const history = useHistoryManager({
+    data,
     hotRef,
     initializeColumns,
     updateHist,

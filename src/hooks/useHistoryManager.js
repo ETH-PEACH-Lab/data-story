@@ -15,6 +15,7 @@ import {
 } from "../utils/storageHandlers";
 
 export function useHistoryManager({
+    data,
     hotRef,
     initializeColumns,
     updateHist,
@@ -82,7 +83,7 @@ export function useHistoryManager({
         console.log(hotRef.current)
 
         saveDataToHistory(
-            hotRef.current.hotInstance.getData(),
+            data,
             originalFileName,
             currentDataId,
             setUploadHistory,
