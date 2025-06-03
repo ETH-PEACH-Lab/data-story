@@ -1,9 +1,5 @@
 import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage, setIdListLocalStorage } from './storageHandlers';
 
-export const toggleHistory = (setHistoryVisible) => {
-  setHistoryVisible(prev => !prev);
-};
-
 export const logAction = (setActions, actionDescription) => {
   setActions(prevActions => [...prevActions, actionDescription]);
 };
@@ -22,8 +18,6 @@ export const handleHistoryDelete = (
   setConfirmationMessage,
   setOnConfirmAction,
   setColumnConfigs,
-  setFilteredColumns,
-  idList,
   setIdList,
   updateHist,
 ) => {
@@ -51,7 +45,8 @@ export const handleHistoryDelete = (
     setOnConfirmAction(() => () => {
       if (isDeletingCurrentData) {
         setData([]);
-        initializeColumns([], setColumnConfigs, setFilteredColumns);
+        // initializeColumns([], setColumnConfigs, setFilteredColumns);
+        initializeColumns([], setColumnConfigs);
         setCurrentDataId(null);
         setActions([]);
         setOriginalFileName('');
@@ -101,12 +96,8 @@ export const saveDataToHistory = (
   updateHist,
   actions,
   originalFileName,
-  textStyles,
   initialActionStackLength,
   hotRef,
-  chartConfigs = [],
-  footerNames = ["Table"],
-  storyComponents = [],
   columnConfigs, // Ensure columnConfigs is passed here
   historyMessage,
   author,
@@ -114,10 +105,6 @@ export const saveDataToHistory = (
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
   const dataCopy = JSON.parse(JSON.stringify(newData));
-  const stylesCopy = JSON.parse(JSON.stringify(textStyles));
-  const chartsCopy = JSON.parse(JSON.stringify(chartConfigs));
-  const footersCopy = JSON.parse(JSON.stringify(footerNames));
-  const storyComponentsCopy = JSON.parse(JSON.stringify(storyComponents));
 
   const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
   const newActions = currentActionStack.slice(initialActionStackLength);
@@ -146,11 +133,7 @@ export const saveDataToHistory = (
         fileName: fileNameToUse,
         timestamp: timestamp,
         actions: newActions,
-        styles: stylesCopy,
-        charts: chartsCopy,
-        footers: footersCopy,
         columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
-        storyComponents: storyComponentsCopy,
         historyMessage: historyMessage,
         author: author,
         date: new Date(),
@@ -178,27 +161,16 @@ export const switchHistoryEntry = (
   historyEntry,
   index,
   setData,
-  setTextStyles,
   initializeColumns,
   setColumnConfigs,
-  setFilteredColumns,
-  setClickedIndex,
   setCurrentDataId,
   setActions,
   setOriginalFileName,
   hotRef,
   setInitialActionStack,
-  setInitialActionStackLength,
-  setChartConfigs,
-  setPages,
-  setFooterNames,
-  setCurrentPage,
-  setChartNames,
-  currentPage,
-  setStoryComponents
+  setInitialActionStackLength
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
-  setTextStyles(JSON.parse(JSON.stringify(historyEntry.styles || {})));
 
   // Use saved columnConfigs from history if available
   const savedColumnConfigs = historyEntry.columnConfigs || null;
@@ -207,45 +179,15 @@ export const switchHistoryEntry = (
   initializeColumns(
     historyEntry.data,
     setColumnConfigs,
-    setFilteredColumns,
     savedColumnConfigs // Pass savedColumnConfigs
   );
 
-  setClickedIndex(index);
   setCurrentDataId(historyEntry.id);
   setActions(historyEntry.actions);
   setOriginalFileName(historyEntry.fileName);
   setInitialActionStack([...hotRef.current?.hotInstance?.undoRedo?.doneActions || []]);
   setInitialActionStackLength(hotRef.current?.hotInstance?.undoRedo?.doneActions?.length || 0);
 
-  const chartConfigs = historyEntry.charts ? JSON.parse(JSON.stringify(historyEntry.charts)) : [];
-  setChartConfigs(chartConfigs);
-
-  const footers = ["Table"];
-  const pages = [{ id: 0, content: "table", title: "Table" }];
-  chartConfigs.forEach((chartConfig, idx) => {
-    const title = chartConfig.title || `Chart ${idx + 1}`;
-    footers.push(title);
-    pages.push({
-      id: idx + 1,
-      content: `chart-${idx}`,
-      title: title,
-    });
-  });
-  setPages(pages);
-  setFooterNames(footers);
-  setChartNames(footers);
-
-  if (currentPage >= pages.length) {
-    setCurrentPage(0);
-  }
-
-  const storyComponents = historyEntry.storyComponents ? JSON.parse(JSON.stringify(historyEntry.storyComponents)) : [];
-  setStoryComponents(storyComponents); // Restore story components
-
-  setTimeout(() => {
-    setClickedIndex(-1);
-  }, 500);
   setCurrentDataIdLocalStorage(historyEntry.id);
 };
 

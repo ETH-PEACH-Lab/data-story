@@ -14,14 +14,10 @@ export const handleDataLoaded = (
   updateTable,
   updateCols,
   setUploadHistory,
-  setActions,
   originalFileName,
-  setTextStyles,
-  setFilteredColumns,
   hotRef,
   setInitialActionStack,
   setInitialActionStackLength,
-  storyComponents = [], // Add storyComponents parameter with default empty array
   isNewTable = false
 ) => {
   const dataWithTypes = newData.map((row) => {
@@ -63,13 +59,8 @@ export const handleDataLoaded = (
     originalFileName,
     {},
     0,
-    hotRef,
-    [], // Initialize chartConfigs as an empty array
-    ["Table"], // Initialize footerNames with default value
-    storyComponents // Pass storyComponents
+    hotRef
   );
-  setTextStyles({});
-  setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
   if (isNewTable || (hotRef && hotRef.current)) {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -89,14 +80,10 @@ export const generateRandomTable = (
   setIdList,
   updateHist,
   setUploadHistory,
-  setActions,
   originalFileName,
-  setTextStyles,
-  setFilteredColumns,
   hotRef,
   setInitialActionStack,
-  setInitialActionStackLength,
-  storyComponents = [] // Add storyComponents parameter with default empty array
+  setInitialActionStackLength
 ) => {
   // Generate a 5x8 table of random numbers
   const rows = 8;
@@ -144,13 +131,8 @@ export const generateRandomTable = (
     originalFileName,
     {},
     0,
-    hotRef,
-    [], // Initialize chartConfigs as an empty array
-    ["Table"], // Initialize footerNames with default value
-    storyComponents // Pass storyComponents
+    hotRef
   );
-  setTextStyles({});
-  setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
   if (hotRef && hotRef.current) {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -170,14 +152,10 @@ export const fetchData = async (
   setIdList,
   updateHist,
   setUploadHistory,
-  setActions,
   originalFileName,
-  setTextStyles,
-  setFilteredColumns,
   hotRef,
   setInitialActionStack,
-  setInitialActionStackLength,
-  storyComponents = [] // Add storyComponents parameter with default empty array
+  setInitialActionStackLength
 ) => {
   // Instead of fetching the euro2024_players.csv file, generate the random table data
   generateRandomTable(
@@ -190,21 +168,16 @@ export const fetchData = async (
     setIdList,
     updateHist,
     setUploadHistory,
-    setActions,
     originalFileName,
-    setTextStyles,
-    setFilteredColumns,
     hotRef,
     setInitialActionStack,
-    setInitialActionStackLength,
-    storyComponents
+    setInitialActionStackLength
   );
 };
 
 export const initializeColumns = (
   newData,
   setColumnConfigs,
-  setFilteredColumns,
   savedColumnConfigs = null
 ) => {
   if (newData.length > 0) {
@@ -219,6 +192,5 @@ export const initializeColumns = (
         }));
 
     setColumnConfigs(columnConfigs);
-    setFilteredColumns(Array(columnsCount).fill(false));
   }
 };

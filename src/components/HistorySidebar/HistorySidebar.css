@@ -1,0 +1,5 @@
+/* Add spacing to the button container */
+.history-sidebar .button-container {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.5rem;
+}

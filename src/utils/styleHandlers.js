@@ -1,55 +1,9 @@
 import { textRenderer } from 'handsontable/renderers/textRenderer';
-import { TextStyleAction, CellStyleAction, ClearFormattingAction } from '../CustomUndoRedo';
+import { TextStyleAction, CellStyleAction, ClearFormattingAction } from './CustomUndoRedo';
 
-export const handleStyleChange = (styleType, value, selectedCellsRef, setTextStyles, hotRef, handleSaveCurrentVersion) => {
+export const handleStyleChange = (styleType, hotRef, handleSaveCurrentVersion) => {
   const changes = [];
   const hotInstance = hotRef.current.hotInstance;
-
-  setTextStyles((prev) => {
-    const newTextStyles = { ...prev };
-    selectedCellsRef.current.forEach(([row, col]) => {
-      const visualRowIndex = hotInstance.toPhysicalRow(row);
-      const visualColIndex = hotInstance.toPhysicalColumn(col);
-      const cellKey = `${visualRowIndex}-${visualColIndex}`;
-
-      if (!newTextStyles[cellKey]) {
-        newTextStyles[cellKey] = {};
-      }
-      const oldStyle = { ...newTextStyles[cellKey] };
-
-      if (styleType === "clear formatting") {
-        newTextStyles[cellKey] = {}; // Clear all styles
-      } else if (styleType === "remove border") {
-        newTextStyles[cellKey].borderTop = '';
-        newTextStyles[cellKey].borderBottom = '';
-        newTextStyles[cellKey].borderLeft = '';
-        newTextStyles[cellKey].borderRight = '';
-      } else if (styleType === "borderColor") {
-        const minRow = Math.min(...selectedCellsRef.current.map(([row, _]) => row));
-        const maxRow = Math.max(...selectedCellsRef.current.map(([row, _]) => row));
-        const minCol = Math.min(...selectedCellsRef.current.map(([_, col]) => col));
-        const maxCol = Math.max(...selectedCellsRef.current.map(([_, col]) => col));
-
-        if (row === minRow) {
-          newTextStyles[cellKey].borderTop = `2px solid ${value}`;
-        }
-        if (row === maxRow) {
-          newTextStyles[cellKey].borderBottom = `2px solid ${value}`;
-        }
-        if (col === minCol) {
-          newTextStyles[cellKey].borderLeft = `2px solid ${value}`;
-        }
-        if (col === maxCol) {
-          newTextStyles[cellKey].borderRight = `2px solid ${value}`;
-        }
-      } else {
-        newTextStyles[cellKey][styleType] = value;
-      }
-
-      changes.push({ row: visualRowIndex, col: visualColIndex, oldStyle, newStyle: { ...newTextStyles[cellKey] } });
-    });
-    return newTextStyles;
-  });
 
   const action = styleType === "clear formatting"
     ? new ClearFormattingAction(changes)
@@ -61,7 +15,7 @@ export const handleStyleChange = (styleType, value, selectedCellsRef, setTextSty
   //*#*//
 };
 
-export const customRenderer = (instance, td, row, col, prop, value, cellProperties, textStyles) => {
+export const customRenderer = (instance, td, row, col, prop, value, cellProperties, textStyles={}) => {
   textRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
   const visualRowIndex = instance.toPhysicalRow(row);
   const visualColIndex = instance.toPhysicalColumn(col);

@@ -19,7 +19,7 @@
 		"@handsontable/react": "^14.3.0",
 		"@mui/icons-material": "^7.1.0",
 		"@mui/material": "^7.1.0",
-		"bootstrap": "^5.3.3",
+		"bootstrap": "^5.3.6",
 		"chart.js": "^4.4.3",
 		"handsontable": "^14.3.0",
 		"html2canvas": "^1.4.1",

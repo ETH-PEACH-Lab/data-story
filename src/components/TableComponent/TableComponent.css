@@ -1,0 +1,135 @@
+.handsontable-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 0.5rem;
+  overflow: hidden;
+  height: 100%;
+}
+
+.hot-table-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+
+/* Optional: customize header or selection highlights */
+.ht_master .green-header {
+  background-color: #e0ffe0 !important;
+  font-weight: bold;
+}
+
+.handsontable td.bg-success {
+  background-color: #d1e7dd !important; /* light green */
+}
+
+
+.fx-label {
+  font-weight: bold;
+  color: #5f6368;
+  margin-right: 6px;
+  font-size: 13px;
+  user-select: none;
+}
+
+.formula-input {
+  flex: 1;
+  font-size: 13px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #000; /* ensures text is black */
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+
+.toolbar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+}
+
+.formula-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f1f3f4;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.format-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.format-buttons button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid #ccc;
+  background-color: white;
+  color:#000;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.format-buttons button:hover {
+  background-color: #f1f3f4;
+}
+
+.format-buttons button:focus {
+  outline: none;
+  border: 2px solid #1a73e8;
+}
+
+.htDimmed.bold {
+  font-weight: bold;
+}
+
+.htDimmed.italic {
+  font-style: italic;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-buttons .btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn.reset {
+  border: 1px #fbbc04 solid;
+  color: black;
+}
+
+.btn.undo,
+.btn.redo {
+  border: 1px #4285f4 solid;
+  color: black;
+}
+
+.btn.save {
+  border: 1px #5f6368 solid;
+  color: black;
+}
+
+.btn:hover{
+    border: 1px solid !important;
+}
