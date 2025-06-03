@@ -1,4 +1,4 @@
-import { InsertColumnAction, InsertRowAction } from '../CustomUndoRedo';
+import { InsertColumnAction, InsertRowAction } from './CustomUndoRedo';
 
 export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex, setSelectedRange, hotRef) => {
   const selectedCells = [];

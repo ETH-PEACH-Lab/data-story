@@ -6,8 +6,5 @@ export default defineConfig({
   base: '/data-story/',
   plugins: [react()],
   css: {
-    preprocessorOptions: {
-      scss: {},
-    },
   },
 });

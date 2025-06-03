@@ -1,4 +1,4 @@
-import { SortAction, FilterAction } from '../CustomUndoRedo';
+import { SortAction, FilterAction } from './CustomUndoRedo';
 
 export const handleSort = (columnName, sortOrder, columnConfigs, hotRef, handleSaveCurrentVersion) => {
   const hotInstance = hotRef.current.hotInstance;

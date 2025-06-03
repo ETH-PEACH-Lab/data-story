@@ -1,5 +1,5 @@
 import { textRenderer } from 'handsontable/renderers/textRenderer';
-import { TextStyleAction, CellStyleAction, ClearFormattingAction } from '../CustomUndoRedo';
+import { TextStyleAction, CellStyleAction, ClearFormattingAction } from './CustomUndoRedo';
 
 export const handleStyleChange = (styleType, hotRef, handleSaveCurrentVersion) => {
   const changes = [];

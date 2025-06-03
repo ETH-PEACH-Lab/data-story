@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback, createContext } from "react";
-import "./styles/App.css";
+import "./App.css";
 import "handsontable/dist/handsontable.full.min.css";
 import { registerAllModules } from "handsontable/registry";
+
 import HistorySidebar from "./components/HistorySidebar/HistorySidebar";
-import ErrorBoundary from "./ErrorBoundary";
-import ConfirmationWindow from "./ConfirmationWindow";
+import ErrorBoundary from "./components/ErrorBoundary";
+import ConfirmationWindow from "./components/ConfirmWindow/ConfirmationWindow";
 import { Authentication } from "./components/Authentication/AuthComponent";
 import CursorLayer from './components/CursorLayer';
 import TopBanner from "./components/TopBanner/TopBanner";
@@ -16,7 +17,6 @@ import { useUndoRedo } from './hooks/useUndoRedo';
 import { useHistoryManager } from './hooks/useHistoryManager';
 
 import { initializeColumns } from "./utils/dataHandlers";
-
 import { getCellDiff } from "./utils/historyHandlers";
 
 registerAllModules();
@@ -57,12 +57,6 @@ function App() {
       console.log('✅ Synced:', synced);
     },
     onSharedHistoryUpdate: ({ table, story, hist, cols }) => {
-      console.log('📦 Yjs initial data from onSharedHistoryUpdate:', {
-        table,
-        story,
-        hist,
-        cols
-      });
 
       if (Array.isArray(table)) {
         setData(table);
@@ -109,8 +103,6 @@ function App() {
       data.forEach(row => shared.push([row])); // ✅ 每行包成 [row] 推入
     });
   }, [yjs]);
-
-
 
   const history = useHistoryManager({
     hotRef,
