@@ -56,8 +56,8 @@ export const clearAllLocalStorage = () => {
 };
 
 export const generateEmptyDataset = () => {
-  const columns = Array.from({ length: 5 }, (_, i) => String.fromCharCode(65 + i)); // 'A' to 'E'
-  const emptyData = Array.from({ length: 5 }, () =>
+  const columns = Array.from({ length: 10 }, (_, i) => String.fromCharCode(65 + i)); // 'A' to 'E'
+  const emptyData = Array.from({ length: 30 }, () =>
     columns.reduce((acc, column) => ({ ...acc, [column]: null }), {})
   );
   return { data: emptyData };

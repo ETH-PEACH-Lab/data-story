@@ -8,8 +8,6 @@ const DataMenu = ({
   handleFilter,
   tableContainerRef,
   hotRef,
-  filteredColumns,
-  setFilteredColumns,
   handleSaveCurrentVersion,
 }) => {
   const [activeItem, setActiveItem] = useState("");
@@ -20,7 +18,6 @@ const DataMenu = ({
   const [filteredValues, setFilteredValues] = useState([]);
   const [checkedValues, setCheckedValues] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [filterConditionError, setFilterConditionError] = useState("");
   const sortCardRef = useRef(null);
   const [accordionState, setAccordionState] = useState({
     condition: false,
@@ -179,8 +176,6 @@ const DataMenu = ({
       filterCondition,
       filterValue,
       newCheckedValues,
-      filteredColumns,
-      setFilteredColumns
     );
     setActiveItem("");
   };
@@ -196,9 +191,7 @@ const DataMenu = ({
           selectedColumnIndex,
           "by_value",
           "",
-          newCheckedValues,
-          filteredColumns,
-          setFilteredColumns
+          newCheckedValues
         );
       }, 0);
 
@@ -216,9 +209,7 @@ const DataMenu = ({
           selectedColumnIndex,
           "by_value",
           "",
-          newCheckedValues,
-          filteredColumns,
-          setFilteredColumns
+          newCheckedValues
         );
       }, 0);
       return newCheckedValues;
@@ -235,9 +226,7 @@ const DataMenu = ({
           selectedColumnIndex,
           "by_value",
           "",
-          newCheckedValues,
-          filteredColumns,
-          setFilteredColumns
+          newCheckedValues
         );
       }, 0);
       return newCheckedValues;
@@ -253,9 +242,7 @@ const DataMenu = ({
         selectedColumnIndex,
         "none",
         "",
-        [],
-        filteredColumns,
-        setFilteredColumns
+        []
       );
     }, 0);
     setActiveItem("");

@@ -18,7 +18,6 @@ export const handleHistoryDelete = (
   setConfirmationMessage,
   setOnConfirmAction,
   setColumnConfigs,
-  setFilteredColumns,
   setIdList,
   updateHist,
 ) => {
@@ -46,7 +45,8 @@ export const handleHistoryDelete = (
     setOnConfirmAction(() => () => {
       if (isDeletingCurrentData) {
         setData([]);
-        initializeColumns([], setColumnConfigs, setFilteredColumns);
+        // initializeColumns([], setColumnConfigs, setFilteredColumns);
+        initializeColumns([], setColumnConfigs);
         setCurrentDataId(null);
         setActions([]);
         setOriginalFileName('');
@@ -133,8 +133,6 @@ export const saveDataToHistory = (
         fileName: fileNameToUse,
         timestamp: timestamp,
         actions: newActions,
-        styles: stylesCopy,
-        charts: chartsCopy,
         columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
         historyMessage: historyMessage,
         author: author,
@@ -165,7 +163,6 @@ export const switchHistoryEntry = (
   setData,
   initializeColumns,
   setColumnConfigs,
-  setFilteredColumns,
   setCurrentDataId,
   setActions,
   setOriginalFileName,
@@ -182,7 +179,6 @@ export const switchHistoryEntry = (
   initializeColumns(
     historyEntry.data,
     setColumnConfigs,
-    setFilteredColumns,
     savedColumnConfigs // Pass savedColumnConfigs
   );
 
@@ -208,7 +204,6 @@ export const getAuthors = (bundle) => {
 export const bundleHistoryEntries = (uploadHistory) => {
 
   const threshold = 10 * 60 * 1000
-  console.log(uploadHistory)
 
   return uploadHistory.reduce((bundledHistory, entry) => {
     const entryTimestamp = new Date(entry.timestamp).getTime()

@@ -24,7 +24,6 @@ export function useHistoryManager({
     sharedArray,
     setData,
     setColumnConfigs,
-    setFilteredColumns,
     setActions,
     setOriginalFileName,
     columnConfigs,
@@ -42,16 +41,25 @@ export function useHistoryManager({
         // 1. Reset shared Yjs array
         sharedArray.current.delete(0, sharedArray.current.length);
         emptyData.forEach(row => {
-            sharedArray.current.push([row]); // push each object as a separate row
+            sharedArray.current.push([row]);
         });
 
+        console.log('✅ sharedArray after push:', sharedArray.current.toJSON());
+
+
         // 2. Reset local app state
+        console.log('🧪 setData will receive:', emptyData);
         setData(emptyData);
         setUploadHistory([]);
         setIdList([]);
         setCurrentDataId(0);
-        setColumnConfigs(['A', 'B', 'C', 'D', 'E']);
-        setFilteredColumns([]);
+        const columns = Array.from({ length: 10 }, (_, i) => String.fromCharCode(65 + i)); // 'A' to 'E'
+
+        setColumnConfigs(columns.map(key => ({
+            data: key,
+            title: key,
+            width: 100,
+        })));
         setActions([]);
         setOriginalFileName("");
         clearAllLocalStorage();
@@ -63,7 +71,6 @@ export function useHistoryManager({
         setIdList,
         setCurrentDataId,
         setColumnConfigs,
-        setFilteredColumns,
         setActions,
         setOriginalFileName,
         updateHist
@@ -72,9 +79,10 @@ export function useHistoryManager({
 
     const handleSaveCurrentVersion = useCallback((message = "Manual Save") => {
         if (!hotRef.current) return;
+        console.log(hotRef.current)
 
         saveDataToHistory(
-            hotRef.current.getData(),
+            hotRef.current.hotInstance.getData(),
             originalFileName,
             currentDataId,
             setUploadHistory,
@@ -121,7 +129,6 @@ export function useHistoryManager({
                 setData,
                 initializeColumns,
                 setColumnConfigs,
-                setFilteredColumns,
                 setCurrentDataId,
                 setActions,
                 setOriginalFileName,
@@ -185,7 +192,6 @@ export function useHistoryManager({
                 setData,
                 initializeColumns,
                 setColumnConfigs,
-                setFilteredColumns,
                 setCurrentDataId,
                 setActions,
                 setOriginalFileName,

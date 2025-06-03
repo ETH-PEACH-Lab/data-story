@@ -16,7 +16,6 @@ export const handleDataLoaded = (
   setUploadHistory,
   setActions,
   originalFileName,
-  setFilteredColumns,
   hotRef,
   setInitialActionStack,
   setInitialActionStackLength,
@@ -63,7 +62,6 @@ export const handleDataLoaded = (
     0,
     hotRef
   );
-  setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
   if (isNewTable || (hotRef && hotRef.current)) {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -85,7 +83,6 @@ export const generateRandomTable = (
   setUploadHistory,
   setActions,
   originalFileName,
-  setFilteredColumns,
   hotRef,
   setInitialActionStack,
   setInitialActionStackLength
@@ -138,7 +135,6 @@ export const generateRandomTable = (
     0,
     hotRef
   );
-  setFilteredColumns(Array(initialColumnConfigs.length).fill(false));
 
   if (hotRef && hotRef.current) {
     const undoRedo = hotRef.current.hotInstance.undoRedo;
@@ -160,7 +156,6 @@ export const fetchData = async (
   setUploadHistory,
   setActions,
   originalFileName,
-  setFilteredColumns,
   hotRef,
   setInitialActionStack,
   setInitialActionStackLength
@@ -178,7 +173,6 @@ export const fetchData = async (
     setUploadHistory,
     setActions,
     originalFileName,
-    setFilteredColumns,
     hotRef,
     setInitialActionStack,
     setInitialActionStackLength
@@ -188,7 +182,6 @@ export const fetchData = async (
 export const initializeColumns = (
   newData,
   setColumnConfigs,
-  setFilteredColumns,
   savedColumnConfigs = null
 ) => {
   if (newData.length > 0) {
@@ -203,6 +196,5 @@ export const initializeColumns = (
         }));
 
     setColumnConfigs(columnConfigs);
-    setFilteredColumns(Array(columnsCount).fill(false));
   }
 };

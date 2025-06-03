@@ -48,7 +48,6 @@ function App() {
   const [onConfirmAction, setOnConfirmAction] = useState(() => () => { });
   const [actions, setActions] = useState([]);
   const [originalFileName, setOriginalFileName] = useState("");
-  const [filteredColumns, setFilteredColumns] = useState([]);
   const [startEdit, setStartEdit] = useState(false);
   const [cellDiff, setCellDiff] = useState(new Set());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -63,9 +62,42 @@ function App() {
 
   const yjs = useYjsSetup({
     roomName: 'data-story',
-    onSynced: (synced) => console.log('Synced:', synced),
-    onSharedHistoryUpdate: () => {}, // stub
+    onSynced: (synced) => {
+      console.log('✅ Synced:', synced);
+    },
+    onSharedHistoryUpdate: ({ table, story, hist, cols }) => {
+      console.log('📦 Yjs initial data from onSharedHistoryUpdate:', {
+        table,
+        story,
+        hist,
+        cols
+      });
+
+      if (Array.isArray(table)) {
+        setData(table);
+      }
+
+      if (cols) {
+        setColumnConfigs(cols);
+      } else if (table && typeof table === 'object' && !Array.isArray(table)) {
+        // Defensive: avoid accidentally setting a row as data
+        setData([table]);
+      } else if (Array.isArray(table) && table.length > 0) {
+        const keys = Object.keys(table[0]);
+        const inferred = keys.map(key => ({
+          data: key,
+          title: key,
+          width: 100,
+        }));
+        setColumnConfigs(inferred);
+      }
+
+      if (hist) {
+        history.historyState.setUploadHistory(hist);
+      }
+    }
   });
+
 
   const updateHist = useCallback((history) => {
     yjs.sharedHist.current.push([history]);
@@ -80,8 +112,14 @@ function App() {
   }, [yjs]);
 
   const updateTable = useCallback((data) => {
-    yjs.sharedArray.current.push([data]);
+    console.log(data)
+    const shared = yjs.sharedArray.current;
+    yjs.doc.current.transact(() => {
+      shared.delete(0, shared.length);       // clear old data
+      shared.push(...data);                  // ✅ push each row individually
+    });
   }, [yjs]);
+
 
   const history = useHistoryManager({
     hotRef,
@@ -93,7 +131,6 @@ function App() {
     sharedArray: yjs.sharedArray,
     setData,
     setColumnConfigs,
-    setFilteredColumns,
     setActions,
     setOriginalFileName,
     onRequireConfirmation: (message, confirmCallback) => {
@@ -129,17 +166,6 @@ function App() {
     yjs.awareness.current.setLocalStateField('name', userName);
   }, [userCursorColor, userName, yjs.awareness]);
 
-  useEffect(() => {
-    if (data === null || !yjs.sharedArray) return;
-
-    if (!startEdit) {
-      if (yjs.sharedArray.current.length === 0) {
-        updateTable(data);
-      } else {
-        setData(yjs.sharedArray.current.toJSON().slice(-1)[0]);
-      }
-    }
-  }, [data, startEdit, yjs.sharedArray, updateTable]);
 
   const handleAuthentication = (name) => {
     setUserName(name);
@@ -179,7 +205,6 @@ function App() {
               columnConfigs={columnConfigs}
               setColumnConfigs={setColumnConfigs}
               setSelectedColumnIndex={() => { }}
-              filteredColumns={filteredColumns}
               hotRef={hotRef}
               selectedCellsRef={selectedCellsRef}
               tableContainerRef={tableContainerRef}

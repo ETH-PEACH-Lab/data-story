@@ -48,13 +48,11 @@ const HistorySidebar = ({
   const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
   const [editingIndex, setEditingIndex] = useState(null);
   const [newFileName, setNewFileName] = useState("");
-  const [collaborators, setCollaborators] = useState([]);
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
   const inputRef = useRef(null);
   const {
-    awareness,
     historyState,
     historyActions
   } = useContext(SharedContext);
@@ -62,9 +60,6 @@ const HistorySidebar = ({
   const { uploadHistory, currentDataId, idList } = historyState;
   const {
     setUploadHistory,
-    setIdList,
-    onHistoryItemClick,
-    onHistoryItemDelete,
     handleDeleteAllHistory,
   } = historyActions;
   const listRef = useRef(null);
@@ -98,11 +93,6 @@ const HistorySidebar = ({
     }
   });
 
-  const startEditing = (index, fileName) => {
-    setEditingIndex(index);
-    setNewFileName(fileName);
-  };
-
   const toggleBundle = useCallback((index: number) => {
     const bundleState = [...isOpen]
     bundleState[index] = !bundleState[index]
@@ -114,7 +104,6 @@ const HistorySidebar = ({
     const lastChild = listRef.current.lastElementChild;
     if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
     console.log("USEEFFECT HAS BEEN TRIGGERED")
-    console.log(uploadHistory)
     const bundles = bundleHistoryEntries(uploadHistory)
     setBundles(bundles)
     if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
@@ -123,9 +112,10 @@ const HistorySidebar = ({
   return (
     <div className={"history-sidebar"}>
       <div className="button-container d-flex justify-content-between align-items-center p-2">
-          <button onClick={handleDeleteAllHistory} className="btn btn-danger">
+        <strong>Editing History</strong>
+          {/* <button onClick={handleDeleteAllHistory} className="btn btn-danger">
             <i className="bi bi-trash3"></i> Delete All
-          </button>
+          </button> */}
       </div>
         <List>
           <ul className="list-group w-100" ref={listRef}>

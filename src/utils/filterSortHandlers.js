@@ -46,7 +46,6 @@ export const handleFilter = (
   hotRef,
   checkedValues,
   filteredColumns,
-  setFilteredColumns,
   handleSaveCurrentVersion
 ) => {
   if (columnIndex === undefined || columnIndex === null) return;
@@ -81,11 +80,9 @@ export const handleFilter = (
   const currentConditionsStack = filtersPlugin.conditionCollection.exportAllConditions();
   const currentFilteredColumns = [...filteredColumns];
 
-  setFilteredColumns([...filteredColumns]);
   handleSaveCurrentVersion("New filter on column " + (columnIndex + 1) + " is added, condition: " + condition);
   //*#*//
 
-  const wrappedAction = () => new FilterAction(previousConditionsStack, currentConditionsStack, previousFilteredColumns, currentFilteredColumns, setFilteredColumns);
   // hotInstance.undoRedo.done(wrappedAction);
   // console.log("!90 filtersorthandlers.js", hotInstance.undoRedo.doneActions);
 };
