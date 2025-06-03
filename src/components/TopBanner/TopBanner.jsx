@@ -7,11 +7,10 @@ function TopBanner() {
   const {
     undoRedo,
     awareness,
-    idList,
-    setIdList,
-    handleSaveCurrentVersion,
     historyActions
   } = useContext(SharedContext);
+
+  const handleSaveCurrentVersion = historyActions.handleSaveCurrentVersion;
 
   const {
     isUndoDisabled,
@@ -52,9 +51,6 @@ function TopBanner() {
         <button
           className="btn btn-secondary"
           onClick={() => {
-            if (idList.length === 0) {
-              setIdList([1]);
-            }
             handleSaveCurrentVersion("History update button is triggered");
           }}
         >

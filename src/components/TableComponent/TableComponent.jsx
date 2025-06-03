@@ -13,7 +13,6 @@ import { customRenderer } from '../../utils/styleHandlers';
 import { SharedContext } from '../../App';
 
 const TableComponent = ({
-	setStartEdit,
 	data,
 	setData,
 	columnConfigs,
@@ -29,7 +28,7 @@ const TableComponent = ({
 	const [activeMenu, setActiveMenu] = useState("");
 
 	const {
-		updateCols, updateHist, updateTable, cellDiff, historyActions
+		updateCols, updateTable, cellDiff, historyActions
 	} = useContext(SharedContext);
 	const handleSaveCurrentVersion = historyActions.handleSaveCurrentVersion;
 
@@ -53,7 +52,6 @@ const TableComponent = ({
 			handleSaveCurrentVersion(histMsg);
 			updateTable(newData);
 		}
-		setStartEdit(true);
 	};
 
 	const columns = columnConfigs.map((col) => ({

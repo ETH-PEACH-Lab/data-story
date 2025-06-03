@@ -5,9 +5,6 @@ import { registerAllModules } from "handsontable/registry";
 import HistorySidebar from "./components/HistorySidebar/HistorySidebar";
 import ErrorBoundary from "./ErrorBoundary";
 import ConfirmationWindow from "./ConfirmationWindow";
-import Papa from "papaparse";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import { Authentication } from "./components/Authentication/AuthComponent";
 import CursorLayer from './components/CursorLayer';
 import TopBanner from "./components/TopBanner/TopBanner";
@@ -18,14 +15,9 @@ import { useAwareness } from './hooks/useAwareness';
 import { useUndoRedo } from './hooks/useUndoRedo';
 import { useHistoryManager } from './hooks/useHistoryManager';
 
-import {
-  handleDataLoaded,
-  initializeColumns,
-} from "./utils/dataHandlers";
+import { initializeColumns } from "./utils/dataHandlers";
 
-import {
-  getCellDiff,
-} from "./utils/historyHandlers";
+import { getCellDiff } from "./utils/historyHandlers";
 
 registerAllModules();
 
@@ -48,7 +40,6 @@ function App() {
   const [onConfirmAction, setOnConfirmAction] = useState(() => () => { });
   const [actions, setActions] = useState([]);
   const [originalFileName, setOriginalFileName] = useState("");
-  const [startEdit, setStartEdit] = useState(false);
   const [cellDiff, setCellDiff] = useState(new Set());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
@@ -112,13 +103,13 @@ function App() {
   }, [yjs]);
 
   const updateTable = useCallback((data) => {
-    console.log(data)
     const shared = yjs.sharedArray.current;
     yjs.doc.current.transact(() => {
-      shared.delete(0, shared.length);       // clear old data
-      shared.push(...data);                  // ✅ push each row individually
+      shared.delete(0, shared.length);        // 清空
+      data.forEach(row => shared.push([row])); // ✅ 每行包成 [row] 推入
     });
   }, [yjs]);
+
 
 
   const history = useHistoryManager({
@@ -199,7 +190,6 @@ function App() {
           <TopBanner />
           <div className="main-content-row">
             <TableComponent
-              setStartEdit={setStartEdit}
               data={data}
               setData={setData}
               columnConfigs={columnConfigs}
