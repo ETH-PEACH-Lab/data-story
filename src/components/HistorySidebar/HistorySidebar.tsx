@@ -125,7 +125,7 @@ const HistorySidebar = ({
       </div>
         <List>
           <ul className="list-group w-100" ref={listRef}>
-            {bundles.map((bundle, index) => (
+            {filterHistory(bundles, selectedAuthors, interval).slice().reverse().map((bundle, index) => (
               <div key={index}>
                 <ListItemButton key={index} onClick={() => toggleBundle(index)}>
                   <ListItemIcon>
@@ -139,9 +139,9 @@ const HistorySidebar = ({
                 </ListItemButton>
                 <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {filterHistory(bundle.entries).map((entry: HistoryEntry, i) => (
+                    {bundle.entries.slice().reverse().map((entry: HistoryEntry, i) => (
                       <ListItemButton
-                        key={i}
+                        key={entry.id}
                         sx={{ ml: 9 }}
                         className={entry.id === selectedId ? "bg-success" : ""}
                         onClick={() => { handleHistoryItemClick(entry) }}
