@@ -12,7 +12,6 @@ import TopBanner from "./components/TopBanner/TopBanner";
 import TableComponent from './components/TableComponent/TableComponent';
 
 import { useYjsSetup } from './hooks/useYjsSetup';
-import { useAwareness } from './hooks/useAwareness';
 import { useUndoRedo } from './hooks/useUndoRedo';
 import { useHistoryManager } from './hooks/useHistoryManager';
 
@@ -105,6 +104,7 @@ function App() {
   }, [yjs]);
 
   const history = useHistoryManager({
+    data,
     hotRef,
     initializeColumns,
     updateHist,
@@ -132,7 +132,6 @@ function App() {
     });
   }, [yjs, history.historyState.setUploadHistory]);
 
-  const awarenessStates = useAwareness(yjs.awareness);
 
   useEffect(() => {
     if (!yjs.awareness?.current || !userCursorColor) return;
@@ -210,7 +209,6 @@ function App() {
 
         <CursorLayer
           awareness={yjs.awareness.current}
-          awarenessStates={awarenessStates}
         />
       </ErrorBoundary>
     </SharedContext.Provider>

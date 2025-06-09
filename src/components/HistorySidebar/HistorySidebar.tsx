@@ -8,10 +8,12 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext } from "../../App";
-import { filterHistory, bundleHistoryEntries, getAuthors } from "../../utils/historyHandlers";
+import { filterHistory, bundleHistoryEntries, getAuthors, getAllAuthors } from "../../utils/historyHandlers";
 import { getTime, getInterval } from "../../utils/formatHandlers"
 
 import "./HistorySidebar.css";
+import CollaboratorBrush from "../CollaboratorBrush"
+import TimeBrush from "../TimeBrush"
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -51,6 +53,9 @@ const HistorySidebar = ({
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
+  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([])
+  const [interval, setInterval] = useState<number>(-1)
+
   const inputRef = useRef(null);
   const {
     historyState,
@@ -60,7 +65,7 @@ const HistorySidebar = ({
   const { uploadHistory, currentDataId, idList } = historyState;
   const {
     setUploadHistory,
-    handleDeleteAllHistory,
+    handleHistoryClick,
   } = historyActions;
   const listRef = useRef(null);
 
@@ -109,17 +114,32 @@ const HistorySidebar = ({
     if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
   }, [uploadHistory]);
 
+  const handleHistoryItemClick = (entry: HistoryEntry) => {
+    selectEntry(entry)
+    setSelectedId(entry.id)
+    handleHistoryClick(entry, -1)
+  }
+
   return (
     <div className={"history-sidebar"}>
       <div className="button-container d-flex justify-content-between align-items-center p-2">
         <strong>Editing History</strong>
+        <TimeBrush
+          time={interval}
+          setTime={setInterval}
+        />
+        <CollaboratorBrush 
+          authors={selectedAuthors}
+          setAuthors={setSelectedAuthors}
+          allAuthors={getAllAuthors(uploadHistory)} 
+        />
           {/* <button onClick={handleDeleteAllHistory} className="btn btn-danger">
             <i className="bi bi-trash3"></i> Delete All
           </button> */}
       </div>
         <List>
           <ul className="list-group w-100" ref={listRef}>
-            {bundles.map((bundle, index) => (
+            {filterHistory(bundles, selectedAuthors, interval).slice().reverse().map((bundle, index) => (
               <div key={index}>
                 <ListItemButton key={index} onClick={() => toggleBundle(index)}>
                   <ListItemIcon>
@@ -133,12 +153,12 @@ const HistorySidebar = ({
                 </ListItemButton>
                 <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {filterHistory(bundle.entries).map((entry: HistoryEntry, i) => (
+                    {bundle.entries.slice().reverse().map((entry: HistoryEntry, i) => (
                       <ListItemButton
-                        key={i}
+                        key={entry.id}
                         sx={{ ml: 9 }}
                         className={entry.id === selectedId ? "bg-success" : ""}
-                        onClick={() => { selectEntry(entry); setSelectedId(entry.id) }}
+                        onClick={() => { handleHistoryItemClick(entry) }}
                       >
                         <ListItemText
                           primary={

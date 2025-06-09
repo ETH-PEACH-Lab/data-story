@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+import { useAwareness } from '../hooks/useAwareness';
 
-const CursorLayer = ({ awareness, awarenessStates }) => {
+const CursorLayer = ({ awareness }) => {
+    const awarenessStates = useAwareness(awareness)
+
     useEffect(() => {
         if (!awareness) return;
 

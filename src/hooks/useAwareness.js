@@ -5,17 +5,17 @@ export function useAwareness(awarenessRef) {
   const [awarenessStates, setAwarenessStates] = useState(new Map());
 
   useEffect(() => {
-    if (!awarenessRef.current) return;
+    if (!awarenessRef) return;
 
     const updateStates = () => {
-      setAwarenessStates(new Map(awarenessRef.current.getStates()));
+      setAwarenessStates(new Map(awarenessRef.getStates()));
     };
 
-    awarenessRef.current.on('change', updateStates);
+    awarenessRef.on('change', updateStates);
     updateStates();
 
     return () => {
-      awarenessRef.current.off('change', updateStates);
+      awarenessRef.off('change', updateStates);
     };
   }, [awarenessRef]);
 
