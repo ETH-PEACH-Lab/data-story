@@ -8,10 +8,12 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext } from "../../App";
-import { filterHistory, bundleHistoryEntries, getAuthors } from "../../utils/historyHandlers";
+import { filterHistory, bundleHistoryEntries, getAuthors, getAllAuthors } from "../../utils/historyHandlers";
 import { getTime, getInterval } from "../../utils/formatHandlers"
 
 import "./HistorySidebar.css";
+import CollaboratorBrush from "../CollaboratorBrush"
+import TimeBrush from "../TimeBrush"
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -51,6 +53,9 @@ const HistorySidebar = ({
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
+  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([])
+  const [interval, setInterval] = useState<number>(-1)
+
   const inputRef = useRef(null);
   const {
     historyState,
@@ -119,6 +124,15 @@ const HistorySidebar = ({
     <div className={"history-sidebar"}>
       <div className="button-container d-flex justify-content-between align-items-center p-2">
         <strong>Editing History</strong>
+        <TimeBrush
+          time={interval}
+          setTime={setInterval}
+        />
+        <CollaboratorBrush 
+          authors={selectedAuthors}
+          setAuthors={setSelectedAuthors}
+          allAuthors={getAllAuthors(uploadHistory)} 
+        />
           {/* <button onClick={handleDeleteAllHistory} className="btn btn-danger">
             <i className="bi bi-trash3"></i> Delete All
           </button> */}

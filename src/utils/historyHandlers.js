@@ -191,8 +191,35 @@ export const switchHistoryEntry = (
   setCurrentDataIdLocalStorage(historyEntry.id);
 };
 
-export const filterHistory = (uploadHistory) => 
-  uploadHistory.filter(logEntry => !logEntry.historyMessage?.toLowerCase().includes("story"))
+const filterAuthors = (uploadHistory, authors) => {
+  if (authors?.length === 0) return uploadHistory
+
+  return uploadHistory.map(bundle => ({
+    ...bundle,
+    entries: bundle.entries.filter(entry => authors.includes(entry.author)),
+  })).filter(bundle => bundle.entries.length > 0)
+}
+
+const filterTime = (uploadHistory, time) => {
+  if (time < 0) return uploadHistory
+
+  const now = new Date().getTime()
+  return uploadHistory.map(bundle => ({
+    ...bundle,
+    entries: bundle.entries.filter(entry => (now - new Date(entry.timestamp).getTime() <= time)),
+  })).filter(bundle => bundle.entries.length > 0)
+}
+
+export const filterHistory = (uploadHistory, authors, time) => {
+  return filterTime(filterAuthors(uploadHistory, authors), time)
+}
+
+export const getAllAuthors = (uploadHistory) => {
+  const authors = uploadHistory
+    .map(entry => entry.author)
+    .filter(author => author !== undefined)
+  return [...new Set(authors)]
+}
 
 export const getAuthors = (bundle) => {
   const entries = bundle.entries
@@ -213,11 +240,11 @@ export const bundleHistoryEntries = (uploadHistory) => {
       return bundledHistory.map((bundle, index) =>
         index === bundledHistory.length - 1
           ? {
-              ...bundle,
-              entries: [...bundle.entries, entry],
-              endTime: entry.timestamp,
-              endDate: entry.date,
-            }
+            ...bundle,
+            entries: [...bundle.entries, entry],
+            endTime: entry.timestamp,
+            endDate: entry.date,
+          }
           : bundle
       );
     }
