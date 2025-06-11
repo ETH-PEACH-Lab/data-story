@@ -31,7 +31,7 @@ const TableComponent = ({
 
 
 	const {
-		updateCols, updateTable, cellDiff, historyActions
+		updateCols, updateTable, cellDiff, historyActions, cellFormat
 	} = useContext(SharedContext);
 	const handleSaveCurrentVersion = historyActions.handleSaveCurrentVersion;
 
@@ -92,7 +92,9 @@ const TableComponent = ({
 	}));
 
 	const cellClassFn = (row, col) => ({
-		className: cellDiff.has(`${row},${col}`) ? "bg-success" : ""
+		className: (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '') 
+		+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '') 
+		+ (cellFormat[`${row},${col}`]?.bg ?? "")
 	});
 
 	const contextMenuItems = {

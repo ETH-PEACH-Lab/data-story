@@ -24,6 +24,13 @@
   background-color: #d1e7dd !important; /* light green */
 }
 
+.handsontable td.font-bold {
+  font-weight: bold !important;
+}
+
+.handsontable td.font-italic {
+  font-style: italic !important;
+}
 
 .fx-label {
   font-weight: bold;
@@ -132,4 +139,10 @@
 
 .btn:hover{
     border: 1px solid !important;
+}
+
+.color-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
 }
