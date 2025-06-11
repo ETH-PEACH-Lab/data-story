@@ -106,8 +106,8 @@ const HistorySidebar = ({
 
   useEffect(() => {
     if (!listRef.current) return
-    const lastChild = listRef.current.lastElementChild;
-    if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
+    // const lastChild = listRef.current.lastElementChild;
+    // if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
     console.log("USEEFFECT HAS BEEN TRIGGERED")
     const bundles = bundleHistoryEntries(uploadHistory)
     setBundles(bundles)
