@@ -7,6 +7,7 @@ function Toolbar({ rawValue }) {
   const {
     undoRedo,
     awareness,
+    historyState,
     historyActions,
     setCellFormat,
     selectedCellsRef,
@@ -19,7 +20,8 @@ function Toolbar({ rawValue }) {
     handleRedoAction
   } = undoRedo;
 
-  const handleSaveCurrentVersion = historyActions.handleSaveCurrentVersion;
+  const { isRedoEmpty, isUndoEmpty } = historyState;
+  const { handleSaveCurrentVersion, handleUndo, handleRedo } = historyActions;
 
   const handleclick = (attr, val) => toggleCellFormat(setCellFormat, selectedCellsRef, attr, val)
 
@@ -58,7 +60,8 @@ function Toolbar({ rawValue }) {
             <MenuItem value="bg-warning" onClick={() => handleclick("bg", "bg-warning")}>
               <span className="bg-warning color-circle" />
             </MenuItem>
-          </Select></button>
+          </Select>
+        </button>
       </div>
 
       <div className="action-buttons">
@@ -75,16 +78,16 @@ function Toolbar({ rawValue }) {
 
         <button
           className="btn undo"
-          disabled={isUndoDisabled}
-          onClick={handleUndoAction}
+          disabled={isUndoEmpty}
+          onClick={handleUndo}
         >
           ↩️ Undo
         </button>
 
         <button
           className="btn redo"
-          disabled={isRedoDisabled}
-          onClick={handleRedoAction}
+          disabled={isRedoEmpty}
+          onClick={handleRedo}
         >
           ↪️ Redo
         </button>

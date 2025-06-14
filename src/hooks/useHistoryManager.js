@@ -30,6 +30,9 @@ export function useHistoryManager({
     columnConfigs,
 }) {
     const [uploadHistory, setUploadHistory] = useState([]);
+    const [redoHistory, setRedoHistory] = useState([]);
+    const [isRedoEmpty, setIsRedoEmpty] = useState(true);
+    const [isUndoEmpty, setIsUndoEmpty] = useState(true);
     const [idList, setIdList] = useState(getIdListLocalStorage());
     const [currentDataId, setCurrentDataId] = useState(0);
     const [initialActionStack, setInitialActionStack] = useState([]);
@@ -107,6 +110,7 @@ export function useHistoryManager({
         }
 
         setCurrentDataIdLocalStorage(currentDataId);
+        setRedoHistory([])
     }, [
         hotRef,
         originalFileName,
@@ -174,7 +178,45 @@ export function useHistoryManager({
         );
     }, [requestConfirmation, updateHist]);
 
+    const handleUndo = () => {
+        const len = uploadHistory.length
+        const newDataId = uploadHistory[len - 2]["id"]
 
+        setData(uploadHistory[len - 2]["data"])
+        setCurrentDataId(newDataId)
+
+        setRedoHistory((prev) => [...prev, uploadHistory[len - 1]])
+        setUploadHistory((prev) => prev.slice(0, -1))
+    }
+
+    const handleRedo = () => {
+        const len = redoHistory.length
+        const newEntry = redoHistory[len - 1]
+        const newDataId = newEntry["id"]
+
+        setCurrentDataId(newDataId)
+        setData(newEntry["data"])
+
+        saveDataToHistory(
+            newEntry["data"],
+            originalFileName,
+            newDataId,
+            setUploadHistory,
+            setCurrentDataId,
+            idList,
+            setIdList,
+            updateHist,
+            actions,
+            originalFileName,
+            initialActionStackLength,
+            hotRef,
+            columnConfigs,
+            newEntry["historyMessage"],
+            userName
+        )
+
+        setRedoHistory(redoHistory.slice(0, -1))
+    }
 
     useEffect(() => {
         const savedHistory = getHistoryLocalStorage();
@@ -207,6 +249,11 @@ export function useHistoryManager({
         setIdListLocalStorage(idList);
     }, [idList]);
 
+    useEffect(() => {
+        setIsRedoEmpty(redoHistory.length === 0);
+        setIsUndoEmpty(uploadHistory.length === 0);
+    }, [redoHistory, uploadHistory]);
+
     return {
         historyState: {
             uploadHistory,
@@ -215,12 +262,16 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
+            isRedoEmpty,
+            isUndoEmpty,
         },
         historyActions: {
             handleSaveCurrentVersion,
             handleHistoryClick,
             handleDeleteAllHistory,
-            handleReset
+            handleReset,
+            handleUndo,
+            handleRedo,
         },
     };
 }
