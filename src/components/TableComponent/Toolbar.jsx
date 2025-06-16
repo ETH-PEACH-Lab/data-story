@@ -23,7 +23,10 @@ function Toolbar({ rawValue }) {
   const { isRedoEmpty, isUndoEmpty } = historyState;
   const { handleSaveCurrentVersion, handleUndo, handleRedo } = historyActions;
 
-  const handleclick = (attr, val) => toggleCellFormat(setCellFormat, selectedCellsRef, attr, val)
+  const handleclick = (attr, val) => {
+    toggleCellFormat(setCellFormat, selectedCellsRef, attr, val)
+    handleSaveCurrentVersion("Cell format has been changed")
+  }
 
   return (
     <div className="toolbar-container">

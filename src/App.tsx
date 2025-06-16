@@ -112,9 +112,11 @@ function App() {
     userName,
     originalFileName,
     columnConfigs,
+    cellFormat,
     sharedArray: yjs.sharedArray,
     setData,
     setColumnConfigs,
+    setCellFormat,
     setActions,
     setOriginalFileName,
     onRequireConfirmation: (message, confirmCallback) => {

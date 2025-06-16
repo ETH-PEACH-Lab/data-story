@@ -99,6 +99,7 @@ export const saveDataToHistory = (
   initialActionStackLength,
   hotRef,
   columnConfigs, // Ensure columnConfigs is passed here
+  cellFormat,
   historyMessage,
   author,
 ) => {
@@ -134,6 +135,7 @@ export const saveDataToHistory = (
         timestamp: timestamp,
         actions: newActions,
         columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
+        cellFormat: cellFormat,
         historyMessage: historyMessage,
         author: author,
         date: new Date(),
@@ -163,6 +165,7 @@ export const switchHistoryEntry = (
   setData,
   initializeColumns,
   setColumnConfigs,
+  setCellFormat,
   setCurrentDataId,
   setActions,
   setOriginalFileName,
@@ -171,6 +174,7 @@ export const switchHistoryEntry = (
   setInitialActionStackLength
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
+  setCellFormat(historyEntry.cellFormat || {});
 
   // Use saved columnConfigs from history if available
   const savedColumnConfigs = historyEntry.columnConfigs || null;

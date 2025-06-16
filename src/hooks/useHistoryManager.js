@@ -25,9 +25,11 @@ export function useHistoryManager({
     sharedArray,
     setData,
     setColumnConfigs,
+    setCellFormat,
     setActions,
     setOriginalFileName,
     columnConfigs,
+    cellFormat,
 }) {
     const [uploadHistory, setUploadHistory] = useState([]);
     const [redoHistory, setRedoHistory] = useState([]);
@@ -99,6 +101,7 @@ export function useHistoryManager({
             initialActionStackLength,
             hotRef,
             columnConfigs,
+            cellFormat,
             message,
             userName
         );
@@ -120,6 +123,7 @@ export function useHistoryManager({
         actions,
         initialActionStackLength,
         columnConfigs,
+        cellFormat,
         userName,
     ]);
 
@@ -134,6 +138,7 @@ export function useHistoryManager({
                 setData,
                 initializeColumns,
                 setColumnConfigs,
+                setCellFormat,
                 setCurrentDataId,
                 setActions,
                 setOriginalFileName,
@@ -183,6 +188,7 @@ export function useHistoryManager({
         const newDataId = uploadHistory[len - 2]["id"]
 
         setData(uploadHistory[len - 2]["data"])
+        setCellFormat(uploadHistory[len - 2]["cellFormat"])
         setCurrentDataId(newDataId)
 
         setRedoHistory((prev) => [...prev, uploadHistory[len - 1]])
@@ -196,6 +202,7 @@ export function useHistoryManager({
 
         setCurrentDataId(newDataId)
         setData(newEntry["data"])
+        setCellFormat(newEntry["cellFormat"])
 
         saveDataToHistory(
             newEntry["data"],
@@ -235,6 +242,7 @@ export function useHistoryManager({
                 setData,
                 initializeColumns,
                 setColumnConfigs,
+                setCellFormat,
                 setCurrentDataId,
                 setActions,
                 setOriginalFileName,
