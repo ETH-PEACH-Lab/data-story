@@ -3,22 +3,13 @@ import { SharedContext } from "../../App";
 import { toggleCellFormat } from "../../utils/formatHandlers";
 import { Select, MenuItem } from "@mui/material";
 
-function Toolbar({ rawValue }) {
+function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
   const {
-    undoRedo,
-    awareness,
     historyState,
     historyActions,
     setCellFormat,
     selectedCellsRef,
   } = useContext(SharedContext);
-
-  const {
-    isUndoDisabled,
-    isRedoDisabled,
-    handleUndoAction,
-    handleRedoAction
-  } = undoRedo;
 
   const { isRedoEmpty, isUndoEmpty } = historyState;
   const { handleSaveCurrentVersion, handleUndo, handleRedo } = historyActions;
@@ -28,6 +19,14 @@ function Toolbar({ rawValue }) {
     handleSaveCurrentVersion("Cell format has been changed")
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key !== "Enter") return
+    if (selectedCellsRef.current.length === 0) return
+    const row = selectedCellsRef.current[0][0]
+    event.target.blur() 
+    handleTableChange([[row, selectedProp, rawValue, rawValue]], "edit")
+  }
+
   return (
     <div className="toolbar-container">
       <div className="formula-bar">
@@ -35,8 +34,9 @@ function Toolbar({ rawValue }) {
         <input
           type="text"
           className="formula-input"
-          readOnly
           value={rawValue || ""}
+          onChange={(e) => setRawValue(e.target.value)} // Update value as user types
+          onKeyDown={handleKeyDown} // Handle Enter key press
         />
       </div>
 

@@ -3,7 +3,7 @@ import { HotTable } from '@handsontable/react';
 import { HyperFormula } from 'hyperformula';
 import 'handsontable/dist/handsontable.full.min.css';
 import './TableComponent.css';
-import Toolbar  from './Toolbar';
+import Toolbar from './Toolbar';
 
 import {
 	handleSelectionEnd,
@@ -28,6 +28,7 @@ const TableComponent = ({
 	const [activeItem, setActiveItem] = useState("");
 	const [activeMenu, setActiveMenu] = useState("");
 	const [rawValue, setRawValue] = useState('');
+	const [selectedProp, setSelectedProp] = useState('');
 
 
 	const {
@@ -92,9 +93,9 @@ const TableComponent = ({
 	}));
 
 	const cellClassFn = (row, col) => ({
-		className: (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '') 
-		+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '') 
-		+ (cellFormat[`${row},${col}`]?.bg ?? "")
+		className: (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
+			+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '')
+			+ (cellFormat[`${row},${col}`]?.bg ?? "")
 	});
 
 	const contextMenuItems = {
@@ -148,7 +149,12 @@ const TableComponent = ({
 			<div className='table-content-area'>
 				<div className='handsontable-container' ref={tableContainerRef}>
 					<div className='hot-table-wrapper'>
-						<Toolbar rawValue={rawValue} />
+						<Toolbar
+							rawValue={rawValue}
+							setRawValue={setRawValue}
+							selectedProp={selectedProp}
+							handleTableChange={handleTableChange}
+						/>
 						<HotTable
 							formulas={{
 								engine: HyperFormula, // ✅ this is correct
@@ -176,6 +182,9 @@ const TableComponent = ({
 								handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex, setSelectedRangeState, hotRef)
 							}
 							}
+							afterSelectionEndByProp={(_, prop1) => {
+								setSelectedProp(prop1)
+							}}
 							beforeColumnResize={(newSize) => newSize > 300 ? 300 : newSize}
 							outsideClickDeselects={false}
 							fillHandle
