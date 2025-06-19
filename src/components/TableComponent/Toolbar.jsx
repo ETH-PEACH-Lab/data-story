@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { SharedContext } from "../../App";
 import { toggleCellFormat } from "../../utils/formatHandlers";
+import { exportData } from "../../utils/storageHandlers";
 import { Select, MenuItem } from "@mui/material";
 
 function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
@@ -11,8 +12,16 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
     selectedCellsRef,
   } = useContext(SharedContext);
 
-  const { isRedoEmpty, isUndoEmpty } = historyState;
-  const { handleSaveCurrentVersion, handleUndo, handleRedo } = historyActions;
+  const {
+    isRedoEmpty,
+    isUndoEmpty,
+    uploadHistory,
+    currentDataId,
+    idList,
+  } = historyState;
+  const { handleSaveCurrentVersion, handleUndo, handleRedo, initializeHistory } = historyActions;
+
+  const fileInputRef = useRef(null)
 
   const handleclick = (attr, val) => {
     toggleCellFormat(setCellFormat, selectedCellsRef, attr, val)
@@ -23,8 +32,23 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
     if (event.key !== "Enter") return
     if (selectedCellsRef.current.length === 0) return
     const row = selectedCellsRef.current[0][0]
-    event.target.blur() 
+    event.target.blur()
     handleTableChange([[row, selectedProp, rawValue, rawValue]], "edit")
+  }
+
+  const handleImport = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const text = e.target.result
+      const data = JSON.parse(text)
+      initializeHistory(data.uploadHistory, data.currentDataId, data.idList);
+    }
+
+    reader.readAsText(file);
   }
 
   return (
@@ -101,6 +125,28 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
         >
           💾 Save
         </button>
+
+        <button
+          className="btn export"
+          onClick={() => exportData({ uploadHistory, currentDataId, idList })}
+        >
+          📤 Export
+        </button>
+
+        <button
+          className="btn import"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          📥 Import
+        </button>
+
+        <input
+          type="file"
+          accept=".json"
+          hidden
+          ref={fileInputRef}
+          onChange={handleImport}
+        />
       </div>
     </div>
   );

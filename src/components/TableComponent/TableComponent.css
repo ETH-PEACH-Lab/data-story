@@ -137,6 +137,12 @@
   color: black;
 }
 
+.btn.export,
+.btn.import {
+  border: 1px #34a853 solid;
+  color: black;
+}
+
 .btn:hover{
     border: 1px solid !important;
 }

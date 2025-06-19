@@ -13,6 +13,7 @@ import {
     clearAllLocalStorage,
     generateEmptyDataset
 } from "../utils/storageHandlers";
+import fallback from "../assets/fallback.json"
 
 export function useHistoryManager({
     data,
@@ -225,32 +226,34 @@ export function useHistoryManager({
         setRedoHistory(redoHistory.slice(0, -1))
     }
 
+    const initializeHistory = (history, currentId, ids) => {
+        setUploadHistory(history)
+        setCurrentDataId(currentId)
+        setIdList(ids)
+        const historyEntry = history.find((entry) => entry.id === currentId)
+        switchHistoryEntry(
+            historyEntry,
+            history.indexOf(historyEntry),
+            setData,
+            initializeColumns,
+            setColumnConfigs,
+            setCellFormat,
+            setCurrentDataId,
+            setActions,
+            setOriginalFileName,
+            hotRef,
+            setInitialActionStack,
+            setInitialActionStackLength
+        )
+    }
+
     useEffect(() => {
         const savedHistory = getHistoryLocalStorage();
         const savedCurrentDataId = getCurrentDataIdLocalStorage();
         const savedIdList = getIdListLocalStorage();
 
-        setUploadHistory(savedHistory);
-        setCurrentDataId(savedCurrentDataId ?? 0);
-        setIdList(savedIdList);
-
-        const historyEntry = savedHistory.find((entry) => entry.id === savedCurrentDataId);
-        if (historyEntry) {
-            switchHistoryEntry(
-                historyEntry,
-                savedHistory.indexOf(historyEntry),
-                setData,
-                initializeColumns,
-                setColumnConfigs,
-                setCellFormat,
-                setCurrentDataId,
-                setActions,
-                setOriginalFileName,
-                hotRef,
-                setInitialActionStack,
-                setInitialActionStackLength
-            );
-        }
+        if (savedHistory.length === 0) initializeHistory(fallback.uploadHistory, fallback.currentDataId, fallback.idList)
+        else initializeHistory(savedHistory, savedCurrentDataId ?? 0, savedIdList)
     }, []);
 
     useEffect(() => {
@@ -280,6 +283,7 @@ export function useHistoryManager({
             handleReset,
             handleUndo,
             handleRedo,
+            initializeHistory,
         },
     };
 }
