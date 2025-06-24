@@ -20,8 +20,21 @@
   font-weight: bold;
 }
 
+div.bg-success,
 .handsontable td.bg-success {
   background-color: #d1e7dd !important; /* light green */
+}
+
+.handsontable td.bg-light {
+  background-color: white !important; /* light green */
+}
+
+.handsontable td.bg-info {
+  background-color: #d1f2fa !important; /* light green */
+}
+
+.handsontable td.bg-warning {
+  background-color: #fff9c4 !important; /* light green */
 }
 
 .handsontable td.font-bold {
