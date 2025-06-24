@@ -92,11 +92,13 @@ const TableComponent = ({
 			customRenderer(instance, td, row, col, prop, value, cellProps),
 	}));
 
-	const cellClassFn = (row, col) => ({
-		className: (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
+	const cellClassFn = (row, col) => {
+		const diffString = cellDiff.has(`${row},${col}`) ? "bg-success" : ""
+		const formatString = (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
 			+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '')
 			+ (cellFormat[`${row},${col}`]?.bg ?? "")
-	});
+		return {className: cellDiff.size > 0 ? diffString : formatString}
+	}
 
 	const contextMenuItems = {
 		insert_row_above: {

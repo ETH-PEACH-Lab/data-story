@@ -83,6 +83,29 @@ export function useHistoryManager({
         updateHist
     ]);
 
+    const addLogEntry = (message, selection) => {
+        saveDataToHistory(
+            data,
+            originalFileName,
+            currentDataId,
+            setUploadHistory,
+            setCurrentDataId,
+            idList,
+            setIdList,
+            updateHist,
+            actions,
+            originalFileName,
+            initialActionStackLength,
+            hotRef,
+            columnConfigs,
+            cellFormat,
+            message,
+            userName,
+            selection,
+        )
+        setCurrentDataIdLocalStorage(currentDataId)
+        setRedoHistory([])
+    }
 
     const handleSaveCurrentVersion = useCallback((message = "Manual Save") => {
         if (!hotRef.current) return;
@@ -284,6 +307,7 @@ export function useHistoryManager({
             handleUndo,
             handleRedo,
             initializeHistory,
+            addLogEntry,
         },
     };
 }

@@ -19,13 +19,19 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
     currentDataId,
     idList,
   } = historyState;
-  const { handleSaveCurrentVersion, handleUndo, handleRedo, initializeHistory } = historyActions;
+  const {
+    handleSaveCurrentVersion,
+    handleUndo,
+    handleRedo,
+    initializeHistory,
+    addLogEntry,
+  } = historyActions;
 
   const fileInputRef = useRef(null)
 
   const handleclick = (attr, val) => {
     toggleCellFormat(setCellFormat, selectedCellsRef, attr, val)
-    handleSaveCurrentVersion("Cell format has been changed")
+    addLogEntry("Cell format has been changed", selectedCellsRef.current)
   }
 
   const handleKeyDown = (event) => {
