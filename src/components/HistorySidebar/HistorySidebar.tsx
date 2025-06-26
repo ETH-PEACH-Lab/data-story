@@ -135,9 +135,6 @@ const HistorySidebar = ({
           setAuthors={setSelectedAuthors}
           allAuthors={getAllAuthors(uploadHistory)} 
         />
-          {/* <button onClick={handleDeleteAllHistory} className="btn btn-danger">
-            <i className="bi bi-trash3"></i> Delete All
-          </button> */}
       </div>
         <List>
           <ul className="list-group w-100" ref={listRef}>

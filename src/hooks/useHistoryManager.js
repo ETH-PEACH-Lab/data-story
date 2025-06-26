@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import {
     saveDataToHistory,
-    areActionStacksEqual,
     switchHistoryEntry,
 } from "../utils/historyHandlers";
 import {
@@ -22,7 +21,6 @@ export function useHistoryManager({
     updateHist,
     userName,
     originalFileName,
-    requestConfirmation,
     sharedArray,
     setData,
     setColumnConfigs,
@@ -174,38 +172,13 @@ export function useHistoryManager({
             setCurrentDataIdLocalStorage(historyEntry.id);
         };
 
-        if (undoRedo && !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
-            requestConfirmation(
-                "You have unsaved changes. Save them?",
-                () => {
-                    handleSaveCurrentVersion("Unsaved changes saved");
-                    performSwitch();
-                },
-                performSwitch
-            );
-        } else {
-            performSwitch();
-        }
+        performSwitch();
     }, [
         hotRef,
         initialActionStack,
         handleSaveCurrentVersion,
         uploadHistory,
-        requestConfirmation,
     ]);
-
-    const handleDeleteAllHistory = useCallback(() => {
-        requestConfirmation(
-            "Delete all history?",
-            () => {
-                setUploadHistory([]);
-                setIdList([]);
-                setCurrentDataId(0);
-                clearAllLocalStorage();
-                updateHist([]);
-            }
-        );
-    }, [requestConfirmation, updateHist]);
 
     const handleUndo = () => {
         const len = uploadHistory.length
@@ -302,7 +275,6 @@ export function useHistoryManager({
         historyActions: {
             handleSaveCurrentVersion,
             handleHistoryClick,
-            handleDeleteAllHistory,
             handleReset,
             handleUndo,
             handleRedo,
