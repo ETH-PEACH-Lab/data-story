@@ -20,10 +20,30 @@
   font-weight: bold;
 }
 
+div.bg-success,
 .handsontable td.bg-success {
   background-color: #d1e7dd !important; /* light green */
 }
 
+.handsontable td.bg-light {
+  background-color: white !important; /* light green */
+}
+
+.handsontable td.bg-info {
+  background-color: #d1f2fa !important; /* light green */
+}
+
+.handsontable td.bg-warning {
+  background-color: #fff9c4 !important; /* light green */
+}
+
+.handsontable td.font-bold {
+  font-weight: bold !important;
+}
+
+.handsontable td.font-italic {
+  font-style: italic !important;
+}
 
 .fx-label {
   font-weight: bold;
@@ -130,6 +150,18 @@
   color: black;
 }
 
+.btn.export,
+.btn.import {
+  border: 1px #34a853 solid;
+  color: black;
+}
+
 .btn:hover{
     border: 1px solid !important;
+}
+
+.color-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
 }

@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import {
     saveDataToHistory,
-    areActionStacksEqual,
     switchHistoryEntry,
 } from "../utils/historyHandlers";
 import {
@@ -13,6 +12,7 @@ import {
     clearAllLocalStorage,
     generateEmptyDataset
 } from "../utils/storageHandlers";
+import fallback from "../assets/fallback.json"
 
 export function useHistoryManager({
     data,
@@ -21,15 +21,19 @@ export function useHistoryManager({
     updateHist,
     userName,
     originalFileName,
-    requestConfirmation,
     sharedArray,
     setData,
     setColumnConfigs,
+    setCellFormat,
     setActions,
     setOriginalFileName,
     columnConfigs,
+    cellFormat,
 }) {
     const [uploadHistory, setUploadHistory] = useState([]);
+    const [redoHistory, setRedoHistory] = useState([]);
+    const [isRedoEmpty, setIsRedoEmpty] = useState(true);
+    const [isUndoEmpty, setIsUndoEmpty] = useState(true);
     const [idList, setIdList] = useState(getIdListLocalStorage());
     const [currentDataId, setCurrentDataId] = useState(0);
     const [initialActionStack, setInitialActionStack] = useState([]);
@@ -77,6 +81,29 @@ export function useHistoryManager({
         updateHist
     ]);
 
+    const addLogEntry = (message, selection, updatedCellFormat) => {
+        saveDataToHistory(
+            data,
+            originalFileName,
+            currentDataId,
+            setUploadHistory,
+            setCurrentDataId,
+            idList,
+            setIdList,
+            updateHist,
+            actions,
+            originalFileName,
+            initialActionStackLength,
+            hotRef,
+            columnConfigs,
+            updatedCellFormat || cellFormat,
+            message,
+            userName,
+            selection,
+        )
+        setCurrentDataIdLocalStorage(currentDataId)
+        setRedoHistory([])
+    }
 
     const handleSaveCurrentVersion = useCallback((message = "Manual Save") => {
         if (!hotRef.current) return;
@@ -96,6 +123,7 @@ export function useHistoryManager({
             initialActionStackLength,
             hotRef,
             columnConfigs,
+            cellFormat,
             message,
             userName
         );
@@ -107,6 +135,7 @@ export function useHistoryManager({
         }
 
         setCurrentDataIdLocalStorage(currentDataId);
+        setRedoHistory([])
     }, [
         hotRef,
         originalFileName,
@@ -116,6 +145,7 @@ export function useHistoryManager({
         actions,
         initialActionStackLength,
         columnConfigs,
+        cellFormat,
         userName,
     ]);
 
@@ -130,6 +160,7 @@ export function useHistoryManager({
                 setData,
                 initializeColumns,
                 setColumnConfigs,
+                setCellFormat,
                 setCurrentDataId,
                 setActions,
                 setOriginalFileName,
@@ -141,71 +172,94 @@ export function useHistoryManager({
             setCurrentDataIdLocalStorage(historyEntry.id);
         };
 
-        if (undoRedo && !areActionStacksEqual(undoRedo.doneActions, initialActionStack, 50)) {
-            requestConfirmation(
-                "You have unsaved changes. Save them?",
-                () => {
-                    handleSaveCurrentVersion("Unsaved changes saved");
-                    performSwitch();
-                },
-                performSwitch
-            );
-        } else {
-            performSwitch();
-        }
+        performSwitch();
     }, [
         hotRef,
         initialActionStack,
         handleSaveCurrentVersion,
         uploadHistory,
-        requestConfirmation,
     ]);
 
-    const handleDeleteAllHistory = useCallback(() => {
-        requestConfirmation(
-            "Delete all history?",
-            () => {
-                setUploadHistory([]);
-                setIdList([]);
-                setCurrentDataId(0);
-                clearAllLocalStorage();
-                updateHist([]);
-            }
-        );
-    }, [requestConfirmation, updateHist]);
+    const handleUndo = () => {
+        const len = uploadHistory.length
+        const newDataId = uploadHistory[len - 2]["id"]
 
+        setData(uploadHistory[len - 2]["data"])
+        setCellFormat(uploadHistory[len - 2]["cellFormat"])
+        setCurrentDataId(newDataId)
 
+        setRedoHistory((prev) => [...prev, uploadHistory[len - 1]])
+        setUploadHistory((prev) => prev.slice(0, -1))
+    }
+
+    const handleRedo = () => {
+        const len = redoHistory.length
+        const newEntry = redoHistory[len - 1]
+        const newDataId = newEntry["id"]
+
+        setCurrentDataId(newDataId)
+        setData(newEntry["data"])
+        setCellFormat(newEntry["cellFormat"])
+
+        saveDataToHistory(
+            newEntry["data"],
+            originalFileName,
+            newDataId,
+            setUploadHistory,
+            setCurrentDataId,
+            idList,
+            setIdList,
+            updateHist,
+            actions,
+            originalFileName,
+            initialActionStackLength,
+            hotRef,
+            columnConfigs,
+            newEntry["historyMessage"],
+            userName
+        )
+
+        setRedoHistory(redoHistory.slice(0, -1))
+    }
+
+    const initializeHistory = (history, currentId, ids) => {
+        setUploadHistory(history)
+        setCurrentDataId(currentId)
+        setIdList(ids)
+        const historyEntry = history.find((entry) => entry.id === currentId)
+        switchHistoryEntry(
+            historyEntry,
+            history.indexOf(historyEntry),
+            setData,
+            initializeColumns,
+            setColumnConfigs,
+            setCellFormat,
+            setCurrentDataId,
+            setActions,
+            setOriginalFileName,
+            hotRef,
+            setInitialActionStack,
+            setInitialActionStackLength
+        )
+    }
 
     useEffect(() => {
         const savedHistory = getHistoryLocalStorage();
         const savedCurrentDataId = getCurrentDataIdLocalStorage();
         const savedIdList = getIdListLocalStorage();
 
-        setUploadHistory(savedHistory);
-        setCurrentDataId(savedCurrentDataId ?? 0);
-        setIdList(savedIdList);
-
-        const historyEntry = savedHistory.find((entry) => entry.id === savedCurrentDataId);
-        if (historyEntry) {
-            switchHistoryEntry(
-                historyEntry,
-                savedHistory.indexOf(historyEntry),
-                setData,
-                initializeColumns,
-                setColumnConfigs,
-                setCurrentDataId,
-                setActions,
-                setOriginalFileName,
-                hotRef,
-                setInitialActionStack,
-                setInitialActionStackLength
-            );
-        }
+        if (savedHistory.length === 0) initializeHistory(fallback.uploadHistory, fallback.currentDataId, fallback.idList)
+        else initializeHistory(savedHistory, savedCurrentDataId ?? 0, savedIdList)
     }, []);
 
     useEffect(() => {
         setIdListLocalStorage(idList);
     }, [idList]);
+
+    useEffect(() => {
+        setIsRedoEmpty(redoHistory.length === 0);
+        setIsUndoEmpty(uploadHistory.length === 0);
+    }, [redoHistory, uploadHistory]);
 
     return {
         historyState: {
@@ -215,12 +269,17 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
+            isRedoEmpty,
+            isUndoEmpty,
         },
         historyActions: {
             handleSaveCurrentVersion,
             handleHistoryClick,
-            handleDeleteAllHistory,
-            handleReset
+            handleReset,
+            handleUndo,
+            handleRedo,
+            initializeHistory,
+            addLogEntry,
         },
     };
 }

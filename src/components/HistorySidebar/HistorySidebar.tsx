@@ -47,7 +47,7 @@ interface HistoryBundle {
 const HistorySidebar = ({
   selectEntry,
 }) => {
-  const [lastSelectedEntry, setLastSelectedEntry] = useState(null);
+  const [lastSelectedEntry, setLastSelectedEntry] = useState(-1);
   const [editingIndex, setEditingIndex] = useState(null);
   const [newFileName, setNewFileName] = useState("");
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
@@ -68,10 +68,6 @@ const HistorySidebar = ({
     handleHistoryClick,
   } = historyActions;
   const listRef = useRef(null);
-
-  useEffect(() => {
-    setLastSelectedEntry(currentDataId);
-  }, [currentDataId]);
 
   const saveFileName = useCallback(
     (index: number) => {
@@ -106,8 +102,8 @@ const HistorySidebar = ({
 
   useEffect(() => {
     if (!listRef.current) return
-    const lastChild = listRef.current.lastElementChild;
-    if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
+    // const lastChild = listRef.current.lastElementChild;
+    // if (lastChild) lastChild.scrollIntoView({ behavior: "smooth" });
     console.log("USEEFFECT HAS BEEN TRIGGERED")
     const bundles = bundleHistoryEntries(uploadHistory)
     setBundles(bundles)
@@ -115,9 +111,15 @@ const HistorySidebar = ({
   }, [uploadHistory]);
 
   const handleHistoryItemClick = (entry: HistoryEntry) => {
-    selectEntry(entry)
-    setSelectedId(entry.id)
-    handleHistoryClick(entry, -1)
+    if (selectedId !== entry.id) {
+      selectEntry(entry)
+      setSelectedId(entry.id)
+      handleHistoryClick(entry, -1)
+    } else {
+      setSelectedId(-1)
+      selectEntry(null)
+      handleHistoryClick(uploadHistory[uploadHistory.length - 1], -1)
+    }
   }
 
   return (
@@ -133,9 +135,6 @@ const HistorySidebar = ({
           setAuthors={setSelectedAuthors}
           allAuthors={getAllAuthors(uploadHistory)} 
         />
-          {/* <button onClick={handleDeleteAllHistory} className="btn btn-danger">
-            <i className="bi bi-trash3"></i> Delete All
-          </button> */}
       </div>
         <List>
           <ul className="list-group w-100" ref={listRef}>

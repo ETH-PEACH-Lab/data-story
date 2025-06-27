@@ -62,3 +62,14 @@ export const generateEmptyDataset = () => {
   );
   return { data: emptyData };
 };
+
+export const exportData = (obj) => {
+  const jsonString = JSON.stringify(obj, null, 2)
+  const blob = new Blob([jsonString], { type: "application/json;charset=utf-8;" })
+  const fileName = "export.json"
+
+  const link = document.createElement("a")
+  link.href = URL.createObjectURL(blob)
+  link.download = fileName
+  link.click()
+}

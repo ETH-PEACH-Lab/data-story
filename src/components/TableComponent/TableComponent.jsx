@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { HotTable } from '@handsontable/react';
 import { HyperFormula } from 'hyperformula';
 import 'handsontable/dist/handsontable.full.min.css';
 import './TableComponent.css';
-import Toolbar  from './Toolbar';
+import Toolbar from './Toolbar';
 
 import {
 	handleSelectionEnd,
@@ -28,12 +28,15 @@ const TableComponent = ({
 	const [activeItem, setActiveItem] = useState("");
 	const [activeMenu, setActiveMenu] = useState("");
 	const [rawValue, setRawValue] = useState('');
+	const [selectedProp, setSelectedProp] = useState('');
+	const [clipboard, setClipboard] = useState("");
 
 
 	const {
-		updateCols, updateTable, cellDiff, historyActions
+		updateCols, updateTable, cellDiff, historyActions, cellFormat
 	} = useContext(SharedContext);
 	const handleSaveCurrentVersion = historyActions.handleSaveCurrentVersion;
+	const addLogEntry = historyActions.addLogEntry
 
 	const handleTableChange = (changes, source) => {
 		if (source === 'loadData' || !changes) return;
@@ -52,7 +55,7 @@ const TableComponent = ({
 			const histMsg = String(changes[0][3]).startsWith("=")
 				? "Formula has been updated"
 				: "Table data has been updated";
-			handleSaveCurrentVersion(histMsg);
+			addLogEntry(histMsg, selectedCellsRef.current)
 			updateTable(newData);
 		}
 	};
@@ -91,9 +94,13 @@ const TableComponent = ({
 			customRenderer(instance, td, row, col, prop, value, cellProps),
 	}));
 
-	const cellClassFn = (row, col) => ({
-		className: cellDiff.has(`${row},${col}`) ? "bg-success" : ""
-	});
+	const cellClassFn = (row, col) => {
+		const diffString = cellDiff.has(`${row},${col}`) ? "bg-success" : ""
+		const formatString = (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
+			+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '')
+			+ (cellFormat[`${row},${col}`]?.bg ?? "")
+		return { className: cellDiff.size > 0 ? diffString : formatString }
+	}
 
 	const contextMenuItems = {
 		insert_row_above: {
@@ -137,6 +144,27 @@ const TableComponent = ({
 		}
 	};
 
+	const handleCopy = (e) => {
+		if (!e.ctrlKey || e.key !== 'c') return
+		if (selectedCellsRef.current.length === 0) return
+		setClipboard(rawValue)
+	}
+
+	const handlePaste = (e) => {
+		if (!e.ctrlKey || e.key !== 'v') return
+		const row = selectedCellsRef.current[0][0]
+		handleTableChange([[row, selectedProp, rawValue, clipboard]], "edit")
+	}
+
+	useEffect(() => {
+		document.addEventListener("keydown", handleCopy)
+		document.addEventListener("keydown", handlePaste)
+		return () => {
+			document.removeEventListener("keydown", handleCopy)
+			document.removeEventListener("keydown", handlePaste)
+		}
+	}, [rawValue, clipboard, selectedCellsRef, selectedProp]);
+
 	return (
 		<SharedContext.Provider value={{
 			activeMenu, setActiveMenu,
@@ -146,7 +174,12 @@ const TableComponent = ({
 			<div className='table-content-area'>
 				<div className='handsontable-container' ref={tableContainerRef}>
 					<div className='hot-table-wrapper'>
-						<Toolbar rawValue={rawValue} />
+						<Toolbar
+							rawValue={rawValue}
+							setRawValue={setRawValue}
+							selectedProp={selectedProp}
+							handleTableChange={handleTableChange}
+						/>
 						<HotTable
 							formulas={{
 								engine: HyperFormula, // ✅ this is correct
@@ -174,6 +207,9 @@ const TableComponent = ({
 								handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex, setSelectedRangeState, hotRef)
 							}
 							}
+							afterSelectionEndByProp={(_, prop1) => {
+								setSelectedProp(prop1)
+							}}
 							beforeColumnResize={(newSize) => newSize > 300 ? 300 : newSize}
 							outsideClickDeselects={false}
 							fillHandle

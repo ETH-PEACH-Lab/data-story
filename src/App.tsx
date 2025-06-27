@@ -40,6 +40,7 @@ function App() {
   const [actions, setActions] = useState([]);
   const [originalFileName, setOriginalFileName] = useState("");
   const [cellDiff, setCellDiff] = useState(new Set());
+  const [cellFormat, setCellFormat] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [userCursorColor, setUserCursorColor] = useState(null);
@@ -111,9 +112,11 @@ function App() {
     userName,
     originalFileName,
     columnConfigs,
+    cellFormat,
     sharedArray: yjs.sharedArray,
     setData,
     setColumnConfigs,
+    setCellFormat,
     setActions,
     setOriginalFileName,
     onRequireConfirmation: (message, confirmCallback) => {
@@ -161,7 +164,8 @@ function App() {
       sharedHist: yjs.sharedHist, sharedArray: yjs.sharedArray,
       cellDiff, undoRedo, awareness: yjs.awareness,
       historyState: history.historyState,
-      historyActions: history.historyActions
+      historyActions: history.historyActions,
+      cellFormat, setCellFormat, selectedCellsRef,
     }}>
       <ErrorBoundary>
         <div>

@@ -99,8 +99,10 @@ export const saveDataToHistory = (
   initialActionStackLength,
   hotRef,
   columnConfigs, // Ensure columnConfigs is passed here
+  cellFormat,
   historyMessage,
   author,
+  cellChanges = {},
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
@@ -134,9 +136,11 @@ export const saveDataToHistory = (
         timestamp: timestamp,
         actions: newActions,
         columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
+        cellFormat: cellFormat,
         historyMessage: historyMessage,
         author: author,
         date: new Date(),
+        cellChanges: cellChanges,
       },
     ];
     setHistoryLocalStorage(updatedHistory);
@@ -163,6 +167,7 @@ export const switchHistoryEntry = (
   setData,
   initializeColumns,
   setColumnConfigs,
+  setCellFormat,
   setCurrentDataId,
   setActions,
   setOriginalFileName,
@@ -171,6 +176,7 @@ export const switchHistoryEntry = (
   setInitialActionStackLength
 ) => {
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
+  setCellFormat(historyEntry.cellFormat || {});
 
   // Use saved columnConfigs from history if available
   const savedColumnConfigs = historyEntry.columnConfigs || null;
@@ -262,12 +268,14 @@ export const bundleHistoryEntries = (uploadHistory) => {
   }, []);
 }
 
+const arrayToSet = (array, set) => {
+  array.forEach((change) => set.add(change[0] + "," + change[1]))
+  return set
+}
+
 export const getCellDiff = (entry) => {
-  console.log(entry)
   const cells = new Set()
-  if (entry?.actions[0]?.actionType !== "change") return cells
-  entry.actions[0].changes.forEach((change) => {
-    cells.add(change[0] + "," + change[1])
-  })
+  if (entry?.cellChanges.length > 0) arrayToSet(entry.cellChanges, cells)
+  else if (entry?.actions[0]?.actionType === "change") arrayToSet(entry.actions[0].changes, cells)
   return cells
 }
