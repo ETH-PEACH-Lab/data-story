@@ -81,7 +81,7 @@ export function useHistoryManager({
         updateHist
     ]);
 
-    const addLogEntry = (message, selection) => {
+    const addLogEntry = (message, selection, updatedCellFormat) => {
         saveDataToHistory(
             data,
             originalFileName,
@@ -96,7 +96,7 @@ export function useHistoryManager({
             initialActionStackLength,
             hotRef,
             columnConfigs,
-            cellFormat,
+            updatedCellFormat || cellFormat,
             message,
             userName,
             selection,

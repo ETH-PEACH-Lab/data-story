@@ -31,3 +31,16 @@ export const toggleCellFormat = (setFormat, sel, attr, val) => {
     })
   })
 }
+
+export const calculateCellFormat = (prevFormat, sel, attr, val) => {
+  const updatedFormat = {...prevFormat}
+  sel.current.forEach((cell) => {
+    const [row, col] = cell
+    const key = `${row},${col}`;
+    updatedFormat[key] = {
+      ...updatedFormat[key],
+      [attr]: val !== undefined ? val : !updatedFormat[key]?.[attr]
+    }
+  })
+  return updatedFormat
+}

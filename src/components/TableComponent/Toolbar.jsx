@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { SharedContext } from "../../App";
-import { toggleCellFormat } from "../../utils/formatHandlers";
+import { toggleCellFormat, calculateCellFormat } from "../../utils/formatHandlers";
 import { exportData } from "../../utils/storageHandlers";
 import { Select, MenuItem } from "@mui/material";
 
@@ -8,6 +8,7 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
   const {
     historyState,
     historyActions,
+    cellFormat,
     setCellFormat,
     selectedCellsRef,
   } = useContext(SharedContext);
@@ -30,8 +31,9 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
   const fileInputRef = useRef(null)
 
   const handleclick = (attr, val) => {
-    toggleCellFormat(setCellFormat, selectedCellsRef, attr, val)
-    addLogEntry("Cell format has been changed", selectedCellsRef.current)
+    const updatedCellFormat = calculateCellFormat(cellFormat, selectedCellsRef, attr, val)
+    setCellFormat(updatedCellFormat)
+    addLogEntry("Cell format has been changed", selectedCellsRef.current, updatedCellFormat)
   }
 
   const handleKeyDown = (event) => {
@@ -55,6 +57,7 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
     }
 
     reader.readAsText(file);
+    event.target.value = ""
   }
 
   return (
