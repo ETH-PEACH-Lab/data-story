@@ -1,0 +1,82 @@
+{
+    "currentDataId": 1,
+    "idList": [
+        2
+    ],
+    "uploadHistory": [
+        {
+            "id": 1,
+            "parentId": null,
+            "data": [
+                {
+                    "Column 1": 9000,
+                    "Column 2": 54,
+                    "Column 3": 28,
+                    "Column 4": 54,
+                    "Column 5": 43
+                },
+                {
+                    "Column 1": 51,
+                    "Column 2": 1,
+                    "Column 3": 97,
+                    "Column 4": 71,
+                    "Column 5": 17
+                },
+                {
+                    "Column 1": 76,
+                    "Column 2": 22,
+                    "Column 3": 32,
+                    "Column 4": 18,
+                    "Column 5": 2
+                },
+                {
+                    "Column 1": 23,
+                    "Column 2": 10,
+                    "Column 3": 63,
+                    "Column 4": 62,
+                    "Column 5": 15
+                },
+                {
+                    "Column 1": 94,
+                    "Column 2": 60,
+                    "Column 3": 69,
+                    "Column 4": 44,
+                    "Column 5": 20
+                },
+                {
+                    "Column 1": 62,
+                    "Column 2": 36,
+                    "Column 3": 45,
+                    "Column 4": 91,
+                    "Column 5": 85
+                },
+                {
+                    "Column 1": 40,
+                    "Column 2": 97,
+                    "Column 3": 54,
+                    "Column 4": 49,
+                    "Column 5": 56
+                },
+                {
+                    "Column 1": 13,
+                    "Column 2": 80,
+                    "Column 3": 48,
+                    "Column 4": 58,
+                    "Column 5": 9000
+                }
+            ],
+            "fileName": "fallback_table",
+            "timestamp": "1/1/1970, 0:00:00 AM",
+            "actions": [],
+            "styles": {},
+            "charts": [],
+            "footers": [
+                "Table"
+            ],
+            "storyComponents": [],
+            "author": "System",
+            "date": "1970-01-01T00:00:00.000Z",
+            "historyMessage": "Table has been initialized"
+        }
+    ]
+}
