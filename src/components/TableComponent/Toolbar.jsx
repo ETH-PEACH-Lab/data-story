@@ -4,7 +4,7 @@ import { toggleCellFormat, calculateCellFormat } from "../../utils/formatHandler
 import { exportData } from "../../utils/storageHandlers";
 import { Select, MenuItem } from "@mui/material";
 
-function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
+function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange }) {
   const {
     historyState,
     historyActions,
@@ -41,7 +41,8 @@ function Toolbar({ rawValue, setRawValue, selectedProp, handleTableChange }) {
     if (selectedCellsRef.current.length === 0) return
     const row = selectedCellsRef.current[0][0]
     event.target.blur()
-    handleTableChange([[row, selectedProp, rawValue, rawValue]], "edit")
+    const oldValue = data[row][selectedProp]
+    handleTableChange([[row, selectedProp, oldValue, rawValue]], "edit")
   }
 
   const handleImport = (event) => {

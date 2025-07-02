@@ -41,6 +41,9 @@ const TableComponent = ({
 	const handleTableChange = (changes, source) => {
 		if (source === 'loadData' || !changes) return;
 
+		const hasChanges = changes.some(([, , oldValue, newValue]) => newValue !== oldValue)
+		if (!hasChanges) return
+
 		const newData = [...data];
 		changes.forEach(([row, prop, oldValue, newValue]) => {
 			newData[row][prop] = newValue;
@@ -175,6 +178,7 @@ const TableComponent = ({
 				<div className='handsontable-container' ref={tableContainerRef}>
 					<div className='hot-table-wrapper'>
 						<Toolbar
+							data={data}
 							rawValue={rawValue}
 							setRawValue={setRawValue}
 							selectedProp={selectedProp}
