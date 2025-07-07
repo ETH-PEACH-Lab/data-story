@@ -20,11 +20,11 @@ import { getCellDiff } from "./utils/historyHandlers";
 
 registerAllModules();
 
-const getRandomColor = () => {
+export const getColor = (str: string) => {
   const letters = '0123456789A';
   let color = '#';
   for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 11)];
+    color += letters[str.charCodeAt(i % str.length) % 11];
   }
   return color;
 };
@@ -152,9 +152,9 @@ function App() {
   }, [userCursorColor, userName, yjs.awareness]);
 
 
-  const handleAuthentication = (name) => {
+  const handleAuthentication = (name: string) => {
     setUserName(name);
-    setUserCursorColor(getRandomColor());
+    setUserCursorColor(getColor(name));
     setIsAuthenticated(true);
   };
 
