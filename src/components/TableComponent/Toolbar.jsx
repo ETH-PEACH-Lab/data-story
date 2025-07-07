@@ -54,7 +54,7 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
     reader.onload = (e) => {
       const text = e.target.result
       const data = JSON.parse(text)
-      initializeHistory(data.uploadHistory, data.currentDataId, data.idList);
+      initializeHistory(data.uploadHistory);
     }
 
     reader.readAsText(file);

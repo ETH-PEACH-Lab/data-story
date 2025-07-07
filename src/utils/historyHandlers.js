@@ -111,25 +111,11 @@ export const saveDataToHistory = (
   const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
   const newActions = currentActionStack.slice(initialActionStackLength);
 
-  // Pick the first ID from the list
-  const newHistoryId = idList[0];
-
-  // Only extend the list if its length is less than 3
-  let updatedIdList = idList.slice(1);
-  if (updatedIdList.length < 3) {
-    const nextId = idList.length > 0 ? Math.max(...idList) + 1 : 1;  // Use 1 if idList is empty
-    updatedIdList = [...updatedIdList, nextId];
-  }
-
-  setIdList(updatedIdList);
-  setIdListLocalStorage(updatedIdList);
-
-  // Save the history entry
   setUploadHistory((prevHistory) => {
     const updatedHistory = [
       ...prevHistory,
       {
-        id: newHistoryId,
+        id: prevHistory.at(-1).id + 1,
         parentId: parentId,
         data: dataCopy,
         fileName: fileNameToUse,
@@ -144,11 +130,9 @@ export const saveDataToHistory = (
       },
     ];
     setHistoryLocalStorage(updatedHistory);
-    setCurrentDataIdLocalStorage(newHistoryId);
     updateHist(updatedHistory);
     return updatedHistory;
   });
-  setCurrentDataId(newHistoryId);
 };
 
 export const areActionStacksEqual = (stack1, stack2, length) => {
@@ -188,13 +172,10 @@ export const switchHistoryEntry = (
     savedColumnConfigs // Pass savedColumnConfigs
   );
 
-  setCurrentDataId(historyEntry.id);
   setActions(historyEntry.actions);
   setOriginalFileName(historyEntry.fileName);
   setInitialActionStack([...hotRef.current?.hotInstance?.undoRedo?.doneActions || []]);
   setInitialActionStackLength(hotRef.current?.hotInstance?.undoRedo?.doneActions?.length || 0);
-
-  setCurrentDataIdLocalStorage(historyEntry.id);
 };
 
 const filterAuthors = (uploadHistory, authors) => {
