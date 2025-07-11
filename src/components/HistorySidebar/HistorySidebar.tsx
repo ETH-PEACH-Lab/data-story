@@ -11,14 +11,16 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import { setHistoryLocalStorage } from "../../utils/storageHandlers";
-import { SharedContext } from "../../App";
+import { SharedContext, getColor, BrushState } from "../../App";
 import { filterHistory, bundleHistoryEntries, getAuthors, getAllAuthors } from "../../utils/historyHandlers";
 import { getTime, getInterval } from "../../utils/formatHandlers"
 
 import "./HistorySidebar.css";
 import CollaboratorBrush from "../CollaboratorBrush"
 import TimeBrush from "../TimeBrush"
+import VBrush from "../VBrush"
 import HistoryMenu from "./HistoryMenu"
+import { CircleComponent } from "../../components/TopBanner/UserCircles";
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -50,11 +52,19 @@ interface HistoryBundle {
   entries: HistoryEntry[];
 }
 
+interface HistorySidebarProps {
+  selectEntry: (entry: HistoryEntry | null) => void
+  brushState: BrushState
+  setBrushState: (state: BrushState) => void
+  setBrushedCells: (cells: number[][]) => void
+}
+
 const HistorySidebar = ({
   selectEntry,
-}: {
-  selectEntry: (entry: HistoryEntry | null) => void;
-}) => {
+  brushState,
+  setBrushState,
+  setBrushedCells,
+}: HistorySidebarProps) => {
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
@@ -64,14 +74,19 @@ const HistorySidebar = ({
   const [editingMessage, setEditingMessage] = useState<string>("")
   const [menuAnchor, setMenuAnchor] = useState(null)
   const [menuId, setMenuId] = useState(-1)
+  const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     historyState,
-    historyActions
+    historyActions,
+    brushedCells,
   } = useContext(SharedContext);
 
-  const { uploadHistory, setUploadHistory } = historyState;
+  const {
+    uploadHistory,
+    setUploadHistory,
+  } = historyState;
   const {
     handleHistoryClick,
   } = historyActions;
@@ -152,92 +167,120 @@ const HistorySidebar = ({
     console.log(selectedId, "selectedId")
   }, [selectedId])
 
+  const viewCurrentVersion = () => {
+    setSelectedId(-1)
+    selectEntry(null)
+    handleHistoryClick(uploadHistory.at(-1), -1)
+  }
+
   const handleHistoryItemClick = (entry: HistoryEntry) => {
     if (selectedId !== entry.id) {
       selectEntry(entry)
       setSelectedId(entry.id)
       handleHistoryClick(entry, -1)
     } else {
-      setSelectedId(-1)
-      selectEntry(null)
-      handleHistoryClick(uploadHistory[uploadHistory.length - 1], -1)
+      viewCurrentVersion()
     }
+  }
+
+  const allCollaborators = getAllAuthors(uploadHistory).map((author: string) => ({
+    name: author,
+    color: getColor(author)
+  }))
+
+  const applyBrushing = () => {
+  }
+
+  const resetBrushing = () => {
+    setSelectedCollaborators([])
+    setBrushedCells([])
   }
 
   return (
     <div className={"history-sidebar"}>
-      <div className="button-container d-flex justify-content-between align-items-center p-2">
+      <div className="button-container d-flex justify-content-between align-items-center p-2 pb-3">
         <strong>Editing History</strong>
-        <TimeBrush
+        <VBrush
+          brushState={brushState}
+          setBrushState={setBrushState}
+          applyBrushing={applyBrushing}
+          resetBrushing={resetBrushing}
+          viewCurrentVersion={viewCurrentVersion}
+        />
+        {/* <TimeBrush
           time={interval}
           setTime={setInterval}
-        />
-        <CollaboratorBrush
-          authors={selectedAuthors}
-          setAuthors={setSelectedAuthors}
-          allAuthors={getAllAuthors(uploadHistory)}
-        />
+        /> */}
       </div>
+      {brushState === BrushState.BRUSHING && <div className="button-container d-flex justify-content-between align-items-center p-2 pb-3">
+        <div>Contributors:</div>
+        <CircleComponent
+          collaborators={selectedCollaborators}
+          allCollaborators={allCollaborators}
+          setCollaborators={setSelectedCollaborators}
+        />
+      </div>}
       <List>
         <ul className="list-group w-100" ref={listRef}>
-          {filterHistory(bundles, selectedAuthors, interval).slice().reverse().map((bundle: HistoryBundle, index: number) => (
-            <div key={bundle.startTime}>
-              <ListItemButton onClick={() => toggleBundle(index)}>
-                <ListItemIcon>
-                  {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
-                </ListItemIcon>
-                <ListItemText primary={getAuthors(bundle)}
-                  secondary={
-                    getInterval(bundle.startTime, bundle.endTime)
-                  }
-                />
-              </ListItemButton>
-              <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {bundle.entries.slice().reverse().map((entry: HistoryEntry) => (
-                    <ListItemButton
-                      key={entry.id}
-                      sx={{ ml: 9 }}
-                      className={entry.id === selectedId ? "bg-success" : ""}
-                      onClick={() => handleHistoryItemClick(entry)}
-                      selected={entry.id === selectedId}
-                    >
-                      <ListItemText
-                        primary={`${entry.author} - ${getTime(entry.date)}`}
-                        secondary={
-                          editingEntryId === entry.id ? (
-                            <TextField
-                              fullWidth
-                              inputRef={inputRef}
-                              size="small"
-                              variant="standard"
-                              value={editingMessage}
-                              onClick={(e) => e.stopPropagation()}
-                              onChange={(e) => setEditingMessage(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") saveEditedMessage(entry.id)
-                              }}
-                            />
-                          ) : (
-                            entry.historyMessage
-                          )
-                        }
-                      />
-                      <HistoryMenu
-                        entry={entry}
-                        handleEdit={handleEdit}
-                        handleMerge={handleMerge}
-                        anchorEl={menuAnchor}
-                        setAnchorEl={setMenuAnchor}
-                        menuId={menuId}
-                        setMenuId={setMenuId}
-                      />
-                    </ListItemButton>
-                  ))}
-                </List>
-              </Collapse>
-            </div>
-          ))}
+          {filterHistory(bundles, selectedCollaborators, interval, brushedCells, brushState)
+            .slice().reverse().map((bundle: HistoryBundle, index: number) => (
+              <div key={bundle.startTime}>
+                <ListItemButton onClick={() => toggleBundle(index)}>
+                  <ListItemIcon>
+                    {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
+                  </ListItemIcon>
+                  <ListItemText primary={getAuthors(bundle)}
+                    secondary={
+                      getInterval(bundle.startTime, bundle.endTime)
+                    }
+                  />
+                </ListItemButton>
+                <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {bundle.entries.slice().reverse().map((entry: HistoryEntry) => (
+                      <ListItemButton
+                        key={entry.id}
+                        sx={{ ml: 9 }}
+                        className={entry.id === selectedId ? "bg-success" : ""}
+                        onClick={() => handleHistoryItemClick(entry)}
+                        selected={entry.id === selectedId}
+                      >
+                        <ListItemText
+                          primary={`${entry.author} - ${getTime(entry.date)}`}
+                          secondary={
+                            editingEntryId === entry.id ? (
+                              <TextField
+                                fullWidth
+                                inputRef={inputRef}
+                                size="small"
+                                variant="standard"
+                                value={editingMessage}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={(e) => setEditingMessage(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") saveEditedMessage(entry.id)
+                                }}
+                              />
+                            ) : (
+                              entry.historyMessage
+                            )
+                          }
+                        />
+                        <HistoryMenu
+                          entry={entry}
+                          handleEdit={handleEdit}
+                          handleMerge={handleMerge}
+                          anchorEl={menuAnchor}
+                          setAnchorEl={setMenuAnchor}
+                          menuId={menuId}
+                          setMenuId={setMenuId}
+                        />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              </div>
+            ))}
         </ul>
       </List>
     </div>

@@ -11,7 +11,7 @@ import {
 	insertColumn,
 } from '../../utils/rowColumnHandlers';
 import { customRenderer } from '../../utils/styleHandlers';
-import { SharedContext } from '../../App';
+import { SharedContext, BrushState } from '../../App';
 
 const TableComponent = ({
 	data,
@@ -23,6 +23,7 @@ const TableComponent = ({
 	hotRef,
 	selectedCellsRef,
 	tableContainerRef,
+	brushState,
 }) => {
 	const [selectedRange, setSelectedRangeState] = useState(null);
 	const [activeItem, setActiveItem] = useState("");
@@ -33,7 +34,13 @@ const TableComponent = ({
 
 
 	const {
-		updateCols, updateTable, cellDiff, historyActions, cellFormat
+		updateCols,
+		updateTable,
+		cellDiff,
+		historyActions,
+		cellFormat,
+		brushedCells,
+		setBrushedCells,
 	} = useContext(SharedContext);
 	const handleSaveCurrentVersion = historyActions.handleSaveCurrentVersion;
 	const addLogEntry = historyActions.addLogEntry
@@ -102,7 +109,10 @@ const TableComponent = ({
 		const formatString = (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
 			+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '')
 			+ (cellFormat[`${row},${col}`]?.bg ?? "")
-		return { className: cellDiff.size > 0 ? diffString : formatString }
+		const brushString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'bg-warning ' : '';
+		if (cellDiff.size > 0) return { className: diffString }
+		else if (brushState !== BrushState.IDLE) return { className: brushString }
+		else return { className: formatString }
 	}
 
 	const contextMenuItems = {
@@ -168,6 +178,14 @@ const TableComponent = ({
 		}
 	}, [rawValue, clipboard, selectedCellsRef, selectedProp]);
 
+	const handleSelection = (r1, c1) => {
+		if (brushState !== BrushState.BRUSHING) return
+		const newCells = brushedCells.some((cell => cell[0] === r1 && cell[1] === c1)) ?
+			brushedCells.filter(cell => !(cell[0] === r1 && cell[1] === c1)) :
+			[...brushedCells, [r1, c1]];
+		setBrushedCells(newCells)
+	}
+
 	return (
 		<SharedContext.Provider value={{
 			activeMenu, setActiveMenu,
@@ -201,6 +219,7 @@ const TableComponent = ({
 							columnSorting
 							filters
 							manualColumnResize
+							afterSelection={handleSelection}
 							afterSelectionEnd={(r1, c1, r2, c2) => {
 								const engine = hotRef.current.hotInstance.getPlugin('formulas')?.engine;
 								const serialized = engine.getCellSerialized({ sheet: 0, row: r1, col: c1 });

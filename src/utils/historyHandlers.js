@@ -1,4 +1,5 @@
 import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage, setIdListLocalStorage } from './storageHandlers';
+import { BrushState } from "../App"
 
 export const logAction = (setActions, actionDescription) => {
   setActions(prevActions => [...prevActions, actionDescription]);
@@ -197,8 +198,21 @@ const filterTime = (uploadHistory, time) => {
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-export const filterHistory = (uploadHistory, authors, time) => {
-  return filterTime(filterAuthors(uploadHistory, authors), time)
+const filterCells = (uploadHistory, cells) => {
+  if (cells?.length === 0) return uploadHistory
+  const cellSet = new Set(cells.map(cell => `${cell[0]},${cell[1]}`))
+
+  return uploadHistory.map(bundle => ({
+    ...bundle,
+    entries: bundle.entries.filter(entry => {
+      return entry.cellChanges?.some(change => cellSet.has(`${change[0]},${change[1]}`))
+    }),
+  })).filter(bundle => bundle.entries.length > 0)
+}
+
+export const filterHistory = (history, authors, time, cells, brushState) => {
+  if (brushState !== BrushState.BRUSHED) return history
+  return filterCells(filterTime(filterAuthors(history, authors), time), cells)
 }
 
 export const getAllAuthors = (uploadHistory) => {
