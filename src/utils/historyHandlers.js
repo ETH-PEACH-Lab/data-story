@@ -188,13 +188,14 @@ const filterAuthors = (uploadHistory, authors) => {
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-const filterTime = (uploadHistory, time) => {
-  if (time < 0) return uploadHistory
+const filterTime = (uploadHistory, start, end) => {
+  if (start === null || end === null) return uploadHistory
 
-  const now = new Date().getTime()
   return uploadHistory.map(bundle => ({
     ...bundle,
-    entries: bundle.entries.filter(entry => (now - new Date(entry.timestamp).getTime() <= time)),
+    entries: bundle.entries.filter(
+      entry => new Date(entry.timestamp) >= start && new Date(entry.timestamp) <= end
+    )
   })).filter(bundle => bundle.entries.length > 0)
 }
 
@@ -210,9 +211,9 @@ const filterCells = (uploadHistory, cells) => {
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-export const filterHistory = (history, authors, time, cells, brushState) => {
+export const filterHistory = (history, authors, start, end, cells, brushState) => {
   if (brushState !== BrushState.BRUSHED) return history
-  return filterCells(filterTime(filterAuthors(history, authors), time), cells)
+  return filterCells(filterTime(filterAuthors(history, authors), start, end), cells)
 }
 
 export const getAllAuthors = (uploadHistory) => {
@@ -273,4 +274,14 @@ export const getCellDiff = (entry) => {
   if (entry?.cellChanges.length > 0) arrayToSet(entry.cellChanges, cells)
   else if (entry?.actions[0]?.actionType === "change") arrayToSet(entry.actions[0].changes, cells)
   return cells
+}
+
+export const getDataset = (bundles) => {
+  return bundles.map(bundle => {
+    return {
+      id: bundle.startTime,
+      start: bundle.startTime,
+      end: bundle.endTime,
+    }
+  })
 }

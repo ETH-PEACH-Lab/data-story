@@ -12,7 +12,13 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext, getColor, BrushState } from "../../App";
-import { filterHistory, bundleHistoryEntries, getAuthors, getAllAuthors } from "../../utils/historyHandlers";
+import {
+  filterHistory,
+  bundleHistoryEntries,
+  getAuthors,
+  getAllAuthors,
+  getDataset
+} from "../../utils/historyHandlers";
 import { getTime, getInterval } from "../../utils/formatHandlers"
 
 import "./HistorySidebar.css";
@@ -20,6 +26,7 @@ import CollaboratorBrush from "../CollaboratorBrush"
 import TimeBrush from "../TimeBrush"
 import VBrush from "../VBrush"
 import HistoryMenu from "./HistoryMenu"
+import TimelineComponent from "./TimelineComponent";
 import { CircleComponent } from "../../components/TopBanner/UserCircles";
 
 const useOutsideClick = (ref, callback) => {
@@ -46,7 +53,7 @@ export interface HistoryEntry {
   cellChanges: number[][]
 }
 
-interface HistoryBundle {
+export interface HistoryBundle {
   startTime: string;
   endTime: string;
   entries: HistoryEntry[];
@@ -70,6 +77,8 @@ const HistorySidebar = ({
   const [selectedId, setSelectedId] = useState(-1);
   const [selectedAuthors, setSelectedAuthors] = useState<string[]>([])
   const [interval, setInterval] = useState<number>(-1)
+  const [intervalStart, setIntervalStart] = useState<Date | null>(null)
+  const [intervalEnd, setIntervalEnd] = useState<Date | null>(null)
   const [editingEntryId, setEditingEntryId] = useState<number>(-1)
   const [editingMessage, setEditingMessage] = useState<string>("")
   const [menuAnchor, setMenuAnchor] = useState(null)
@@ -212,17 +221,26 @@ const HistorySidebar = ({
           setTime={setInterval}
         /> */}
       </div>
-      {brushState === BrushState.BRUSHING && <div className="button-container d-flex justify-content-between align-items-center p-2 pb-3">
-        <div>Contributors:</div>
-        <CircleComponent
-          collaborators={selectedCollaborators}
-          allCollaborators={allCollaborators}
-          setCollaborators={setSelectedCollaborators}
+      {brushState === BrushState.BRUSHING && <div>
+        <div className="button-container d-flex justify-content-between align-items-center p-2 pb-3">
+          <div>Contributors:</div>
+          <CircleComponent
+            collaborators={selectedCollaborators}
+            allCollaborators={allCollaborators}
+            setCollaborators={setSelectedCollaborators}
+          />
+        </div>
+        <TimelineComponent
+          items={getDataset(bundles)}
+          start={intervalStart}
+          end={intervalEnd}
+          setStart={setIntervalStart}
+          setEnd={setIntervalEnd}
         />
       </div>}
       <List>
         <ul className="list-group w-100" ref={listRef}>
-          {filterHistory(bundles, selectedCollaborators, interval, brushedCells, brushState)
+          {filterHistory(bundles, selectedCollaborators, intervalStart, intervalEnd, brushedCells, brushState)
             .slice().reverse().map((bundle: HistoryBundle, index: number) => (
               <div key={bundle.startTime}>
                 <ListItemButton onClick={() => toggleBundle(index)}>
