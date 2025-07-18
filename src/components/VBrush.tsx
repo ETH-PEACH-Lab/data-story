@@ -7,7 +7,6 @@ import { BrushState } from "../App"
 interface VBrushProps {
   brushState: BrushState
   setBrushState: (state: BrushState) => void
-  applyBrushing: () => void
   resetBrushing: () => void
   viewCurrentVersion: () => void
 }
@@ -15,7 +14,6 @@ interface VBrushProps {
 const VBrush = ({
   brushState,
   setBrushState,
-  applyBrushing,
   resetBrushing,
   viewCurrentVersion,
 }: VBrushProps) => <>
@@ -33,7 +31,7 @@ const VBrush = ({
         variant="contained"
         startIcon={<Check />}
         sx={{ backgroundColor: "rgb(232, 185, 49)", textTransform: "none" }}
-        onClick={() => { setBrushState(BrushState.BRUSHED); applyBrushing() }}
+        onClick={() => { setBrushState(BrushState.BRUSHED) }}
       >
         Apply
       </Button>}

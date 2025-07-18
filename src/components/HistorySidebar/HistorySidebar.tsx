@@ -22,8 +22,6 @@ import {
 import { getTime, getInterval } from "../../utils/formatHandlers"
 
 import "./HistorySidebar.css";
-import CollaboratorBrush from "../CollaboratorBrush"
-import TimeBrush from "../TimeBrush"
 import VBrush from "../VBrush"
 import HistoryMenu from "./HistoryMenu"
 import TimelineComponent from "./TimelineComponent";
@@ -75,13 +73,11 @@ const HistorySidebar = ({
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
-  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([])
-  const [interval, setInterval] = useState<number>(-1)
   const [intervalStart, setIntervalStart] = useState<Date | null>(null)
   const [intervalEnd, setIntervalEnd] = useState<Date | null>(null)
   const [editingEntryId, setEditingEntryId] = useState<number>(-1)
   const [editingMessage, setEditingMessage] = useState<string>("")
-  const [menuAnchor, setMenuAnchor] = useState(null)
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null)
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
 
@@ -165,16 +161,14 @@ const HistorySidebar = ({
     if (!listRef.current) return
     const bundles = bundleHistoryEntries(uploadHistory)
     setBundles(bundles)
-    if (bundles.length > isOpen.length) setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)]);
+    if (bundles.length > isOpen.length) {
+      setIsOpen((prev) => [...prev, ...Array(bundles.length - prev.length).fill(false)])
+    }
   }, [uploadHistory]);
 
   useEffect(() => {
     if (editingEntryId >= 0 && inputRef.current) inputRef.current.focus()
   }, [editingEntryId])
-
-  useEffect(() => {
-    console.log(selectedId, "selectedId")
-  }, [selectedId])
 
   const viewCurrentVersion = () => {
     setSelectedId(-1)
@@ -197,9 +191,6 @@ const HistorySidebar = ({
     color: getColor(author)
   }))
 
-  const applyBrushing = () => {
-  }
-
   const resetBrushing = () => {
     setSelectedCollaborators([])
     setBrushedCells([])
@@ -212,14 +203,9 @@ const HistorySidebar = ({
         <VBrush
           brushState={brushState}
           setBrushState={setBrushState}
-          applyBrushing={applyBrushing}
           resetBrushing={resetBrushing}
           viewCurrentVersion={viewCurrentVersion}
         />
-        {/* <TimeBrush
-          time={interval}
-          setTime={setInterval}
-        /> */}
       </div>
       {brushState === BrushState.BRUSHING && <div>
         <div className="button-container d-flex justify-content-between align-items-center p-2 pb-3">
