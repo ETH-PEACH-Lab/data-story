@@ -32,7 +32,7 @@ const VBrush = ({
     window.experiment = () => setAppState(AppState.EXPERIMENT)
   }, [])
 
-  return <div style={{ visibility: appState === "experiment" ? "visible" : "hidden" }}>
+  return <div style={{ visibility: appState === AppState.EXPERIMENT ? "visible" : "hidden" }}>
     {brushState === BrushState.IDLE &&
       <Button
         variant="contained"
