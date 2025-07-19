@@ -1,4 +1,5 @@
 import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage, setIdListLocalStorage } from './storageHandlers';
+import { BrushState } from "../App"
 
 export const logAction = (setActions, actionDescription) => {
   setActions(prevActions => [...prevActions, actionDescription]);
@@ -111,25 +112,11 @@ export const saveDataToHistory = (
   const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
   const newActions = currentActionStack.slice(initialActionStackLength);
 
-  // Pick the first ID from the list
-  const newHistoryId = idList[0];
-
-  // Only extend the list if its length is less than 3
-  let updatedIdList = idList.slice(1);
-  if (updatedIdList.length < 3) {
-    const nextId = idList.length > 0 ? Math.max(...idList) + 1 : 1;  // Use 1 if idList is empty
-    updatedIdList = [...updatedIdList, nextId];
-  }
-
-  setIdList(updatedIdList);
-  setIdListLocalStorage(updatedIdList);
-
-  // Save the history entry
   setUploadHistory((prevHistory) => {
     const updatedHistory = [
       ...prevHistory,
       {
-        id: newHistoryId,
+        id: prevHistory.at(-1).id + 1,
         parentId: parentId,
         data: dataCopy,
         fileName: fileNameToUse,
@@ -144,11 +131,9 @@ export const saveDataToHistory = (
       },
     ];
     setHistoryLocalStorage(updatedHistory);
-    setCurrentDataIdLocalStorage(newHistoryId);
     updateHist(updatedHistory);
     return updatedHistory;
   });
-  setCurrentDataId(newHistoryId);
 };
 
 export const areActionStacksEqual = (stack1, stack2, length) => {
@@ -188,13 +173,10 @@ export const switchHistoryEntry = (
     savedColumnConfigs // Pass savedColumnConfigs
   );
 
-  setCurrentDataId(historyEntry.id);
   setActions(historyEntry.actions);
   setOriginalFileName(historyEntry.fileName);
   setInitialActionStack([...hotRef.current?.hotInstance?.undoRedo?.doneActions || []]);
   setInitialActionStackLength(hotRef.current?.hotInstance?.undoRedo?.doneActions?.length || 0);
-
-  setCurrentDataIdLocalStorage(historyEntry.id);
 };
 
 const filterAuthors = (uploadHistory, authors) => {
@@ -206,18 +188,32 @@ const filterAuthors = (uploadHistory, authors) => {
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-const filterTime = (uploadHistory, time) => {
-  if (time < 0) return uploadHistory
+const filterTime = (uploadHistory, start, end) => {
+  if (start === null || end === null) return uploadHistory
 
-  const now = new Date().getTime()
   return uploadHistory.map(bundle => ({
     ...bundle,
-    entries: bundle.entries.filter(entry => (now - new Date(entry.timestamp).getTime() <= time)),
+    entries: bundle.entries.filter(
+      entry => new Date(entry.timestamp) >= start && new Date(entry.timestamp) <= end
+    )
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-export const filterHistory = (uploadHistory, authors, time) => {
-  return filterTime(filterAuthors(uploadHistory, authors), time)
+const filterCells = (uploadHistory, cells) => {
+  if (cells?.length === 0) return uploadHistory
+  const cellSet = new Set(cells.map(cell => `${cell[0]},${cell[1]}`))
+
+  return uploadHistory.map(bundle => ({
+    ...bundle,
+    entries: bundle.entries.filter(entry => {
+      return entry.cellChanges?.some(change => cellSet.has(`${change[0]},${change[1]}`))
+    }),
+  })).filter(bundle => bundle.entries.length > 0)
+}
+
+export const filterHistory = (history, authors, start, end, cells, brushState) => {
+  if (brushState !== BrushState.BRUSHED) return history
+  return filterCells(filterTime(filterAuthors(history, authors), start, end), cells)
 }
 
 export const getAllAuthors = (uploadHistory) => {
@@ -278,4 +274,14 @@ export const getCellDiff = (entry) => {
   if (entry?.cellChanges.length > 0) arrayToSet(entry.cellChanges, cells)
   else if (entry?.actions[0]?.actionType === "change") arrayToSet(entry.actions[0].changes, cells)
   return cells
+}
+
+export const getDataset = (bundles) => {
+  return bundles.map(bundle => {
+    return {
+      id: bundle.startTime,
+      start: bundle.startTime,
+      end: bundle.endTime,
+    }
+  })
 }

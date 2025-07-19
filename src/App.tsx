@@ -20,14 +20,20 @@ import { getCellDiff } from "./utils/historyHandlers";
 
 registerAllModules();
 
-const getRandomColor = () => {
+export const getColor = (str: string) => {
   const letters = '0123456789A';
   let color = '#';
   for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 11)];
+    color += letters[str.charCodeAt(i % str.length) % 11];
   }
   return color;
 };
+
+export enum BrushState {
+  IDLE = "IDLE",
+  BRUSHING = "BRUSHING",
+  BRUSHED = "BRUSHED",
+}
 
 export const SharedContext = createContext(null);
 
@@ -43,7 +49,9 @@ function App() {
   const [cellFormat, setCellFormat] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
-  const [userCursorColor, setUserCursorColor] = useState(null);
+  const [userCursorColor, setUserCursorColor] = useState("");
+  const [brushedCells, setBrushedCells] = useState<number[][]>([]);
+  const [brushState, setBrushState] = useState<BrushState>(BrushState.IDLE);
 
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
@@ -152,9 +160,9 @@ function App() {
   }, [userCursorColor, userName, yjs.awareness]);
 
 
-  const handleAuthentication = (name) => {
+  const handleAuthentication = (name: string) => {
     setUserName(name);
-    setUserCursorColor(getRandomColor());
+    setUserCursorColor(getColor(name));
     setIsAuthenticated(true);
   };
 
@@ -166,6 +174,7 @@ function App() {
       historyState: history.historyState,
       historyActions: history.historyActions,
       cellFormat, setCellFormat, selectedCellsRef,
+      brushedCells, setBrushedCells,
     }}>
       <ErrorBoundary>
         <div>
@@ -193,9 +202,14 @@ function App() {
               hotRef={hotRef}
               selectedCellsRef={selectedCellsRef}
               tableContainerRef={tableContainerRef}
+              brushState={brushState}
+              setBrushState={setBrushState}
             />
             <HistorySidebar
               selectEntry={(entry) => setCellDiff(getCellDiff(entry))}
+              brushState={brushState}
+              setBrushState={setBrushState}
+              setBrushedCells={setBrushedCells}
             />
           </div>
 

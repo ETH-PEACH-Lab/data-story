@@ -1,6 +1,31 @@
 import { useState, useEffect } from "react";
 import "./UserCircles.css";
 
+export const CircleComponent = ({ collaborators, allCollaborators, setCollaborators }) => {
+
+    const handleClick = (collaborator) => {
+        const newCollaborators = collaborators.includes(collaborator.name)
+            ? collaborators.filter(name => name !== collaborator.name)
+            : [...collaborators, collaborator.name]
+        setCollaborators(newCollaborators)
+    }
+
+    return <div className="collaborators-container">
+        {allCollaborators.map((collaborator, index) => (
+            <div
+                key={index} className="user-circle"
+                style={{
+                    backgroundColor: collaborator.color, color: 'white',
+                    border: collaborators.includes(collaborator.name) ? '4px solid rgb(232, 185, 49)' : 'none'
+                }}
+                onClick={() => handleClick(collaborator)}
+            >
+                {collaborator.name.charAt(0).toUpperCase()}
+            </div>
+        ))}
+    </div>
+}
+
 export const UserCircles = ({ awareness }) => {
     const [collaborators, setCollaborators] = useState([]);
 
@@ -31,13 +56,9 @@ export const UserCircles = ({ awareness }) => {
         };
     }, [awareness?.current]);
 
-    return (
-        <div className="collaborators-container">
-            {collaborators.map((collaborator, index) => (
-                <div key={index} className="user-circle" style={{ backgroundColor: collaborator.color, color: 'white' }}>
-                    {collaborator.name.charAt(0).toUpperCase()}
-                </div>
-            ))}
-        </div>
-    );
+    return <CircleComponent
+        collaborators={[]}
+        allCollaborators={collaborators}
+        setCollaborators={() => { }}
+    />
 };

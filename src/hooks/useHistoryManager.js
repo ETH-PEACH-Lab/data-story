@@ -56,7 +56,6 @@ export function useHistoryManager({
         console.log('🧪 setData will receive:', emptyData);
         setData(emptyData);
         setUploadHistory([]);
-        setIdList([]);
         setCurrentDataId(0);
         const columns = Array.from({ length: 10 }, (_, i) => String.fromCharCode(65 + i)); // 'A' to 'E'
 
@@ -101,7 +100,6 @@ export function useHistoryManager({
             userName,
             selection,
         )
-        setCurrentDataIdLocalStorage(currentDataId)
         setRedoHistory([])
     }
 
@@ -134,7 +132,6 @@ export function useHistoryManager({
             setInitialActionStackLength(undoRedo.doneActions.length);
         }
 
-        setCurrentDataIdLocalStorage(currentDataId);
         setRedoHistory([])
     }, [
         hotRef,
@@ -169,7 +166,6 @@ export function useHistoryManager({
                 setInitialActionStackLength
             );
 
-            setCurrentDataIdLocalStorage(historyEntry.id);
         };
 
         performSwitch();
@@ -222,11 +218,9 @@ export function useHistoryManager({
         setRedoHistory(redoHistory.slice(0, -1))
     }
 
-    const initializeHistory = (history, currentId, ids) => {
+    const initializeHistory = (history) => {
         setUploadHistory(history)
-        setCurrentDataId(currentId)
-        setIdList(ids)
-        const historyEntry = history.find((entry) => entry.id === currentId)
+        const historyEntry = history.at(-1)
         switchHistoryEntry(
             historyEntry,
             history.indexOf(historyEntry),
@@ -245,16 +239,10 @@ export function useHistoryManager({
 
     useEffect(() => {
         const savedHistory = getHistoryLocalStorage();
-        const savedCurrentDataId = getCurrentDataIdLocalStorage();
-        const savedIdList = getIdListLocalStorage();
 
-        if (savedHistory.length === 0) initializeHistory(fallback.uploadHistory, fallback.currentDataId, fallback.idList)
-        else initializeHistory(savedHistory, savedCurrentDataId ?? 0, savedIdList)
+        if (savedHistory.length === 0) initializeHistory(fallback.uploadHistory)
+        else initializeHistory(savedHistory)
     }, []);
-
-    useEffect(() => {
-        setIdListLocalStorage(idList);
-    }, [idList]);
 
     useEffect(() => {
         setIsRedoEmpty(redoHistory.length === 0);
