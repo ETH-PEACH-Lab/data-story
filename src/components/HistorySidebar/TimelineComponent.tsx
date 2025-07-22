@@ -1,4 +1,7 @@
 import { useEffect, useRef } from "react"
+
+import { addHours } from "../../utils/formatHandlers"
+
 import { Timeline } from "vis-timeline/standalone"
 import { DataSet } from "vis-data"
 
@@ -31,26 +34,34 @@ const TimelineComponent = ({ items, start, end, setStart, setEnd }: TimelineComp
     const dataSet = new DataSet(items)
     itemsRef.current = dataSet
 
+    const startMarker = addHours(items[0].start, -10)
+    const endMarker = addHours(items.at(-1)!.end, 10)
+
+    const startTime = addHours(startMarker, -10)
+    const endTime = addHours(endMarker, 10)
+
     const options = {
       zoomMin: 1000 * 60,
       zoomMax: 1000 * 60 * 60 * 24 * 31,
       snap: null,
+      min: startTime,
+      max: endTime,
+      start: startTime,
+      end: endTime,
+      showCurrentTime: false,
     }
 
     const timeline = new Timeline(container, dataSet, options)
     timelineInstanceRef.current = timeline
 
-    const first = items[0].start
-    const last = items.at(-1)!.end
+    timeline.addCustomTime(startMarker, "start-marker")
+    timeline.addCustomTime(endMarker, "end-marker")
 
-    timeline.addCustomTime(first, "start-marker")
-    timeline.addCustomTime(last, "end-marker")
+    timeline.setCustomTimeMarker("start", "start-marker")
+    timeline.setCustomTimeMarker("end", "end-marker")
 
-    timeline.setCustomTimeTitle("Start Marker", "start-marker")
-    timeline.setCustomTimeTitle("End Marker", "end-marker")
-
-    setStart(new Date(first))
-    setEnd(new Date(last))
+    setStart(new Date(startMarker))
+    setEnd(new Date(endMarker))
 
     timeline.on("timechange", (event) => {
       if (event.id === "start-marker") setStart(event.time)
