@@ -211,9 +211,18 @@ const filterCells = (uploadHistory, cells) => {
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-export const filterHistory = (history, authors, start, end, cells, brushState) => {
+const filterKeyword = (uploadHistory, keyword) => {
+  if (!keyword || keyword.trim() === "") return uploadHistory
+
+  return uploadHistory.map(bundle => ({
+    ...bundle,
+    entries: bundle.entries.filter(entry => entry.historyMessage.includes(keyword))
+  })).filter(bundle => bundle.entries.length > 0)
+}
+
+export const filterHistory = (history, authors, start, end, cells, keyword, brushState) => {
   if (brushState !== BrushState.BRUSHED) return history
-  return filterCells(filterTime(filterAuthors(history, authors), start, end), cells)
+  return filterKeyword(filterCells(filterTime(filterAuthors(history, authors), start, end), cells), keyword)
 }
 
 export const getAllAuthors = (uploadHistory) => {

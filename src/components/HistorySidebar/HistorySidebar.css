@@ -1,3 +1,7 @@
+:root {
+  --brushing-color: #FFC200;
+}
+
 /* Add spacing to the button container */
 .history-sidebar .button-container {
   border-bottom: 1px solid #ccc;
@@ -5,5 +9,9 @@
 }
 
 .vis-custom-time {
-  background-color: #FFC200 !important;
+  background-color: var(--brushing-color) !important;
+}
+
+::selection {
+  background-color: var(--brushing-color);
 }
