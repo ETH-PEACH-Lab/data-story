@@ -5,10 +5,7 @@ import {
 } from "../utils/historyHandlers";
 import {
     getHistoryLocalStorage,
-    getCurrentDataIdLocalStorage,
     getIdListLocalStorage,
-    setCurrentDataIdLocalStorage,
-    setIdListLocalStorage,
     clearAllLocalStorage,
     generateEmptyDataset
 } from "../utils/storageHandlers";
@@ -211,6 +208,7 @@ export function useHistoryManager({
             initialActionStackLength,
             hotRef,
             columnConfigs,
+            newEntry["cellFormat"],
             newEntry["historyMessage"],
             userName
         )

@@ -21,7 +21,6 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
     idList,
   } = historyState;
   const {
-    handleSaveCurrentVersion,
     handleUndo,
     handleRedo,
     initializeHistory,
@@ -77,7 +76,6 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
       <div className="format-buttons">
         <button onClick={() => handleclick("bold")}><b>B</b></button>
         <button onClick={() => handleclick("italic")}><i>I</i></button>
-        <button>🖌️</button>
         <button>
           <Select
             displayEmpty
@@ -127,13 +125,6 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
           onClick={handleRedo}
         >
           ↪️ Redo
-        </button>
-
-        <button
-          className="btn save"
-          onClick={() => handleSaveCurrentVersion("Save triggered")}
-        >
-          💾 Save
         </button>
 
         <button

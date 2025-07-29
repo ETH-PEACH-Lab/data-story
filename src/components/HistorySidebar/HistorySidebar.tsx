@@ -26,6 +26,7 @@ import VBrush from "../VBrush"
 import HistoryMenu from "./HistoryMenu"
 import TimelineComponent from "./TimelineComponent";
 import { CircleComponent } from "../../components/TopBanner/UserCircles";
+import { Typography } from "@mui/material";
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -80,6 +81,7 @@ const HistorySidebar = ({
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null)
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
+  const [selectedKeyword, setSelectedKeyword] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
@@ -177,6 +179,7 @@ const HistorySidebar = ({
   }
 
   const handleHistoryItemClick = (entry: HistoryEntry) => {
+    if (brushState === BrushState.BRUSHING) return
     if (selectedId !== entry.id) {
       selectEntry(entry)
       setSelectedId(entry.id)
@@ -194,6 +197,7 @@ const HistorySidebar = ({
   const resetBrushing = () => {
     setSelectedCollaborators([])
     setBrushedCells([])
+    setSelectedKeyword("")
   }
 
   return (
@@ -226,65 +230,78 @@ const HistorySidebar = ({
       </div>}
       <List>
         <ul className="list-group w-100" ref={listRef}>
-          {filterHistory(bundles, selectedCollaborators, intervalStart, intervalEnd, brushedCells, brushState)
-            .slice().reverse().map((bundle: HistoryBundle, index: number) => (
-              <div key={bundle.startTime}>
-                <ListItemButton onClick={() => toggleBundle(index)}>
-                  <ListItemIcon>
-                    {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
-                  </ListItemIcon>
-                  <ListItemText primary={getAuthors(bundle)}
-                    secondary={
-                      getInterval(bundle.startTime, bundle.endTime)
-                    }
-                  />
-                </ListItemButton>
-                <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {bundle.entries.slice().reverse().map((entry: HistoryEntry) => (
-                      <ListItemButton
-                        key={entry.id}
-                        sx={{ ml: 9 }}
-                        className={entry.id === selectedId ? "bg-success" : ""}
-                        onClick={() => handleHistoryItemClick(entry)}
-                        selected={entry.id === selectedId}
-                      >
-                        <ListItemText
-                          primary={`${entry.author} - ${getTime(entry.date)}`}
-                          secondary={
-                            editingEntryId === entry.id ? (
-                              <TextField
-                                fullWidth
-                                inputRef={inputRef}
-                                size="small"
-                                variant="standard"
-                                value={editingMessage}
-                                onClick={(e) => e.stopPropagation()}
-                                onChange={(e) => setEditingMessage(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") saveEditedMessage(entry.id)
-                                }}
-                              />
-                            ) : (
-                              entry.historyMessage
-                            )
-                          }
-                        />
-                        <HistoryMenu
-                          entry={entry}
-                          handleEdit={handleEdit}
-                          handleMerge={handleMerge}
-                          anchorEl={menuAnchor}
-                          setAnchorEl={setMenuAnchor}
-                          menuId={menuId}
-                          setMenuId={setMenuId}
-                        />
-                      </ListItemButton>
-                    ))}
-                  </List>
-                </Collapse>
-              </div>
-            ))}
+          {filterHistory(
+            bundles,
+            selectedCollaborators,
+            intervalStart,
+            intervalEnd,
+            brushedCells,
+            selectedKeyword,
+            brushState
+          ).slice().reverse().map((bundle: HistoryBundle, index: number) => (
+            <div key={bundle.startTime}>
+              <ListItemButton onClick={() => toggleBundle(index)}>
+                <ListItemIcon>
+                  {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
+                </ListItemIcon>
+                <ListItemText primary={getAuthors(bundle)}
+                  secondary={
+                    getInterval(bundle.startTime, bundle.endTime)
+                  }
+                />
+              </ListItemButton>
+              <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {bundle.entries.slice().reverse().map((entry: HistoryEntry) => (
+                    <ListItemButton
+                      key={entry.id}
+                      sx={{ ml: 9 }}
+                      className={entry.id === selectedId ? "bg-success" : ""}
+                      onClick={() => handleHistoryItemClick(entry)}
+                      selected={entry.id === selectedId}
+                    >
+                      <ListItemText
+                        secondary={`${entry.author} - ${getTime(entry.date)}`}
+                        primary={
+                          editingEntryId === entry.id ? (
+                            <TextField
+                              fullWidth
+                              inputRef={inputRef}
+                              size="small"
+                              variant="standard"
+                              value={editingMessage}
+                              onClick={(e) => e.stopPropagation()}
+                              onChange={(e) => setEditingMessage(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") saveEditedMessage(entry.id)
+                              }}
+                            />
+                          ) : (
+                            <Typography
+                              component="span"
+                              sx={{ userSelect: brushState === BrushState.BRUSHING ? "text" : "" }}
+                              onMouseUp={() => setSelectedKeyword(window.getSelection()?.toString() || "")}
+                            >
+                              {entry.historyMessage}
+                            </Typography>
+                          )
+                        }
+                      />
+                      {brushState === BrushState.IDLE && <HistoryMenu
+                        entry={entry}
+                        handleEdit={handleEdit}
+                        handleMerge={handleMerge}
+                        anchorEl={menuAnchor}
+                        setAnchorEl={setMenuAnchor}
+                        menuId={menuId}
+                        setMenuId={setMenuId}
+                      />}
+                    </ListItemButton>
+                  ))}
+                </List>
+              </Collapse>
+            </div>
+          ))}
         </ul>
       </List>
     </div>

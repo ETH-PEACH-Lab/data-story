@@ -44,3 +44,9 @@ export const calculateCellFormat = (prevFormat, sel, attr, val) => {
   })
   return updatedFormat
 }
+
+export const addHours = (dateStr, hours) => {
+  const date = new Date(dateStr)
+  const time = date.getTime() + hours * 60 * 60 * 1000
+  return new Date(time).toISOString()
+}
