@@ -49,6 +49,8 @@ const TimelineComponent = ({ items, start, end, setStart, setEnd }: TimelineComp
       start: startTime,
       end: endTime,
       showCurrentTime: false,
+      stack: false,
+      height: "102px"
     }
 
     const timeline = new Timeline(container, dataSet, options)
@@ -86,7 +88,7 @@ const TimelineComponent = ({ items, start, end, setStart, setEnd }: TimelineComp
     })
   }, [start, end])
 
-  return <div ref={timelineRef} className="h-72" />
+  return <div ref={timelineRef} />
 }
 
 export default TimelineComponent
