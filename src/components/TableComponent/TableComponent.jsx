@@ -225,11 +225,11 @@ const TableComponent = ({
 								const fallback = hotRef.current.hotInstance.getDataAtCell(r1, c1);
 
 								//TODO: Can not display serialized value
-								setRawValue(serialized ?? fallback ?? '');
 								handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex, setSelectedRangeState, hotRef)
 							}
 							}
-							afterSelectionEndByProp={(_, prop1) => {
+							afterSelectionEndByProp={(r, prop1) => {
+								setRawValue(data[r][prop1] ?? '');
 								setSelectedProp(prop1)
 							}}
 							beforeColumnResize={(newSize) => newSize > 300 ? 300 : newSize}
