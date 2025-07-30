@@ -126,7 +126,6 @@ export const saveDataToHistory = (
         cellFormat: cellFormat,
         historyMessage: historyMessage,
         author: author,
-        date: new Date(),
         cellChanges: cellChanges,
       },
     ];

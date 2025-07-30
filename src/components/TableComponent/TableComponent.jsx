@@ -209,7 +209,6 @@ const TableComponent = ({
 							ref={hotRef}
 							data={data}
 							colHeaders
-							columns={columns}
 							cells={cellClassFn}
 							rowHeaders
 							width='100%'

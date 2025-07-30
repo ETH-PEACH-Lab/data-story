@@ -48,7 +48,6 @@ export interface HistoryEntry {
   author: string;
   timestamp: string;
   historyMessage: string;
-  date: Date
   cellChanges: number[][]
 }
 
@@ -261,7 +260,7 @@ const HistorySidebar = ({
                       selected={entry.id === selectedId}
                     >
                       <ListItemText
-                        secondary={`${entry.author} - ${getTime(entry.date)}`}
+                        secondary={`${entry.author} - ${getTime(entry.timestamp)}`}
                         primary={
                           editingEntryId === entry.id ? (
                             <TextField
