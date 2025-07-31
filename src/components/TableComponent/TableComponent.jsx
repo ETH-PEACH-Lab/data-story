@@ -111,7 +111,7 @@ const TableComponent = ({
 			+ (cellFormat[`${row},${col}`]?.bg ?? "")
 		const brushString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'bg-warning ' : '';
 		if (cellDiff.size > 0) return { className: diffString }
-		else if (brushState !== BrushState.IDLE) return { className: brushString }
+		else if (brushState === BrushState.BRUSHING) return { className: (brushString + "brushing") }
 		else return { className: formatString }
 	}
 
