@@ -16,6 +16,7 @@ interface VBrushProps {
   setBrushState: (state: BrushState) => void
   resetBrushing: () => void
   viewCurrentVersion: () => void
+  openBundles: () => void
 }
 
 const VBrush = ({
@@ -23,6 +24,7 @@ const VBrush = ({
   setBrushState,
   resetBrushing,
   viewCurrentVersion,
+  openBundles,
 }: VBrushProps) => {
 
   const [appState, setAppState] = useState(AppState.EXPERIMENT)
@@ -47,7 +49,7 @@ const VBrush = ({
         variant="contained"
         startIcon={<Check />}
         sx={{ backgroundColor: "rgb(232, 185, 49)", textTransform: "none" }}
-        onClick={() => { setBrushState(BrushState.BRUSHED) }}
+        onClick={() => { setBrushState(BrushState.BRUSHED); openBundles() }}
       >
         Apply
       </Button>}

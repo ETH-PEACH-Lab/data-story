@@ -81,6 +81,7 @@ const HistorySidebar = ({
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
   const [selectedKeyword, setSelectedKeyword] = useState("");
+  const [brushedWord, setBrushedWord] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
@@ -196,7 +197,8 @@ const HistorySidebar = ({
   const resetBrushing = () => {
     setSelectedCollaborators([])
     setBrushedCells([])
-    setSelectedKeyword("")
+    setBrushedWord("")
+    setIsOpen(Array(bundles.length).fill(false))
   }
 
   return (
@@ -208,6 +210,7 @@ const HistorySidebar = ({
           setBrushState={setBrushState}
           resetBrushing={resetBrushing}
           viewCurrentVersion={viewCurrentVersion}
+          openBundles={() => setIsOpen(Array(bundles.length).fill(true))}
         />
       </div>
       {brushState === BrushState.BRUSHING && <div>
@@ -235,7 +238,7 @@ const HistorySidebar = ({
             intervalStart,
             intervalEnd,
             brushedCells,
-            selectedKeyword,
+            brushedWord,
             brushState
           ).slice().reverse().map((bundle: HistoryBundle, index: number) => (
             <div key={bundle.startTime}>
@@ -277,11 +280,24 @@ const HistorySidebar = ({
                             />
                           ) : (
                             <Typography
-                              component="span"
-                              sx={{ userSelect: brushState === BrushState.BRUSHING ? "text" : "" }}
-                              onMouseUp={() => setSelectedKeyword(window.getSelection()?.toString() || "")}
+                              component="div"
+                              sx={{
+                                display: "flex",
+                                gap: "4px"
+                              }}
                             >
-                              {entry.historyMessage}
+                              {brushState === BrushState.BRUSHING ? (
+                                entry.historyMessage.split(" ").map((word) =>
+                                  <span
+                                    onClick={() => setBrushedWord(word)}
+                                    className={brushedWord === word ? "brushed-word" : "brushing"}
+                                  >
+                                    {word}
+                                  </span>
+                                )
+                              ) : (
+                                <span>{entry.historyMessage}</span>
+                              )}
                             </Typography>
                           )
                         }
