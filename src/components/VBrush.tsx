@@ -40,7 +40,7 @@ const VBrush = ({
         variant="contained"
         startIcon={<Bolt />}
         sx={{ backgroundColor: "black", textTransform: "none" }}
-        onClick={() => { setBrushState(BrushState.BRUSHING); viewCurrentVersion() }}
+        onClick={() => { setBrushState(BrushState.BRUSHING); viewCurrentVersion(); openBundles() }}
       >
         VBrush
       </Button>}

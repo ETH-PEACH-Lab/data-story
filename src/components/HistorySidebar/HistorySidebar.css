@@ -1,5 +1,6 @@
 :root {
   --brushing-color: #FFC200;
+  --brushing-bg-color: #FFEB99;
 }
 
 /* Add spacing to the button container */
@@ -18,4 +19,15 @@
 
 .brushing {
   cursor: url('/brush.svg') 6 30, auto;
+}
+
+.query-element {
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--brushing-color);
+  background-color: #FFEB99;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size:small;
+  white-space: nowrap;
 }
