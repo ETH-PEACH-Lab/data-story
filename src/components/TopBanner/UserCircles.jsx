@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./UserCircles.css";
 
-export const CircleComponent = ({ collaborators, allCollaborators, setCollaborators }) => {
+export const CircleComponent = ({ collaborators, allCollaborators, setCollaborators, isStatic}) => {
 
     const handleClick = (collaborator) => {
         const newCollaborators = collaborators.includes(collaborator.name)
@@ -13,7 +13,7 @@ export const CircleComponent = ({ collaborators, allCollaborators, setCollaborat
     return <div className="collaborators-container">
         {allCollaborators.map((collaborator, index) => (
             <div
-                key={index} className="user-circle"
+                key={index} className={"user-circle" + (!isStatic ? " brushing" : "")}
                 style={{
                     backgroundColor: collaborator.color, color: 'white',
                     border: collaborators.includes(collaborator.name) ? '4px solid rgb(232, 185, 49)' : 'none'
@@ -60,5 +60,6 @@ export const UserCircles = ({ awareness }) => {
         collaborators={[]}
         allCollaborators={collaborators}
         setCollaborators={() => { }}
+        isStatic
     />
 };

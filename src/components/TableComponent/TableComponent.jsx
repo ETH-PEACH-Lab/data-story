@@ -111,7 +111,7 @@ const TableComponent = ({
 			+ (cellFormat[`${row},${col}`]?.bg ?? "")
 		const brushString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'bg-warning ' : '';
 		if (cellDiff.size > 0) return { className: diffString }
-		else if (brushState !== BrushState.IDLE) return { className: brushString }
+		else if (brushState === BrushState.BRUSHING) return { className: (brushString + "brushing") }
 		else return { className: formatString }
 	}
 
@@ -209,7 +209,6 @@ const TableComponent = ({
 							ref={hotRef}
 							data={data}
 							colHeaders
-							columns={columns}
 							cells={cellClassFn}
 							rowHeaders
 							width='100%'
@@ -226,11 +225,11 @@ const TableComponent = ({
 								const fallback = hotRef.current.hotInstance.getDataAtCell(r1, c1);
 
 								//TODO: Can not display serialized value
-								setRawValue(serialized ?? fallback ?? '');
 								handleSelectionEnd(r1, c1, r2, c2, selectedCellsRef, setSelectedColumnIndex, setSelectedRangeState, hotRef)
 							}
 							}
-							afterSelectionEndByProp={(_, prop1) => {
+							afterSelectionEndByProp={(r, prop1) => {
+								setRawValue(data[r][prop1] ?? '');
 								setSelectedProp(prop1)
 							}}
 							beforeColumnResize={(newSize) => newSize > 300 ? 300 : newSize}
