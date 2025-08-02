@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
 
 import List from '@mui/material/List';
+import { IconButton } from '@mui/material';
+
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import TextField from '@mui/material/TextField';
-
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+
 
 import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext, getColor, BrushState } from "../../App";
@@ -82,8 +86,8 @@ const HistorySidebar = ({
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
   const [selectedKeyword, setSelectedKeyword] = useState("");
+  const [diffMode, setDiffMode] = useState<"before" | "after">("after");
 
-  console.log(bundles)
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
@@ -180,7 +184,25 @@ const HistorySidebar = ({
     handleHistoryClick(uploadHistory.at(-1), -1)
   }
 
+  const handleDiffSwitch = (e: React.MouseEvent<HTMLButtonElement>, entry: HistoryEntry) => {
+    //switch to the previous entry if available
+    // find the previous entry from bundles
+    e.stopPropagation();
+    if (diffMode === "after") {
+      const currentIndex = uploadHistory.findIndex((e) => e.id === entry.id)
+      if (currentIndex > 0) {
+        const previousEntry = uploadHistory[currentIndex - 1]
+        handleHistoryClick(previousEntry, -1)
+      }
+    }
+    else {
+      handleHistoryClick(entry, -1) // Switch to the current entry
+    }
+    setDiffMode((prev) => (prev === "before" ? "after" : "before"));
+  }
+
   const handleHistoryItemClick = (entry: HistoryEntry) => {
+    setDiffMode("after");
     if (brushState === BrushState.BRUSHING) return
     if (selectedId !== entry.id) {
       selectEntry(entry)
@@ -203,7 +225,6 @@ const HistorySidebar = ({
   }
 
   const findCollaboratorColor = (author: string): string => {
-    console.log(author);
     return allCollaborators.find((collab: { name: string; }) => collab.name === author)?.color || getColor(author);
   }
 
@@ -271,11 +292,11 @@ const HistorySidebar = ({
             brushState
           ).slice().reverse().map((bundle: HistoryBundle, index: number) => (
             <div key={bundle.startTime}>
-              <ListItemButton onClick={() => toggleBundle(index)}>
+              <ListItemButton className="history-entry-head" onClick={() => toggleBundle(index)}>
                 <ListItemIcon>
                   {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
                 </ListItemIcon>
-                <ListItemText 
+                <ListItemText
                   primary={
                     getInterval(bundle.startTime, bundle.endTime)
                   }
@@ -287,12 +308,24 @@ const HistorySidebar = ({
                   {bundle.entries.slice().reverse().map((entry: HistoryEntry) => (
                     <ListItemButton
                       key={entry.id}
-                      sx={{ ml: 9 }}
-                      className={entry.id === selectedId ? "bg-success" : ""}
+                      sx={{ ml: 9, position: 'relative', display: 'flex', alignItems: 'center' }}
+                      className={entry.id === selectedId ? "bg-success history-entry" : "history-entry"}
                       onClick={() => handleHistoryItemClick(entry)}
                       selected={entry.id === selectedId}
+                      onMouseEnter={() => setMenuId(entry.id)}
+                      onMouseLeave={() => setMenuId(-1)}
                     >
+                      {entry.id === selectedId && (
+                        <IconButton
+                          size="small"
+                          onClick={(e) => handleDiffSwitch(e, entry)}
+                          style={{ marginRight: 8, marginLeft: '-42px' }}
+                        >
+                          {diffMode === "before" ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                        </IconButton>
+                      )}
                       <ListItemText
+                        style={{ paddingRight: '30px' }}
                         secondary={
                           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                             {getAuthorsBlob(bundle)}<span>{' - '}{getTime(entry.date)}</span>
@@ -323,15 +356,19 @@ const HistorySidebar = ({
                           )
                         }
                       />
-                      {brushState === BrushState.IDLE && <HistoryMenu
-                        entry={entry}
-                        handleEdit={handleEdit}
-                        handleMerge={handleMerge}
-                        anchorEl={menuAnchor}
-                        setAnchorEl={setMenuAnchor}
-                        menuId={menuId}
-                        setMenuId={setMenuId}
-                      />}
+                      <span style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
+                        {(brushState === BrushState.IDLE && (entry.id === selectedId || entry.id === menuId)) && (
+                          <HistoryMenu
+                            entry={entry}
+                            handleEdit={handleEdit}
+                            handleMerge={handleMerge}
+                            anchorEl={menuAnchor}
+                            setAnchorEl={setMenuAnchor}
+                            menuId={menuId}
+                            setMenuId={setMenuId}
+                          />
+                        )}
+                      </span>
                     </ListItemButton>
                   ))}
                 </List>

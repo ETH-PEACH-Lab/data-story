@@ -104,7 +104,7 @@ const TableComponent = ({
 	}));
 
 	const cellClassFn = (row, col) => {
-		const diffString = cellDiff.has(`${row},${col}`) ? "bg-success" : ""
+		const diffString = cellDiff.has(`${row},${col}`) ? "bg-success diff-cell" : ""
 		const formatString = (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
 			+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '')
 			+ (cellFormat[`${row},${col}`]?.bg ?? "")
@@ -176,6 +176,18 @@ const TableComponent = ({
 			document.removeEventListener("keydown", handlePaste)
 		}
 	}, [rawValue, clipboard, selectedCellsRef, selectedProp]);
+
+
+// 	useEffect(() => {
+// 	const hotInstance = hotRef.current?.hotInstance;
+// 	if (hotInstance) {
+// 	  hotInstance.addHook("afterOnCellMouseOver", (event, coords, TD) => {
+// 		if(TD.className.includes('diff-cell')) {
+// 		console.log("Hovered cell:", coords.row, coords.col);
+// 		}
+// 	  });
+// 	}
+//   }, [hotRef]);
 
 	const handleSelection = (r1, c1) => {
 		if (brushState !== BrushState.BRUSHING) return

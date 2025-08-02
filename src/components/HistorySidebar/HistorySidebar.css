@@ -15,3 +15,17 @@
 ::selection {
   background-color: var(--brushing-color);
 }
+
+.history-entry{
+  margin-left: 0px !important;
+  padding-left: 75px !important;
+  border-radius: 10px !important;
+  margin-bottom: 5px !important;
+  margin-top: 5px !important;
+}
+
+.history-entry-head{
+  border-radius: 10px !important;
+  margin-bottom: 5px !important;
+  margin-top: 5px !important;
+}
