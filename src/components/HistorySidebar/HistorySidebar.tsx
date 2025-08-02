@@ -83,6 +83,8 @@ const HistorySidebar = ({
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
   const [selectedKeyword, setSelectedKeyword] = useState("");
 
+  console.log(bundles)
+
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     historyState,
@@ -200,6 +202,35 @@ const HistorySidebar = ({
     setSelectedKeyword("")
   }
 
+  const findCollaboratorColor = (author: string): string => {
+    console.log(author);
+    return allCollaborators.find((collab: { name: string; }) => collab.name === author)?.color || getColor(author);
+  }
+
+  // Helper to render authors blob with color dots for each author
+  const getAuthorsBlob = (bundle: HistoryBundle) => {
+    const authorsString = getAuthors(bundle);
+    const authors = authorsString.split(/,\s*/);
+    return (
+      <span>
+        {authors.map((author, idx) => (
+          <span
+            key={author}
+            style={{
+              display: 'inline-block',
+              width: 10,
+              height: 10,
+              borderRadius: '50%',
+              backgroundColor: findCollaboratorColor(author),
+              marginRight: 4
+            }}
+          />
+        ))}
+        <span style={{ marginLeft: 4 }}>{authorsString}</span>
+      </span>
+    );
+  };
+
   return (
     <div className={"history-sidebar"}>
       <div className="button-container d-flex justify-content-between align-items-center p-2 pb-3">
@@ -244,10 +275,11 @@ const HistorySidebar = ({
                 <ListItemIcon>
                   {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
                 </ListItemIcon>
-                <ListItemText primary={getAuthors(bundle)}
-                  secondary={
+                <ListItemText 
+                  primary={
                     getInterval(bundle.startTime, bundle.endTime)
                   }
+                  secondary={<span style={{ display: 'inline-flex', alignItems: 'center' }}>{getAuthorsBlob(bundle)}</span>}
                 />
               </ListItemButton>
               <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
@@ -261,7 +293,11 @@ const HistorySidebar = ({
                       selected={entry.id === selectedId}
                     >
                       <ListItemText
-                        secondary={`${entry.author} - ${getTime(entry.date)}`}
+                        secondary={
+                          <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                            {getAuthorsBlob(bundle)}<span>{' - '}{getTime(entry.date)}</span>
+                          </span>
+                        }
                         primary={
                           editingEntryId === entry.id ? (
                             <TextField

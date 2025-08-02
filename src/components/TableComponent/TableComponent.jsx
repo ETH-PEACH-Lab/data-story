@@ -32,7 +32,6 @@ const TableComponent = ({
 	const [selectedProp, setSelectedProp] = useState('');
 	const [clipboard, setClipboard] = useState("");
 
-
 	const {
 		updateCols,
 		updateTable,
