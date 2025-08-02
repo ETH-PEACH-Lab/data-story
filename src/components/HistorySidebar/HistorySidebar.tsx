@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useContext } from "rea
 
 import List from '@mui/material/List';
 import { IconButton } from '@mui/material';
+import Typography from '@mui/material/Typography';
 
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -29,8 +30,8 @@ import "./HistorySidebar.css";
 import VBrush from "../VBrush"
 import HistoryMenu from "./HistoryMenu"
 import TimelineComponent from "./TimelineComponent";
+import QueryComponent from "./QueryComponent";
 import { CircleComponent } from "../../components/TopBanner/UserCircles";
-import { Typography } from "@mui/material";
 
 const useOutsideClick = (ref, callback) => {
   useEffect(() => {
@@ -52,7 +53,6 @@ export interface HistoryEntry {
   author: string;
   timestamp: string;
   historyMessage: string;
-  date: Date
   cellChanges: number[][]
 }
 
@@ -88,6 +88,7 @@ const HistorySidebar = ({
   const [selectedKeyword, setSelectedKeyword] = useState("");
   const [diffMode, setDiffMode] = useState<"before" | "after">("after");
 
+  const [brushedWord, setBrushedWord] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
@@ -221,7 +222,8 @@ const HistorySidebar = ({
   const resetBrushing = () => {
     setSelectedCollaborators([])
     setBrushedCells([])
-    setSelectedKeyword("")
+    setBrushedWord("")
+    setIsOpen(Array(bundles.length).fill(false))
   }
 
   const findCollaboratorColor = (author: string): string => {
@@ -251,6 +253,15 @@ const HistorySidebar = ({
       </span>
     );
   };
+  const filteredBundles = filterHistory(
+    bundles,
+    selectedCollaborators,
+    intervalStart,
+    intervalEnd,
+    brushedCells,
+    brushedWord,
+    brushState
+  )
 
   return (
     <div className={"history-sidebar"}>
@@ -261,6 +272,7 @@ const HistorySidebar = ({
           setBrushState={setBrushState}
           resetBrushing={resetBrushing}
           viewCurrentVersion={viewCurrentVersion}
+          openBundles={() => setIsOpen(Array(bundles.length).fill(true))}
         />
       </div>
       {brushState === BrushState.BRUSHING && <div>
@@ -280,17 +292,24 @@ const HistorySidebar = ({
           setEnd={setIntervalEnd}
         />
       </div>}
+      {brushState === BrushState.BRUSHED && <>
+        <QueryComponent
+          brushedCells={brushedCells}
+          selectedCollaborators={selectedCollaborators}
+          intervalStart={intervalStart}
+          intervalEnd={intervalEnd}
+          brushedWord={brushedWord}
+        />
+        {filteredBundles.length === 0 &&
+          <Alert severity="error" className="m-3">
+            <AlertTitle>No edits found.</AlertTitle>
+            Try again using another query.
+          </Alert>
+        }
+      </>}
       <List>
         <ul className="list-group w-100" ref={listRef}>
-          {filterHistory(
-            bundles,
-            selectedCollaborators,
-            intervalStart,
-            intervalEnd,
-            brushedCells,
-            selectedKeyword,
-            brushState
-          ).slice().reverse().map((bundle: HistoryBundle, index: number) => (
+          {filteredBundles.slice().reverse().map((bundle: HistoryBundle, index: number) => (
             <div key={bundle.startTime}>
               <ListItemButton className="history-entry-head" onClick={() => toggleBundle(index)}>
                 <ListItemIcon>
@@ -347,11 +366,24 @@ const HistorySidebar = ({
                             />
                           ) : (
                             <Typography
-                              component="span"
-                              sx={{ userSelect: brushState === BrushState.BRUSHING ? "text" : "" }}
-                              onMouseUp={() => setSelectedKeyword(window.getSelection()?.toString() || "")}
+                              component="div"
+                              sx={{
+                                display: "flex",
+                                gap: "4px"
+                              }}
                             >
-                              {entry.historyMessage}
+                              {brushState === BrushState.BRUSHING ? (
+                                entry.historyMessage.split(" ").map((word) =>
+                                  <span
+                                    onClick={() => setBrushedWord(word)}
+                                    className={brushedWord === word ? "brushed-word" : "brushing"}
+                                  >
+                                    {word}
+                                  </span>
+                                )
+                              ) : (
+                                <span>{entry.historyMessage}</span>
+                              )}
                             </Typography>
                           )
                         }
