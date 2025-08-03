@@ -91,8 +91,10 @@ const HistorySidebar = ({
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null)
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedKeyword, setSelectedKeyword] = useState("");
   const [diffMode, setDiffMode] = useState<"before" | "after">("after");
+  const [filteredBundles, setFilteredBundles] = useState<HistoryBundle[]>([]);
 
   const [brushedWord, setBrushedWord] = useState<string>("");
 
@@ -182,12 +184,15 @@ const HistorySidebar = ({
   }, [uploadHistory]);
 
   useEffect(() => {
+    setFilteredBundles(bundles);
+  }, [bundles]);
+
+  useEffect(() => {
     if (editingEntryId >= 0 && inputRef.current) inputRef.current.focus()
   }, [editingEntryId])
 
-  let filteredBundles =bundles;
   useEffect(() => {
-    filteredBundles = filterDeepHistory(
+    const result = filterDeepHistory(
     bundles,
     selectedCollaborators,
     intervalStart,
@@ -196,11 +201,13 @@ const HistorySidebar = ({
     brushedWord,
     brushState
   )
-  setEntryId(filteredBundles.length > 0 ? filteredBundles[filteredBundles.length - 1].entries[filteredBundles[filteredBundles.length - 1].entries.length - 1].id : -1);
+  setEntryId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : -1);
+  setFilteredBundles(result);
   }, [brushState]);
 
   const viewCurrentVersion = () => {
     setEntryId(-1);
+    setSelectedId(-1);
     selectEntry(null)
     handleHistoryClick(uploadHistory.at(-1), -1)
   }
@@ -214,9 +221,11 @@ const HistorySidebar = ({
       if (currentIndex > 0) {
         const previousEntry = uploadHistory[currentIndex - 1]
         handleHistoryClick(previousEntry, -1)
+        setEntryId(previousEntry.id);
       }
     }
     else {
+      setEntryId(entry.id);
       handleHistoryClick(entry, -1) // Switch to the current entry
     }
     setDiffMode((prev) => (prev === "before" ? "after" : "before"));
@@ -224,6 +233,7 @@ const HistorySidebar = ({
 
   const handleHistoryItemClick = (entry: HistoryEntry) => {
     setEntryId(entry.id);
+    setSelectedId(entry.id);
     setDiffMode("after");
     if (brushState === BrushState.BRUSHING) return
     if (entryId !== entry.id) {
@@ -343,13 +353,13 @@ const HistorySidebar = ({
                     <ListItemButton
                       key={index}
                       sx={{ ml: 9, position: 'relative', display: 'flex', alignItems: 'center' }}
-                      className={entry.id === entryId ? "history-selected history-entry" : "history-entry"}
+                      className={entry.id === selectedId ? "history-selected history-entry" : "history-entry"}
                       onClick={() => handleHistoryItemClick(entry)}
-                      selected={entry.id === entryId}
+                      selected={entry.id === selectedId}
                       onMouseEnter={() => setMenuId(entry.id)}
                       onMouseLeave={() => setMenuId(-1)}
                     >
-                      {entry.id === entryId && (
+                      {entry.id === selectedId && (
                         <IconButton
                           size="small"
                           onClick={(e) => handleDiffSwitch(e, entry)}
@@ -405,7 +415,7 @@ const HistorySidebar = ({
                         }
                       />
                       <span style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
-                        {(brushState === BrushState.IDLE && (entry.id === entryId || entry.id === menuId)) && (
+                        {(brushState === BrushState.IDLE && (entry.id === selectedId || entry.id === menuId)) && (
                           <HistoryMenu
                             entry={entry}
                             handleEdit={handleEdit}

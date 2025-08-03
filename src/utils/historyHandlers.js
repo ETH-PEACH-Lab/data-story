@@ -181,10 +181,12 @@ export const switchHistoryEntry = (
 const filterAuthors = (uploadHistory, authors) => {
   if (authors?.length === 0) return uploadHistory
 
-  return uploadHistory.map(bundle => ({
+  const result = uploadHistory.map(bundle => ({
     ...bundle,
     entries: bundle.entries.filter(entry => authors.includes(entry.author)),
   })).filter(bundle => bundle.entries.length > 0)
+
+  return result
 }
 
 const filterTime = (uploadHistory, start, end) => {
@@ -210,83 +212,6 @@ const filterCells = (uploadHistory, cells) => {
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-// 当前行号 -> 结构变更前的行号
-function resolveRowOrigin(currentRow, structureChanges) {
-  let offset = 0
-  for (const change of structureChanges) {
-    if (change.type === "structure" && change.spec === "addrow") {
-      if (change.row <= currentRow + offset) {
-        offset -= 1 // one row was inserted before currentRow, so shift up
-      }
-    } else if (change.type === "structure" && change.spec === "deleterow") {
-      if (change.row < currentRow + offset) {
-        offset += 1 // one row was deleted before currentRow, so shift down
-      }
-    }
-  }
-  return currentRow + offset
-}
-
-function traceDeepEntries(entries, initialCells) {
-  let targetCells = [...initialCells.map(([r, c]) => ({ row: r, col: c }))];
-  const resultEntries = [];
-
-  for (let i = entries.length - 1; i >= 0; i--) {
-    const entry = entries[i];
-    let matched = false;
-    console.log("Tracing entry:", entry.id);
-
-    // 1. 看这个 entry 是否涉及当前追踪的 cell
-    if (entry.cellChangesDeep) {
-      for (const change of entry.cellChangesDeep) {
-        for (const cell of targetCells) {
-          if (change.row === cell.row && change.column === cell.col) {
-            matched = true;
-            break;
-          }
-        }
-        if (matched) break;
-      }
-    }
-
-    if (matched) {
-      resultEntries.push(entry);
-    }
-
-    // 2. 如果这个 entry 是结构性变更，则更新坐标追踪
-    if (entry.cellChangesDeep) {
-      for (const change of entry.cellChangesDeep) {
-        if (change.type === "structure") {
-          const { spec, row, column } = change;
-
-          targetCells = targetCells.map(cell => {
-            let newRow = cell.row;
-            let newCol = cell.col;
-
-            if (spec === "addrow" && row <= cell.row) {
-              newRow += 1;
-            }
-            if (spec === "rmrow" && row < cell.row) {
-              newRow -= 1;
-            }
-            if (spec === "addcol" && column <= cell.col) {
-              newCol += 1;
-            }
-            if (spec === "rmcol" && column < cell.col) {
-              newCol -= 1;
-            }
-
-            return { row: newRow, col: newCol };
-          });
-        }
-      }
-    }
-    console.log("Current target cells:", targetCells);
-    console.log(resultEntries)
-  }
-
-  return resultEntries;
-}
 
 function traceDeepEntriesWithExternalTarget(entries, initialTargetCells) {
   const matched = [];
@@ -407,7 +332,6 @@ export const filterHistory = (history, authors, start, end, cells, keyword, brus
 
 
 export const filterDeepHistory = (history, authors, start, end, cells, keyword, brushState) => {
-  console.log("filterDeepHistory")
   if (brushState !== BrushState.BRUSHED) return history
   return filterKeyword(filterDeepCells(filterTime(filterAuthors(history, authors), start, end), cells), keyword)
 }
