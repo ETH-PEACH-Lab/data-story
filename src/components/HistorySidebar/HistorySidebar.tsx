@@ -21,6 +21,7 @@ import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext, getColor, BrushState } from "../../App";
 import {
   filterHistory,
+  filterDeepHistory,
   bundleHistoryEntries,
   getAuthors,
   getAllAuthors,
@@ -68,7 +69,9 @@ interface HistorySidebarProps {
   selectEntry: (entry: HistoryEntry | null) => void
   brushState: BrushState
   setBrushState: (state: BrushState) => void
-  setBrushedCells: (cells: number[][]) => void
+  setBrushedCells: (cells: number[][]) => void,
+  setEntryId: (id: number) => void,
+  entryId: number
 }
 
 const HistorySidebar = ({
@@ -76,10 +79,11 @@ const HistorySidebar = ({
   brushState,
   setBrushState,
   setBrushedCells,
+  setEntryId,
+  entryId
 }: HistorySidebarProps) => {
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
-  const [selectedId, setSelectedId] = useState(-1);
   const [intervalStart, setIntervalStart] = useState<Date | null>(null)
   const [intervalEnd, setIntervalEnd] = useState<Date | null>(null)
   const [editingEntryId, setEditingEntryId] = useState<number>(-1)
@@ -181,8 +185,22 @@ const HistorySidebar = ({
     if (editingEntryId >= 0 && inputRef.current) inputRef.current.focus()
   }, [editingEntryId])
 
+  let filteredBundles =bundles;
+  useEffect(() => {
+    filteredBundles = filterDeepHistory(
+    bundles,
+    selectedCollaborators,
+    intervalStart,
+    intervalEnd,
+    brushedCells,
+    brushedWord,
+    brushState
+  )
+  setEntryId(filteredBundles.length > 0 ? filteredBundles[filteredBundles.length - 1].entries[filteredBundles[filteredBundles.length - 1].entries.length - 1].id : -1);
+  }, [brushState]);
+
   const viewCurrentVersion = () => {
-    setSelectedId(-1)
+    setEntryId(-1);
     selectEntry(null)
     handleHistoryClick(uploadHistory.at(-1), -1)
   }
@@ -205,11 +223,11 @@ const HistorySidebar = ({
   }
 
   const handleHistoryItemClick = (entry: HistoryEntry) => {
+    setEntryId(entry.id);
     setDiffMode("after");
     if (brushState === BrushState.BRUSHING) return
-    if (selectedId !== entry.id) {
+    if (entryId !== entry.id) {
       selectEntry(entry)
-      setSelectedId(entry.id)
       handleHistoryClick(entry, -1)
     } else {
       viewCurrentVersion()
@@ -233,8 +251,12 @@ const HistorySidebar = ({
   }
 
   // Helper to render authors blob with color dots for each author
-  const getAuthorsBlob = (bundle: HistoryBundle) => {
-    const authorsString = getAuthors(bundle);
+  const getAuthorsBlob = (bundle: HistoryBundle, entry?: HistoryEntry) => {
+    let authorsString = "";
+    if (bundle) authorsString = getAuthors(bundle);
+    if (entry) {
+      authorsString = entry.author;
+    }
     const authors = authorsString.split(/,\s*/);
     return (
       <span>
@@ -255,15 +277,6 @@ const HistorySidebar = ({
       </span>
     );
   };
-  const filteredBundles = filterHistory(
-    bundles,
-    selectedCollaborators,
-    intervalStart,
-    intervalEnd,
-    brushedCells,
-    brushedWord,
-    brushState
-  )
 
   return (
     <div className={"history-sidebar"}>
@@ -330,13 +343,13 @@ const HistorySidebar = ({
                     <ListItemButton
                       key={index}
                       sx={{ ml: 9, position: 'relative', display: 'flex', alignItems: 'center' }}
-                      className={entry.id === selectedId ? "history-selected history-entry" : "history-entry"}
+                      className={entry.id === entryId ? "history-selected history-entry" : "history-entry"}
                       onClick={() => handleHistoryItemClick(entry)}
-                      selected={entry.id === selectedId}
+                      selected={entry.id === entryId}
                       onMouseEnter={() => setMenuId(entry.id)}
                       onMouseLeave={() => setMenuId(-1)}
                     >
-                      {entry.id === selectedId && (
+                      {entry.id === entryId && (
                         <IconButton
                           size="small"
                           onClick={(e) => handleDiffSwitch(e, entry)}
@@ -349,7 +362,7 @@ const HistorySidebar = ({
                         style={{ paddingRight: '30px' }}
                         secondary={
                           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                            {getAuthorsBlob(bundle)}<span>{' - '}{getTime(entry.date)}</span>
+                            {getAuthorsBlob(null, entry)}<span>{' - '}{getTime(entry.date)}</span>
                           </span>
                         }
                         primary={
@@ -392,7 +405,7 @@ const HistorySidebar = ({
                         }
                       />
                       <span style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
-                        {(brushState === BrushState.IDLE && (entry.id === selectedId || entry.id === menuId)) && (
+                        {(brushState === BrushState.IDLE && (entry.id === entryId || entry.id === menuId)) && (
                           <HistoryMenu
                             entry={entry}
                             handleEdit={handleEdit}

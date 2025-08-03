@@ -17,6 +17,7 @@ import { useHistoryManager } from './hooks/useHistoryManager';
 
 import { initializeColumns } from "./utils/dataHandlers";
 import { getCellDiff } from "./utils/historyHandlers";
+import { getCellDeepDiff } from "./utils/historyHandlers";
 
 registerAllModules();
 
@@ -46,8 +47,10 @@ function App() {
   const [actions, setActions] = useState([]);
   const [originalFileName, setOriginalFileName] = useState("");
   const [cellDiff, setCellDiff] = useState(new Set());
+  const [cellDeepDiff, setCellDeepDiff] = useState(new Set());
   const [cellFormat, setCellFormat] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [entryId, setEntryId] = useState(null);
   const [userName, setUserName] = useState('');
   const [userCursorColor, setUserCursorColor] = useState("");
   const [brushedCells, setBrushedCells] = useState<number[][]>([]);
@@ -170,7 +173,7 @@ function App() {
     <SharedContext.Provider value={{
       updateCols, updateStory, updateHist, updateTable,
       sharedHist: yjs.sharedHist, sharedArray: yjs.sharedArray,
-      cellDiff, undoRedo, awareness: yjs.awareness,
+      cellDiff, cellDeepDiff, undoRedo, awareness: yjs.awareness,
       historyState: history.historyState,
       historyActions: history.historyActions,
       cellFormat, setCellFormat, selectedCellsRef,
@@ -196,6 +199,7 @@ function App() {
             <TableComponent
               data={data}
               setData={setData}
+              entryId={entryId}
               columnConfigs={columnConfigs}
               setColumnConfigs={setColumnConfigs}
               setSelectedColumnIndex={() => { }}
@@ -206,7 +210,12 @@ function App() {
               setBrushState={setBrushState}
             />
             <HistorySidebar
-              selectEntry={(entry) => setCellDiff(getCellDiff(entry))}
+              selectEntry={(entry) => {
+                setCellDiff(getCellDiff(entry));
+                setCellDeepDiff(getCellDeepDiff(entry));
+              }}
+              setEntryId={setEntryId}
+              entryId={entryId}
               brushState={brushState}
               setBrushState={setBrushState}
               setBrushedCells={setBrushedCells}

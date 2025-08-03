@@ -1,4 +1,4 @@
-import { getDate } from "../../utils/formatHandlers"
+import { getTime, getDate } from "../../utils/formatHandlers"
 
 interface QueryComponentProps {
   brushedCells: number[][]
@@ -36,7 +36,7 @@ const QueryComponent = ({
       {selectedCollaborators.map((collaborator, index) => <span key={index}><span className="query-element">{collaborator}</span><span>, </span></span>)}
     </>}
     <span>during </span>
-    <span className="query-element">{getDate(intervalStart)} - {getDate(intervalEnd)}</span>
+    <span className="query-element">{getDate(intervalStart)}, {getTime(intervalStart)} - {getDate(intervalEnd)}, {getTime(intervalEnd)}</span>
     {brushedWord && <>
       <span>, related to </span>
       <span className="query-element">{brushedWord}</span>
