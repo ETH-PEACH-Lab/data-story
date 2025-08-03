@@ -201,7 +201,11 @@ const HistorySidebar = ({
     brushedWord,
     brushState
   )
+  if (result.length > 0) {
+    handleHistoryItemClick(result[result.length - 1].entries[result[result.length - 1].entries.length - 1]);
+  }
   setEntryId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : -1);
+  setSelectedId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : null);
   setFilteredBundles(result);
   }, [brushState]);
 

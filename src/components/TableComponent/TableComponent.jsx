@@ -125,7 +125,6 @@ const TableComponent = ({
 		const isHighlighted = highlight?.cells?.some(cell => cell.row === row && cell.col === col);
 
 		const brushedString = isHighlighted ? 'brushed ' : '';
-
 		if (cellDiff.size > 0) return { className: brushedString + diffString }
 		else if (brushState === BrushState.BRUSHING) return { className: (brushString + "brushing") }
 		else if (brushState === BrushState.BRUSHED) return { className: brushedString }
