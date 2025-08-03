@@ -52,6 +52,7 @@ const TableComponent = ({
 
 		const newData = [...data];
 		changes.forEach(([row, prop, oldValue, newValue]) => {
+			console.log(`Change detected at row ${row}, prop ${prop}: ${oldValue} -> ${newValue}`);
 			newData[row][prop] = newValue;
 			const col = hotRef.current.hotInstance.propToCol(prop);
 			hotRef.current.hotInstance.getPlugin('formulas').engine.setCellContents(
@@ -108,9 +109,11 @@ const TableComponent = ({
 		const formatString = (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
 			+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '')
 			+ (cellFormat[`${row},${col}`]?.bg ?? "")
-		const brushString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'bg-warning ' : '';
-		if (cellDiff.size > 0) return { className: diffString }
+		const brushString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'bg-warning brushed ' : '';
+		const brushedString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'brushed ' : '';
+		if (cellDiff.size > 0) return { className: brushedString + diffString }
 		else if (brushState === BrushState.BRUSHING) return { className: (brushString + "brushing") }
+		else if (brushState === BrushState.BRUSHED) return { className: (brushedString) }
 		else return { className: formatString }
 	}
 
@@ -176,18 +179,6 @@ const TableComponent = ({
 			document.removeEventListener("keydown", handlePaste)
 		}
 	}, [rawValue, clipboard, selectedCellsRef, selectedProp]);
-
-
-// 	useEffect(() => {
-// 	const hotInstance = hotRef.current?.hotInstance;
-// 	if (hotInstance) {
-// 	  hotInstance.addHook("afterOnCellMouseOver", (event, coords, TD) => {
-// 		if(TD.className.includes('diff-cell')) {
-// 		console.log("Hovered cell:", coords.row, coords.col);
-// 		}
-// 	  });
-// 	}
-//   }, [hotRef]);
 
 	const handleSelection = (r1, c1) => {
 		if (brushState !== BrushState.BRUSHING) return

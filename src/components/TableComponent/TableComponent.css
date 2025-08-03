@@ -165,3 +165,19 @@ div.bg-success,
   height: 16px;
   border-radius: 50%;
 }
+
+.bg-propagation {
+  background-color: #d1f0fa !important; /* light blue */
+}
+
+.bg-content {
+  background-color: #d1fadf !important; /* light green */
+}
+
+.bg-structure {
+  background-color: #faf1d1 !important; /* light yellow */
+}
+
+.bg-dependency {
+  background-color: #f1d1d1 !important; /* light red */
+}

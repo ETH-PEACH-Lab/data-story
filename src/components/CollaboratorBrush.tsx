@@ -39,8 +39,8 @@ const CollaboratorBrush = (
                     renderValue={(selected) => selected.join(', ')}
                     MenuProps={MenuProps}
                 >
-                    {allAuthors.slice().reverse().map((name: string) => (
-                        <MenuItem key={name} value={name}>
+                    {allAuthors.slice().reverse().map((name: string, index: number) => (
+                        <MenuItem key={index} value={name}>
                             <Checkbox checked={authors?.includes(name)} />
                             <ListItemText primary={name} />
                         </MenuItem>

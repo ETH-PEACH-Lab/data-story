@@ -13,6 +13,8 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 
 import { setHistoryLocalStorage } from "../../utils/storageHandlers";
@@ -238,7 +240,7 @@ const HistorySidebar = ({
       <span>
         {authors.map((author, idx) => (
           <span
-            key={author}
+            key={idx}
             style={{
               display: 'inline-block',
               width: 10,
@@ -310,7 +312,7 @@ const HistorySidebar = ({
       <List>
         <ul className="list-group w-100" ref={listRef}>
           {filteredBundles.slice().reverse().map((bundle: HistoryBundle, index: number) => (
-            <div key={bundle.startTime}>
+            <div key={index}>
               <ListItemButton className="history-entry-head" onClick={() => toggleBundle(index)}>
                 <ListItemIcon>
                   {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
@@ -324,11 +326,11 @@ const HistorySidebar = ({
               </ListItemButton>
               <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  {bundle.entries.slice().reverse().map((entry: HistoryEntry) => (
+                  {bundle.entries.slice().reverse().map((entry: HistoryEntry, index: number) => (
                     <ListItemButton
-                      key={entry.id}
+                      key={index}
                       sx={{ ml: 9, position: 'relative', display: 'flex', alignItems: 'center' }}
-                      className={entry.id === selectedId ? "bg-success history-entry" : "history-entry"}
+                      className={entry.id === selectedId ? "history-selected history-entry" : "history-entry"}
                       onClick={() => handleHistoryItemClick(entry)}
                       selected={entry.id === selectedId}
                       onMouseEnter={() => setMenuId(entry.id)}
@@ -373,8 +375,9 @@ const HistorySidebar = ({
                               }}
                             >
                               {brushState === BrushState.BRUSHING ? (
-                                entry.historyMessage.split(" ").map((word) =>
+                                entry.historyMessage.split(" ").map((word, index) =>
                                   <span
+                                    key={index}
                                     onClick={() => setBrushedWord(word)}
                                     className={brushedWord === word ? "brushed-word" : "brushing"}
                                   >

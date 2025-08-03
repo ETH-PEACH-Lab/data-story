@@ -17,6 +17,10 @@
   background-color: var(--brushing-color);
 }
 
+.brushed {
+  box-shadow: inset 0 -2px 0 0 var(--brushing-color), inset -2px 0 0 0 var(--brushing-color), inset 0 2px 0 0 var(--brushing-color), inset 2px 0 0 0 var(--brushing-color) !important;
+}
+
 .brushing {
   cursor: url('/brush.svg') 6 30, auto;
 }
@@ -44,4 +48,8 @@
   border-radius: 10px !important;
   margin-bottom: 5px !important;
   margin-top: 5px !important;
+}
+
+.history-selected {
+  background-color: white !important;
 }
