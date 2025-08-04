@@ -1,4 +1,4 @@
-import { getDate } from "../../utils/formatHandlers"
+import { getTime, getDate } from "../../utils/formatHandlers"
 
 interface QueryComponentProps {
   brushedCells: number[][]
@@ -25,25 +25,18 @@ const QueryComponent = ({
   brushedWord,
 }: QueryComponentProps) => {
 
-  console.log(
-    brushedCells,
-    intervalStart,
-    intervalEnd,
-    brushedWord
-  )
-
   return <div style={{ padding: "1rem", lineHeight: "2" }} >
     <span>Edits </span>
     {brushedCells.length > 0 && <>
       <span>on </span>
-      {brushedCells.map((indices) => <><span className="query-element">{getCell(indices)}</span><span>, </span></>)}
+      {brushedCells.map((indices, index) => <span key={index}><span className="query-element">{getCell(indices)}</span><span>, </span></span>)}
     </>}
     {selectedCollaborators.length > 0 && <>
       <span>by </span>
-      {selectedCollaborators.map((collaborator) => <><span className="query-element">{collaborator}</span><span>, </span></>)}
+      {selectedCollaborators.map((collaborator, index) => <span key={index}><span className="query-element">{collaborator}</span><span>, </span></span>)}
     </>}
     <span>during </span>
-    <span className="query-element">{getDate(intervalStart)} - {getDate(intervalEnd)}</span>
+    <span className="query-element">{getDate(intervalStart)}, {getTime(intervalStart)} - {getDate(intervalEnd)}, {getTime(intervalEnd)}</span>
     {brushedWord && <>
       <span>, related to </span>
       <span className="query-element">{brushedWord}</span>

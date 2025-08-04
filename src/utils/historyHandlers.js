@@ -181,10 +181,12 @@ export const switchHistoryEntry = (
 const filterAuthors = (uploadHistory, authors) => {
   if (authors?.length === 0) return uploadHistory
 
-  return uploadHistory.map(bundle => ({
+  const result = uploadHistory.map(bundle => ({
     ...bundle,
     entries: bundle.entries.filter(entry => authors.includes(entry.author)),
   })).filter(bundle => bundle.entries.length > 0)
+
+  return result
 }
 
 const filterTime = (uploadHistory, start, end) => {
@@ -210,6 +212,110 @@ const filterCells = (uploadHistory, cells) => {
   })).filter(bundle => bundle.entries.length > 0)
 }
 
+
+function traceDeepEntriesWithExternalTarget(entries, initialTargetCells) {
+  const matched = [];
+  const traceMap = []; // <- NEW: stores { id, cells }
+
+  let targetCells = [...initialTargetCells];
+
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const entry = entries[i];
+    const changes = entry.cellChangesDeep || [];
+
+    const touchesTarget = changes.some(change =>
+      targetCells.some(tc => change.row === tc.row && change.column === tc.col)
+    );
+
+    if (touchesTarget) {
+      matched.unshift(entry);
+      traceMap.unshift({ id: entry.id, cells: [...targetCells] }); // save snapshot of target cells
+    }
+
+    for (const change of changes) {
+      if (change.type === "structure") {
+        const { spec, row, column } = change;
+
+        targetCells = targetCells.map(cell => {
+          let newRow = cell.row;
+          let newCol = cell.col;
+
+          if (row === newRow && column === newCol) {
+            if (spec === "addrow") newRow -= 1;
+            if (spec === "rmrow") newRow += 1;
+            if (spec === "addcol") newCol -= 1;
+            if (spec === "rmcol") newCol += 1;
+          }
+
+          return { row: newRow, col: newCol };
+        });
+      }
+    }
+  }
+
+  return { entries: matched, traceMap }; // return both
+}
+
+
+
+function updateTargetCellsWithStructure(entries, targetCells) {
+  let updated = [...targetCells];
+
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const entry = entries[i];
+    if (!entry.cellChangesDeep) continue;
+
+    for (const change of entry.cellChangesDeep) {
+      if (change.type !== "structure") continue;
+      const { spec, row, column } = change;
+
+      updated = updated.map(cell => {
+        let newRow = cell.row;
+        let newCol = cell.col;
+          if (row == newRow && column == newCol) {
+            if (spec === "addrow") newRow -= 1;
+            if (spec === "rmrow") newRow += 1;
+            if (spec === "addcol") newCol -= 1;
+            if (spec === "rmcol") newCol += 1;
+          }
+
+        return { row: newRow, col: newCol };
+      });
+    }
+  }
+
+  return updated;
+}
+
+
+const filterDeepCells = (uploadHistory, cells) => {
+  if (!cells || cells.length === 0) return uploadHistory;
+
+  let targetCells = [...cells.map(([r, c]) => ({ row: r, col: c }))];
+  const result = [];
+  const globalTraceMap = []; // <- here
+
+  for (let i = uploadHistory.length - 1; i >= 0; i--) {
+    const bundle = uploadHistory[i];
+    const { entries: tracedEntries, traceMap } = traceDeepEntriesWithExternalTarget(bundle.entries, targetCells);
+
+    if (tracedEntries.length > 0) {
+      result.unshift({
+        ...bundle,
+        entries: tracedEntries,
+      });
+      globalTraceMap.unshift(...traceMap); // accumulate
+    }
+
+    targetCells = updateTargetCellsWithStructure(bundle.entries, targetCells);
+  }
+
+  // OPTIONAL: store this globally
+  window.deepTraceMap = globalTraceMap;
+  return result;
+};
+
+
 const filterKeyword = (uploadHistory, keyword) => {
   if (!keyword || keyword.trim() === "") return uploadHistory
 
@@ -222,6 +328,12 @@ const filterKeyword = (uploadHistory, keyword) => {
 export const filterHistory = (history, authors, start, end, cells, keyword, brushState) => {
   if (brushState !== BrushState.BRUSHED) return history
   return filterKeyword(filterCells(filterTime(filterAuthors(history, authors), start, end), cells), keyword)
+}
+
+
+export const filterDeepHistory = (history, authors, start, end, cells, keyword, brushState) => {
+  if (brushState !== BrushState.BRUSHED) return history
+  return filterKeyword(filterDeepCells(filterTime(filterAuthors(history, authors), start, end), cells), keyword)
 }
 
 export const getAllAuthors = (uploadHistory) => {
@@ -282,6 +394,10 @@ export const getCellDiff = (entry) => {
   if (entry?.cellChanges.length > 0) arrayToSet(entry.cellChanges, cells)
   else if (entry?.actions[0]?.actionType === "change") arrayToSet(entry.actions[0].changes, cells)
   return cells
+}
+
+export const getCellDeepDiff = (entry) => {
+  return entry?.cellChangesDeep ? entry.cellChangesDeep : null;
 }
 
 export const getDataset = (bundles) => {

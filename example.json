@@ -1,0 +1,5557 @@
+{
+  "uploadHistory": [
+    {
+      "id": 126,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B5)",
+          "Day 2": "=SUM(C1:C5)",
+          "Day 3": "=SUM(D1:D5)",
+          "Day 4": "=SUM(E1:E5)",
+          "Day 5": "=SUM(F1:F5)",
+          "Day 6": "=SUM(G1:G5)",
+          "Day 7": "=SUM(H1:H5)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:13:58 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              5,
+              1,
+              "0",
+              "=SUM(B1:B5)"
+            ]
+          ],
+          "selected": [
+            [
+              5,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              1,
+              "0",
+              "2"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              1,
+              "2",
+              "0"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              0,
+              8,
+              "0",
+              "=SUM(A1:G1)"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              8
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              2,
+              "0",
+              "02"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              3,
+              "0",
+              "03"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              4,
+              "0",
+              "04"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              5,
+              "0",
+              "05"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              5
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              6,
+              "0",
+              "06"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              6
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              7,
+              "0",
+              "7"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              7
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              2,
+              "02",
+              "0"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              3,
+              "03",
+              "0"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              4,
+              "04",
+              "0"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              5,
+              "05",
+              "0"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              5
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              6,
+              "06",
+              "0"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              6
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              7,
+              "7",
+              ""
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              7
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              7,
+              "",
+              "0"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              7
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category"
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1"
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2"
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3"
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4"
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5"
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6"
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7"
+        },
+        {
+          "data": "Total",
+          "title": "Total"
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Created initial template",
+      "author": "Charlie",
+      "date": "2025-07-25T14:13:58.009Z",
+      "cellChanges": [        
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          7
+        ]
+      ],
+      "cellChangesDeep": [
+        { "row": 0, "column": 0, "type": "content" },
+        { "row": 0, "column": 1, "type": "content" },
+        { "row": 0, "column": 2, "type": "content" },
+        { "row": 0, "column": 3, "type": "content" },
+        { "row": 0, "column": 4, "type": "content" },
+        { "row": 0, "column": 5, "type": "content" },
+        { "row": 0, "column": 6, "type": "content" },
+        { "row": 0, "column": 7, "type": "content" },
+        { "row": 0, "column": 8, "type": "content" },
+        { "row": 1, "column": 0, "type": "content" },
+        { "row": 1, "column": 1, "type": "content" },
+        { "row": 1, "column": 2, "type": "content" },
+        { "row": 1, "column": 3, "type": "content" },
+        { "row": 1, "column": 4, "type": "content" },
+        { "row": 1, "column": 5, "type": "content" },
+        { "row": 1, "column": 6, "type": "content" },
+        { "row": 1, "column": 7, "type": "content" },
+        { "row": 1, "column": 8, "type": "content" },
+        { "row": 2, "column": 0, "type": "content" },
+        { "row": 2, "column": 1, "type": "content" },
+        { "row": 2, "column": 2, "type": "content" },
+        { "row": 2, "column": 3, "type": "content" },
+        { "row": 2, "column": 4, "type": "content" },
+        { "row": 2, "column": 5, "type": "content" },
+        { "row": 2, "column": 6, "type": "content" },
+        { "row": 2, "column": 7, "type": "content" },
+        { "row": 2, "column": 8, "type": "content" },
+        { "row": 3, "column": 0, "type": "content" },
+        { "row": 3, "column": 1, "type": "content" },
+        { "row": 3, "column": 2, "type": "content" },
+        { "row": 3, "column": 3, "type": "content" },
+        { "row": 3, "column": 4, "type": "content" },
+        { "row": 3, "column": 5, "type": "content" },
+        { "row": 3, "column": 6, "type": "content" },
+        { "row": 3, "column": 7, "type": "content" },
+        { "row": 3, "column": 8, "type": "content" },
+        { "row": 4, "column": 0, "type": "content" },
+        { "row": 4, "column": 1, "type": "content" },
+        { "row": 4, "column": 2, "type": "content" },
+        { "row": 4, "column": 3, "type": "content" },
+        { "row": 4, "column": 4, "type": "content" },
+        { "row": 4, "column": 5, "type": "content" },
+        { "row": 4, "column": 6, "type": "content" },
+        { "row": 4, "column": 7, "type": "content" },
+        { "row": 4, "column": 8, "type": "content" },
+        { "row": 5, "column": 0, "type": "content" },
+        { "row": 5, "column": 1, "type": "dependency" },
+        { "row": 5, "column": 2, "type": "dependency" },
+        { "row": 5, "column": 3, "type": "dependency" },
+        { "row": 5, "column": 4, "type": "dependency" },
+        { "row": 5, "column": 5, "type": "dependency" },
+        { "row": 5, "column": 6, "type": "dependency" },
+        { "row": 5, "column": 7, "type": "dependency" },
+        { "row": 5, "column": 8, "type": "dependency" }
+      ]
+    },
+    {
+      "id": 133,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B5)",
+          "Day 2": "=SUM(C1:C5)",
+          "Day 3": "=SUM(D1:D5)",
+          "Day 4": "=SUM(E1:E5)",
+          "Day 5": "=SUM(F1:F5)",
+          "Day 6": "=SUM(G1:G5)",
+          "Day 7": "=SUM(H1:H5)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:16:39 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              2,
+              1,
+              "0",
+              "50"
+            ]
+          ],
+          "selected": [
+            [
+              2,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              2,
+              2,
+              "0",
+              "50"
+            ]
+          ],
+          "selected": [
+            [
+              2,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              2,
+              3,
+              "0",
+              "50"
+            ]
+          ],
+          "selected": [
+            [
+              2,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              2,
+              4,
+              "0",
+              "50"
+            ]
+          ],
+          "selected": [
+            [
+              2,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              2,
+              5,
+              "0",
+              "50"
+            ]
+          ],
+          "selected": [
+            [
+              2,
+              5
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              2,
+              6,
+              "0",
+              "50"
+            ]
+          ],
+          "selected": [
+            [
+              2,
+              6
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              2,
+              7,
+              "0",
+              "50"
+            ]
+          ],
+          "selected": [
+            [
+              2,
+              7
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category"
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1"
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2"
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3"
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4"
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5"
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6"
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7"
+        },
+        {
+          "data": "Total",
+          "title": "Total"
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added food expenses",
+      "author": "Charlie",
+      "date": "2025-07-25T14:16:39.713Z",
+      "cellChanges": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ]
+      ], 
+      "cellChangesDeep": [
+        { "row": 2, "column": 1, "type": "content" },
+        { "row": 2, "column": 2, "type": "content" },
+        { "row": 2, "column": 3, "type": "content" },
+        { "row": 2, "column": 4, "type": "content" },
+        { "row": 2, "column": 5, "type": "content" },
+        { "row": 2, "column": 6, "type": "content" },
+        { "row": 2, "column": 7, "type": "content" },
+        { "row": 2, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 1, "type": "propagation" },
+        { "row": 5, "column": 2, "type": "propagation" },
+        { "row": 5, "column": 3, "type": "propagation" },
+        { "row": 5, "column": 4, "type": "propagation" },
+        { "row": 5, "column": 5, "type": "propagation" },
+        { "row": 5, "column": 6, "type": "propagation" },
+        { "row": 5, "column": 7, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 147,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:30:39 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              4,
+              3,
+              "0",
+              "500"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              4,
+              "0",
+              "500"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              5,
+              "0",
+              "500"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              5
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              6,
+              "0",
+              "500"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              6
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              4,
+              7,
+              "0",
+              "500"
+            ]
+          ],
+          "selected": [
+            [
+              4,
+              7
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category"
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1"
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2"
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3"
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4"
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5"
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6"
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7"
+        },
+        {
+          "data": "Total",
+          "title": "Total"
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added daily budget limits",
+      "author": "Alice",
+      "date": "2025-07-25T14:30:39.813Z",
+      "cellChanges": [
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          7
+        ]
+      ],
+      "cellChangesDeep": [
+        {"row": 4, "column": 1, "type": "content"},
+        {"row": 4, "column": 2, "type": "content"},
+        {"row": 4, "column": 3, "type": "content"},
+        {"row": 4, "column": 4, "type": "content"},
+        {"row": 4, "column": 5, "type": "content"},
+        {"row": 4, "column": 6, "type": "content"},
+        {"row": 4, "column": 7, "type": "content"},
+        {"row": 4, "column": 8, "type": "propagation"}
+      ]
+    },
+    {
+      "id": 148,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:31:54 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              0,
+              1,
+              "0",
+              "120"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              1
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 1 flight cost",
+      "author": "Alice",
+      "date": "2025-07-25T14:31:54.813Z",
+      "cellChanges": [
+        [
+          0,
+          1
+        ]
+      ],
+      "cellChangesDeep":[
+        { "row": 0, "column": 1, "type": "content" },
+        { "row": 0, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 1, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 149,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:35:15 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              0,
+              3,
+              "0",
+              "85"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              3
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 3 train to Paris",
+      "author": "Alice",
+      "date": "2025-07-25T14:35:15.813Z",
+      "cellChanges": [
+        [
+          0,
+          3
+        ]
+      ],
+      "cellChangesDeep":[
+        { "row": 0, "column": 3, "type": "content" },
+        { "row": 0, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 3, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 150,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:35:25 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              0,
+              3,
+              "0",
+              "85"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              0,
+              5,
+              "0",
+              "95"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              5
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 5 rental car",
+      "author": "Alice",
+      "date": "2025-07-25T14:35:25.308Z",
+      "cellChanges": [
+        [
+          0,
+          5
+        ]
+      ],
+            "cellChangesDeep":[
+        { "row": 0, "column": 5, "type": "content" },
+        { "row": 0, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 5, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 151,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:35:36 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              0,
+              3,
+              "0",
+              "85"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              0,
+              5,
+              "0",
+              "95"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              5
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              0,
+              7,
+              "0",
+              "120"
+            ]
+          ],
+          "selected": [
+            [
+              0,
+              7
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 7 return flight",
+      "author": "Alice",
+      "date": "2025-07-25T14:35:36.863Z",
+      "cellChanges": [
+        [
+          0,
+          7
+        ]
+      ],
+      "cellChangesDeep":[
+        { "row": 0, "column": 7, "type": "content" },
+        { "row": 0, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 7, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 153,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:39:57 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              1,
+              "0",
+              null
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              1,
+              null,
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 1 hotel",
+      "author": "Bob",
+      "date": "2025-07-25T14:39:57.340Z",
+      "cellChanges": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+            "cellChangesDeep":[
+        { "row": 1, "column": 1, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 1, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 154,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:40:22 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              1,
+              "0",
+              null
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              1,
+              null,
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              2,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              2
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 2 hotel",
+      "author": "Bob",
+      "date": "2025-07-25T14:40:22.068Z",
+      "cellChanges": [
+        [
+          1,
+          2
+        ]
+      ],      "cellChangesDeep":[
+        { "row": 1, "column": 2, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 2, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 155,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "180",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:40:24 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              1,
+              "0",
+              null
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              1,
+              null,
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              2,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 3 hotel",
+      "author": "Bob",
+      "date": "2025-07-25T14:40:24.577Z",
+      "cellChanges": [
+        [
+          1,
+          3
+        ]
+      ],    "cellChangesDeep":[
+        { "row": 1, "column": 3, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 3, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 156,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "180",
+          "Day 4": "180",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:40:27 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              1,
+              "0",
+              null
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              1,
+              null,
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              2,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              4,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              4
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 4 hotel",
+      "author": "Bob",
+      "date": "2025-07-25T14:40:27.567Z",
+      "cellChanges": [
+        [
+          1,
+          4
+        ]
+      ],    "cellChangesDeep":[
+        { "row": 1, "column": 4, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 4, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 157,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "180",
+          "Day 4": "180",
+          "Day 5": "180",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:40:30 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              1,
+              "0",
+              null
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              1,
+              null,
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              2,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              4,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              5,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              5
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 5 hotel",
+      "author": "Bob",
+      "date": "2025-07-25T14:40:30.089Z",
+      "cellChanges": [
+        [
+          1,
+          5
+        ]
+      ],    "cellChangesDeep":[
+        { "row": 1, "column": 5, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 5, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 158,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "180",
+          "Day 4": "180",
+          "Day 5": "180",
+          "Day 6": "180",
+          "Day 7": "0",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:40:31 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              1,
+              "0",
+              null
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              1,
+              null,
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              2,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              4,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              5,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              5
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              6,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              6
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 6 hotel",
+      "author": "Bob",
+      "date": "2025-07-25T14:40:31.971Z",
+      "cellChanges": [
+        [
+          1,
+          6
+        ]
+      ],
+          "cellChangesDeep":[
+        { "row": 1, "column": 6, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 6, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 159,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "180",
+          "Day 4": "180",
+          "Day 5": "180",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 4:40:34 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              1,
+              "0",
+              null
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              1,
+              null,
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              1
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              2,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              2
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              4,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              5,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              5
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              6,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              6
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              7,
+              "0",
+              "180"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              7
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Added Day 7 hotel",
+      "author": "Bob",
+      "date": "2025-07-25T14:40:34.052Z",
+      "cellChanges": [
+        [
+          1,
+          7
+        ]
+      ],
+          "cellChangesDeep":[
+        { "row": 1, "column": 7, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 7, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 160,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "320",
+          "Day 4": "180",
+          "Day 5": "180",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 5:43:08 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "180",
+              "320"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Increased Day 3 hotel rate due to Fashion Week",
+      "author": "Bob",
+      "date": "2025-07-25T15:43:08.032Z",
+      "cellChanges": [
+        [
+          1,
+          3
+        ]
+      ],
+          "cellChangesDeep":[
+        { "row": 1, "column": 3, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 3, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 161,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "320",
+          "Day 4": "320",
+          "Day 5": "180",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 5:43:10 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "180",
+              "320"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              4,
+              "180",
+              "320"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              4
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Increased Day 4 hotel rate due to Fashion Week",
+      "author": "Bob",
+      "date": "2025-07-25T15:43:10.712Z",
+      "cellChanges": [
+        [
+          1,
+          4
+        ]
+      ],
+          "cellChangesDeep":[
+        { "row": 1, "column": 4, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 4, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 162,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "320",
+          "Day 4": "320",
+          "Day 5": "320",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 5:43:14 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "180",
+              "320"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              4,
+              "180",
+              "320"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              4
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              5,
+              "180",
+              "320"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              5
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Increased Day 5 hotel rate due to Fashion Week",
+      "author": "Bob",
+      "date": "2025-07-25T15:43:14.603Z",
+      "cellChanges": [
+        [
+          1,
+          5
+        ]
+      ],    "cellChangesDeep":[
+        { "row": 1, "column": 5, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 5, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 163,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "140",
+          "Day 4": "320",
+          "Day 5": "320",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 6:44:50 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "320",
+              "140"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Switched Day 3 hotel to Airbnb",
+      "author": "Bob",
+      "date": "2025-07-25T16:44:50.083Z",
+      "cellChanges": [
+        [
+          1,
+          3
+        ]
+      ],
+          "cellChangesDeep":[
+        { "row": 1, "column": 3, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 3, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 164,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "140",
+          "Day 4": "140",
+          "Day 5": "320",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "50",
+          "Day 4": "50",
+          "Day 5": "50",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 6:44:53 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              1,
+              3,
+              "320",
+              "140"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              3
+            ]
+          ],
+          "actionType": "change"
+        },
+        {
+          "changes": [
+            [
+              1,
+              4,
+              "320",
+              "140"
+            ]
+          ],
+          "selected": [
+            [
+              1,
+              4
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Switched Day 4 hotel to Airbnb",
+      "author": "Bob",
+      "date": "2025-07-25T16:44:53.265Z",
+      "cellChanges": [
+        [
+          1,
+          4
+        ]
+      ],    "cellChangesDeep":[
+        { "row": 1, "column": 4, "type": "content" },
+        { "row": 1, "column": 8, "type": "propagation" },
+        { "row": 5, "column": 4, "type": "propagation" },
+        { "row": 5, "column": 8, "type": "propagation" }
+      ]
+    },
+    {
+      "id": 173,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "140",
+          "Day 4": "140",
+          "Day 5": "320",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "70",
+          "Day 4": "70",
+          "Day 5": "70",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "120",
+          "Day 4": "150",
+          "Day 5": "10",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(B6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 10:48:18 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              3,
+              5,
+              "0",
+              "10"
+            ]
+          ],
+          "selected": [
+            [
+              3,
+              5
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Increased food expenses and added activies",
+      "author": "Alice",
+      "date": "2025-07-25T20:48:18.102Z",
+      "cellChanges": [
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "cellChangesDeep": [
+        {
+          "row": 2,
+          "column": 3,
+          "type": "content"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "type": "content"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "type": "content"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "type": "content"
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "type": "content"
+        },
+        {
+          "row": 3,
+          "column": 5,
+          "type": "content"
+        },
+        {
+          "row": 2,
+          "column": 8,
+          "type": "propagation"
+        },
+        {
+          "row": 3,
+          "column": 8,
+          "type": "propagation"
+        },
+        {
+          "row": 5,
+          "column": 3,
+          "type": "propagation"
+        },
+        {
+          "row": 5,
+          "column": 4,
+          "type": "propagation"
+        },
+                {
+          "row": 5,
+          "column": 5,
+          "type": "propagation"
+        },
+                        {
+          "row": 5,
+          "column": 8,
+          "type": "propagation"
+        }
+      ]
+    },
+    {
+      "id": 174,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "140",
+          "Day 4": "140",
+          "Day 5": "320",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "70",
+          "Day 4": "70",
+          "Day 5": "70",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "120",
+          "Day 4": "150",
+          "Day 5": "10",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B4)",
+          "Day 2": "=SUM(C1:C4)",
+          "Day 3": "=SUM(D1:D4)",
+          "Day 4": "=SUM(E1:E4)",
+          "Day 5": "=SUM(F1:F4)",
+          "Day 6": "=SUM(G1:G4)",
+          "Day 7": "=SUM(H1:H4)",
+          "Total": "=SUM(C6:H6)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 11:48:18 PM",
+      "actions": [
+        {
+          "changes": [
+            [
+              5,
+              8,
+              "=SUM(B6:H6)",
+              "=SUM(C6:H6)"
+            ]
+          ],
+          "selected": [
+            [
+              3,
+              5
+            ]
+          ],
+          "actionType": "change"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "Remove Day 1 from total count",
+      "author": "Charlie",
+      "date": "2025-07-25T23:48:18.102Z",
+      "cellChanges": [
+        [
+          5,
+          8
+        ]
+      ],
+      "cellChangesDeep": [
+        {
+          "row": 5,
+          "column": 8,
+          "type": "dependency"
+        }
+      ]
+    },
+    {
+      "id": 175,
+      "parentId": 0,
+      "data": [
+        {
+          "Category": "Transportation",
+          "Day 1": "120",
+          "Day 2": "0",
+          "Day 3": "85",
+          "Day 4": "0",
+          "Day 5": "95",
+          "Day 6": "0",
+          "Day 7": "120",
+          "Total": "=SUM(B1:H1)"
+        },
+        {
+          "Category": "Hotel",
+          "Day 1": "180",
+          "Day 2": "180",
+          "Day 3": "140",
+          "Day 4": "140",
+          "Day 5": "320",
+          "Day 6": "180",
+          "Day 7": "180",
+          "Total": "=SUM(B2:H2)"
+        },
+        {
+          "Category": "Shopping",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "0",
+          "Day 4": "0",
+          "Day 5": "0",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B3:H3)"
+        },
+        {
+          "Category": "Food",
+          "Day 1": "50",
+          "Day 2": "50",
+          "Day 3": "70",
+          "Day 4": "70",
+          "Day 5": "70",
+          "Day 6": "50",
+          "Day 7": "50",
+          "Total": "=SUM(B4:H4)"
+        },
+        {
+          "Category": "Activities",
+          "Day 1": "0",
+          "Day 2": "0",
+          "Day 3": "120",
+          "Day 4": "150",
+          "Day 5": "10",
+          "Day 6": "0",
+          "Day 7": "0",
+          "Total": "=SUM(B5:H5)"
+        },
+        {
+          "Category": "Budget Limit",
+          "Day 1": "500",
+          "Day 2": "500",
+          "Day 3": "500",
+          "Day 4": "500",
+          "Day 5": "500",
+          "Day 6": "500",
+          "Day 7": "500",
+          "Total": "=SUM(B6:H6)"
+        },
+        {
+          "Category": "Daily Total",
+          "Day 1": "=SUM(B1:B5)",
+          "Day 2": "=SUM(C1:C5)",
+          "Day 3": "=SUM(D1:D5)",
+          "Day 4": "=SUM(E1:E5)",
+          "Day 5": "=SUM(F1:F5)",
+          "Day 6": "=SUM(G1:G5)",
+          "Day 7": "=SUM(H1:H5)",
+          "Total": "=SUM(C7:H7)"
+        }
+      ],
+      "fileName": "Trip_Budget_Planning",
+      "timestamp": "7/25/2025, 11:58:18 PM",
+      "actions": [
+        {
+          "index": 1,
+          "amount": 1,
+          "actionType": "insert_row"
+        }
+      ],
+      "columnConfigs": [
+        {
+          "data": "Category",
+          "title": "Category",
+          "width": 100
+        },
+        {
+          "data": "Day 1",
+          "title": "Day 1",
+          "width": 100
+        },
+        {
+          "data": "Day 2",
+          "title": "Day 2",
+          "width": 100
+        },
+        {
+          "data": "Day 3",
+          "title": "Day 3",
+          "width": 100
+        },
+        {
+          "data": "Day 4",
+          "title": "Day 4",
+          "width": 100
+        },
+        {
+          "data": "Day 5",
+          "title": "Day 5",
+          "width": 100
+        },
+        {
+          "data": "Day 6",
+          "title": "Day 6",
+          "width": 100
+        },
+        {
+          "data": "Day 7",
+          "title": "Day 7",
+          "width": 100
+        },
+        {
+          "data": "Total",
+          "title": "Total",
+          "width": 100
+        }
+      ],
+      "cellFormat": {},
+      "historyMessage": "New row is inserted",
+      "author": "Charlie",
+      "date": "2025-07-25T23:58:18.102Z",
+      "cellChanges": [
+        [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 8],
+        [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7], [3, 8],
+        [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [4, 8],
+        [5, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7], [5, 8],
+        [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [6, 8]
+      ],
+      "cellChangesDeep": [
+        {
+          "row": 2,
+          "column": 0,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "type": "structure",
+          "spec": "new" 
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 2,
+          "column": 6,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 2,
+          "column": 7,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 2,
+          "column": 8,
+          "type": "structure",
+          "spec": "new"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 5,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 6,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 7,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 3,
+          "column": 8,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 1,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 2,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 3,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 4,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 5,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 6,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 7,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 4,
+          "column": 8,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 1,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 2,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 3,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 4,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 5,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 6,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 7,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 5,
+          "column": 8,
+          "type": "structure",
+          "spec": "addrow" 
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 1,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 2,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 3,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 4,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 5,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 6,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 7,
+          "type": "structure",
+          "spec": "addrow"
+        },
+        {
+          "row": 6,
+          "column": 8,
+          "type": "structure",
+          "spec": "addrow"
+        }
+      ]
+    }
+  ],
+  "currentDataId": 0,
+  "idList": [
+    1
+  ]
+}

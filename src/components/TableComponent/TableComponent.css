@@ -37,6 +37,10 @@ div.bg-success,
   background-color: #F3D53E !important;
 }
 
+.handsontable td.bg-warning.brushed {
+  background-color: #f3d53e38 !important;
+}
+
 .handsontable td.font-bold {
   font-weight: bold !important;
 }
@@ -164,4 +168,20 @@ div.bg-success,
   width: 16px;
   height: 16px;
   border-radius: 50%;
+}
+
+.bg-propagation {
+  background-color: rgba(187, 222, 251, 0.4) !important; /* 蓝色 */
+}
+
+.bg-content {
+  background-color: rgba(168, 213, 186, 0.4) !important; /* 绿色 */
+}
+
+.bg-structure {
+  background-color: rgba(255, 236, 179, 0.5) !important ; /* 黄色 */
+}
+
+.bg-dependency {
+  background-color: rgba(248, 187, 208, 0.5) !important; /* 粉红 */
 }

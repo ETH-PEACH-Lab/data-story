@@ -13,12 +13,15 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 
 import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext, getColor, BrushState } from "../../App";
 import {
   filterHistory,
+  filterDeepHistory,
   bundleHistoryEntries,
   getAuthors,
   getAllAuthors,
@@ -66,7 +69,9 @@ interface HistorySidebarProps {
   selectEntry: (entry: HistoryEntry | null) => void
   brushState: BrushState
   setBrushState: (state: BrushState) => void
-  setBrushedCells: (cells: number[][]) => void
+  setBrushedCells: (cells: number[][]) => void,
+  setEntryId: (id: number) => void,
+  entryId: number
 }
 
 const HistorySidebar = ({
@@ -74,10 +79,11 @@ const HistorySidebar = ({
   brushState,
   setBrushState,
   setBrushedCells,
+  setEntryId,
+  entryId
 }: HistorySidebarProps) => {
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
-  const [selectedId, setSelectedId] = useState(-1);
   const [intervalStart, setIntervalStart] = useState<Date | null>(null)
   const [intervalEnd, setIntervalEnd] = useState<Date | null>(null)
   const [editingEntryId, setEditingEntryId] = useState<number>(-1)
@@ -85,8 +91,10 @@ const HistorySidebar = ({
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null)
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedKeyword, setSelectedKeyword] = useState("");
   const [diffMode, setDiffMode] = useState<"before" | "after">("after");
+  const [filteredBundles, setFilteredBundles] = useState<HistoryBundle[]>([]);
 
   const [brushedWord, setBrushedWord] = useState<string>("");
 
@@ -176,11 +184,34 @@ const HistorySidebar = ({
   }, [uploadHistory]);
 
   useEffect(() => {
+    setFilteredBundles(bundles);
+  }, [bundles]);
+
+  useEffect(() => {
     if (editingEntryId >= 0 && inputRef.current) inputRef.current.focus()
   }, [editingEntryId])
 
+  useEffect(() => {
+    const result = filterDeepHistory(
+    bundles,
+    selectedCollaborators,
+    intervalStart,
+    intervalEnd,
+    brushedCells,
+    brushedWord,
+    brushState
+  )
+  if (result.length > 0) {
+    handleHistoryItemClick(result[result.length - 1].entries[result[result.length - 1].entries.length - 1]);
+  }
+  setEntryId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : -1);
+  setSelectedId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : null);
+  setFilteredBundles(result);
+  }, [brushState]);
+
   const viewCurrentVersion = () => {
-    setSelectedId(-1)
+    setEntryId(-1);
+    setSelectedId(-1);
     selectEntry(null)
     handleHistoryClick(uploadHistory.at(-1), -1)
   }
@@ -194,20 +225,23 @@ const HistorySidebar = ({
       if (currentIndex > 0) {
         const previousEntry = uploadHistory[currentIndex - 1]
         handleHistoryClick(previousEntry, -1)
+        setEntryId(previousEntry.id);
       }
     }
     else {
+      setEntryId(entry.id);
       handleHistoryClick(entry, -1) // Switch to the current entry
     }
     setDiffMode((prev) => (prev === "before" ? "after" : "before"));
   }
 
   const handleHistoryItemClick = (entry: HistoryEntry) => {
+    setEntryId(entry.id);
+    setSelectedId(entry.id);
     setDiffMode("after");
     if (brushState === BrushState.BRUSHING) return
-    if (selectedId !== entry.id) {
+    if (entryId !== entry.id) {
       selectEntry(entry)
-      setSelectedId(entry.id)
       handleHistoryClick(entry, -1)
     } else {
       viewCurrentVersion()
@@ -231,14 +265,18 @@ const HistorySidebar = ({
   }
 
   // Helper to render authors blob with color dots for each author
-  const getAuthorsBlob = (bundle: HistoryBundle) => {
-    const authorsString = getAuthors(bundle);
+  const getAuthorsBlob = (bundle: HistoryBundle, entry?: HistoryEntry) => {
+    let authorsString = "";
+    if (bundle) authorsString = getAuthors(bundle);
+    if (entry) {
+      authorsString = entry.author;
+    }
     const authors = authorsString.split(/,\s*/);
     return (
       <span>
         {authors.map((author, idx) => (
           <span
-            key={author}
+            key={idx}
             style={{
               display: 'inline-block',
               width: 10,
@@ -253,15 +291,6 @@ const HistorySidebar = ({
       </span>
     );
   };
-  const filteredBundles = filterHistory(
-    bundles,
-    selectedCollaborators,
-    intervalStart,
-    intervalEnd,
-    brushedCells,
-    brushedWord,
-    brushState
-  )
 
   return (
     <div className={"history-sidebar"}>
@@ -310,7 +339,7 @@ const HistorySidebar = ({
       <List>
         <ul className="list-group w-100" ref={listRef}>
           {filteredBundles.slice().reverse().map((bundle: HistoryBundle, index: number) => (
-            <div key={bundle.startTime}>
+            <div key={index}>
               <ListItemButton className="history-entry-head" onClick={() => toggleBundle(index)}>
                 <ListItemIcon>
                   {isOpen[index] ? <ExpandMore /> : <ChevronRight />}
@@ -324,11 +353,11 @@ const HistorySidebar = ({
               </ListItemButton>
               <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  {bundle.entries.slice().reverse().map((entry: HistoryEntry) => (
+                  {bundle.entries.slice().reverse().map((entry: HistoryEntry, index: number) => (
                     <ListItemButton
-                      key={entry.id}
+                      key={index}
                       sx={{ ml: 9, position: 'relative', display: 'flex', alignItems: 'center' }}
-                      className={entry.id === selectedId ? "bg-success history-entry" : "history-entry"}
+                      className={entry.id === selectedId ? "history-selected history-entry" : "history-entry"}
                       onClick={() => handleHistoryItemClick(entry)}
                       selected={entry.id === selectedId}
                       onMouseEnter={() => setMenuId(entry.id)}
@@ -347,7 +376,7 @@ const HistorySidebar = ({
                         style={{ paddingRight: '30px' }}
                         secondary={
                           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                            {getAuthorsBlob(bundle)}<span>{' - '}{getTime(entry.date)}</span>
+                            {getAuthorsBlob(null, entry)}<span>{' - '}{getTime(entry.date)}</span>
                           </span>
                         }
                         primary={
@@ -373,8 +402,9 @@ const HistorySidebar = ({
                               }}
                             >
                               {brushState === BrushState.BRUSHING ? (
-                                entry.historyMessage.split(" ").map((word) =>
+                                entry.historyMessage.split(" ").map((word, index) =>
                                   <span
+                                    key={index}
                                     onClick={() => setBrushedWord(word)}
                                     className={brushedWord === word ? "brushed-word" : "brushing"}
                                   >

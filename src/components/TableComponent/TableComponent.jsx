@@ -24,6 +24,7 @@ const TableComponent = ({
 	selectedCellsRef,
 	tableContainerRef,
 	brushState,
+	entryId
 }) => {
 	const [selectedRange, setSelectedRangeState] = useState(null);
 	const [activeItem, setActiveItem] = useState("");
@@ -36,6 +37,7 @@ const TableComponent = ({
 		updateCols,
 		updateTable,
 		cellDiff,
+		cellDeepDiff,
 		historyActions,
 		cellFormat,
 		brushedCells,
@@ -104,13 +106,28 @@ const TableComponent = ({
 	}));
 
 	const cellClassFn = (row, col) => {
-		const diffString = cellDiff.has(`${row},${col}`) ? "bg-success diff-cell" : ""
+		let diffString = '';
+		if (cellDeepDiff && cellDeepDiff.length > 0) {
+			const match = cellDeepDiff.find(cell => cell.row === row && cell.column === col);
+			diffString = match ? `bg-${match.type}` : ''
+		} else {
+			diffString = cellDiff.has(`${row},${col}`) ? "bg-success diff-cell" : ""
+		}
+
 		const formatString = (cellFormat[`${row},${col}`]?.italic ? 'font-italic ' : '')
 			+ (cellFormat[`${row},${col}`]?.bold ? 'font-bold ' : '')
 			+ (cellFormat[`${row},${col}`]?.bg ?? "")
-		const brushString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'bg-warning ' : '';
-		if (cellDiff.size > 0) return { className: diffString }
+		const brushString = brushedCells.some(cell => cell[0] === row && cell[1] === col) ? 'bg-warning brushed ' : '';
+
+		const highlightCells = window.deepTraceMap || [];
+		const highlight = highlightCells.find(item => item.id === entryId);
+
+		const isHighlighted = highlight?.cells?.some(cell => cell.row === row && cell.col === col);
+
+		const brushedString = isHighlighted ? 'brushed ' : '';
+		if (cellDiff.size > 0) return { className: brushedString + diffString }
 		else if (brushState === BrushState.BRUSHING) return { className: (brushString + "brushing") }
+		else if (brushState === BrushState.BRUSHED) return { className: brushedString }
 		else return { className: formatString }
 	}
 
@@ -177,17 +194,17 @@ const TableComponent = ({
 		}
 	}, [rawValue, clipboard, selectedCellsRef, selectedProp]);
 
-
-// 	useEffect(() => {
-// 	const hotInstance = hotRef.current?.hotInstance;
-// 	if (hotInstance) {
-// 	  hotInstance.addHook("afterOnCellMouseOver", (event, coords, TD) => {
-// 		if(TD.className.includes('diff-cell')) {
-// 		console.log("Hovered cell:", coords.row, coords.col);
-// 		}
-// 	  });
-// 	}
-//   }, [hotRef]);
+	useEffect(() => {
+		if (hotRef?.current?.hotInstance) {
+			const selected = hotRef.current.hotInstance.getSelectedLast();
+			if (selected) {
+				const [row, col] = selected;
+				const columnKeys = Object.keys(data[0]); 
+				const value = data[row][columnKeys[col]];
+				setRawValue(value ?? '');
+			}
+		}
+	}, [data, hotRef])
 
 	const handleSelection = (r1, c1) => {
 		if (brushState !== BrushState.BRUSHING) return

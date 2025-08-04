@@ -11,10 +11,19 @@
 
 .vis-custom-time {
   background-color: var(--brushing-color) !important;
+  width: 5px !important;
 }
 
 .brushed-word {
   background-color: var(--brushing-color);
+}
+
+.brushed {
+  box-shadow: inset 0 -2px 0 0 var(--brushing-color), inset -2px 0 0 0 var(--brushing-color), inset 0 2px 0 0 var(--brushing-color), inset 2px 0 0 0 var(--brushing-color) !important;
+}
+
+.brushed.bg-warning {
+  background-color: #f3d53e4a !important;
 }
 
 .brushing {
@@ -44,4 +53,8 @@
   border-radius: 10px !important;
   margin-bottom: 5px !important;
   margin-top: 5px !important;
+}
+
+.history-selected {
+  background-color: white !important;
 }

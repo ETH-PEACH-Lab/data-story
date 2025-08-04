@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { SharedContext } from "../../App";
 import { toggleCellFormat, calculateCellFormat } from "../../utils/formatHandlers";
 import { exportData } from "../../utils/storageHandlers";

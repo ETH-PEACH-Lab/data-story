@@ -283,6 +283,6 @@ body {
 .history-sidebar {
   flex: 0 0 30%;
   overflow-y: auto;
-  background-color: #f8f9fa;
+  background-color: #f0f4f9;
   padding: 1rem;
 }

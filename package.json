@@ -21,6 +21,7 @@
 		"@mui/material": "^7.1.0",
 		"bootstrap": "^5.3.6",
 		"chart.js": "^4.4.3",
+		"d3": "^7.9.0",
 		"handsontable": "^14.3.0",
 		"html2canvas": "^1.4.1",
 		"js-cookie": "^3.0.5",
