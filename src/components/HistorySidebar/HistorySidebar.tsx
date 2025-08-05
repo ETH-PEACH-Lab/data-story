@@ -92,11 +92,9 @@ const HistorySidebar = ({
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [selectedKeyword, setSelectedKeyword] = useState("");
   const [diffMode, setDiffMode] = useState<"before" | "after">("after");
   const [filteredBundles, setFilteredBundles] = useState<HistoryBundle[]>([]);
-
-  const [brushedWord, setBrushedWord] = useState<string>("");
+  const [brushedWords, setBrushedWords] = useState<Set<string>>(new Set());
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
@@ -198,7 +196,7 @@ const HistorySidebar = ({
     intervalStart,
     intervalEnd,
     brushedCells,
-    brushedWord,
+    brushedWords,
     brushState
   )
   if (result.length > 0) {
@@ -256,7 +254,7 @@ const HistorySidebar = ({
   const resetBrushing = () => {
     setSelectedCollaborators([])
     setBrushedCells([])
-    setBrushedWord("")
+    setBrushedWords(new Set())
     setIsOpen(Array(bundles.length).fill(false))
   }
 
@@ -291,6 +289,15 @@ const HistorySidebar = ({
       </span>
     );
   };
+
+  const handleBrushedWords = (word: string) => {
+    setBrushedWords((prev) => {
+      const newWords = new Set(prev)
+      if (newWords.has(word)) newWords.delete(word)
+      else newWords.add(word)
+      return newWords
+    })
+  }
 
   return (
     <div className={"history-sidebar"}>
@@ -327,7 +334,7 @@ const HistorySidebar = ({
           selectedCollaborators={selectedCollaborators}
           intervalStart={intervalStart}
           intervalEnd={intervalEnd}
-          brushedWord={brushedWord}
+          brushedWords={brushedWords}
         />
         {filteredBundles.length === 0 &&
           <Alert severity="error" className="m-3">
@@ -405,8 +412,8 @@ const HistorySidebar = ({
                                 entry.historyMessage.split(" ").map((word, index) =>
                                   <span
                                     key={index}
-                                    onClick={() => setBrushedWord(word)}
-                                    className={brushedWord === word ? "brushed-word" : "brushing"}
+                                    onClick={() => handleBrushedWords(word) }
+                                    className={"brushing" + (brushedWords.has(word) ? " brushed-word" : "")}
                                   >
                                     {word}
                                   </span>

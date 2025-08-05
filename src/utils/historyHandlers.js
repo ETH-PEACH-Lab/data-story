@@ -316,24 +316,24 @@ const filterDeepCells = (uploadHistory, cells) => {
 };
 
 
-const filterKeyword = (uploadHistory, keyword) => {
-  if (!keyword || keyword.trim() === "") return uploadHistory
+const filterKeyword = (uploadHistory, keywords) => {
+  if (!keywords || keywords.size === 0) return uploadHistory
 
   return uploadHistory.map(bundle => ({
     ...bundle,
-    entries: bundle.entries.filter(entry => entry.historyMessage.includes(keyword))
+    entries: bundle.entries.filter(entry => [...keywords].some(keyword => entry.historyMessage.includes(keyword)))
   })).filter(bundle => bundle.entries.length > 0)
 }
 
-export const filterHistory = (history, authors, start, end, cells, keyword, brushState) => {
+export const filterHistory = (history, authors, start, end, cells, keywords, brushState) => {
   if (brushState !== BrushState.BRUSHED) return history
-  return filterKeyword(filterCells(filterTime(filterAuthors(history, authors), start, end), cells), keyword)
+  return filterKeyword(filterCells(filterTime(filterAuthors(history, authors), start, end), cells), keywords)
 }
 
 
-export const filterDeepHistory = (history, authors, start, end, cells, keyword, brushState) => {
+export const filterDeepHistory = (history, authors, start, end, cells, keywords, brushState) => {
   if (brushState !== BrushState.BRUSHED) return history
-  return filterKeyword(filterDeepCells(filterTime(filterAuthors(history, authors), start, end), cells), keyword)
+  return filterKeyword(filterDeepCells(filterTime(filterAuthors(history, authors), start, end), cells), keywords)
 }
 
 export const getAllAuthors = (uploadHistory) => {
