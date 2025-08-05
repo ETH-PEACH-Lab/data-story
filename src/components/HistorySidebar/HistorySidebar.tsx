@@ -383,7 +383,7 @@ const HistorySidebar = ({
                         style={{ paddingRight: '30px' }}
                         secondary={
                           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                            {getAuthorsBlob(null, entry)}<span>{' - '}{getTime(entry.date)}</span>
+                            {getAuthorsBlob(null, entry)}<span>{' - '}{getTime(entry.timestamp)}</span>
                           </span>
                         }
                         primary={
