@@ -1,0 +1,2035 @@
+[
+  {
+    "id": 128,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": null,
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": null,
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": null,
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": null,
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 4:28:56 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            1,
+            1,
+            "Opening Keynote: Future of AI\nDr. Amira Solis",
+            null
+          ],
+          [
+            1,
+            2,
+            "Talk: Tech Ethics in 2030\nJordan Malik",
+            null
+          ],
+          [
+            1,
+            3,
+            "Talk: Rewiring Education with AI\nChloe Tran",
+            null
+          ],
+          [
+            1,
+            4,
+            null,
+            null
+          ],
+          [
+            1,
+            5,
+            "Panel: Green Tech Frontiers\nmoderated by Anil Desai",
+            null
+          ],
+          [
+            1,
+            6,
+            "Talk: Rebuilding Trust in Media\nRosa Kim",
+            null
+          ],
+          [
+            1,
+            7,
+            "Closing Keynote: The Next Decade\nRaymond Zhu",
+            null
+          ],
+          [
+            1,
+            8,
+            "---",
+            null
+          ],
+          [
+            2,
+            1,
+            "Workshop: Design Sprint Basics\nInstructor: Lila Cho",
+            null
+          ],
+          [
+            2,
+            2,
+            "Workshop (cont’d)",
+            null
+          ],
+          [
+            2,
+            3,
+            "Workshop: Prototyping with Figma\nMark Ivers",
+            null
+          ],
+          [
+            2,
+            4,
+            "Lunch Break",
+            null
+          ],
+          [
+            2,
+            5,
+            "Workshop: Intro to Prompt Engineering\nTariq B",
+            null
+          ],
+          [
+            2,
+            6,
+            "Workshop (cont’d)",
+            null
+          ],
+          [
+            2,
+            7,
+            "---",
+            null
+          ],
+          [
+            2,
+            8,
+            "---",
+            null
+          ],
+          [
+            3,
+            1,
+            "Panel: Women in Robotics\nModerator: Sana Gill",
+            null
+          ],
+          [
+            3,
+            2,
+            "Talk: Remote Work Realities\nEthan Wells",
+            null
+          ],
+          [
+            3,
+            3,
+            "Panel: Cybersecurity & You\nGov + Industry",
+            null
+          ],
+          [
+            3,
+            4,
+            "Lunch Break",
+            null
+          ],
+          [
+            3,
+            5,
+            "Talk: Local Climate Actions\nNeha Rao",
+            null
+          ],
+          [
+            3,
+            6,
+            "Panel: VC Trends 2025\nearly-stage funders",
+            null
+          ],
+          [
+            3,
+            7,
+            "Fireside Chat: From Lab to Market\nInventors Panel",
+            null
+          ],
+          [
+            3,
+            8,
+            "---",
+            null
+          ],
+          [
+            4,
+            1,
+            "Coffee & Check-In",
+            null
+          ],
+          [
+            4,
+            2,
+            "Open Networking",
+            null
+          ],
+          [
+            4,
+            3,
+            "Topic Tables: Startups, Research, Policy",
+            null
+          ],
+          [
+            4,
+            4,
+            "Lunch Buffet",
+            null
+          ],
+          [
+            4,
+            5,
+            "Mentorship Roundtables",
+            null
+          ],
+          [
+            4,
+            6,
+            "Demo Pods: Startups",
+            null
+          ],
+          [
+            4,
+            7,
+            "Chill + Chat",
+            null
+          ],
+          [
+            4,
+            8,
+            "Farewell Mixer",
+            null
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            1,
+            4,
+            8
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Created initial template",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        7
+      ],
+      [
+        1,
+        8
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        2,
+        8
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        4,
+        8
+      ]
+    ]
+  },
+  {
+    "id": 136,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": null,
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": null,
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": null,
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 4:43:20 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            4,
+            1,
+            null,
+            "Check-In"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            1
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            4,
+            2,
+            null,
+            "Coffee and Cake"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            2
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            4,
+            3,
+            null,
+            "Open Networking"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            3
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            4,
+            4,
+            null,
+            "Lunch Buffet"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            4
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            4,
+            5,
+            null,
+            "Lunch Buffet"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            5
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            4,
+            6,
+            null,
+            "Startup Demos"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            6
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            4,
+            7,
+            null,
+            "Startup Demos"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            7
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            4,
+            8,
+            null,
+            "Farewell Mixer"
+          ]
+        ],
+        "selected": [
+          [
+            4,
+            8
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Added networking lounge events",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        4,
+        8
+      ]
+    ]
+  },
+  {
+    "id": 142,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": "Opening Keynote by Dr. Solé",
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": "Closing Keynote by Dr. Zhu"
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 4:46:39 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            1,
+            4,
+            null,
+            "Lunch Break"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            2,
+            4,
+            null,
+            "Lunch Break"
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            4
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            3,
+            4,
+            null,
+            "Lunch Break"
+          ]
+        ],
+        "selected": [
+          [
+            3,
+            4
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            1,
+            1,
+            null,
+            "Opening Keynote by Dr. Solé"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            1
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            1,
+            8,
+            null,
+            "Closing Keynote by Dr. Zu"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            8
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            1,
+            8,
+            "Closing Keynote by Dr. Zu",
+            "Closing Keynote by Dr. Zhu"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            8
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Added lunch breaks and keynotes",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        8
+      ],
+      [
+        1,
+        8
+      ]
+    ]
+  },
+  {
+    "id": 148,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": "Opening Keynote by Dr. Solé",
+        "10:00-11:00": "Future of AI by Mr. Malik",
+        "11:00-12:00": "AI in Education by Ms. Tran",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Climate and Technology by Ms. Kim",
+        "14:00-15:00": "Bias in Social Media by Mr. Romero",
+        "15:00-16:00": "Trust and Security by Ms. Remington",
+        "16:00-17:00": "Closing Keynote by Dr. Zhu"
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 5:43:01 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            1,
+            2,
+            "x",
+            "Future of AI by Mr. Malik"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            2
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            1,
+            3,
+            null,
+            "AI in Education by Ms. Tran"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            3
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            1,
+            5,
+            null,
+            "Climate and Technology by Ms. Kim"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            1,
+            6,
+            null,
+            "Bias in Social Media by Mr. Romero"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            6
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            1,
+            7,
+            null,
+            "Trust and Security by Ms. Remington"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            7
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Added main stage events",
+    "author": "Eve",
+    "cellChanges": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        7
+      ]
+    ]
+  },
+  {
+    "id": 152,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": "Opening Keynote by Dr. Solé",
+        "10:00-11:00": "Future of AI by Mr. Malik",
+        "11:00-12:00": "AI in Education by Ms. Tran",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": "Bias in Social Media by Mr. Romero",
+        "15:00-16:00": "Trust and Security by Ms. Remington",
+        "16:00-17:00": "Closing Keynote by Dr. Zhu"
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Climate and Technology by Ms. Kim",
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 5:44:56 PM",
+    "actions": [],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Moved climate and technology to panel room B",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        3,
+        5
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        5
+      ]
+    ]
+  },
+  {
+    "id": 160,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": "Opening Keynote by Dr. Solé",
+        "10:00-11:00": "Future of AI by Mr. Malik",
+        "11:00-12:00": "AI in Education by Ms. Tran",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": "Bias in Social Media by Mr. Romero",
+        "15:00-16:00": "Trust and Security by Ms. Remington",
+        "16:00-17:00": "Closing Keynote by Dr. Zhu"
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": "Sprint Basics by Ms. Cho",
+        "10:00-11:00": "Sprint Basics by Ms. Cho",
+        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Introduction to Prompt Engineering by Mr. Embarek",
+        "14:00-15:00": "Linux Installation by Ms. Hernandez",
+        "15:00-16:00": "Linux Installation by Ms. Hernandez",
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Climate and Technology by Ms. Kim",
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 6:48:53 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            2,
+            2,
+            null,
+            ""
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            2
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            2,
+            1,
+            "x",
+            "Sprint Basics by Ms. Cho"
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            1
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            2,
+            2,
+            "",
+            "Sprint Basics by Ms. Cho"
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            2
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            2,
+            3,
+            null,
+            "Prototyping with Figma by Dr. Orion"
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            3
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            2,
+            5,
+            null,
+            "Introduction to Prompt Engineering by Mr. Embarek"
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            5
+          ]
+        ],
+        "actionType": "change"
+      },
+      {
+        "changes": [
+          [
+            2,
+            6,
+            null,
+            "Linux Installation by Ms. Hernandez"
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            6
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Added workshop room A events",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ]
+    ]
+  },
+  {
+    "id": 162,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": "Opening Keynote by Dr. Solé",
+        "10:00-11:00": "Future of AI by Mr. Malik",
+        "11:00-12:00": "AI in Education by Ms. Tran",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": null,
+        "14:00-15:00": "Bias in Social Media by Mr. Romero",
+        "15:00-16:00": "Trust and Security by Ms. Remington",
+        "16:00-17:00": "Closing Keynote by Dr. Zhu"
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": "Sprint Basics by Ms. Cho",
+        "10:00-11:00": "Sprint Basics by Ms. Cho",
+        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Intro to Prompt Engineering by Mr. Embarek",
+        "14:00-15:00": "Linux Installation by Ms. Hernandez",
+        "15:00-16:00": "Linux Installation by Ms. Hernandez",
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Climate and Technology by Ms. Kim",
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 6:50:39 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            2,
+            5,
+            "Introduction to Prompt Engineering by Mr. Embarekesao",
+            "Intro to Prompt Engineering by Mr. Embarek"
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            5
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Renamed introduction to prompt engineering",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        5
+      ]
+    ]
+  },
+  {
+    "id": 163,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": "Opening Keynote by Dr. Solé",
+        "10:00-11:00": "Future of AI by Mr. Malik",
+        "11:00-12:00": "AI in Education by Ms. Tran",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "AI policies by Mr. Schweizer",
+        "14:00-15:00": "Bias in Social Media by Mr. Romero",
+        "15:00-16:00": "Trust and Security by Ms. Remington",
+        "16:00-17:00": "Closing Keynote by Dr. Zhu"
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": "Sprint Basics by Ms. Cho",
+        "10:00-11:00": "Sprint Basics by Ms. Cho",
+        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Intro to Prompt Engineering by Mr. Embarek",
+        "14:00-15:00": "Linux Installation by Ms. Hernandez",
+        "15:00-16:00": "Linux Installation by Ms. Hernandez",
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": null,
+        "10:00-11:00": null,
+        "11:00-12:00": null,
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Climate and Technology by Ms. Kim",
+        "14:00-15:00": null,
+        "15:00-16:00": null,
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 8:52:06 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            1,
+            5,
+            null,
+            "AI policies by Mr. Schweizer"
+          ]
+        ],
+        "selected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Added main stage event at 13:00-14:00",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        1,
+        5
+      ]
+    ]
+  },
+  {
+    "id": 174,
+    "parentId": 0,
+    "data": [
+      {
+        "Room": "Room / Track",
+        "09:00-10:00": "09:00-10:00",
+        "10:00-11:00": "10:00-11:00",
+        "11:00-12:00": "11:00-12:00",
+        "12:00-13:00": "12:00-13:00",
+        "13:00-14:00": "13:00-14:00",
+        "14:00-15:00": "14:00-15:00",
+        "15:00-16:00": "15:00-16:00",
+        "16:00-17:00": "16:00-17:00"
+      },
+      {
+        "Room": "Main Stage",
+        "09:00-10:00": "Opening Keynote by Dr. Solé",
+        "10:00-11:00": "Future of AI by Mr. Malik",
+        "11:00-12:00": "AI in Education by Ms. Tran",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "AI policies by Mr. Schweizer",
+        "14:00-15:00": "Bias in Social Media by Mr. Romero",
+        "15:00-16:00": "Trust and Security by Ms. Remington",
+        "16:00-17:00": "Closing Keynote by Dr. Zhu"
+      },
+      {
+        "Room": "Workshop Room A",
+        "09:00-10:00": "Sprint Basics by Ms. Cho",
+        "10:00-11:00": "Sprint Basics by Ms. Cho",
+        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Intro to Prompt Engineering by Mr. Embarek",
+        "14:00-15:00": "Linux Installation by Ms. Hernandez",
+        "15:00-16:00": "Linux Installation by Ms. Hernandez",
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Panel Room B",
+        "09:00-10:00": "Women in Robotics by Ms. Gillinger",
+        "10:00-11:00": "Remote Work by Mr. Wells",
+        "11:00-12:00": "Cybersecurity Threats by Argon",
+        "12:00-13:00": "Lunch Break",
+        "13:00-14:00": "Climate and Technology by Ms. Kim",
+        "14:00-15:00": "Quantum Computing by Dr. Kwok",
+        "15:00-16:00": "Cloud Computing by Dr. Sadic",
+        "16:00-17:00": null
+      },
+      {
+        "Room": "Networking Lounge",
+        "09:00-10:00": "Check-In",
+        "10:00-11:00": "Coffee and Cake",
+        "11:00-12:00": "Open Networking",
+        "12:00-13:00": "Lunch Buffet",
+        "13:00-14:00": "Lunch Buffet",
+        "14:00-15:00": "Startup Demos",
+        "15:00-16:00": "Startup Demos",
+        "16:00-17:00": "Farewell Mixer"
+      }
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 8:40:45 PM",
+    "actions": [
+      {
+        "changes": [
+          [
+            2,
+            8,
+            "x",
+            null
+          ]
+        ],
+        "selected": [
+          [
+            2,
+            8
+          ]
+        ],
+        "actionType": "change"
+      }
+    ],
+    "columnConfigs": [
+      {
+        "data": "Room",
+        "title": "Room",
+        "width": 100
+      },
+      {
+        "data": "09:00-10:00",
+        "title": "09:00-10:00",
+        "width": 100
+      },
+      {
+        "data": "10:00-11:00",
+        "title": "10:00-11:00",
+        "width": 100
+      },
+      {
+        "data": "11:00-12:00",
+        "title": "11:00-12:00",
+        "width": 100
+      },
+      {
+        "data": "12:00-13:00",
+        "title": "12:00-13:00",
+        "width": 100
+      },
+      {
+        "data": "13:00-14:00",
+        "title": "13:00-14:00",
+        "width": 100
+      },
+      {
+        "data": "14:00-15:00",
+        "title": "14:00-15:00",
+        "width": 100
+      },
+      {
+        "data": "15:00-16:00",
+        "title": "15:00-16:00",
+        "width": 100
+      },
+      {
+        "data": "16:00-17:00",
+        "title": "16:00-17:00",
+        "width": 100
+      }
+    ],
+    "cellFormat": {},
+    "historyMessage": "Added panel Room B events",
+    "author": "Eve",
+    "cellChanges": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ]
+    ]
+  }
+]

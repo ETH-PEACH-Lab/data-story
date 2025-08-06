@@ -218,6 +218,7 @@ export function useHistoryManager({
 
     const initializeHistory = (history) => {
         setUploadHistory(history)
+        console.log(history)
         const historyEntry = history.at(-1)
         switchHistoryEntry(
             historyEntry,

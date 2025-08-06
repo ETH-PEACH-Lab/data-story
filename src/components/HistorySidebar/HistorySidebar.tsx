@@ -101,6 +101,7 @@ const HistorySidebar = ({
     historyState,
     historyActions,
     brushedCells,
+    appState,
   } = useContext(SharedContext);
 
   const {
@@ -309,6 +310,7 @@ const HistorySidebar = ({
           resetBrushing={resetBrushing}
           viewCurrentVersion={viewCurrentVersion}
           openBundles={() => setIsOpen(Array(bundles.length).fill(true))}
+          appState={appState}
         />
       </div>
       {brushState === BrushState.BRUSHING && <div>

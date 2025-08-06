@@ -1,15 +1,9 @@
-import { useEffect, useState } from 'react'
-import { BrushState } from "../App"
+import { BrushState, AppState } from "../App"
 
 import Button from '@mui/material/Button'
 import Bolt from '@mui/icons-material/Bolt'
 import Check from '@mui/icons-material/Check'
 import Replay from '@mui/icons-material/Replay'
-
-enum AppState {
-  BASELINE = "BASELINE ",
-  EXPERIMENT = "EXPERIMENT ",
-}
 
 interface VBrushProps {
   brushState: BrushState
@@ -17,6 +11,7 @@ interface VBrushProps {
   resetBrushing: () => void
   viewCurrentVersion: () => void
   openBundles: () => void
+  appState: AppState
 }
 
 const VBrush = ({
@@ -25,16 +20,11 @@ const VBrush = ({
   resetBrushing,
   viewCurrentVersion,
   openBundles,
+  appState,
 }: VBrushProps) => {
 
-  const [appState, setAppState] = useState(AppState.EXPERIMENT)
 
-  useEffect(() => {
-    window.baseline = () => setAppState(AppState.BASELINE)
-    window.experiment = () => setAppState(AppState.EXPERIMENT)
-  }, [])
-
-  return <div style={{ visibility: appState === AppState.EXPERIMENT ? "visible" : "hidden" }}>
+  return <div style={{ visibility: appState === AppState.BASELINE ? "hidden" : "visible" }}>
     {brushState === BrushState.IDLE &&
       <Button
         variant="contained"

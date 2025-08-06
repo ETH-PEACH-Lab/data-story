@@ -36,6 +36,11 @@ export enum BrushState {
   BRUSHED = "BRUSHED",
 }
 
+export enum AppState {
+  BASELINE = "BASELINE",
+  EXPERIMENT = "EXPERIMENT",
+}
+
 export const SharedContext = createContext(null);
 
 function App() {
@@ -55,6 +60,7 @@ function App() {
   const [userCursorColor, setUserCursorColor] = useState("");
   const [brushedCells, setBrushedCells] = useState<number[][]>([]);
   const [brushState, setBrushState] = useState<BrushState>(BrushState.IDLE);
+  const [appState, setAppState] = useState();
 
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
@@ -177,7 +183,7 @@ function App() {
       historyState: history.historyState,
       historyActions: history.historyActions,
       cellFormat, setCellFormat, selectedCellsRef,
-      brushedCells, setBrushedCells,
+      brushedCells, setBrushedCells, appState, setAppState
     }}>
       <ErrorBoundary>
         <div>
