@@ -321,7 +321,9 @@ const filterKeyword = (uploadHistory, keywords) => {
 
   return uploadHistory.map(bundle => ({
     ...bundle,
-    entries: bundle.entries.filter(entry => [...keywords].some(keyword => entry.historyMessage.includes(keyword)))
+    entries: bundle.entries.filter(
+      entry => [...keywords].some(keyword => entry.historyMessage.toLowerCase().includes(keyword.toLowerCase()))
+    )
   })).filter(bundle => bundle.entries.length > 0)
 }
 
