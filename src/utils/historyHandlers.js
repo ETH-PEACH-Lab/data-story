@@ -1,90 +1,89 @@
-import { setHistoryLocalStorage, getHistoryLocalStorage, setCurrentDataIdLocalStorage, setIdListLocalStorage } from './storageHandlers';
 import { BrushState } from "../App"
 
 export const logAction = (setActions, actionDescription) => {
   setActions(prevActions => [...prevActions, actionDescription]);
 };
 
-export const handleHistoryDelete = (
-  index,
-  uploadHistory,
-  currentDataId,
-  setData,
-  initializeColumns,
-  setCurrentDataId,
-  setActions,
-  setOriginalFileName,
-  setUploadHistory,
-  setShowConfirmation,
-  setConfirmationMessage,
-  setOnConfirmAction,
-  setColumnConfigs,
-  setIdList,
-  updateHist,
-) => {
-  const historyEntryToDelete = uploadHistory[index];
-  const isDeletingCurrentData = historyEntryToDelete.id === currentDataId;
-  const parentId = historyEntryToDelete.parentId;
-  const newHistory = uploadHistory.filter((_, i) => i !== index);
+// export const handleHistoryDelete = (
+//   index,
+//   uploadHistory,
+//   currentDataId,
+//   setData,
+//   initializeColumns,
+//   setCurrentDataId,
+//   setActions,
+//   setOriginalFileName,
+//   setUploadHistory,
+//   setShowConfirmation,
+//   setConfirmationMessage,
+//   setOnConfirmAction,
+//   setColumnConfigs,
+//   setIdList,
+//   updateHist,
+// ) => {
+//   const historyEntryToDelete = uploadHistory[index];
+//   const isDeletingCurrentData = historyEntryToDelete.id === currentDataId;
+//   const parentId = historyEntryToDelete.parentId;
+//   const newHistory = uploadHistory.filter((_, i) => i !== index);
 
-  const parentEntryExists = newHistory.some((entry) => entry.id === parentId);
+//   const parentEntryExists = newHistory.some((entry) => entry.id === parentId);
 
-  const addIdToFront = (id) => {
-    if (typeof id === 'number' && !isNaN(id)) {
-      // Add the deleted entry's ID back to the front of the list
-      setIdList((prevList) => {
-        const newList = [id, ...prevList];
-        setIdListLocalStorage(newList); // Save the updated list to localStorage
-        return newList;
-      });
-    }
-  };
+//   const addIdToFront = (id) => {
+//     if (typeof id === 'number' && !isNaN(id)) {
+//       // Add the deleted entry's ID back to the front of the list
+//       setIdList((prevList) => {
+//         const newList = [id, ...prevList];
+//         setIdListLocalStorage(newList); // Save the updated list to localStorage
+//         return newList;
+//       });
+//     }
+//   };
 
-  if (!parentEntryExists) {
-    setShowConfirmation(true);
-    setConfirmationMessage('Parent version no longer exists. Do you want to delete this version?');
-    setOnConfirmAction(() => () => {
-      if (isDeletingCurrentData) {
-        setData([]);
-        // initializeColumns([], setColumnConfigs, setFilteredColumns);
-        initializeColumns([], setColumnConfigs);
-        setCurrentDataId(null);
-        setActions([]);
-        setOriginalFileName('');
-      }
-      setUploadHistory(newHistory);
-      setHistoryLocalStorage(newHistory);
-      setCurrentDataIdLocalStorage(null);
-      addIdToFront(historyEntryToDelete.id);
+//   if (!parentEntryExists) {
+//     setShowConfirmation(true);
+//     setConfirmationMessage('Parent version no longer exists. Do you want to delete this version?');
+//     setOnConfirmAction(() => () => {
+//       if (isDeletingCurrentData) {
+//         setData([]);
+//         // initializeColumns([], setColumnConfigs, setFilteredColumns);
+//         initializeColumns([], setColumnConfigs);
+//         setCurrentDataId(null);
+//         setActions([]);
+//         setOriginalFileName('');
+//       }
+//       setUploadHistory(newHistory);
+//       setHistoryLocalStorage(newHistory);
+//       setCurrentDataIdLocalStorage(null);
+//       addIdToFront(historyEntryToDelete.id);
 
-      if (newHistory.length === 0) {
-        const resetIdList = [1, 2, 3];  // Reset the idList
-        setIdList(resetIdList);
-        setIdListLocalStorage(resetIdList);
-      }
-    });
-  } else {
-    if (isDeletingCurrentData) {
-      const parentEntry = newHistory.find((entry) => entry.id === parentId);
-      setData(parentEntry.data);
-      initializeColumns(parentEntry.data, setColumnConfigs, setFilteredColumns);
-      setCurrentDataId(parentEntry.id);
-      setActions(parentEntry.actions);
-      setOriginalFileName(parentEntry.fileName);
-    }
-    setUploadHistory(newHistory);
-    setHistoryLocalStorage(newHistory);
-    setCurrentDataIdLocalStorage(currentDataId);
-    addIdToFront(historyEntryToDelete.id);
+//       if (newHistory.length === 0) {
+//         const resetIdList = [1, 2, 3];  // Reset the idList
+//         setIdList(resetIdList);
+//         setIdListLocalStorage(resetIdList);
+//       }
+//     });
+//   } else {
+//     if (isDeletingCurrentData) {
+//       const parentEntry = newHistory.find((entry) => entry.id === parentId);
+//       setData(parentEntry.data);
+//       initializeColumns(parentEntry.data, setColumnConfigs, setFilteredColumns);
+//       setCurrentDataId(parentEntry.id);
+//       setActions(parentEntry.actions);
+//       setOriginalFileName(parentEntry.fileName);
+//     }
+//     setUploadHistory(newHistory);
+//     setHistoryLocalStorage(newHistory);
+//     setCurrentDataIdLocalStorage(currentDataId);
+//     addIdToFront(historyEntryToDelete.id);
 
-    if (newHistory.length === 0) {
-      const resetIdList = [1, 2, 3];  // Reset the idList when all history is deleted
-      setIdList(resetIdList);
-      setIdListLocalStorage(resetIdList);
-    }
-  }
-  updateHist(newHistory)
-};
+//     if (newHistory.length === 0) {
+//       const resetIdList = [1, 2, 3];  // Reset the idList when all history is deleted
+//       setIdList(resetIdList);
+//       setIdListLocalStorage(resetIdList);
+//     }
+//   }
+//   updateHist(newHistory)
+// };
 
 export const saveDataToHistory = (
   newData,
@@ -94,7 +93,7 @@ export const saveDataToHistory = (
   setCurrentDataId,
   idList,
   setIdList,
-  updateHist,
+  syncHistory,
   actions,
   originalFileName,
   initialActionStackLength,
@@ -129,8 +128,7 @@ export const saveDataToHistory = (
         cellChanges: cellChanges,
       },
     ];
-    setHistoryLocalStorage(updatedHistory);
-    updateHist(updatedHistory);
+    syncHistory(updatedHistory);
     return updatedHistory;
   });
 };

@@ -5,6 +5,7 @@ import {
 } from "../utils/historyHandlers";
 import {
     getHistoryLocalStorage,
+    setHistoryLocalStorage,
     getIdListLocalStorage,
     clearAllLocalStorage,
     generateEmptyDataset
@@ -86,7 +87,7 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
-            updateHist,
+            syncHistory,
             actions,
             originalFileName,
             initialActionStackLength,
@@ -112,7 +113,7 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
-            updateHist,
+            syncHistory,
             actions,
             originalFileName,
             initialActionStackLength,
@@ -202,7 +203,7 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
-            updateHist,
+            syncHistory,
             actions,
             originalFileName,
             initialActionStackLength,
@@ -236,6 +237,11 @@ export function useHistoryManager({
         )
     }
 
+    const syncHistory = (hist) => {
+        setHistoryLocalStorage(hist)
+        updateHist(hist)
+    }
+
     useEffect(() => {
         const savedHistory = getHistoryLocalStorage();
 
@@ -267,6 +273,7 @@ export function useHistoryManager({
             handleRedo,
             initializeHistory,
             addLogEntry,
+            syncHistory,
         },
     };
 }

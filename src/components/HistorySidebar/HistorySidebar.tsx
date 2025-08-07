@@ -17,7 +17,6 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
 
-import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext, getColor, BrushState } from "../../App";
 import {
   filterHistory,
@@ -110,6 +109,7 @@ const HistorySidebar = ({
   } = historyState;
   const {
     handleHistoryClick,
+    syncHistory,
   } = historyActions;
   const listRef = useRef(null);
 
@@ -134,7 +134,7 @@ const HistorySidebar = ({
       updatedHistory[entryIndex - 1] = mergedEntry
       updatedHistory.splice(entryIndex, 1)
 
-      setHistoryLocalStorage(updatedHistory)
+      syncHistory(updatedHistory)
       selectEntry(mergedEntry)
       return updatedHistory
     })
@@ -155,7 +155,7 @@ const HistorySidebar = ({
         if (entry.id !== entryId) return entry
         return { ...entry, historyMessage: editingMessage }
       })
-      setHistoryLocalStorage(updatedHistory)
+      syncHistory(updatedHistory)
       return updatedHistory
     })
 
