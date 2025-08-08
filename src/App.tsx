@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, createContext } from "react";
 import "./App.css";
-import "handsontable/dist/handsontable.full.min.css";
-import { registerAllModules } from "handsontable/registry";
 
 import HistorySidebar from "./components/HistorySidebar/HistorySidebar";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -19,7 +17,6 @@ import { initializeColumns } from "./utils/dataHandlers";
 import { getCellDiff } from "./utils/historyHandlers";
 import { getCellDeepDiff } from "./utils/historyHandlers";
 
-registerAllModules();
 
 export const getColor = (str: string) => {
   const letters = '0123456789A';

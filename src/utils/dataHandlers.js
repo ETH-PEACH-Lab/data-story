@@ -194,3 +194,13 @@ export const initializeColumns = (
     setColumnConfigs(columnConfigs);
   }
 };
+
+export const getAllDependents = (engine, sheet, row, col, deepChanges, level) => {
+	const destinations = engine.getCellDependents({ sheet, row, col })
+	deepChanges.push(...destinations.map(dest => 
+    ({ row: dest.row, column: dest.col, type: 'propagation', level })
+  ))
+  destinations.forEach(dest => 
+      getAllDependents(engine, sheet, dest.row, dest.col, deepChanges, level + 1)
+  )
+}

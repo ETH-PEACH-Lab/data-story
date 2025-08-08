@@ -103,6 +103,7 @@ export const saveDataToHistory = (
   historyMessage,
   author,
   cellChanges = {},
+  deepChanges = [],
 ) => {
   const timestamp = new Date().toLocaleString();
   const fileNameToUse = fileName || originalFileName || "initial dataset";
@@ -126,6 +127,7 @@ export const saveDataToHistory = (
         historyMessage: historyMessage,
         author: author,
         cellChanges: cellChanges,
+        cellChangesDeep: deepChanges,
       },
     ];
     syncHistory(updatedHistory);

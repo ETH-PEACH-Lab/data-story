@@ -78,7 +78,7 @@ export function useHistoryManager({
         updateHist
     ]);
 
-    const addLogEntry = (message, selection, updatedCellFormat) => {
+    const addLogEntry = (message, selection, updatedCellFormat, deepChanges) => {
         saveDataToHistory(
             data,
             originalFileName,
@@ -97,6 +97,7 @@ export function useHistoryManager({
             message,
             userName,
             selection,
+            deepChanges,
         )
         setRedoHistory([])
     }

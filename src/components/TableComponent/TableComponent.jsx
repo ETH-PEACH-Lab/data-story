@@ -12,6 +12,7 @@ import {
 } from '../../utils/rowColumnHandlers';
 import { customRenderer } from '../../utils/styleHandlers';
 import { SharedContext, BrushState } from '../../App';
+import { getAllDependents } from '../../utils/dataHandlers';
 
 const TableComponent = ({
 	data,
@@ -51,14 +52,18 @@ const TableComponent = ({
 
 		const hasChanges = changes.some(([, , oldValue, newValue]) => newValue !== oldValue)
 		if (!hasChanges) return
+		const engine = hotRef.current.hotInstance.getPlugin('formulas')?.engine;
 
 		const newData = [...data];
+		const deepChanges = []
 		changes.forEach(([row, prop, oldValue, newValue]) => {
 			newData[row][prop] = newValue;
 			const col = hotRef.current.hotInstance.propToCol(prop);
-			hotRef.current.hotInstance.getPlugin('formulas').engine.setCellContents(
-				{ sheet: 0, col, row }, [[newValue]]
-			);
+			if (newValue.startsWith("=")) deepChanges.push({ row, column: col, type: 'dependency' })
+			else deepChanges.push({ row, column: col, type: 'content' })
+			// const destinations = engine.getCellDependents({ sheet: 0, row, col })
+			// deepChanges.push(...destinations.map(dest => ({ row: dest.row, column: dest.col, type: 'propagation' })))
+			getAllDependents(engine, 0, row, col, deepChanges, 1)
 		});
 
 		if (changes.length > 0) {
@@ -66,7 +71,7 @@ const TableComponent = ({
 			const histMsg = String(changes[0][3]).startsWith("=")
 				? "Formula has been updated"
 				: "Table data has been updated";
-			addLogEntry(histMsg, selectedCellsRef.current)
+			addLogEntry(histMsg, selectedCellsRef.current, {}, deepChanges)
 			updateTable(newData);
 		}
 	};
@@ -199,7 +204,7 @@ const TableComponent = ({
 			const selected = hotRef.current.hotInstance.getSelectedLast();
 			if (selected) {
 				const [row, col] = selected;
-				const columnKeys = Object.keys(data[0]); 
+				const columnKeys = Object.keys(data[0]);
 				const value = data[row][columnKeys[col]];
 				setRawValue(value ?? '');
 			}
@@ -233,6 +238,7 @@ const TableComponent = ({
 						<HotTable
 							formulas={{
 								engine: HyperFormula, // ✅ this is correct
+								sheetName: 'Formulas',
 							}}
 							ref={hotRef}
 							data={data}
