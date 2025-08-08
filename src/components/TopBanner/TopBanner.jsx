@@ -1,14 +1,44 @@
-import React, { useContext } from "react";
-import { SharedContext } from "../../App"; // Update this path if needed
+import React, { useContext, useState } from "react";
+import { SharedContext, AppState } from "../../App"; // Update this path if needed
 import { UserCircles } from "./UserCircles"; // Ensure this import is correct
 import "./TopBanner.css";
+import travel from "../../assets/travel.json"
+import conference from "../../assets/conference.json"
+
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 function TopBanner() {
-  const { awareness } = useContext(SharedContext);
+  const { awareness, appState, setAppState, historyActions } = useContext(SharedContext);
 
   return (
     <div className="top-banner">
-      <h1>Version Brush</h1>
+      <div className="dropdowns">
+        <h1>Version Brush</h1>
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Condition</InputLabel>
+          <Select
+            onChange={(e) => {setAppState(e.target.value)}}
+            label="Condition"
+            value={appState}
+          >
+            <MenuItem value={AppState.EXPERIMENT}>Alpha</MenuItem>
+            <MenuItem value={AppState.BASELINE}>Beta</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl size="small" sx={{ minWidth: 140 }}>
+          <InputLabel>Spreadsheet</InputLabel>
+          <Select
+            onChange={(e) => historyActions.initializeHistory(e.target.value)}
+            label="Spreadsheet"
+          >
+            <MenuItem value={travel}>Travel</MenuItem>
+            <MenuItem value={conference}>Conference</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
       <UserCircles awareness={awareness} />
     </div>
   );

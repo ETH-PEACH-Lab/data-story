@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, createContext } from "react";
 import "./App.css";
-import "handsontable/dist/handsontable.full.min.css";
-import { registerAllModules } from "handsontable/registry";
 
 import HistorySidebar from "./components/HistorySidebar/HistorySidebar";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -19,7 +17,6 @@ import { initializeColumns } from "./utils/dataHandlers";
 import { getCellDiff } from "./utils/historyHandlers";
 import { getCellDeepDiff } from "./utils/historyHandlers";
 
-registerAllModules();
 
 export const getColor = (str: string) => {
   const letters = '0123456789A';
@@ -34,6 +31,11 @@ export enum BrushState {
   IDLE = "IDLE",
   BRUSHING = "BRUSHING",
   BRUSHED = "BRUSHED",
+}
+
+export enum AppState {
+  BASELINE = "BASELINE",
+  EXPERIMENT = "EXPERIMENT",
 }
 
 export const SharedContext = createContext(null);
@@ -55,6 +57,7 @@ function App() {
   const [userCursorColor, setUserCursorColor] = useState("");
   const [brushedCells, setBrushedCells] = useState<number[][]>([]);
   const [brushState, setBrushState] = useState<BrushState>(BrushState.IDLE);
+  const [appState, setAppState] = useState();
 
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
@@ -177,7 +180,7 @@ function App() {
       historyState: history.historyState,
       historyActions: history.historyActions,
       cellFormat, setCellFormat, selectedCellsRef,
-      brushedCells, setBrushedCells,
+      brushedCells, setBrushedCells, appState, setAppState
     }}>
       <ErrorBoundary>
         <div>

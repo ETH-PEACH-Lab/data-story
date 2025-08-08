@@ -1,179 +1,179 @@
 import Papa from 'papaparse';
 
-export const handleDataLoaded = (
-  newData,
-  fileName,
-  setData,
-  setColumnConfigs,
-  setOriginalFileName,
-  setCurrentDataId,
-  saveDataToHistory,
-  idList,
-  setIdList,
-  updateHist,
-  updateTable,
-  updateCols,
-  setUploadHistory,
-  originalFileName,
-  hotRef,
-  setInitialActionStack,
-  setInitialActionStackLength,
-  isNewTable = false
-) => {
-  const dataWithTypes = newData.map((row) => {
-    const newRow = {};
-    Object.keys(row).forEach((key) => {
-      newRow[key] = row[key];
-    });
-    return newRow;
-  });
+// export const handleDataLoaded = (
+//   newData,
+//   fileName,
+//   setData,
+//   setColumnConfigs,
+//   setOriginalFileName,
+//   setCurrentDataId,
+//   saveDataToHistory,
+//   idList,
+//   setIdList,
+//   updateHist,
+//   updateTable,
+//   updateCols,
+//   setUploadHistory,
+//   originalFileName,
+//   hotRef,
+//   setInitialActionStack,
+//   setInitialActionStackLength,
+//   isNewTable = false
+// ) => {
+//   const dataWithTypes = newData.map((row) => {
+//     const newRow = {};
+//     Object.keys(row).forEach((key) => {
+//       newRow[key] = row[key];
+//     });
+//     return newRow;
+//   });
 
-  const initialColumnConfigs = Object.keys(newData[0] || {}).map((key, index) => ({
-    data: key,
-    title: key,
-    type: 'text',
-  }));
+//   const initialColumnConfigs = Object.keys(newData[0] || {}).map((key, index) => ({
+//     data: key,
+//     title: key,
+//     type: 'text',
+//   }));
 
-  setData(newData);
-  setColumnConfigs(initialColumnConfigs);
-  setOriginalFileName(fileName);
-  updateTable(newData);
-  updateCols(initialColumnConfigs);
+//   setData(newData);
+//   setColumnConfigs(initialColumnConfigs);
+//   setOriginalFileName(fileName);
+//   updateTable(newData);
+//   updateCols(initialColumnConfigs);
 
-  // Reset ID list if empty
-  if (idList.length === 0) {
-    setIdList([1, 2]);
-  }
-  const historyId = idList.length > 0 ? idList[0] : 1; // Get ID 1 from the list if available
+//   // Reset ID list if empty
+//   if (idList.length === 0) {
+//     setIdList([1, 2]);
+//   }
+//   const historyId = idList.length > 0 ? idList[0] : 1; // Get ID 1 from the list if available
 
-  saveDataToHistory(
-    dataWithTypes,
-    fileName,
-    null,
-    setUploadHistory,
-    setCurrentDataId,
-    idList,
-    setIdList,
-    updateHist,
-    [],
-    originalFileName,
-    {},
-    0,
-    hotRef
-  );
+//   saveDataToHistory(
+//     dataWithTypes,
+//     fileName,
+//     null,
+//     setUploadHistory,
+//     setCurrentDataId,
+//     idList,
+//     setIdList,
+//     updateHist,
+//     [],
+//     originalFileName,
+//     {},
+//     0,
+//     hotRef
+//   );
 
-  if (isNewTable || (hotRef && hotRef.current)) {
-    const undoRedo = hotRef.current.hotInstance.undoRedo;
-    undoRedo.clear();
-    setInitialActionStackLength(0);
-    setInitialActionStack([]);
-  }
-};
+//   if (isNewTable || (hotRef && hotRef.current)) {
+//     const undoRedo = hotRef.current.hotInstance.undoRedo;
+//     undoRedo.clear();
+//     setInitialActionStackLength(0);
+//     setInitialActionStack([]);
+//   }
+// };
 
-export const generateRandomTable = (
-  setData,
-  setColumnConfigs,
-  setOriginalFileName,
-  setCurrentDataId,
-  saveDataToHistory,
-  idList,
-  setIdList,
-  updateHist,
-  setUploadHistory,
-  originalFileName,
-  hotRef,
-  setInitialActionStack,
-  setInitialActionStackLength
-) => {
-  // Generate a 5x8 table of random numbers
-  const rows = 8;
-  const cols = 5;
-  const data = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => Math.floor(Math.random() * 100) + 1)
-  );
+// export const generateRandomTable = (
+//   setData,
+//   setColumnConfigs,
+//   setOriginalFileName,
+//   setCurrentDataId,
+//   saveDataToHistory,
+//   idList,
+//   setIdList,
+//   updateHist,
+//   setUploadHistory,
+//   originalFileName,
+//   hotRef,
+//   setInitialActionStack,
+//   setInitialActionStackLength
+// ) => {
+//   // Generate a 5x8 table of random numbers
+//   const rows = 8;
+//   const cols = 5;
+//   const data = Array.from({ length: rows }, () =>
+//     Array.from({ length: cols }, () => Math.floor(Math.random() * 100) + 1)
+//   );
 
-  // Create column headers
-  const initialColumnConfigs = Array.from({ length: cols }, (_, index) => ({
-    data: `Column ${index + 1}`,
-    title: `Column ${index + 1}`,
-    type: 'numeric', // We are working with numbers
-  }));
+//   // Create column headers
+//   const initialColumnConfigs = Array.from({ length: cols }, (_, index) => ({
+//     data: `Column ${index + 1}`,
+//     title: `Column ${index + 1}`,
+//     type: 'numeric', // We are working with numbers
+//   }));
 
-  // Convert the data into a format suitable for Handsontable
-  const dataWithTypes = data.map((row, rowIndex) => {
-    const newRow = {};
-    initialColumnConfigs.forEach((colConfig, colIndex) => {
-      newRow[colConfig.data] = row[colIndex];
-    });
-    return newRow;
-  });
+//   // Convert the data into a format suitable for Handsontable
+//   const dataWithTypes = data.map((row, rowIndex) => {
+//     const newRow = {};
+//     initialColumnConfigs.forEach((colConfig, colIndex) => {
+//       newRow[colConfig.data] = row[colIndex];
+//     });
+//     return newRow;
+//   });
 
-  setData(dataWithTypes);
-  setColumnConfigs(initialColumnConfigs);
-  setOriginalFileName('random_table');
+//   setData(dataWithTypes);
+//   setColumnConfigs(initialColumnConfigs);
+//   setOriginalFileName('random_table');
 
-  // Reset ID list if empty
-  if (idList.length === 0) {
-    setIdList([1, 2]);
-  }
-  const historyId = idList.length > 0 ? idList[0] : 1;
+//   // Reset ID list if empty
+//   if (idList.length === 0) {
+//     setIdList([1, 2]);
+//   }
+//   const historyId = idList.length > 0 ? idList[0] : 1;
 
-  saveDataToHistory(
-    dataWithTypes,
-    'random_table',
-    null,
-    setUploadHistory,
-    setCurrentDataId,
-    idList,
-    setIdList,
-    updateHist,
-    [],
-    originalFileName,
-    {},
-    0,
-    hotRef
-  );
+//   saveDataToHistory(
+//     dataWithTypes,
+//     'random_table',
+//     null,
+//     setUploadHistory,
+//     setCurrentDataId,
+//     idList,
+//     setIdList,
+//     updateHist,
+//     [],
+//     originalFileName,
+//     {},
+//     0,
+//     hotRef
+//   );
 
-  if (hotRef && hotRef.current) {
-    const undoRedo = hotRef.current.hotInstance.undoRedo;
-    undoRedo.clear();
-    setInitialActionStackLength(0);
-    setInitialActionStack([]);
-  }
-};
+//   if (hotRef && hotRef.current) {
+//     const undoRedo = hotRef.current.hotInstance.undoRedo;
+//     undoRedo.clear();
+//     setInitialActionStackLength(0);
+//     setInitialActionStack([]);
+//   }
+// };
 
-export const fetchData = async (
-  setData,
-  setColumnConfigs,
-  setOriginalFileName,
-  setCurrentDataId,
-  saveDataToHistory,
-  idList,
-  setIdList,
-  updateHist,
-  setUploadHistory,
-  originalFileName,
-  hotRef,
-  setInitialActionStack,
-  setInitialActionStackLength
-) => {
-  // Instead of fetching the euro2024_players.csv file, generate the random table data
-  generateRandomTable(
-    setData,
-    setColumnConfigs,
-    setOriginalFileName,
-    setCurrentDataId,
-    saveDataToHistory,
-    idList,
-    setIdList,
-    updateHist,
-    setUploadHistory,
-    originalFileName,
-    hotRef,
-    setInitialActionStack,
-    setInitialActionStackLength
-  );
-};
+// export const fetchData = async (
+//   setData,
+//   setColumnConfigs,
+//   setOriginalFileName,
+//   setCurrentDataId,
+//   saveDataToHistory,
+//   idList,
+//   setIdList,
+//   updateHist,
+//   setUploadHistory,
+//   originalFileName,
+//   hotRef,
+//   setInitialActionStack,
+//   setInitialActionStackLength
+// ) => {
+//   // Instead of fetching the euro2024_players.csv file, generate the random table data
+//   generateRandomTable(
+//     setData,
+//     setColumnConfigs,
+//     setOriginalFileName,
+//     setCurrentDataId,
+//     saveDataToHistory,
+//     idList,
+//     setIdList,
+//     updateHist,
+//     setUploadHistory,
+//     originalFileName,
+//     hotRef,
+//     setInitialActionStack,
+//     setInitialActionStackLength
+//   );
+// };
 
 export const initializeColumns = (
   newData,
@@ -194,3 +194,13 @@ export const initializeColumns = (
     setColumnConfigs(columnConfigs);
   }
 };
+
+export const getAllDependents = (engine, sheet, row, col, deepChanges, level) => {
+	const destinations = engine.getCellDependents({ sheet, row, col })
+	deepChanges.push(...destinations.map(dest => 
+    ({ row: dest.row, column: dest.col, type: 'propagation', level })
+  ))
+  destinations.forEach(dest => 
+      getAllDependents(engine, sheet, dest.row, dest.col, deepChanges, level + 1)
+  )
+}

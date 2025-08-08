@@ -17,7 +17,6 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
 
-import { setHistoryLocalStorage } from "../../utils/storageHandlers";
 import { SharedContext, getColor, BrushState } from "../../App";
 import {
   filterHistory,
@@ -92,17 +91,16 @@ const HistorySidebar = ({
   const [menuId, setMenuId] = useState(-1)
   const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [selectedKeyword, setSelectedKeyword] = useState("");
   const [diffMode, setDiffMode] = useState<"before" | "after">("after");
   const [filteredBundles, setFilteredBundles] = useState<HistoryBundle[]>([]);
-
-  const [brushedWord, setBrushedWord] = useState<string>("");
+  const [brushedWords, setBrushedWords] = useState<Set<string>>(new Set());
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     historyState,
     historyActions,
     brushedCells,
+    appState,
   } = useContext(SharedContext);
 
   const {
@@ -111,6 +109,7 @@ const HistorySidebar = ({
   } = historyState;
   const {
     handleHistoryClick,
+    syncHistory,
   } = historyActions;
   const listRef = useRef(null);
 
@@ -135,7 +134,7 @@ const HistorySidebar = ({
       updatedHistory[entryIndex - 1] = mergedEntry
       updatedHistory.splice(entryIndex, 1)
 
-      setHistoryLocalStorage(updatedHistory)
+      syncHistory(updatedHistory)
       selectEntry(mergedEntry)
       return updatedHistory
     })
@@ -156,7 +155,7 @@ const HistorySidebar = ({
         if (entry.id !== entryId) return entry
         return { ...entry, historyMessage: editingMessage }
       })
-      setHistoryLocalStorage(updatedHistory)
+      syncHistory(updatedHistory)
       return updatedHistory
     })
 
@@ -198,7 +197,7 @@ const HistorySidebar = ({
     intervalStart,
     intervalEnd,
     brushedCells,
-    brushedWord,
+    brushedWords,
     brushState
   )
   if (result.length > 0) {
@@ -256,7 +255,7 @@ const HistorySidebar = ({
   const resetBrushing = () => {
     setSelectedCollaborators([])
     setBrushedCells([])
-    setBrushedWord("")
+    setBrushedWords(new Set())
     setIsOpen(Array(bundles.length).fill(false))
   }
 
@@ -292,6 +291,15 @@ const HistorySidebar = ({
     );
   };
 
+  const handleBrushedWords = (word: string) => {
+    setBrushedWords((prev) => {
+      const newWords = new Set(prev)
+      if (newWords.has(word)) newWords.delete(word)
+      else newWords.add(word)
+      return newWords
+    })
+  }
+
   return (
     <div className={"history-sidebar"}>
       <div className="button-container d-flex justify-content-between align-items-center p-2 pb-3">
@@ -302,6 +310,7 @@ const HistorySidebar = ({
           resetBrushing={resetBrushing}
           viewCurrentVersion={viewCurrentVersion}
           openBundles={() => setIsOpen(Array(bundles.length).fill(true))}
+          appState={appState}
         />
       </div>
       {brushState === BrushState.BRUSHING && <div>
@@ -327,7 +336,7 @@ const HistorySidebar = ({
           selectedCollaborators={selectedCollaborators}
           intervalStart={intervalStart}
           intervalEnd={intervalEnd}
-          brushedWord={brushedWord}
+          brushedWords={brushedWords}
         />
         {filteredBundles.length === 0 &&
           <Alert severity="error" className="m-3">
@@ -376,7 +385,7 @@ const HistorySidebar = ({
                         style={{ paddingRight: '30px' }}
                         secondary={
                           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                            {getAuthorsBlob(null, entry)}<span>{' - '}{getTime(entry.date)}</span>
+                            {getAuthorsBlob(null, entry)}<span>{' - '}{getTime(entry.timestamp)}</span>
                           </span>
                         }
                         primary={
@@ -405,8 +414,8 @@ const HistorySidebar = ({
                                 entry.historyMessage.split(" ").map((word, index) =>
                                   <span
                                     key={index}
-                                    onClick={() => setBrushedWord(word)}
-                                    className={brushedWord === word ? "brushed-word" : "brushing"}
+                                    onClick={() => handleBrushedWords(word) }
+                                    className={"brushing" + (brushedWords.has(word) ? " brushed-word" : "")}
                                   >
                                     {word}
                                   </span>

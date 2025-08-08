@@ -5,6 +5,7 @@ import {
 } from "../utils/historyHandlers";
 import {
     getHistoryLocalStorage,
+    setHistoryLocalStorage,
     getIdListLocalStorage,
     clearAllLocalStorage,
     generateEmptyDataset
@@ -77,7 +78,7 @@ export function useHistoryManager({
         updateHist
     ]);
 
-    const addLogEntry = (message, selection, updatedCellFormat) => {
+    const addLogEntry = (message, selection, updatedCellFormat, deepChanges) => {
         saveDataToHistory(
             data,
             originalFileName,
@@ -86,7 +87,7 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
-            updateHist,
+            syncHistory,
             actions,
             originalFileName,
             initialActionStackLength,
@@ -96,6 +97,7 @@ export function useHistoryManager({
             message,
             userName,
             selection,
+            deepChanges,
         )
         setRedoHistory([])
     }
@@ -112,7 +114,7 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
-            updateHist,
+            syncHistory,
             actions,
             originalFileName,
             initialActionStackLength,
@@ -202,7 +204,7 @@ export function useHistoryManager({
             setCurrentDataId,
             idList,
             setIdList,
-            updateHist,
+            syncHistory,
             actions,
             originalFileName,
             initialActionStackLength,
@@ -218,6 +220,7 @@ export function useHistoryManager({
 
     const initializeHistory = (history) => {
         setUploadHistory(history)
+        console.log(history)
         const historyEntry = history.at(-1)
         switchHistoryEntry(
             historyEntry,
@@ -233,6 +236,11 @@ export function useHistoryManager({
             setInitialActionStack,
             setInitialActionStackLength
         )
+    }
+
+    const syncHistory = (hist) => {
+        setHistoryLocalStorage(hist)
+        updateHist(hist)
     }
 
     useEffect(() => {
@@ -266,6 +274,7 @@ export function useHistoryManager({
             handleRedo,
             initializeHistory,
             addLogEntry,
+            syncHistory,
         },
     };
 }

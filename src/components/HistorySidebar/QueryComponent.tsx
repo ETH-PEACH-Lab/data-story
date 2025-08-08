@@ -5,7 +5,7 @@ interface QueryComponentProps {
   selectedCollaborators: string[]
   intervalStart: Date | null
   intervalEnd: Date | null
-  brushedWord: string
+  brushedWords: Set<string>
 }
 
 const getRow = (index: number) => index + 1
@@ -22,7 +22,7 @@ const QueryComponent = ({
   selectedCollaborators,
   intervalStart,
   intervalEnd,
-  brushedWord,
+  brushedWords,
 }: QueryComponentProps) => {
 
   return <div style={{ padding: "1rem", lineHeight: "2" }} >
@@ -37,9 +37,16 @@ const QueryComponent = ({
     </>}
     <span>during </span>
     <span className="query-element">{getDate(intervalStart)}, {getTime(intervalStart)} - {getDate(intervalEnd)}, {getTime(intervalEnd)}</span>
-    {brushedWord && <>
+    {brushedWords && brushedWords.size > 0 && <>
       <span>, related to </span>
-      <span className="query-element">{brushedWord}</span>
+      {[...brushedWords].map((brushedWord, index) =>
+        <>
+          <span key={index} className="query-element">
+            {brushedWord}
+          </span>
+          {index < brushedWords.size - 1 ? ", " : ""}
+        </>
+      )}
     </>}
   </div>
 }
