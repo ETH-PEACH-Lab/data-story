@@ -59,11 +59,11 @@ const TableComponent = ({
 		changes.forEach(([row, prop, oldValue, newValue]) => {
 			newData[row][prop] = newValue;
 			const col = hotRef.current.hotInstance.propToCol(prop);
-			if (newValue.startsWith("=")) deepChanges.push({ row, column: col, type: 'dependency' })
+			if (newValue?.startsWith("=")) deepChanges.push({ row, column: col, type: 'dependency' })
 			else deepChanges.push({ row, column: col, type: 'content' })
 			// const destinations = engine.getCellDependents({ sheet: 0, row, col })
 			// deepChanges.push(...destinations.map(dest => ({ row: dest.row, column: dest.col, type: 'propagation' })))
-			getAllDependents(engine, 0, row, col, deepChanges, 1)
+			getAllDependents(engine, { sheet: 0, row, col }, deepChanges, 1)
 		});
 
 		if (changes.length > 0) {
