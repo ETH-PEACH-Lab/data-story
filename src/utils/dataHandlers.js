@@ -197,7 +197,7 @@ export const initializeColumns = (
 
 export const getAllDependents = (engine, addr, deepChanges, level) => {
 	const destinations = engine.getCellDependents(addr)
-	deepChanges.push(...destinations.filter(dest => dest.row && dest.col).map(dest => 
+	deepChanges.push(...destinations.filter(dest => dest.row !== undefined).map(dest => 
     ({ row: dest.row, column: dest.col, type: 'propagation', level })
   ))
   destinations?.forEach(dest => 
