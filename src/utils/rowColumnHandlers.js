@@ -61,7 +61,13 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
     // hotRef.current.hotInstance.undoRedo.done(wrappedAction);
     const histMsg = "New row is inserted"
     const cellChanges = emptyRow.map((_, index) => [newRowIndex, index])
-    addLogEntry(histMsg, cellChanges, {}, [], newData)
+    const deepChanges = emptyRow.map((_, index) => ({row: newRowIndex, column: index, type: "structure", spec: "new"}))
+    for (let i = newRowIndex + 1; i < newData.length; i++) {
+      for (let j = 0; j < len; j++) {
+        deepChanges.push({row: i, column: j, type: "structure", spec: "addrow"})
+      }
+    }
+    addLogEntry(histMsg, cellChanges, {}, deepChanges, newData)
     // handleSaveCurrentVersion("New row is inserted");
     const plugin = hotRef.current.hotInstance.getPlugin('formulas')
     plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })
@@ -118,7 +124,13 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
     // hotRef.current.hotInstance.undoRedo.done(wrappedAction);
     const histMsg = "New column is inserted"
     const cellChanges = data.map((_, rowIndex) => [rowIndex, newColumnIndex])
-    addLogEntry(histMsg, cellChanges, {}, [], newData)
+    const deepChanges = data.map((_, rowIndex) => ({row: rowIndex, column: newColumnIndex, type: "structure", spec: "new"}))
+    for (let i = 0; i < newData.length; i++) {
+      for (let j = newColumnIndex + 1; j < newData[0].length; j++) {
+        deepChanges.push({row: i, column: j, type: "structure", spec: "addcol"})
+      }
+    }
+    addLogEntry(histMsg, cellChanges, {}, deepChanges, newData)
     // handleSaveCurrentVersion("New column is inserted");
     const plugin = hotRef.current.hotInstance.getPlugin('formulas')
     plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })

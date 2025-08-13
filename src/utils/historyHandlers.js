@@ -159,6 +159,7 @@ export const switchHistoryEntry = (
   setInitialActionStack,
   setInitialActionStackLength
 ) => {
+  if (!historyEntry) return
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
   setCellFormat(historyEntry.cellFormat || {});
 
