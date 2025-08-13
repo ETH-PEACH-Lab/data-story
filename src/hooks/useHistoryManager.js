@@ -11,6 +11,7 @@ import {
     generateEmptyDataset
 } from "../utils/storageHandlers";
 import fallback from "../assets/fallback.json"
+import { HyperFormula } from 'hyperformula';
 
 export function useHistoryManager({
     data,
@@ -219,6 +220,8 @@ export function useHistoryManager({
     }
 
     const initializeHistory = (history) => {
+        const plugin = hotRef.current.hotInstance.getPlugin('formulas')
+        plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })
         setUploadHistory(history)
         console.log(history)
         const historyEntry = history.at(-1)
