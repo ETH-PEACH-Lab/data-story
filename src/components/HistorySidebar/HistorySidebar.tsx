@@ -192,20 +192,20 @@ const HistorySidebar = ({
 
   useEffect(() => {
     const result = filterDeepHistory(
-    bundles,
-    selectedCollaborators,
-    intervalStart,
-    intervalEnd,
-    brushedCells,
-    brushedWords,
-    brushState
-  )
-  if (result.length > 0) {
-    handleHistoryItemClick(result[result.length - 1].entries[result[result.length - 1].entries.length - 1]);
-  }
-  setEntryId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : -1);
-  setSelectedId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : null);
-  setFilteredBundles(result);
+      bundles,
+      selectedCollaborators,
+      intervalStart,
+      intervalEnd,
+      brushedCells,
+      brushedWords,
+      brushState
+    )
+    setFilteredBundles(result);
+    if (brushState === BrushState.IDLE) viewCurrentVersion()
+    else if (brushState === BrushState.BRUSHED) {
+      if (result.length === 0) return
+      handleHistoryItemClick(result.at(-1).entries.at(-1))
+    }
   }, [brushState]);
 
   const viewCurrentVersion = () => {
