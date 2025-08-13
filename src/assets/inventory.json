@@ -1,0 +1,19 @@
+{"uploadHistory":[
+  {
+    "id": 128,
+    "parentId": 0,
+    "data": [
+      ["Item", "Quantity", "Price per Unit", "Total Price"],
+      ["Apples", 10, 0.5, "=B2*C2"],
+      ["Bananas", 5, 0.3, "=B3*C3"],
+      ["Oranges", 8, 0.4, "=B4*C4"]
+    ],
+    "fileName": "Trip_Budget_Planning",
+    "timestamp": "8/4/2025, 4:28:56 PM",
+    "cellFormat": {},
+    "historyMessage": "Created initial template",
+    "author": "Dave",
+    "cellChanges": [
+    ]
+  }
+]}

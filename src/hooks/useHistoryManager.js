@@ -147,7 +147,7 @@ export function useHistoryManager({
     ]);
 
     const handleHistoryClick = useCallback((historyEntry, index, switchToPage) => {
-        const undoRedo = hotRef.current?.hotInstance?.undoRedo;
+        // const undoRedo = hotRef.current?.hotInstance?.undoRedo;
 
         const performSwitch = () => {
 
@@ -169,6 +169,8 @@ export function useHistoryManager({
         };
 
         performSwitch();
+        const plugin = hotRef.current.hotInstance.getPlugin('formulas')
+        plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })
     }, [
         hotRef,
         initialActionStack,
@@ -249,7 +251,7 @@ export function useHistoryManager({
     useEffect(() => {
         const savedHistory = getHistoryLocalStorage();
 
-        if (savedHistory.length === 0) initializeHistory(fallback.uploadHistory)
+        if (savedHistory.length === 0) initializeHistory(fallback)
         else initializeHistory(savedHistory)
     }, []);
 

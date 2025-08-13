@@ -3,72 +3,72 @@
     "id": 126,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B5)",
-        "Day 2": "=SUM(C1:C5)",
-        "Day 3": "=SUM(D1:D5)",
-        "Day 4": "=SUM(E1:E5)",
-        "Day 5": "=SUM(F1:F5)",
-        "Day 6": "=SUM(G1:G5)",
-        "Day 7": "=SUM(H1:H5)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B5)",
+        "=SUM(C1:C5)",
+        "=SUM(D1:D5)",
+        "=SUM(E1:E5)",
+        "=SUM(F1:F5)",
+        "=SUM(G1:G5)",
+        "=SUM(H1:H5)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:13:58 PM",
@@ -990,72 +990,72 @@
     "id": 133,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B5)",
-        "Day 2": "=SUM(C1:C5)",
-        "Day 3": "=SUM(D1:D5)",
-        "Day 4": "=SUM(E1:E5)",
-        "Day 5": "=SUM(F1:F5)",
-        "Day 6": "=SUM(G1:G5)",
-        "Day 7": "=SUM(H1:H5)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B5)",
+        "=SUM(C1:C5)",
+        "=SUM(D1:D5)",
+        "=SUM(E1:E5)",
+        "=SUM(F1:F5)",
+        "=SUM(G1:G5)",
+        "=SUM(H1:H5)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:16:39 PM",
@@ -1219,72 +1219,72 @@
     "id": 147,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:30:39 PM",
@@ -1442,72 +1442,72 @@
     "id": 148,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:31:54 PM",
@@ -1545,72 +1545,72 @@
     "id": 149,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:35:15 PM",
@@ -1648,72 +1648,72 @@
     "id": 150,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "0",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:35:25 PM",
@@ -1768,72 +1768,72 @@
     "id": 151,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:35:36 PM",
@@ -1905,72 +1905,72 @@
     "id": 153,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:39:57 PM",
@@ -2029,72 +2029,72 @@
     "id": 154,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:40:22 PM",
@@ -2166,72 +2166,72 @@
     "id": 155,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "180",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "180",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:40:24 PM",
@@ -2320,72 +2320,72 @@
     "id": 156,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "180",
-        "Day 4": "180",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "180",
+        "180",
+        "0",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:40:27 PM",
@@ -2491,72 +2491,72 @@
     "id": 157,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "180",
-        "Day 4": "180",
-        "Day 5": "180",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "180",
+        "180",
+        "180",
+        "0",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:40:30 PM",
@@ -2679,72 +2679,72 @@
     "id": 158,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "180",
-        "Day 4": "180",
-        "Day 5": "180",
-        "Day 6": "180",
-        "Day 7": "0",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "180",
+        "180",
+        "180",
+        "180",
+        "0",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:40:31 PM",
@@ -2884,72 +2884,72 @@
     "id": 159,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "180",
-        "Day 4": "180",
-        "Day 5": "180",
-        "Day 6": "180",
-        "Day 7": "180",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "180",
+        "180",
+        "180",
+        "180",
+        "180",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 4:40:34 PM",
@@ -3106,72 +3106,72 @@
     "id": 160,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "320",
-        "Day 4": "180",
-        "Day 5": "180",
-        "Day 6": "180",
-        "Day 7": "180",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "320",
+        "180",
+        "180",
+        "180",
+        "180",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 5:43:08 PM",
@@ -3209,72 +3209,72 @@
     "id": 161,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "320",
-        "Day 4": "320",
-        "Day 5": "180",
-        "Day 6": "180",
-        "Day 7": "180",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "320",
+        "320",
+        "180",
+        "180",
+        "180",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 5:43:10 PM",
@@ -3329,72 +3329,72 @@
     "id": 162,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "320",
-        "Day 4": "320",
-        "Day 5": "320",
-        "Day 6": "180",
-        "Day 7": "180",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "320",
+        "320",
+        "320",
+        "180",
+        "180",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 5:43:14 PM",
@@ -3466,72 +3466,72 @@
     "id": 163,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "140",
-        "Day 4": "320",
-        "Day 5": "320",
-        "Day 6": "180",
-        "Day 7": "180",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "140",
+        "320",
+        "320",
+        "180",
+        "180",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 6:44:50 PM",
@@ -3569,72 +3569,72 @@
     "id": 164,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "140",
-        "Day 4": "140",
-        "Day 5": "320",
-        "Day 6": "180",
-        "Day 7": "180",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "50",
-        "Day 4": "50",
-        "Day 5": "50",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "0",
-        "Day 4": "0",
-        "Day 5": "0",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "140",
+        "140",
+        "320",
+        "180",
+        "180",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 6:44:53 PM",
@@ -3689,72 +3689,72 @@
     "id": 173,
     "parentId": 0,
     "data": [
-      {
-        "Category": "Transportation",
-        "Day 1": "120",
-        "Day 2": "0",
-        "Day 3": "85",
-        "Day 4": "0",
-        "Day 5": "95",
-        "Day 6": "0",
-        "Day 7": "120",
-        "Total": "=SUM(B1:H1)"
-      },
-      {
-        "Category": "Hotel",
-        "Day 1": "180",
-        "Day 2": "180",
-        "Day 3": "140",
-        "Day 4": "140",
-        "Day 5": "320",
-        "Day 6": "180",
-        "Day 7": "180",
-        "Total": "=SUM(B2:H2)"
-      },
-      {
-        "Category": "Food",
-        "Day 1": "50",
-        "Day 2": "50",
-        "Day 3": "70",
-        "Day 4": "70",
-        "Day 5": "70",
-        "Day 6": "50",
-        "Day 7": "50",
-        "Total": "=SUM(B3:H3)"
-      },
-      {
-        "Category": "Activities",
-        "Day 1": "0",
-        "Day 2": "0",
-        "Day 3": "120",
-        "Day 4": "150",
-        "Day 5": "10",
-        "Day 6": "0",
-        "Day 7": "0",
-        "Total": "=SUM(B4:H4)"
-      },
-      {
-        "Category": "Budget Limit",
-        "Day 1": "500",
-        "Day 2": "500",
-        "Day 3": "500",
-        "Day 4": "500",
-        "Day 5": "500",
-        "Day 6": "500",
-        "Day 7": "500",
-        "Total": "=SUM(B5:H5)"
-      },
-      {
-        "Category": "Daily Total",
-        "Day 1": "=SUM(B1:B4)",
-        "Day 2": "=SUM(C1:C4)",
-        "Day 3": "=SUM(D1:D4)",
-        "Day 4": "=SUM(E1:E4)",
-        "Day 5": "=SUM(F1:F4)",
-        "Day 6": "=SUM(G1:G4)",
-        "Day 7": "=SUM(H1:H4)",
-        "Total": "=SUM(B6:H6)"
-      }
+      [
+        "Transportation",
+        "120",
+        "0",
+        "85",
+        "0",
+        "95",
+        "0",
+        "120",
+        "=SUM(B1:H1)"
+      ],
+      [
+        "Hotel",
+        "180",
+        "180",
+        "140",
+        "140",
+        "320",
+        "180",
+        "180",
+        "=SUM(B2:H2)"
+      ],
+      [
+        "Food",
+        "50",
+        "50",
+        "70",
+        "70",
+        "70",
+        "50",
+        "50",
+        "=SUM(B3:H3)"
+      ],
+      [
+        "Activities",
+        "0",
+        "0",
+        "120",
+        "150",
+        "10",
+        "0",
+        "0",
+        "=SUM(B4:H4)"
+      ],
+      [
+        "Budget Limit",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "500",
+        "=SUM(B5:H5)"
+      ],
+      [
+        "Daily Total",
+        "=SUM(B1:B4)",
+        "=SUM(C1:C4)",
+        "=SUM(D1:D4)",
+        "=SUM(E1:E4)",
+        "=SUM(F1:F4)",
+        "=SUM(G1:G4)",
+        "=SUM(H1:H4)",
+        "=SUM(B6:H6)"
+      ]
     ],
     "fileName": "Trip_Budget_Planning",
     "timestamp": "7/25/2025, 10:48:18 PM",
