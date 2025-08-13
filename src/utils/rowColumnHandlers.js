@@ -47,7 +47,7 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   //   //*#*//
   // };
 
-  export const insertRow = (data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, newRowIndex ) => {
+  export const insertRow = (data, setData, columnConfigs, hotRef, addLogEntry, updateTable, newRowIndex ) => {
     // const emptyRow = columnConfigs.reduce((acc, col) => ({ ...acc, [col.data]: '' }), {});
     const len = data[0].length
     const emptyRow = Array(len).fill('')
@@ -59,7 +59,10 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   
     // const wrappedAction = () => new InsertRowAction(newRowIndex, 1);
     // hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-    handleSaveCurrentVersion("New row is inserted");
+    const histMsg = "New row is inserted"
+    const cellChanges = emptyRow.map((_, index) => [newRowIndex, index])
+    addLogEntry(histMsg, cellChanges, {}, [], newData)
+    // handleSaveCurrentVersion("New row is inserted");
     const plugin = hotRef.current.hotInstance.getPlugin('formulas')
     plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })
   };
@@ -88,7 +91,7 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   //   //*#*//
   // };
 
-  export const insertColumn = (data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, newColumnIndex) => {
+  export const insertColumn = (data, setData, columnConfigs, setColumnConfigs, hotRef, addLogEntry, updateTable, updateCols, newColumnIndex) => {
     // const newColumnKey = `Column ${columnConfigs.length + 1}`;
     // const newColumn = { data: newColumnKey, title: `Column ${columnConfigs.length + 1}` };
   
@@ -113,7 +116,10 @@ export const handleSelectionEnd = (r1, c1, r2, c2, selectedCellsRef, setSelected
   
     // const wrappedAction = () => new InsertColumnAction(newColumnIndex, newColumnKey);
     // hotRef.current.hotInstance.undoRedo.done(wrappedAction);
-    handleSaveCurrentVersion("New column is inserted");
+    const histMsg = "New column is inserted"
+    const cellChanges = data.map((_, rowIndex) => [rowIndex, newColumnIndex])
+    addLogEntry(histMsg, cellChanges, {}, [], newData)
+    // handleSaveCurrentVersion("New column is inserted");
     const plugin = hotRef.current.hotInstance.getPlugin('formulas')
     plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })
   };

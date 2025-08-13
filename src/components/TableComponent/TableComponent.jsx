@@ -140,26 +140,26 @@ const TableComponent = ({
 		insert_row_above: {
 			name: 'Insert row above',
 			callback: (_, selection) => {
-				insertRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, selection[0].start.row);
+				insertRow(data, setData, columnConfigs, hotRef, addLogEntry, updateTable, selection[0].start.row);
 			}
 		},
 		insert_row_below: {
 			name: 'Insert row below',
 			callback: (_, selection) => {
-				insertRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, selection[0].end.row + 1);
+				insertRow(data, setData, columnConfigs, hotRef, addLogEntry, updateTable, selection[0].end.row + 1);
 			}
 		},
 		sep1: "---------",
 		insert_col_left: {
 			name: 'Insert column left',
 			callback: (_, selection) => {
-				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, selection[0].start.col);
+				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, addLogEntry, updateTable, updateCols, selection[0].start.col);
 			}
 		},
 		insert_col_right: {
 			name: 'Insert column right',
 			callback: (_, selection) => {
-				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, selection[0].end.col + 1);
+				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, addLogEntry, updateTable, updateCols, selection[0].end.col + 1);
 			}
 		},
 		sep2: "---------",

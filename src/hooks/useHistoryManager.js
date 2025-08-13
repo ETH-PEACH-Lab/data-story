@@ -79,9 +79,9 @@ export function useHistoryManager({
         updateHist
     ]);
 
-    const addLogEntry = (message, selection, updatedCellFormat, deepChanges) => {
+    const addLogEntry = (message, selection, updatedCellFormat, deepChanges, updatedData) => {
         saveDataToHistory(
-            data,
+            updatedData ?? data,
             originalFileName,
             currentDataId,
             setUploadHistory,

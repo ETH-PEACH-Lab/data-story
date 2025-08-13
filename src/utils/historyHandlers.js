@@ -102,7 +102,7 @@ export const saveDataToHistory = (
   cellFormat,
   historyMessage,
   author,
-  cellChanges = {},
+  cellChanges = [],
   deepChanges = [],
 ) => {
   const timestamp = new Date().toLocaleString();
