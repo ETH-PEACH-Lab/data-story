@@ -1,27 +1,27 @@
 [
   {
-    "id": 42,
+    "id": 56,
     "data": [
       [
-        "Literals",
-        10,
-        20
+        "Literal",
+        "5",
+        "10"
       ],
       [
-        "Sum",
-        "=B1+C1",
-        "=SUM(B1:C1)"
+        "Sum ",
+        "=B1+C1 ",
+        "=SUM(B1:C1) "
       ],
       [
-        "Product",
-        "=B1*C1",
+        "Product ",
+        "=B1*C1 ",
         "=PRODUCT(B1:C1)"
       ]
     ],
-    "fileName": "Fallback.json",
-    "timestamp": "6/26/2025, 9:00:00 AM",
+    "timestamp": "8/13/2025, 4:27:08 PM",
+    "cellFormat": {},
+    "historyMessage": "Added initial table",
     "author": "Charlie",
-    "historyMessage": "Added fallback template",
     "cellChanges": [
       [
         0,
@@ -58,7 +58,168 @@
       [
         2,
         2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
       ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 2,
+        "type": "dependency"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "dependency"
+      },
+      {
+        "row": 0,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 0,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 0,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 0,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 0,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "dependency"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "type": "dependency"
+      }
     ]
   }
 ]

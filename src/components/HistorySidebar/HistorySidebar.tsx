@@ -50,12 +50,20 @@ const useOutsideClick = (ref, callback) => {
   }, [ref, callback]);
 };
 
+interface DeepChange {
+  row: number;
+  column: number;
+  type: string;
+  spec?: string;
+}
+
 export interface HistoryEntry {
   id: number;
   author: string;
   timestamp: string;
   historyMessage: string;
   cellChanges: number[][]
+  cellChangesDeep: DeepChange[]
 }
 
 export interface HistoryBundle {
@@ -128,6 +136,7 @@ const HistorySidebar = ({
       const mergedEntry = {
         ...currentEntry,
         cellChanges: [...previousEntry.cellChanges, ...currentEntry.cellChanges],
+        cellChangesDeep: [...previousEntry.cellChangesDeep, ...currentEntry.cellChangesDeep],
       }
 
       // Replace the previous entry with the merged one and remove the current entry

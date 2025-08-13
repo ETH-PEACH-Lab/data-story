@@ -129,7 +129,7 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
 
         <button
           className="btn export"
-          onClick={() => exportData({ uploadHistory, currentDataId, idList })}
+          onClick={() => exportData(uploadHistory)}
         >
           📤 Export
         </button>
