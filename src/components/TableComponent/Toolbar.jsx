@@ -82,6 +82,7 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
             IconComponent={() => null}
             style={{ width: "32px", height: "32px", display: "flex", justifyContent: "center" }}
             renderValue={() => "🎨"}
+            value=""
           >
             <MenuItem value="bg-light" onClick={() => handleclick("bg", "bg-light")}>
               <span className="bg-light color-circle" />
