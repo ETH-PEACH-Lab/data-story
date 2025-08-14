@@ -395,7 +395,6 @@ const arrayToSet = (array, set) => {
 export const getCellDiff = (entry) => {
   const cells = new Set()
   if (entry?.cellChanges.length > 0) arrayToSet(entry.cellChanges, cells)
-  else if (entry?.actions[0]?.actionType === "change") arrayToSet(entry.actions[0].changes, cells)
   return cells
 }
 

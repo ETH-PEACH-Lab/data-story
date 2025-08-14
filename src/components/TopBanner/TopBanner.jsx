@@ -35,6 +35,7 @@ function TopBanner() {
           <Select
             onChange={(e) => {
               historyActions.initializeHistory(e.target.value)
+              historyActions.syncHistory(e.target.value)
               setSpreadsheet(e.target.value);
             }}
             label="Spreadsheet"

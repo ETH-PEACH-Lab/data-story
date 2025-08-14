@@ -1,19 +1,936 @@
 [
   {
-    "id": 128,
-    "parentId": 0,
-    "data": [
-      ["Item", "Quantity", "Price per Unit", "Total Price"],
-      ["Apples", 10, 0.5, "=B2*C2"],
-      ["Bananas", 5, 0.3, "=B3*C3"],
-      ["Oranges", 8, 0.4, "=B4*C4"]
-    ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 4:28:56 PM",
-    "cellFormat": {},
+    "id": 168,
+    "timestamp": "8/13/2025, 4:28:56 PM",
     "historyMessage": "Created initial template",
-    "author": "Dave",
+    "author": "Grace",
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit ",
+        "Total Price "
+      ]
+    ],
+    "cellFormat": {},
     "cellChanges": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 0,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 3,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 178,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit ",
+        "Total Price "
+      ],
+      [
+        "",
+        "",
+        "",
+        ""
+      ]
+    ],
+    "timestamp": "8/13/2025, 4:31:35 PM",
+    "cellFormat": {},
+    "historyMessage": "Added row for apples",
+    "author": "Harry",
+    "cellChanges": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 0,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "type": "structure",
+        "spec": "new"
+      }
+    ]
+  },
+  {
+    "id": 208,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit ",
+        "Total Price "
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        ""
+      ]
+    ],
+    "timestamp": "8/13/2025, 4:32:00 PM",
+    "cellFormat": {},
+    "historyMessage": "Added data for apples",
+    "author": "Harry",
+    "cellChanges": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 218,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit ",
+        "Total Price "
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ]
+    ],
+    "timestamp": "8/13/2025, 4:32:05 PM",
+    "cellFormat": {},
+    "historyMessage": "Added formula for apples",
+    "author": "Harry",
+    "cellChanges": [
+      [
+        1,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 3,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 228,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit ",
+        "Total Price "
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "",
+        "",
+        "",
+        ""
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:06:50 PM",
+    "cellFormat": {},
+    "historyMessage": "Added row for watermelons",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 0,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "type": "structure",
+        "spec": "new"
+      }
+    ]
+  },
+  {
+    "id": 278,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        ""
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:07:28 PM",
+    "cellFormat": {},
+    "historyMessage": "Added data for watermelons",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 3,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 288,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B3*C3"
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:07:51 PM",
+    "cellFormat": {},
+    "historyMessage": "Added formula for watermelons",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        2,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 3,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 298,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B3*C3"
+      ]
+    ],
+    "timestamp": "8/13/2025, 4:40:26 PM",
+    "cellFormat": {},
+    "historyMessage": "Added row for peaches",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 0,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 3,
+        "column": 0,
+        "type": "structure",
+        "spec": "addrow"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "structure",
+        "spec": "addrow"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "type": "structure",
+        "spec": "addrow"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "type": "structure",
+        "spec": "addrow"
+      }
+    ]
+  },
+  {
+    "id": 328,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "Peaches",
+        "35",
+        "4.5",
+        ""
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B3*C3"
+      ]
+    ],
+    "timestamp": "8/14/2025, 8:16:51 PM",
+    "cellFormat": {},
+    "historyMessage": "Added data for peaches",
+    "author": "Harry",
+    "cellChanges": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 338,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "Peaches",
+        "35",
+        "4.5",
+        "=B3*C3"
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B3*C3"
+      ]
+    ],
+    "timestamp": "8/14/2025, 8:16:59 PM",
+    "cellFormat": {},
+    "historyMessage": "Added formula for peaches",
+    "author": "Harry",
+    "cellChanges": [
+      [
+        2,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 3,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 348,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "Peaches",
+        "35",
+        "4.5",
+        "=B3*C3"
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B4*C4"
+      ]
+    ],
+    "timestamp": "8/14/2025, 8:17:03 PM",
+    "cellFormat": {},
+    "historyMessage": "Corrected formula for watermelons",
+    "author": "Harry",
+    "cellChanges": [
+      [
+        3,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 3,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 358,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "Peaches",
+        "35",
+        "4.5",
+        "=B3*C3"
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B4*C4"
+      ],
+      [
+        "",
+        "",
+        "",
+        ""
+      ]
+    ],
+    "timestamp": "8/14/2025, 8:18:10 PM",
+    "cellFormat": {},
+    "historyMessage": "Added row for total inventory price",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 0,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 4,
+        "column": 2,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 4,
+        "column": 3,
+        "type": "structure",
+        "spec": "new"
+      }
+    ]
+  },
+  {
+    "id": 378,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "3.5",
+        "=B2*C2"
+      ],
+      [
+        "Peaches",
+        "35",
+        "4.5",
+        "=B3*C3"
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B4*C4"
+      ],
+      [
+        "Total",
+        "",
+        "",
+        "=SUM(D2:D4)"
+      ]
+    ],
+    "timestamp": "8/14/2025, 8:18:44 PM",
+    "cellFormat": {},
+    "historyMessage": "Added total inventory row entries",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 3,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 388,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "4",
+        "=B2*C2"
+      ],
+      [
+        "Peaches",
+        "35",
+        "4.5",
+        "=B3*C3"
+      ],
+      [
+        "Watermelons",
+        "10",
+        "12.5",
+        "=B4*C4"
+      ],
+      [
+        "Total",
+        "",
+        "",
+        "=SUM(D2:D4)"
+      ]
+    ],
+    "timestamp": "8/14/2025, 8:21:56 PM",
+    "cellFormat": {},
+    "historyMessage": "Increased price of apples due to shortage",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        1,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 4,
+        "column": 3,
+        "type": "propagation",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "id": 398,
+    "data": [
+      [
+        "Item ",
+        "Quantity ",
+        "Price per Unit",
+        "Total Price"
+      ],
+      [
+        "Apples",
+        "25",
+        "4",
+        "=B2*C2"
+      ],
+      [
+        "Peaches",
+        "35",
+        "4.5",
+        "=B3*C3"
+      ],
+      [
+        "Watermelons",
+        "20",
+        "12.5",
+        "=B4*C4"
+      ],
+      [
+        "Total",
+        "",
+        "",
+        "=SUM(D2:D4)"
+      ]
+    ],
+    "timestamp": "8/14/2025, 8:23:36 PM",
+    "cellFormat": {},
+    "historyMessage": "Increased quantity of watermelons due to new shipment",
+    "author": "Grace",
+    "cellChanges": [
+      [
+        3,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 4,
+        "column": 3,
+        "type": "propagation",
+        "level": 2
+      }
     ]
   }
 ]
