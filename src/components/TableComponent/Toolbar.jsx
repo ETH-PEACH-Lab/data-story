@@ -53,7 +53,7 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
     reader.onload = (e) => {
       const text = e.target.result
       const data = JSON.parse(text)
-      initializeHistory(data.uploadHistory);
+      initializeHistory(data);
     }
 
     reader.readAsText(file);
@@ -82,6 +82,7 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
             IconComponent={() => null}
             style={{ width: "32px", height: "32px", display: "flex", justifyContent: "center" }}
             renderValue={() => "🎨"}
+            value=""
           >
             <MenuItem value="bg-light" onClick={() => handleclick("bg", "bg-light")}>
               <span className="bg-light color-circle" />
@@ -129,7 +130,7 @@ function Toolbar({ data, rawValue, setRawValue, selectedProp, handleTableChange 
 
         <button
           className="btn export"
-          onClick={() => exportData({ uploadHistory, currentDataId, idList })}
+          onClick={() => exportData(uploadHistory)}
         >
           📤 Export
         </button>

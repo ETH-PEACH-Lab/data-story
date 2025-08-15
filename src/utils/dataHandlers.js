@@ -195,12 +195,12 @@ export const initializeColumns = (
   }
 };
 
-export const getAllDependents = (engine, sheet, row, col, deepChanges, level) => {
-	const destinations = engine.getCellDependents({ sheet, row, col })
-	deepChanges.push(...destinations.map(dest => 
+export const getAllDependents = (engine, addr, deepChanges, level) => {
+	const destinations = engine.getCellDependents(addr)
+	deepChanges.push(...destinations.filter(dest => dest.row !== undefined).map(dest => 
     ({ row: dest.row, column: dest.col, type: 'propagation', level })
   ))
-  destinations.forEach(dest => 
-      getAllDependents(engine, sheet, dest.row, dest.col, deepChanges, level + 1)
+  destinations?.forEach(dest => 
+      getAllDependents(engine, dest, deepChanges, level + (dest.row ? 1 : 0))
   )
 }

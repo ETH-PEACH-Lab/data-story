@@ -11,6 +11,7 @@ import {
     generateEmptyDataset
 } from "../utils/storageHandlers";
 import fallback from "../assets/fallback.json"
+import { HyperFormula } from 'hyperformula';
 
 export function useHistoryManager({
     data,
@@ -78,9 +79,9 @@ export function useHistoryManager({
         updateHist
     ]);
 
-    const addLogEntry = (message, selection, updatedCellFormat, deepChanges) => {
+    const addLogEntry = (message, selection, updatedCellFormat, deepChanges, updatedData) => {
         saveDataToHistory(
-            data,
+            updatedData ?? data,
             originalFileName,
             currentDataId,
             setUploadHistory,
@@ -146,7 +147,7 @@ export function useHistoryManager({
     ]);
 
     const handleHistoryClick = useCallback((historyEntry, index, switchToPage) => {
-        const undoRedo = hotRef.current?.hotInstance?.undoRedo;
+        // const undoRedo = hotRef.current?.hotInstance?.undoRedo;
 
         const performSwitch = () => {
 
@@ -168,6 +169,8 @@ export function useHistoryManager({
         };
 
         performSwitch();
+        const plugin = hotRef.current.hotInstance.getPlugin('formulas')
+        plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })
     }, [
         hotRef,
         initialActionStack,
@@ -219,6 +222,8 @@ export function useHistoryManager({
     }
 
     const initializeHistory = (history) => {
+        const plugin = hotRef.current.hotInstance.getPlugin('formulas')
+        plugin.engine = HyperFormula.buildEmpty({ licenseKey: 'gpl-v3' })
         setUploadHistory(history)
         console.log(history)
         const historyEntry = history.at(-1)
@@ -246,7 +251,7 @@ export function useHistoryManager({
     useEffect(() => {
         const savedHistory = getHistoryLocalStorage();
 
-        if (savedHistory.length === 0) initializeHistory(fallback.uploadHistory)
+        if (savedHistory.length === 0) initializeHistory(fallback)
         else initializeHistory(savedHistory)
     }, []);
 

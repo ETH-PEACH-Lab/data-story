@@ -57,7 +57,7 @@ function App() {
   const [userCursorColor, setUserCursorColor] = useState("");
   const [brushedCells, setBrushedCells] = useState<number[][]>([]);
   const [brushState, setBrushState] = useState<BrushState>(BrushState.IDLE);
-  const [appState, setAppState] = useState();
+  const [appState, setAppState] = useState("");
 
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);

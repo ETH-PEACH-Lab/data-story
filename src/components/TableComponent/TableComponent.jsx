@@ -59,11 +59,11 @@ const TableComponent = ({
 		changes.forEach(([row, prop, oldValue, newValue]) => {
 			newData[row][prop] = newValue;
 			const col = hotRef.current.hotInstance.propToCol(prop);
-			if (newValue.startsWith("=")) deepChanges.push({ row, column: col, type: 'dependency' })
+			if (newValue?.startsWith("=")) deepChanges.push({ row, column: col, type: 'dependency' })
 			else deepChanges.push({ row, column: col, type: 'content' })
 			// const destinations = engine.getCellDependents({ sheet: 0, row, col })
 			// deepChanges.push(...destinations.map(dest => ({ row: dest.row, column: dest.col, type: 'propagation' })))
-			getAllDependents(engine, 0, row, col, deepChanges, 1)
+			getAllDependents(engine, { sheet: 0, row, col }, deepChanges, 1)
 		});
 
 		if (changes.length > 0) {
@@ -140,26 +140,26 @@ const TableComponent = ({
 		insert_row_above: {
 			name: 'Insert row above',
 			callback: (_, selection) => {
-				insertRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, selection[0].start.row);
+				insertRow(data, setData, columnConfigs, hotRef, addLogEntry, updateTable, selection[0].start.row);
 			}
 		},
 		insert_row_below: {
 			name: 'Insert row below',
 			callback: (_, selection) => {
-				insertRow(data, setData, columnConfigs, hotRef, handleSaveCurrentVersion, updateTable, selection[0].end.row + 1);
+				insertRow(data, setData, columnConfigs, hotRef, addLogEntry, updateTable, selection[0].end.row + 1);
 			}
 		},
 		sep1: "---------",
 		insert_col_left: {
 			name: 'Insert column left',
 			callback: (_, selection) => {
-				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, selection[0].start.col);
+				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, addLogEntry, updateTable, updateCols, selection[0].start.col);
 			}
 		},
 		insert_col_right: {
 			name: 'Insert column right',
 			callback: (_, selection) => {
-				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, handleSaveCurrentVersion, updateTable, updateCols, selection[0].end.col + 1);
+				insertColumn(data, setData, columnConfigs, setColumnConfigs, hotRef, addLogEntry, updateTable, updateCols, selection[0].end.col + 1);
 			}
 		},
 		sep2: "---------",

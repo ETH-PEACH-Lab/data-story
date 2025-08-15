@@ -102,27 +102,27 @@ export const saveDataToHistory = (
   cellFormat,
   historyMessage,
   author,
-  cellChanges = {},
+  cellChanges = [],
   deepChanges = [],
 ) => {
   const timestamp = new Date().toLocaleString();
-  const fileNameToUse = fileName || originalFileName || "initial dataset";
+  // const fileNameToUse = fileName || originalFileName || "initial dataset";
   const dataCopy = JSON.parse(JSON.stringify(newData));
 
-  const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
-  const newActions = currentActionStack.slice(initialActionStackLength);
+  // const currentActionStack = hotRef.current?.hotInstance?.undoRedo?.doneActions || [];
+  // const newActions = currentActionStack.slice(initialActionStackLength);
 
   setUploadHistory((prevHistory) => {
     const updatedHistory = [
       ...prevHistory,
       {
         id: prevHistory.at(-1).id + 1,
-        parentId: parentId,
+        // parentId: parentId,
         data: dataCopy,
-        fileName: fileNameToUse,
+        // fileName: fileNameToUse,
         timestamp: timestamp,
-        actions: newActions,
-        columnConfigs: columnConfigs, // Save the updated columnConfigs (titles)
+        // actions: newActions,
+        // columnConfigs: columnConfigs, // Save the updated columnConfigs (titlesd)
         cellFormat: cellFormat,
         historyMessage: historyMessage,
         author: author,
@@ -135,15 +135,15 @@ export const saveDataToHistory = (
   });
 };
 
-export const areActionStacksEqual = (stack1, stack2, length) => {
-  if (stack1.length !== stack2.length) return false;
-  for (let i = 0; i < Math.min(length, stack1.length); i++) {
-    if (JSON.stringify(stack1[i]) !== JSON.stringify(stack2[i])) {
-      return false;
-    }
-  }
-  return true;
-};
+// export const areActionStacksEqual = (stack1, stack2, length) => {
+//   if (stack1.length !== stack2.length) return false;
+//   for (let i = 0; i < Math.min(length, stack1.length); i++) {
+//     if (JSON.stringify(stack1[i]) !== JSON.stringify(stack2[i])) {
+//       return false;
+//     }
+//   }
+//   return true;
+// };
 
 export const switchHistoryEntry = (
   historyEntry,
@@ -159,23 +159,24 @@ export const switchHistoryEntry = (
   setInitialActionStack,
   setInitialActionStackLength
 ) => {
+  if (!historyEntry) return
   setData(JSON.parse(JSON.stringify(historyEntry.data)));
   setCellFormat(historyEntry.cellFormat || {});
 
   // Use saved columnConfigs from history if available
-  const savedColumnConfigs = historyEntry.columnConfigs || null;
+  // const savedColumnConfigs = historyEntry.columnConfigs || null;
 
   // Initialize columns with saved columnConfigs (if available)
-  initializeColumns(
-    historyEntry.data,
-    setColumnConfigs,
-    savedColumnConfigs // Pass savedColumnConfigs
-  );
+  // initializeColumns(
+  //   historyEntry.data,
+  //   setColumnConfigs,
+  //   savedColumnConfigs // Pass savedColumnConfigs
+  // );
 
-  setActions(historyEntry.actions);
-  setOriginalFileName(historyEntry.fileName);
-  setInitialActionStack([...hotRef.current?.hotInstance?.undoRedo?.doneActions || []]);
-  setInitialActionStackLength(hotRef.current?.hotInstance?.undoRedo?.doneActions?.length || 0);
+  // setActions(historyEntry.actions);
+  // setOriginalFileName(historyEntry.fileName);
+  // setInitialActionStack([...hotRef.current?.hotInstance?.undoRedo?.doneActions || []]);
+  // setInitialActionStackLength(hotRef.current?.hotInstance?.undoRedo?.doneActions?.length || 0);
 };
 
 const filterAuthors = (uploadHistory, authors) => {
@@ -394,7 +395,6 @@ const arrayToSet = (array, set) => {
 export const getCellDiff = (entry) => {
   const cells = new Set()
   if (entry?.cellChanges.length > 0) arrayToSet(entry.cellChanges, cells)
-  else if (entry?.actions[0]?.actionType === "change") arrayToSet(entry.actions[0].changes, cells)
   return cells
 }
 

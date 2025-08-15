@@ -1,327 +1,102 @@
 [
   {
-    "id": 128,
-    "parentId": 0,
+    "id": 176,
     "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": null,
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": null,
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": null,
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": null,
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      }
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
     ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 4:28:56 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            1,
-            1,
-            "Opening Keynote: Future of AI\nDr. Amira Solis",
-            null
-          ],
-          [
-            1,
-            2,
-            "Talk: Tech Ethics in 2030\nJordan Malik",
-            null
-          ],
-          [
-            1,
-            3,
-            "Talk: Rewiring Education with AI\nChloe Tran",
-            null
-          ],
-          [
-            1,
-            4,
-            null,
-            null
-          ],
-          [
-            1,
-            5,
-            "Panel: Green Tech Frontiers\nmoderated by Anil Desai",
-            null
-          ],
-          [
-            1,
-            6,
-            "Talk: Rebuilding Trust in Media\nRosa Kim",
-            null
-          ],
-          [
-            1,
-            7,
-            "Closing Keynote: The Next Decade\nRaymond Zhu",
-            null
-          ],
-          [
-            1,
-            8,
-            "---",
-            null
-          ],
-          [
-            2,
-            1,
-            "Workshop: Design Sprint Basics\nInstructor: Lila Cho",
-            null
-          ],
-          [
-            2,
-            2,
-            "Workshop (cont’d)",
-            null
-          ],
-          [
-            2,
-            3,
-            "Workshop: Prototyping with Figma\nMark Ivers",
-            null
-          ],
-          [
-            2,
-            4,
-            "Lunch Break",
-            null
-          ],
-          [
-            2,
-            5,
-            "Workshop: Intro to Prompt Engineering\nTariq B",
-            null
-          ],
-          [
-            2,
-            6,
-            "Workshop (cont’d)",
-            null
-          ],
-          [
-            2,
-            7,
-            "---",
-            null
-          ],
-          [
-            2,
-            8,
-            "---",
-            null
-          ],
-          [
-            3,
-            1,
-            "Panel: Women in Robotics\nModerator: Sana Gill",
-            null
-          ],
-          [
-            3,
-            2,
-            "Talk: Remote Work Realities\nEthan Wells",
-            null
-          ],
-          [
-            3,
-            3,
-            "Panel: Cybersecurity & You\nGov + Industry",
-            null
-          ],
-          [
-            3,
-            4,
-            "Lunch Break",
-            null
-          ],
-          [
-            3,
-            5,
-            "Talk: Local Climate Actions\nNeha Rao",
-            null
-          ],
-          [
-            3,
-            6,
-            "Panel: VC Trends 2025\nearly-stage funders",
-            null
-          ],
-          [
-            3,
-            7,
-            "Fireside Chat: From Lab to Market\nInventors Panel",
-            null
-          ],
-          [
-            3,
-            8,
-            "---",
-            null
-          ],
-          [
-            4,
-            1,
-            "Coffee & Check-In",
-            null
-          ],
-          [
-            4,
-            2,
-            "Open Networking",
-            null
-          ],
-          [
-            4,
-            3,
-            "Topic Tables: Startups, Research, Policy",
-            null
-          ],
-          [
-            4,
-            4,
-            "Lunch Buffet",
-            null
-          ],
-          [
-            4,
-            5,
-            "Mentorship Roundtables",
-            null
-          ],
-          [
-            4,
-            6,
-            "Demo Pods: Startups",
-            null
-          ],
-          [
-            4,
-            7,
-            "Chill + Chat",
-            null
-          ],
-          [
-            4,
-            8,
-            "Farewell Mixer",
-            null
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            1,
-            4,
-            8
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
+    "timestamp": "8/10/2025, 12:39:58 PM",
     "cellFormat": {},
     "historyMessage": "Created initial template",
     "author": "Dave",
     "cellChanges": [
       [
-        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
         4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        1,
+        0
       ],
       [
         1,
@@ -357,6 +132,10 @@
       ],
       [
         2,
+        0
+      ],
+      [
+        2,
         1
       ],
       [
@@ -389,6 +168,10 @@
       ],
       [
         3,
+        0
+      ],
+      [
+        3,
         1
       ],
       [
@@ -418,6 +201,10 @@
       [
         3,
         8
+      ],
+      [
+        4,
+        0
       ],
       [
         4,
@@ -451,257 +238,526 @@
         4,
         8
       ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 0,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 0,
+        "column": 8,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 8,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 8,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 8,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 0,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 8,
+        "type": "content"
+      }
     ]
   },
   {
-    "id": 136,
-    "parentId": 0,
+    "id": 177,
     "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": null,
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": null,
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": null,
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
     ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 4:43:20 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            4,
-            1,
-            null,
-            "Check-In"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            1
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            4,
-            2,
-            null,
-            "Coffee and Cake"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            2
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            4,
-            3,
-            null,
-            "Open Networking"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            3
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            4,
-            4,
-            null,
-            "Lunch Buffet"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            4
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            4,
-            5,
-            null,
-            "Lunch Buffet"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            5
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            4,
-            6,
-            null,
-            "Startup Demos"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            6
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            4,
-            7,
-            null,
-            "Startup Demos"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            7
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            4,
-            8,
-            null,
-            "Farewell Mixer"
-          ]
-        ],
-        "selected": [
-          [
-            4,
-            8
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
+    "timestamp": "8/10/2025, 12:49:20 PM",
     "cellFormat": {},
-    "historyMessage": "Added networking lounge events",
+    "historyMessage": "Added main stage formula",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 1,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 179,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/10/2025, 12:49:34 PM",
+    "cellFormat": {},
+    "historyMessage": "Added workshop room formula",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 1,
+        "type": "dependency"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 181,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/10/2025, 12:49:41 PM",
+    "cellFormat": {},
+    "historyMessage": "Added panel room formula",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 1,
+        "type": "dependency"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 183,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/10/2025, 12:49:46 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking lounge formula",
     "author": "Dave",
     "cellChanges": [
       [
@@ -710,1326 +766,3698 @@
       ],
       [
         4,
-        2
-      ],
-      [
-        4,
-        3
-      ],
-      [
-        4,
-        4
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        4,
-        6
-      ],
-      [
-        4,
-        7
-      ],
-      [
-        4,
-        8
+        1
       ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 1,
+        "type": "dependency"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "dependency"
+      }
     ]
   },
   {
-    "id": 142,
-    "parentId": 0,
+    "id": 185,
     "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": "Opening Keynote by Dr. Solé",
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": "Closing Keynote by Dr. Zhu"
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
     ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 4:46:39 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            1,
-            4,
-            null,
-            "Lunch Break"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            4
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            2,
-            4,
-            null,
-            "Lunch Break"
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            4
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            3,
-            4,
-            null,
-            "Lunch Break"
-          ]
-        ],
-        "selected": [
-          [
-            3,
-            4
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            1,
-            1,
-            null,
-            "Opening Keynote by Dr. Solé"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            1
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            1,
-            8,
-            null,
-            "Closing Keynote by Dr. Zu"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            8
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            1,
-            8,
-            "Closing Keynote by Dr. Zu",
-            "Closing Keynote by Dr. Zhu"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            8
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
+    "timestamp": "8/11/2025, 11:51:52 PM",
     "cellFormat": {},
-    "historyMessage": "Added lunch breaks and keynotes",
+    "historyMessage": "Added workshop event",
+    "author": "Eve",
+    "cellChanges": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 186,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/11/2025, 11:52:13 PM",
+    "cellFormat": {},
+    "historyMessage": "Added workshop event",
+    "author": "Eve",
+    "cellChanges": [
+      [
+        2,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 187,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        null,
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/11/2025, 11:52:25 PM",
+    "cellFormat": {},
+    "historyMessage": "Added workshop event",
+    "author": "Eve",
+    "cellChanges": [
+      [
+        2,
+        4
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 188,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/11/2025, 11:52:40 PM",
+    "cellFormat": {},
+    "historyMessage": "Added workshop event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        5
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 189,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Quantum Computing by Dr. Kwok",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/11/2025, 11:52:57 PM",
+    "cellFormat": {},
+    "historyMessage": "Added panel event",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        3,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 2,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 190,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        null,
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Quantum Computing by Dr. Kwok",
+        "Remote Work by Mr. Wells",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/12/2025, 12:53:08 PM",
+    "cellFormat": {},
+    "historyMessage": "Added panel event",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        3,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 3,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 191,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Quantum Computing by Dr. Kwok",
+        "Remote Work by Mr. Wells",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/12/2025, 12:53:23 PM",
+    "cellFormat": {},
+    "historyMessage": "Added workshop event",
+    "author": "Eve",
+    "cellChanges": [
+      [
+        2,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 192,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Quantum Computing by Dr. Kwok",
+        "Remote Work by Mr. Wells",
+        null,
+        "Lunch Break",
+        null,
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/12/2025, 12:54:01 PM",
+    "cellFormat": {},
+    "historyMessage": "Added panel event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        3,
+        5
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 194,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        null,
+        "Remote Work by Mr. Wells",
+        null,
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/12/2025, 12:54:21 PM",
+    "cellFormat": {},
+    "historyMessage": "Moved event due to flight delays",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 195,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        null,
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/12/2025, 12:56:08 PM",
+    "cellFormat": {},
+    "historyMessage": "Added panel event",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        3,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 196,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Cybersecurity Threats by Argon",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 12:56:26 PM",
+    "cellFormat": {},
+    "historyMessage": "Added panel event",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        3,
+        4
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 198,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        null,
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 12:57:28 PM",
+    "cellFormat": {},
+    "historyMessage": "Moved event to main stage due to increased demand",
     "author": "Dave",
     "cellChanges": [
       [
         1,
-        4
-      ],
-      [
-        2,
-        4
+        2
       ],
       [
         3,
         4
-      ],
-      [
-        1,
-        1
-      ],
-      [
-        1,
-        8
-      ],
-      [
-        1,
-        8
       ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      },
+      {
+        "row": 3,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
     ]
   },
   {
-    "id": 148,
-    "parentId": 0,
+    "id": 199,
     "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": "Opening Keynote by Dr. Solé",
-        "10:00-11:00": "Future of AI by Mr. Malik",
-        "11:00-12:00": "AI in Education by Ms. Tran",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Climate and Technology by Ms. Kim",
-        "14:00-15:00": "Bias in Social Media by Mr. Romero",
-        "15:00-16:00": "Trust and Security by Ms. Remington",
-        "16:00-17:00": "Closing Keynote by Dr. Zhu"
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
     ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 5:43:01 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            1,
-            2,
-            "x",
-            "Future of AI by Mr. Malik"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            2
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            1,
-            3,
-            null,
-            "AI in Education by Ms. Tran"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            3
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            1,
-            5,
-            null,
-            "Climate and Technology by Ms. Kim"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            5
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            1,
-            6,
-            null,
-            "Bias in Social Media by Mr. Romero"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            6
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            1,
-            7,
-            null,
-            "Trust and Security by Ms. Remington"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            7
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
+    "timestamp": "8/13/2025, 12:59:14 PM",
     "cellFormat": {},
-    "historyMessage": "Added main stage events",
+    "historyMessage": "Added panel event",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        3,
+        4
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 200,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 12:59:43 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 201,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 12:59:59 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 202,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        null,
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 2:00:04 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        4
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 203,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 2:00:12 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        5
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 204,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 2:00:45 PM",
+    "cellFormat": {},
+    "historyMessage": "Added main stage event",
     "author": "Eve",
     "cellChanges": [
       [
         1,
-        2
-      ],
-      [
-        1,
-        2
-      ],
-      [
-        1,
         3
-      ],
-      [
-        1,
-        5
-      ],
-      [
-        1,
-        6
-      ],
-      [
-        1,
-        7
       ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
     ]
   },
   {
-    "id": 152,
-    "parentId": 0,
+    "id": 205,
     "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": "Opening Keynote by Dr. Solé",
-        "10:00-11:00": "Future of AI by Mr. Malik",
-        "11:00-12:00": "AI in Education by Ms. Tran",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": "Bias in Social Media by Mr. Romero",
-        "15:00-16:00": "Trust and Security by Ms. Remington",
-        "16:00-17:00": "Closing Keynote by Dr. Zhu"
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Climate and Technology by Ms. Kim",
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
-    ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 5:44:56 PM",
-    "actions": [],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
-    "cellFormat": {},
-    "historyMessage": "Moved climate and technology to panel room B",
-    "author": "Dave",
-    "cellChanges": [
       [
-        3,
-        5
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
       ],
       [
-        1,
-        5
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        null,
+        null,
+        null
       ],
       [
-        3,
-        5
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
       ],
       [
-        3,
-        5
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        null,
+        null
       ]
-    ]
-  },
-  {
-    "id": 160,
-    "parentId": 0,
-    "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": "Opening Keynote by Dr. Solé",
-        "10:00-11:00": "Future of AI by Mr. Malik",
-        "11:00-12:00": "AI in Education by Ms. Tran",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": "Bias in Social Media by Mr. Romero",
-        "15:00-16:00": "Trust and Security by Ms. Remington",
-        "16:00-17:00": "Closing Keynote by Dr. Zhu"
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": "Sprint Basics by Ms. Cho",
-        "10:00-11:00": "Sprint Basics by Ms. Cho",
-        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Introduction to Prompt Engineering by Mr. Embarek",
-        "14:00-15:00": "Linux Installation by Ms. Hernandez",
-        "15:00-16:00": "Linux Installation by Ms. Hernandez",
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Climate and Technology by Ms. Kim",
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
     ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 6:48:53 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            2,
-            2,
-            null,
-            ""
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            2
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            2,
-            1,
-            "x",
-            "Sprint Basics by Ms. Cho"
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            1
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            2,
-            2,
-            "",
-            "Sprint Basics by Ms. Cho"
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            2
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            2,
-            3,
-            null,
-            "Prototyping with Figma by Dr. Orion"
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            3
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            2,
-            5,
-            null,
-            "Introduction to Prompt Engineering by Mr. Embarek"
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            5
-          ]
-        ],
-        "actionType": "change"
-      },
-      {
-        "changes": [
-          [
-            2,
-            6,
-            null,
-            "Linux Installation by Ms. Hernandez"
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            6
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
+    "timestamp": "8/13/2025, 2:01:00 PM",
     "cellFormat": {},
-    "historyMessage": "Added workshop room A events",
-    "author": "Frank",
-    "cellChanges": [
-      [
-        2,
-        1
-      ],
-      [
-        2,
-        2
-      ],
-      [
-        2,
-        1
-      ],
-      [
-        2,
-        2
-      ],
-      [
-        2,
-        3
-      ],
-      [
-        2,
-        5
-      ],
-      [
-        2,
-        6
-      ],
-      [
-        2,
-        7
-      ]
-    ]
-  },
-  {
-    "id": 162,
-    "parentId": 0,
-    "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": "Opening Keynote by Dr. Solé",
-        "10:00-11:00": "Future of AI by Mr. Malik",
-        "11:00-12:00": "AI in Education by Ms. Tran",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": null,
-        "14:00-15:00": "Bias in Social Media by Mr. Romero",
-        "15:00-16:00": "Trust and Security by Ms. Remington",
-        "16:00-17:00": "Closing Keynote by Dr. Zhu"
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": "Sprint Basics by Ms. Cho",
-        "10:00-11:00": "Sprint Basics by Ms. Cho",
-        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Intro to Prompt Engineering by Mr. Embarek",
-        "14:00-15:00": "Linux Installation by Ms. Hernandez",
-        "15:00-16:00": "Linux Installation by Ms. Hernandez",
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Climate and Technology by Ms. Kim",
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
-    ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 6:50:39 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            2,
-            5,
-            "Introduction to Prompt Engineering by Mr. Embarekesao",
-            "Intro to Prompt Engineering by Mr. Embarek"
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            5
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
-    "cellFormat": {},
-    "historyMessage": "Renamed introduction to prompt engineering",
-    "author": "Dave",
-    "cellChanges": [
-      [
-        2,
-        5
-      ],
-      [
-        2,
-        5
-      ]
-    ]
-  },
-  {
-    "id": 163,
-    "parentId": 0,
-    "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": "Opening Keynote by Dr. Solé",
-        "10:00-11:00": "Future of AI by Mr. Malik",
-        "11:00-12:00": "AI in Education by Ms. Tran",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "AI policies by Mr. Schweizer",
-        "14:00-15:00": "Bias in Social Media by Mr. Romero",
-        "15:00-16:00": "Trust and Security by Ms. Remington",
-        "16:00-17:00": "Closing Keynote by Dr. Zhu"
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": "Sprint Basics by Ms. Cho",
-        "10:00-11:00": "Sprint Basics by Ms. Cho",
-        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Intro to Prompt Engineering by Mr. Embarek",
-        "14:00-15:00": "Linux Installation by Ms. Hernandez",
-        "15:00-16:00": "Linux Installation by Ms. Hernandez",
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": null,
-        "10:00-11:00": null,
-        "11:00-12:00": null,
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Climate and Technology by Ms. Kim",
-        "14:00-15:00": null,
-        "15:00-16:00": null,
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
-    ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 8:52:06 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            1,
-            5,
-            null,
-            "AI policies by Mr. Schweizer"
-          ]
-        ],
-        "selected": [
-          [
-            1,
-            5
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
-    "cellFormat": {},
-    "historyMessage": "Added main stage event at 13:00-14:00",
-    "author": "Frank",
-    "cellChanges": [
-      [
-        1,
-        5
-      ]
-    ]
-  },
-  {
-    "id": 174,
-    "parentId": 0,
-    "data": [
-      {
-        "Room": "Room / Track",
-        "09:00-10:00": "09:00-10:00",
-        "10:00-11:00": "10:00-11:00",
-        "11:00-12:00": "11:00-12:00",
-        "12:00-13:00": "12:00-13:00",
-        "13:00-14:00": "13:00-14:00",
-        "14:00-15:00": "14:00-15:00",
-        "15:00-16:00": "15:00-16:00",
-        "16:00-17:00": "16:00-17:00"
-      },
-      {
-        "Room": "Main Stage",
-        "09:00-10:00": "Opening Keynote by Dr. Solé",
-        "10:00-11:00": "Future of AI by Mr. Malik",
-        "11:00-12:00": "AI in Education by Ms. Tran",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "AI policies by Mr. Schweizer",
-        "14:00-15:00": "Bias in Social Media by Mr. Romero",
-        "15:00-16:00": "Trust and Security by Ms. Remington",
-        "16:00-17:00": "Closing Keynote by Dr. Zhu"
-      },
-      {
-        "Room": "Workshop Room A",
-        "09:00-10:00": "Sprint Basics by Ms. Cho",
-        "10:00-11:00": "Sprint Basics by Ms. Cho",
-        "11:00-12:00": "Prototyping with Figma by Dr. Orion",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Intro to Prompt Engineering by Mr. Embarek",
-        "14:00-15:00": "Linux Installation by Ms. Hernandez",
-        "15:00-16:00": "Linux Installation by Ms. Hernandez",
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Panel Room B",
-        "09:00-10:00": "Women in Robotics by Ms. Gillinger",
-        "10:00-11:00": "Remote Work by Mr. Wells",
-        "11:00-12:00": "Cybersecurity Threats by Argon",
-        "12:00-13:00": "Lunch Break",
-        "13:00-14:00": "Climate and Technology by Ms. Kim",
-        "14:00-15:00": "Quantum Computing by Dr. Kwok",
-        "15:00-16:00": "Cloud Computing by Dr. Sadic",
-        "16:00-17:00": null
-      },
-      {
-        "Room": "Networking Lounge",
-        "09:00-10:00": "Check-In",
-        "10:00-11:00": "Coffee and Cake",
-        "11:00-12:00": "Open Networking",
-        "12:00-13:00": "Lunch Buffet",
-        "13:00-14:00": "Lunch Buffet",
-        "14:00-15:00": "Startup Demos",
-        "15:00-16:00": "Startup Demos",
-        "16:00-17:00": "Farewell Mixer"
-      }
-    ],
-    "fileName": "Trip_Budget_Planning",
-    "timestamp": "8/4/2025, 8:40:45 PM",
-    "actions": [
-      {
-        "changes": [
-          [
-            2,
-            8,
-            "x",
-            null
-          ]
-        ],
-        "selected": [
-          [
-            2,
-            8
-          ]
-        ],
-        "actionType": "change"
-      }
-    ],
-    "columnConfigs": [
-      {
-        "data": "Room",
-        "title": "Room",
-        "width": 100
-      },
-      {
-        "data": "09:00-10:00",
-        "title": "09:00-10:00",
-        "width": 100
-      },
-      {
-        "data": "10:00-11:00",
-        "title": "10:00-11:00",
-        "width": 100
-      },
-      {
-        "data": "11:00-12:00",
-        "title": "11:00-12:00",
-        "width": 100
-      },
-      {
-        "data": "12:00-13:00",
-        "title": "12:00-13:00",
-        "width": 100
-      },
-      {
-        "data": "13:00-14:00",
-        "title": "13:00-14:00",
-        "width": 100
-      },
-      {
-        "data": "14:00-15:00",
-        "title": "14:00-15:00",
-        "width": 100
-      },
-      {
-        "data": "15:00-16:00",
-        "title": "15:00-16:00",
-        "width": 100
-      },
-      {
-        "data": "16:00-17:00",
-        "title": "16:00-17:00",
-        "width": 100
-      }
-    ],
-    "cellFormat": {},
-    "historyMessage": "Added panel Room B events",
+    "historyMessage": "Added main stage event",
     "author": "Eve",
     "cellChanges": [
       [
-        3,
-        1
+        1,
+        4
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 4,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 206,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
       ],
       [
-        3,
-        1
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        null,
+        null
       ],
       [
-        3,
-        1
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
       ],
       [
-        3,
-        2
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
       ],
       [
-        3,
-        3
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        null,
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 2:01:13 PM",
+    "cellFormat": {},
+    "historyMessage": "Added main stage event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        5
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 5,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 207,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        null
+      ]
+    ],
+    "timestamp": "8/13/2025, 3:01:23 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 208,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        null,
+        null
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/13/2025, 3:01:31 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        7
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 209,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        null,
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/13/2025, 3:01:47 PM",
+    "cellFormat": {},
+    "historyMessage": "Added main stage event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 210,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Introduction to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/13/2025, 3:02:07 PM",
+    "cellFormat": {},
+    "historyMessage": "Added main stage event",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 211,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/13/2025, 3:02:13 PM",
+    "cellFormat": {},
+    "historyMessage": "Renamed workshop event",
+    "author": "Frank",
+    "cellChanges": [
+      [
+        2,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 212,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 1:03:10 PM",
+    "cellFormat": {},
+    "historyMessage": "Added new column for 14:00-15:00 slot",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        6
       ],
       [
         3,
         6
       ],
       [
+        4,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 0,
+        "column": 6,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 1,
+        "column": 6,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 2,
+        "column": 6,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 3,
+        "column": 6,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 4,
+        "column": 6,
+        "type": "structure",
+        "spec": "new"
+      },
+      {
+        "row": 0,
+        "column": 7,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 0,
+        "column": 8,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 1,
+        "column": 7,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 1,
+        "column": 8,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 2,
+        "column": 7,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 2,
+        "column": 8,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 3,
+        "column": 7,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 3,
+        "column": 8,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 4,
+        "column": 7,
+        "type": "structure",
+        "spec": "addcol"
+      },
+      {
+        "row": 4,
+        "column": 8,
+        "type": "structure",
+        "spec": "addcol"
+      }
+    ]
+  },
+  {
+    "id": 213,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-15:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 1:03:23 PM",
+    "cellFormat": {},
+    "historyMessage": "Added 14:00-15:00 slot",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        0,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 0,
+        "column": 6,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 214,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 1:03:25 PM",
+    "cellFormat": {},
+    "historyMessage": "Shortened Lunch Break",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        0,
+        5
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 0,
+        "column": 5,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 215,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 1:03:57 PM",
+    "cellFormat": {},
+    "historyMessage": "Added main stage event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 216,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 1:04:14 PM",
+    "cellFormat": {},
+    "historyMessage": "Added workshop event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 217,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "",
+        "Startup Demos",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 4:04:50 PM",
+    "cellFormat": {},
+    "historyMessage": "Added panel event",
+    "author": "Dave",
+    "cellChanges": [
+      [
         3,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 218,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "",
+        "",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 4:06:02 PM",
+    "cellFormat": {},
+    "historyMessage": "Moved networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
         7
       ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 219,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 4:06:04 PM",
+    "cellFormat": {},
+    "historyMessage": "Moved networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 220,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Perez"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 4:06:11 PM",
+    "cellFormat": {},
+    "historyMessage": "Added networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        7
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 7,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 221,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:H2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 4:06:19 PM",
+    "cellFormat": {},
+    "historyMessage": "Replaced speaker due to illness",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 8,
+        "type": "content"
+      }
+    ]
+  },
+  {
+    "id": 222,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:H3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:07:19 PM",
+    "cellFormat": {},
+    "historyMessage": "Updated formula to account for new column",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 1,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 223,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:H4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:07:24 PM",
+    "cellFormat": {},
+    "historyMessage": "Updated formula to account for new column",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 1,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 224,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:H5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:07:27 PM",
+    "cellFormat": {},
+    "historyMessage": "Updated formula to account for new column",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        3,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 3,
+        "column": 1,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 225,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Bias in Social Media by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:I5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:07:29 PM",
+    "cellFormat": {},
+    "historyMessage": "Updated formula to account for new column",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        1
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 1,
+        "type": "dependency"
+      }
+    ]
+  },
+  {
+    "id": 226,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Social Media Bias by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Installation by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:I5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/14/2025, 5:08:34 PM",
+    "cellFormat": {},
+    "historyMessage": "Renamed main stage event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 1,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 1,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 227,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Social Media Bias by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Setup by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:I5)",
+        "Check-In",
+        "Coffee and Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/15/2025, 1:09:06 PM",
+    "cellFormat": {},
+    "historyMessage": "Renamed workshop event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        6
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 6,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 228,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Social Media Bias by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint Basics by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Setup by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:I5)",
+        "Check-In",
+        "Coffee & Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/15/2025, 1:09:31 PM",
+    "cellFormat": {},
+    "historyMessage": "Renamed networking event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        4,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 4,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 4,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 229,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Social Media Bias by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint 101 by Ms. Cho",
+        "Sprint Basics by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Setup by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:I5)",
+        "Check-In",
+        "Coffee & Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/15/2025, 1:15:28 PM",
+    "cellFormat": {},
+    "historyMessage": "Renamed workshop event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        2
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 2,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 230,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Social Media Bias by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint 101 by Ms. Cho",
+        "Sprint 101 by Ms. Cho",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Setup by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:I5)",
+        "Check-In",
+        "Coffee & Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/15/2025, 1:15:32 PM",
+    "cellFormat": {},
+    "historyMessage": "Renamed workshop event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "id": 231,
+    "data": [
+      [
+        "Room",
+        "Number of Events",
+        "09:00-10:00",
+        "10:00-11:00",
+        "11:00-12:00",
+        "12:00-14:00",
+        "14:00-15:00",
+        "15:00-16:00",
+        "16:00-17:00"
+      ],
+      [
+        "Main Stage",
+        "=COUNTA(C2:I2)",
+        "Cybersecurity Threats by Argon",
+        "Declarative Frameworks by Mr. Anderson",
+        "Future of AI by Mr. Malik",
+        "Lunch Break",
+        "Social Media Bias by Mr. Romero",
+        "Trust and Security by Ms. Remington",
+        "Keynote by Dr. Zhu"
+      ],
+      [
+        "Workshop Room",
+        "=COUNTA(C3:I3)",
+        "Sprint 101 by Ms. Cho",
+        "Kanban Basics by Ms. Brunner",
+        "Prototyping by Dr. Orion",
+        "Lunch Break",
+        "Linux Setup by Mr. Embarek",
+        "Intro to Prompt Engineering by Mr. Li",
+        null
+      ],
+      [
+        "Panel Room",
+        "=COUNTA(C4:I4)",
+        "Women in Robotics by Ms. Gillinger",
+        "Remote Work by Mr. Wells",
+        "Climate and Technology by Ms. Kim",
+        "Lunch Break",
+        "Cloud Computing by Ms. Nguyen",
+        "Quantum Computing by Dr. Kwok",
+        null
+      ],
+      [
+        "Networking Lounge",
+        "=COUNTA(C5:I5)",
+        "Check-In",
+        "Coffee & Cake",
+        "Open Networking",
+        "Lunch Buffet",
+        "Startup Demos",
+        "Coffee Break",
+        "Farewell Mixer"
+      ]
+    ],
+    "timestamp": "8/15/2025, 1:15:59 PM",
+    "cellFormat": {},
+    "historyMessage": "Added workshop event",
+    "author": "Dave",
+    "cellChanges": [
+      [
+        2,
+        3
+      ]
+    ],
+    "cellChangesDeep": [
+      {
+        "row": 2,
+        "column": 3,
+        "type": "content"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "type": "propagation",
+        "level": 1
+      }
     ]
   }
 ]

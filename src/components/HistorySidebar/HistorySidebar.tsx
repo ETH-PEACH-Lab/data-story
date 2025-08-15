@@ -50,12 +50,20 @@ const useOutsideClick = (ref, callback) => {
   }, [ref, callback]);
 };
 
+interface DeepChange {
+  row: number;
+  column: number;
+  type: string;
+  spec?: string;
+}
+
 export interface HistoryEntry {
   id: number;
   author: string;
   timestamp: string;
   historyMessage: string;
   cellChanges: number[][]
+  cellChangesDeep: DeepChange[]
 }
 
 export interface HistoryBundle {
@@ -128,6 +136,7 @@ const HistorySidebar = ({
       const mergedEntry = {
         ...currentEntry,
         cellChanges: [...previousEntry.cellChanges, ...currentEntry.cellChanges],
+        cellChangesDeep: [...previousEntry.cellChangesDeep, ...currentEntry.cellChangesDeep],
       }
 
       // Replace the previous entry with the merged one and remove the current entry
@@ -192,20 +201,20 @@ const HistorySidebar = ({
 
   useEffect(() => {
     const result = filterDeepHistory(
-    bundles,
-    selectedCollaborators,
-    intervalStart,
-    intervalEnd,
-    brushedCells,
-    brushedWords,
-    brushState
-  )
-  if (result.length > 0) {
-    handleHistoryItemClick(result[result.length - 1].entries[result[result.length - 1].entries.length - 1]);
-  }
-  setEntryId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : -1);
-  setSelectedId(result.length > 0 ? result[result.length - 1].entries[result[result.length - 1].entries.length - 1].id : null);
-  setFilteredBundles(result);
+      bundles,
+      selectedCollaborators,
+      intervalStart,
+      intervalEnd,
+      brushedCells,
+      brushedWords,
+      brushState
+    )
+    setFilteredBundles(result);
+    if (brushState === BrushState.IDLE) viewCurrentVersion()
+    else if (brushState === BrushState.BRUSHED) {
+      if (result.length === 0) return
+      handleHistoryItemClick(result.at(-1).entries.at(-1))
+    }
   }, [brushState]);
 
   const viewCurrentVersion = () => {
