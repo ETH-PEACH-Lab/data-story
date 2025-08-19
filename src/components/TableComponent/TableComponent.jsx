@@ -33,6 +33,7 @@ const TableComponent = ({
 	const [rawValue, setRawValue] = useState('');
 	const [selectedProp, setSelectedProp] = useState('');
 	const [clipboard, setClipboard] = useState("");
+	
 
 	const {
 		updateCols,
@@ -42,6 +43,7 @@ const TableComponent = ({
 		historyActions,
 		cellFormat,
 		brushedCells,
+		appState,
 		setBrushedCells,
 	} = useContext(SharedContext);
 	const handleSaveCurrentVersion = historyActions.handleSaveCurrentVersion;
@@ -112,7 +114,7 @@ const TableComponent = ({
 
 	const cellClassFn = (row, col) => {
 		let diffString = '';
-		if (cellDeepDiff && cellDeepDiff.length > 0) {
+		if (appState === 'EXPERIMENT' && cellDeepDiff && cellDeepDiff.length > 0) {
 			const match = cellDeepDiff.find(cell => cell.row === row && cell.column === col);
 			diffString = match ? `bg-${match.type}` : ''
 		} else {
@@ -228,7 +230,7 @@ const TableComponent = ({
 			<div className='table-content-area'>
 				<div className='handsontable-container' ref={tableContainerRef}>
 					<div className='hot-table-wrapper'>
-				{cellDeepDiff &&
+				{appState === 'EXPERIMENT' && cellDeepDiff &&
 				<div className='legend' style={{ display: 'flex', gap: 24, alignItems: 'center', margin: '16px 0 0 16px', position:"absolute", zIndex:"1000", top:"15px", left: "600px", fontSize:"12px"}}>
 					<span>
 						<span style={{
