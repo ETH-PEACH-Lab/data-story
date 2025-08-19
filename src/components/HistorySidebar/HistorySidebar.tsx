@@ -26,6 +26,7 @@ import {
   getDataset
 } from "../../utils/historyHandlers";
 import { getTime, getInterval } from "../../utils/formatHandlers"
+import { logActivity } from "../../utils/api"
 
 import "./HistorySidebar.css";
 import VBrush from "../VBrush"
@@ -108,6 +109,7 @@ const HistorySidebar = ({
     historyActions,
     brushedCells,
     appState,
+    userName,
   } = useContext(SharedContext);
 
   const {
@@ -240,6 +242,20 @@ const HistorySidebar = ({
       handleHistoryClick(entry, -1) // Switch to the current entry
     }
     setDiffMode((prev) => (prev === "before" ? "after" : "before"));
+  }
+
+  const handleUiClick = (entry: HistoryEntry) => {
+    const clickedEntry = {
+      "historyId": entry.id,
+      "historyMessage": entry.historyMessage,
+      "historyAuthor": entry.author,
+      "historyTimestamp": entry.timestamp,
+      "type": "history",
+      "timestamp": new Date().toISOString(),
+      "user": userName,
+    }
+    logActivity(clickedEntry)
+    handleHistoryItemClick(entry)
   }
 
   const handleHistoryItemClick = (entry: HistoryEntry) => {
@@ -375,7 +391,7 @@ const HistorySidebar = ({
                       key={index}
                       sx={{ ml: 9, position: 'relative', display: 'flex', alignItems: 'center' }}
                       className={entry.id === selectedId ? "history-selected history-entry" : "history-entry"}
-                      onClick={() => handleHistoryItemClick(entry)}
+                      onClick={() => handleUiClick(entry)}
                       selected={entry.id === selectedId}
                       onMouseEnter={() => setMenuId(entry.id)}
                       onMouseLeave={() => setMenuId(-1)}
@@ -416,7 +432,7 @@ const HistorySidebar = ({
                                 entry.historyMessage.split(" ").map((word, index) =>
                                   <span
                                     key={index}
-                                    onClick={() => handleBrushedWords(word) }
+                                    onClick={() => handleBrushedWords(word)}
                                     className={"brushing" + (brushedWords.has(word) ? " brushed-word" : "")}
                                   >
                                     {word}

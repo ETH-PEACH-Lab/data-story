@@ -180,7 +180,8 @@ function App() {
       historyState: history.historyState,
       historyActions: history.historyActions,
       cellFormat, setCellFormat, selectedCellsRef,
-      brushedCells, setBrushedCells, appState, setAppState
+      brushedCells, setBrushedCells, appState, setAppState,
+      userName
     }}>
       <ErrorBoundary>
         <div>
