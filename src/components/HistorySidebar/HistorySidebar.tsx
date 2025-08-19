@@ -213,6 +213,17 @@ const HistorySidebar = ({
     setFilteredBundles(result);
     if (brushState === BrushState.IDLE) viewCurrentVersion()
     else if (brushState === BrushState.BRUSHED) {
+      const brushingConfig = {
+        start: intervalStart,
+        end: intervalEnd,
+        collaborators: selectedCollaborators,
+        brushedCells,
+        brushedWords: Array.from(brushedWords),
+        type: "brushing",
+        timestamp: new Date().toISOString(),
+        user: userName,
+      }
+      logActivity(brushingConfig)
       if (result.length === 0) return
       handleHistoryItemClick(result.at(-1).entries.at(-1))
     }
@@ -245,6 +256,7 @@ const HistorySidebar = ({
   }
 
   const handleUiClick = (entry: HistoryEntry) => {
+    handleHistoryItemClick(entry)
     const clickedEntry = {
       "historyId": entry.id,
       "historyMessage": entry.historyMessage,
@@ -254,8 +266,8 @@ const HistorySidebar = ({
       "timestamp": new Date().toISOString(),
       "user": userName,
     }
+    if (entry.id === entryId) return
     logActivity(clickedEntry)
-    handleHistoryItemClick(entry)
   }
 
   const handleHistoryItemClick = (entry: HistoryEntry) => {
