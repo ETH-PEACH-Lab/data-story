@@ -9,8 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import TextField from '@mui/material/TextField';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Chip from '@mui/material/Chip';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Alert from '@mui/material/Alert';
@@ -224,7 +223,7 @@ const HistorySidebar = ({
     handleHistoryClick(uploadHistory.at(-1), -1)
   }
 
-  const handleDiffSwitch = (e: React.MouseEvent<HTMLButtonElement>, entry: HistoryEntry) => {
+  const handleDiffSwitch = (e: React.MouseEvent, entry: HistoryEntry) => {
     //switch to the previous entry if available
     // find the previous entry from bundles
     e.stopPropagation();
@@ -382,13 +381,7 @@ const HistorySidebar = ({
                       onMouseLeave={() => setMenuId(-1)}
                     >
                       {entry.id === selectedId && (
-                        <IconButton
-                          size="small"
-                          onClick={(e) => handleDiffSwitch(e, entry)}
-                          style={{ marginRight: 8, marginLeft: '-42px' }}
-                        >
-                          {diffMode === "before" ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-                        </IconButton>
+                        <Chip style={{ position: 'absolute', right: '35px' }} label={diffMode === "before" ? "Before" : "After"} onClick={(e) => handleDiffSwitch(e, entry)} />
                       )}
                       <ListItemText
                         style={{ paddingRight: '30px' }}

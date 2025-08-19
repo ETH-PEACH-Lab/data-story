@@ -228,6 +228,58 @@ const TableComponent = ({
 			<div className='table-content-area'>
 				<div className='handsontable-container' ref={tableContainerRef}>
 					<div className='hot-table-wrapper'>
+				{cellDeepDiff &&
+				<div className='legend' style={{ display: 'flex', gap: 24, alignItems: 'center', margin: '16px 0 0 16px', position:"absolute", zIndex:"1000", top:"15px", left: "600px", fontSize:"12px"}}>
+					<span>
+						<span style={{
+							display: 'inline-block',
+							width: 16,
+							height: 16,
+							background: 'rgba(168, 213, 186, 0.8)',
+							borderRadius: 4,
+							marginRight: 8,
+							verticalAlign: 'middle'
+						}} />
+						Content changed
+					</span>
+					<span>
+						<span style={{
+							display: 'inline-block',
+							width: 16,
+							height: 16,
+							background: 'rgba(168, 213, 186, 0.3)',
+							borderRadius: 4,
+							marginRight: 8,
+							verticalAlign: 'middle'
+						}} />
+						Value Propagation
+					</span>
+					<span>
+						<span style={{
+							display: 'inline-block',
+							width: 16,
+							height: 16,
+							background: 'rgba(187, 219, 248, 0.5)',
+							borderRadius: 4,
+							marginRight: 8,
+							verticalAlign: 'middle'
+						}} />
+						Dependency changed
+					</span>
+					<span>
+						<span style={{
+							display: 'inline-block',
+							width: 16,
+							height: 16,
+							background: 'rgba(255, 236, 179, 0.5)',
+							borderRadius: 4,
+							marginRight: 8,
+							verticalAlign: 'middle'
+						}} />
+						Structure Change
+					</span>
+				</div>
+			}
 						<Toolbar
 							data={data}
 							rawValue={rawValue}
