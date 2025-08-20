@@ -43,7 +43,7 @@ const conferenceQuestions = [
 
 const inventoryQuestions = [
   "How many changes did Harry make?",
-  "Why did the Price per Unit of Apples change?",
+  "Why did the Price of Apples change?",
   "Who increased the Quantity of Watermelons?",
   "What was the Quantity of Watermelons before the increase?",
   "How many changes were made on August 13?",
