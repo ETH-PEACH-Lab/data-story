@@ -21,17 +21,16 @@ const travelQuestions = [
   "What was the Day 3 Accommodation cost before it was changed to 200?",
   "Why did the Day 7 Transportation cost increase?",
   "What was the Total Transportation cost before Day 7 Transportation cost was changed to 200?",
-  "When was the Day 7 Food cost added?",
   "Which category was added on August 15?",
   "Who was the most active contributor on August 11?",
   "How many edits did Bob make in total?",
-  "Who didn’t make any changes related to activities?"
+  "Who didn’t make any changes related to activities?",
+  "How many changes did Bob make on August 13?",
 ]
 
 const conferenceQuestions = [
   "Who changed the Keynote speaker?",
   "Why was the original Keynote speaker changed?",
-  "When was Prototyping added to the spreadsheet?",
   "Who moved Quantum Computing to the afternoon?",
   "Why was Quantum Computing moved to the afternoon?",
   "What was Linux Setup’s original name?",
@@ -39,14 +38,16 @@ const conferenceQuestions = [
   "Which collaborator was the most active one on August 15?",
   "How many changes did Dave make in total?",
   "Which author made the most formula changes?",
+  "How many changes did Frank make on August 13?",
 ]
 
 const inventoryQuestions = [
   "How many changes did Harry make?",
-  "When was the formula for Peaches added?",
   "Why did the price per unit of Apples change?",
   "Who increased the quantity of Watermelons?",
   "What was the quantity of Watermelons before the increase?",
+  "How many changes were made on August 13?",
+  "How many Peach-related changes were made in total?",
 ]
 
 function TopBanner() {
