@@ -74,42 +74,38 @@ export interface HistoryBundle {
 
 interface HistorySidebarProps {
   selectEntry: (entry: HistoryEntry | null) => void
-  brushState: BrushState
-  setBrushState: (state: BrushState) => void
-  setBrushedCells: (cells: number[][]) => void,
   setEntryId: (id: number) => void,
   entryId: number
 }
 
 const HistorySidebar = ({
   selectEntry,
-  brushState,
-  setBrushState,
-  setBrushedCells,
   setEntryId,
   entryId
 }: HistorySidebarProps) => {
   const [bundles, setBundles] = useState<HistoryBundle[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [intervalStart, setIntervalStart] = useState<Date | null>(null)
   const [intervalEnd, setIntervalEnd] = useState<Date | null>(null)
   const [editingEntryId, setEditingEntryId] = useState<number>(-1)
   const [editingMessage, setEditingMessage] = useState<string>("")
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null)
   const [menuId, setMenuId] = useState(-1)
-  const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [diffMode, setDiffMode] = useState<"before" | "after">("after");
   const [filteredBundles, setFilteredBundles] = useState<HistoryBundle[]>([]);
-  const [brushedWords, setBrushedWords] = useState<Set<string>>(new Set());
 
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     historyState,
     historyActions,
     brushedCells,
-    appState,
+    appState, spreadsheet,
     userName,
+    selectedCollaborators, setSelectedCollaborators,
+    brushedWords, setBrushedWords,
+    isOpen, setIsOpen,
+    brushState, setBrushState,
+    resetBrushing,
   } = useContext(SharedContext);
 
   const {
@@ -214,14 +210,16 @@ const HistorySidebar = ({
     if (brushState === BrushState.IDLE) viewCurrentVersion()
     else if (brushState === BrushState.BRUSHED) {
       const brushingConfig = {
+        user: userName,
+        condition: appState,
+        spreadsheet: spreadsheet,
+        type: "BRUSHING",
+        timestamp: new Date().toISOString(),
         start: intervalStart,
         end: intervalEnd,
         collaborators: selectedCollaborators,
         brushedCells,
         brushedWords: Array.from(brushedWords),
-        type: "brushing",
-        timestamp: new Date().toISOString(),
-        user: userName,
       }
       logActivity(brushingConfig)
       if (result.length === 0) return
@@ -258,13 +256,15 @@ const HistorySidebar = ({
   const handleUiClick = (entry: HistoryEntry) => {
     handleHistoryItemClick(entry)
     const clickedEntry = {
-      "historyId": entry.id,
-      "historyMessage": entry.historyMessage,
-      "historyAuthor": entry.author,
-      "historyTimestamp": entry.timestamp,
-      "type": "history",
-      "timestamp": new Date().toISOString(),
-      "user": userName,
+      user: userName,
+      condition: appState,
+      spreadsheet: spreadsheet,
+      type: "HISTORY",
+      timestamp: new Date().toISOString(),
+      historyId: entry.id,
+      historyMessage: entry.historyMessage,
+      historyAuthor: entry.author,
+      historyTimestamp: entry.timestamp,
     }
     if (entry.id === entryId) return
     logActivity(clickedEntry)
@@ -287,13 +287,6 @@ const HistorySidebar = ({
     name: author,
     color: getColor(author)
   }))
-
-  const resetBrushing = () => {
-    setSelectedCollaborators([])
-    setBrushedCells([])
-    setBrushedWords(new Set())
-    setIsOpen(Array(bundles.length).fill(false))
-  }
 
   const findCollaboratorColor = (author: string): string => {
     return allCollaborators.find((collab: { name: string; }) => collab.name === author)?.color || getColor(author);
@@ -409,7 +402,7 @@ const HistorySidebar = ({
                       onMouseLeave={() => setMenuId(-1)}
                     >
                       {entry.id === selectedId && (
-                        <Chip style={{ position: 'absolute', right: '35px' }} label={diffMode === "before" ? "Before" : "After"} onClick={(e) => handleDiffSwitch(e, entry)} />
+                        <Chip style={{ position: 'absolute', left: '8px' }} label={diffMode === "before" ? "Before" : "After"} onClick={(e) => handleDiffSwitch(e, entry)} />
                       )}
                       <ListItemText
                         style={{ paddingRight: '30px' }}

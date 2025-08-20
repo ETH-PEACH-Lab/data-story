@@ -328,18 +328,8 @@
         "type": "content"
       },
       {
-        "row": 0,
-        "column": 2,
-        "type": "content"
-      },
-      {
         "row": 2,
         "column": 2,
-        "type": "content"
-      },
-      {
-        "row": 0,
-        "column": 3,
         "type": "content"
       }
     ]

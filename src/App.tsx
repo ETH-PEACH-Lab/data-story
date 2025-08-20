@@ -58,6 +58,10 @@ function App() {
   const [brushedCells, setBrushedCells] = useState<number[][]>([]);
   const [brushState, setBrushState] = useState<BrushState>(BrushState.IDLE);
   const [appState, setAppState] = useState("");
+  const [spreadsheet, setSpreadsheet] = useState("");
+  const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([]);
+  const [brushedWords, setBrushedWords] = useState<Set<string>>(new Set());
+  const [isOpen, setIsOpen] = useState<boolean[]>([]);
 
   const hotRef = useRef(null);
   const selectedCellsRef = useRef([]);
@@ -172,6 +176,13 @@ function App() {
     setIsAuthenticated(true);
   };
 
+  const resetBrushing = () => {
+    setSelectedCollaborators([])
+    setBrushedCells([])
+    setBrushedWords(new Set())
+    setIsOpen((prev) => prev.map(() => false))
+  }
+
   return (
     <SharedContext.Provider value={{
       updateCols, updateStory, updateHist, updateTable,
@@ -181,7 +192,11 @@ function App() {
       historyActions: history.historyActions,
       cellFormat, setCellFormat, selectedCellsRef,
       brushedCells, setBrushedCells, appState, setAppState,
-      userName
+      userName, spreadsheet, setSpreadsheet, resetBrushing,
+      selectedCollaborators, setSelectedCollaborators,
+      brushedWords, setBrushedWords,
+      isOpen, setIsOpen,
+      brushState, setBrushState,
     }}>
       <ErrorBoundary>
         <div>
