@@ -231,7 +231,7 @@ const TableComponent = ({
 				<div className='handsontable-container' ref={tableContainerRef}>
 					<div className='hot-table-wrapper'>
 				{appState === 'EXPERIMENT' && cellDeepDiff &&
-				<div className='legend' style={{ display: 'flex', gap: 24, alignItems: 'center', margin: '16px 0 0 16px', position:"absolute", zIndex:"1000", top:"15px", left: "600px", fontSize:"12px"}}>
+				<div className='legend' style={{ display: 'flex', gap: 24, alignItems: 'center', margin: '16px 0 0 16px', position:"absolute", zIndex:"1000", bottom:"30px", left: "15px", fontSize:"12px"}}>
 					<span>
 						<span style={{
 							display: 'inline-block',

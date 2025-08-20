@@ -144,8 +144,8 @@ function TopBanner() {
             Submit
           </Button>
         </>}
+        <UserCircles awareness={awareness} />
       </div>
-      <UserCircles awareness={awareness} />
     </div>
   );
 }
