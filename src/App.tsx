@@ -181,6 +181,7 @@ function App() {
     setBrushedCells([])
     setBrushedWords(new Set())
     setIsOpen((prev) => prev.map(() => false))
+    setBrushState(BrushState.IDLE)
   }
 
   return (

@@ -59,7 +59,6 @@ function TopBanner() {
     userName, 
     spreadsheet, 
     setSpreadsheet,
-    setBrushState,
     resetBrushing,
   } = useContext(SharedContext);
   const [answer, setAnswer] = useState("");
@@ -69,6 +68,7 @@ function TopBanner() {
   const handleSubmit = () => {
     const duration = new Date().getTime() - timer;
     setTimer(new Date().getTime());
+
     const taskConfig = {
       user: userName,
       condition: appState,
@@ -81,8 +81,10 @@ function TopBanner() {
       action: "end",
     }
     logActivity(taskConfig)
+
     setAnswer("")
     setQuestions(questions.slice(1))
+    resetBrushing()
   };
 
   return (
@@ -115,7 +117,6 @@ function TopBanner() {
               setSpreadsheet(e.target.value);
               setQuestions(spreadsheetQuestions)
 
-              setBrushState(BrushState.IDLE)
               resetBrushing()
               setTimer(new Date().getTime());
 
