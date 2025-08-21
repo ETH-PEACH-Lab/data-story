@@ -48,7 +48,7 @@ const VBrush = ({
         variant="contained"
         startIcon={<Replay />}
         sx={{ backgroundColor: "grey", textTransform: "none" }}
-        onClick={() => { setBrushState(BrushState.IDLE); resetBrushing() }}
+        onClick={() => resetBrushing()}
       >
         Reset
       </Button>}

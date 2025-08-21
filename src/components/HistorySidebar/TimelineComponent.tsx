@@ -37,6 +37,7 @@ const drawSelectionOverlay = (timeline: Timeline) => {
   selectionDiv.style.background = 'rgba(255, 230, 0, 0.1)';
   selectionDiv.style.border = '1px solid #f8c200';
   selectionDiv.style.zIndex = '1';
+  selectionDiv.style.pointerEvents = 'none';
   selectionDiv.className = 'custom-range-overlay';
   containerRect.appendChild(selectionDiv);
 
@@ -57,11 +58,11 @@ const TimelineComponent = ({ items, start, end, setStart, setEnd }: TimelineComp
     const dataSet = new DataSet(items)
     itemsRef.current = dataSet
 
-    const startMarker = addHours(items[0].start, -0.5)
-    const endMarker = addHours(items.at(-1)!.end, 0.5)
+    const startMarker = addHours(items[0].start, -5)
+    const endMarker = addHours(items.at(-1)!.end, 5)
 
-    const startTime = addHours(startMarker, -0.5)
-    const endTime = addHours(endMarker, 0.5)
+    const startTime = addHours(startMarker, -24)
+    const endTime = addHours(endMarker, 24)
 
     const options = {
       zoomMin: 1000 * 60,
