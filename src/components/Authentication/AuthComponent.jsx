@@ -1,7 +1,7 @@
 // Authentication.jsx
 import { useState, useEffect } from "react";
 
-const PASSKEY = '123456';
+const PASSKEY = '123';
 
 const generateRandomName = () => {
   const adjectives = ["Quick", "Lazy", "Clever", "Brave", "Happy"];
