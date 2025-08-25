@@ -37,9 +37,9 @@ export const Authentication = ({ onAuthenticated }) => {
 
   return (
     <div className="auth-container">
-      <h2>Please enter your name and the passkey</h2>
+      <h2>Login</h2>
       <div>
-        <label>Name:</label>
+        <label>Prolific ID:</label>
         <input
           type="text"
           value={name}
@@ -47,7 +47,7 @@ export const Authentication = ({ onAuthenticated }) => {
         />
       </div>
       <div>
-        <label>Passkey:</label>
+        <label>Password:</label>
         <input
           type="password"
           value={passkeyInput}
