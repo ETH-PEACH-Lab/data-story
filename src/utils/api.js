@@ -1,5 +1,5 @@
-const BIN_ID = "68a4305ed0ea881f405d34c8";
-const ACCESS_KEY = "$2a$10$oUEWVMQNpfuMwMgYuwOrM.PKWw3XuZh..5RbeMhlSUePigOg5ZC1u";
+const BIN_ID = "69a4b2cbae596e708f55f571";
+const ACCESS_KEY = "$2a$10$Fev/HIw/cTZoUYDdcqQny.QRbGt2rIPuuFmYIcgubh36EH7fqH.0S";
 const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
 export const logActivity = (newEntry) => {
