@@ -5,7 +5,10 @@ const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 export const logActivity = (newEntry) => {
   return fetch(`${BIN_URL}/latest`, {
     method: "GET",
-    headers: { "Content-Type": "application/json" }
+    headers: { 
+      "Content-Type": "application/json",
+      "X-Access-Key": ACCESS_KEY
+    }
   })
   .then(response => response.json())
   .then(data => {
