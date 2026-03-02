@@ -33,7 +33,7 @@ const TableComponent = ({
 	const [rawValue, setRawValue] = useState('');
 	const [selectedProp, setSelectedProp] = useState('');
 	const [clipboard, setClipboard] = useState("");
-	
+
 
 	const {
 		updateCols,
@@ -230,58 +230,58 @@ const TableComponent = ({
 			<div className='table-content-area'>
 				<div className='handsontable-container' ref={tableContainerRef}>
 					<div className='hot-table-wrapper'>
-				{appState === 'EXPERIMENT' && cellDeepDiff &&
-				<div className='legend' style={{ display: 'flex', gap: 24, alignItems: 'center', margin: '16px 0 0 16px', position:"absolute", zIndex:"1000", bottom:"30px", left: "15px", fontSize:"12px"}}>
-					<span>
-						<span style={{
-							display: 'inline-block',
-							width: 16,
-							height: 16,
-							background: 'rgba(168, 213, 186, 0.8)',
-							borderRadius: 4,
-							marginRight: 8,
-							verticalAlign: 'middle'
-						}} />
-						Content changed
-					</span>
-					<span>
-						<span style={{
-							display: 'inline-block',
-							width: 16,
-							height: 16,
-							background: 'rgba(168, 213, 186, 0.3)',
-							borderRadius: 4,
-							marginRight: 8,
-							verticalAlign: 'middle'
-						}} />
-						Value Propagation
-					</span>
-					<span>
-						<span style={{
-							display: 'inline-block',
-							width: 16,
-							height: 16,
-							background: 'rgba(187, 219, 248, 0.5)',
-							borderRadius: 4,
-							marginRight: 8,
-							verticalAlign: 'middle'
-						}} />
-						Dependency changed
-					</span>
-					<span>
-						<span style={{
-							display: 'inline-block',
-							width: 16,
-							height: 16,
-							background: 'rgba(255, 236, 179, 0.5)',
-							borderRadius: 4,
-							marginRight: 8,
-							verticalAlign: 'middle'
-						}} />
-						Structure Change
-					</span>
-				</div>
-			}
+						{appState === 'EXPERIMENT' && cellDeepDiff &&
+							<div className='legend' style={{ display: 'flex', gap: 24, alignItems: 'center', margin: '16px 0 0 16px', position: "absolute", zIndex: "1000", bottom: "30px", left: "15px", fontSize: "12px" }}>
+								<span>
+									<span style={{
+										display: 'inline-block',
+										width: 16,
+										height: 16,
+										background: 'rgba(168, 213, 186, 0.8)',
+										borderRadius: 4,
+										marginRight: 8,
+										verticalAlign: 'middle'
+									}} />
+									Content changed
+								</span>
+								<span>
+									<span style={{
+										display: 'inline-block',
+										width: 16,
+										height: 16,
+										background: 'rgba(168, 213, 186, 0.3)',
+										borderRadius: 4,
+										marginRight: 8,
+										verticalAlign: 'middle'
+									}} />
+									Value Propagation
+								</span>
+								<span>
+									<span style={{
+										display: 'inline-block',
+										width: 16,
+										height: 16,
+										background: 'rgba(187, 219, 248, 0.5)',
+										borderRadius: 4,
+										marginRight: 8,
+										verticalAlign: 'middle'
+									}} />
+									Dependency changed
+								</span>
+								<span>
+									<span style={{
+										display: 'inline-block',
+										width: 16,
+										height: 16,
+										background: 'rgba(255, 236, 179, 0.5)',
+										borderRadius: 4,
+										marginRight: 8,
+										verticalAlign: 'middle'
+									}} />
+									Structure Change
+								</span>
+							</div>
+						}
 						<Toolbar
 							data={data}
 							rawValue={rawValue}
@@ -333,6 +333,43 @@ const TableComponent = ({
 							afterChange={handleTableChange}
 							contextMenu={{ items: contextMenuItems }}
 						/>
+						{appState === 'EXPERIMENT' && (
+							<div className='instruction-box' style={{
+								position: 'absolute',
+								zIndex: 1000,
+								bottom: 80,
+								left: 15,
+								background: 'rgba(255, 255, 255, 0.95)',
+								border: '1px solid #e0e0e0',
+								borderRadius: 8,
+								padding: '12px 16px',
+								maxWidth: 800,
+								boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+								fontSize: 13
+							}}>
+								<div style={{ fontWeight: 600, marginBottom: 8, color: '#1976d2' }}>
+									💡 How to Use VBrush
+								</div>
+
+								<ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.6 }}>
+									<li><b>1. Click VBrush</b> to enter exploration mode.</li>
+
+									<li><b>2. Select what you want to explore:</b>
+										<ul>
+											<li>Click a contributor avatar (who)</li>
+											<li>Brush the timeline (when)</li>
+											<li>Click one or more cells (what)</li>
+											<li>Click keywords in the log (why)</li>
+										</ul>
+									</li>
+
+									<li><b>3. Click Apply</b> to run the query.</li>
+
+									<li><b>4. View the filtered edits</b> highlighted in the history and spreadsheet.</li>
+								</ul>
+							</div>
+						)}
+
 					</div>
 				</div>
 			</div>
