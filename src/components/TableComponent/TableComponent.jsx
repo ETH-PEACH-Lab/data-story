@@ -33,6 +33,7 @@ const TableComponent = ({
 	const [rawValue, setRawValue] = useState('');
 	const [selectedProp, setSelectedProp] = useState('');
 	const [clipboard, setClipboard] = useState("");
+	const [showTips, setShowTips] = useState(true);
 
 
 	const {
@@ -333,7 +334,7 @@ const TableComponent = ({
 							afterChange={handleTableChange}
 							contextMenu={{ items: contextMenuItems }}
 						/>
-						{appState === 'EXPERIMENT' && (
+						{appState === 'EXPERIMENT' && showTips && (
 							<div className='instruction-box' style={{
 								position: 'absolute',
 								zIndex: 1000,
@@ -347,8 +348,24 @@ const TableComponent = ({
 								boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
 								fontSize: 13
 							}}>
-								<div style={{ fontWeight: 600, marginBottom: 8, color: '#1976d2' }}>
-									💡 How to Use VBrush
+								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+									<div style={{ fontWeight: 600, color: '#1976d2' }}>
+										💡 How to Use VBrush
+									</div>
+									<button
+										onClick={() => setShowTips(false)}
+										style={{
+											background: 'none',
+											border: 'none',
+											cursor: 'pointer',
+											fontSize: 16,
+											color: '#666',
+											padding: '0 4px'
+										}}
+										title="Hide tips"
+									>
+										×
+									</button>
 								</div>
 
 								<ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.6 }}>
@@ -368,6 +385,29 @@ const TableComponent = ({
 									<li><b>4. View the filtered edits</b> highlighted in the history and spreadsheet.</li>
 								</ul>
 							</div>
+						)}
+						{appState === 'EXPERIMENT' && !showTips && (
+							<button
+								onClick={() => setShowTips(true)}
+								style={{
+									position: 'absolute',
+									zIndex: 1000,
+									bottom: 80,
+									left: 15,
+									background: 'rgba(255, 255, 255, 0.95)',
+									border: '1px solid #e0e0e0',
+									borderRadius: 8,
+									padding: '8px 12px',
+									boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+									fontSize: 13,
+									cursor: 'pointer',
+									color: '#1976d2',
+									fontWeight: 500
+								}}
+								title="Show tips"
+							>
+								💡 Show Tips
+							</button>
 						)}
 
 					</div>
